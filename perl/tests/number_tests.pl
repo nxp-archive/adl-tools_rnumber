@@ -81,8 +81,8 @@ print "equal numbers\n";
   # rnumber-parse-string is currently only supported with bigloo binding.
   #print "parse from string qtv -> " rnumber-parse-string "qtv"))
   #(print "parse from string \"10\" -> " (rnumber-parse-string "10"))
-  print ("5 - 3 -> ",
+  print "5 - 3 -> ",
 	 RNumber::rnumber_cstr(RNumber::rnumber_rn_minus_rn(RNumber::rnumber_create_from_unsigned(5),
 								  RNumber::rnumber_create_from_string("3"))),
-	 "\n");
+	 "\n";
 }

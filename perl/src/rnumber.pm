@@ -2,6 +2,7 @@
 package rnumber;
 require RNumber;
 require Exporter;
+
 @ISA = qw(Exporter);
 
 RNumber::rnumber_predicate_init();
@@ -12,14 +13,18 @@ RNumber::rnumber_predicate_init();
 
 sub rnumberp {
   my $a = shift @_;
+  #print "<rnumberp>\n";
   unless (ref $a) {
+    #print "</rnumberp ref $a failed>\n";
     return 0;
   };
   # for some reason, perl 5 and 5.[68] use a different string for the name of the structure.
   # if this can be calculated instead of hardcoded, the code below should change.
   if ($a->isa("_p_RNumber") || $a->isa("RNumber")) {
+    #print "</rnumberp this is an RNumber>\n";
     return 1;
   }
+  #print "</rnumberp this is not a _p_RNumber or RNumber>\n";
   return 0;
 }
 
@@ -28,22 +33,29 @@ sub rn_version {
 }
 
 sub rn_ctor {
+  #print "rn_ctor\n";
   my $number = shift;
   my $size;
   if ($size = shift) {
     if ( rnumberp ($number)) {
+      #print "create rnumber from rnumber $number\n";
       return RNumber::rnumber_create_from_rnumber($number);
     } elsif ( numericp ($number)) {
+      #print "create rnumber from unsigned of  size $size and value $number\n";
       return RNumber::rnumber_create_from_unsigned_of_size($number,$size);
     } elsif ( stringp ($number)) {
+      #print "create rnumber from string of size $size and value $number\n";
       return RNumber::rnumber_create_from_string_of_size($number,$size);
     }
   } else {
     if ( rnumberp ($number)) {
+      #print "create rnumber from rnumber of default size and value $number\n";
       return RNumber::rnumber_create_from_rnumber($number);
     } elsif ( numericp ($number)) {
+      #print "create rnumber from unsigned of default size and value $number\n";
       return RNumber::rnumber_create_from_unsigned($number);
     } elsif ( stringp ($number)) {
+      #print "create rnumber from string of default size and value $number\n";
       return RNumber::rnumber_create_from_string($number);
     }
   }
@@ -64,7 +76,7 @@ sub rn_cstr {
       return RNumber::rnumber_cstr_radix($number, $radix, 1);      
     }
   }
-  return RNumber::rnumber_cstr($number);
+  return RNumber::rnumber_cstr_radix($number,16,0);
 }
 
 sub rn_parse_string {
@@ -204,6 +216,7 @@ sub rn_plus {
   my $second_rn = rnumberp($_[1]);
   my $second_ui = numericp($_[1]);
 
+  #print "rn_1 $first_rn ui_1 $first_ui rn_2 $second_rn ui_2 $second_ui\n";
   if ($first_rn && $second_rn) {
     return RNumber::rnumber_rn_plus_rn(@_);
   } elsif ($first_rn && $second_ui) {
@@ -211,7 +224,8 @@ sub rn_plus {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_plus_rn(@_);
   } else {
-    return ($_[0] + $_[1]);
+    print "Error: rn_plus should be called with an integer and an rnumber. Called with ('$_[0]', '$_[1]')\n";
+    return 0;
   }
 }
 
@@ -324,7 +338,7 @@ sub rn_size {
   return RNumber::rnumber_size($_[0]);
 }
 
-package RNumber;
+package _p_RNumber;
 
 sub DESTROY {
   my ($rnumber) = @_;
@@ -351,6 +365,7 @@ use overload
     '""' => \&overload_to_string;
 
 sub overload_add {
+  #print "overload_add\n";
   my ($x, $y, $swapped) = @_;
   if ( $swapped ) {
     rnumber::rn_plus($y, $x);
@@ -486,6 +501,7 @@ sub overload_rightshift {
 }
 
 sub overload_to_string {
+  #print "overload to string\n";
   my ($x, $y, $swapped) = @_;
   rnumber::rn_cstr($x);
 }
