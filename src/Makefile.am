@@ -1,6 +1,7 @@
 pkglib_LIBRARIES = libRNumber.a
 
 libRNumber_a_SOURCES = \
+	Trace.C \
 	KissRand.C \
 	LcgRand.C \
 	RNumber.C \

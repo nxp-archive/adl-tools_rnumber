@@ -20,6 +20,7 @@
 
 #include "rnumber_exceptions.h"
 #include "RNumber.h"
+#include "trace.h"
 
 static char* pc_rcs_h = RNUMBER_H;
 static char* p2_rcs_h = pc_rcs_h;
@@ -47,7 +48,8 @@ static inline char readHex( istream& is, RNumber& number );
 static inline char readBin( istream& is, RNumber& number );
 static inline char readDec( istream& is, RNumber& number );
 
-static void multiplyExtended( const unsigned int* vb1, unsigned int wc1, const unsigned int* vb2, unsigned int wc2, unsigned int* resValue0,bool extend );
+static void multiplyExtended( const unsigned int* vb1, unsigned int wc1, const unsigned int* vb2, unsigned int wc2, 
+			      unsigned int* resValue0,bool extend );
 static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char* yb, unsigned int ylen, unsigned char* q );
 
 
@@ -1062,7 +1064,6 @@ const RNumber operator+( unsigned int n1, const RNumber& n2 )
 //
 const RNumber addExt( const RNumber& n1, const RNumber& n2 )
 {
-
   return add( n1, n2, true );
 }
 
@@ -1073,7 +1074,6 @@ const RNumber addExt( const RNumber& n1, const RNumber& n2 )
 //
 const RNumber addExt( const RNumber& n1, unsigned int n2 )
 {
-
   return add( n1, n2, true );
 }
 
@@ -1084,7 +1084,6 @@ const RNumber addExt( const RNumber& n1, unsigned int n2 )
 //
 const RNumber addExt( unsigned int n1, const RNumber& n2 )
 {
-
   return add( n2, n1, true );
 }
 

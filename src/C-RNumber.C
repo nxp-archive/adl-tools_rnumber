@@ -10,6 +10,7 @@
 */
 #include "C-RNumber.h"
 #include "RNumber.h"
+#include "trace.h"
 
 RNumber * rnumber_create() 
 {
@@ -84,7 +85,11 @@ RNumber * rnumber_create_from_string_of_radix( char * number, int radix )
 
 RNumber * rnumber_create_from_string_of_radix_variable_sizing( char * number, int radix )
 {
-  return new RNumber( string(number), get_radix(radix), RNumber::dynamic);
+  string s(number);
+  V1("number " << number << " s " << s << " radix " << radix);
+  RNumber rn( s, get_radix(radix), RNumber::dynamic);
+  V1 ("rn " << ::hex << rn);
+  return new RNumber( s, get_radix(radix), RNumber::dynamic);
 }
 
 RNumber * rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix)
@@ -494,7 +499,7 @@ struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNu
   return new RNumber(n1 + *n2);
 }
  struct RNumber * rnumber_rn_add_ext_rn( const struct RNumber * n1, const struct RNumber * n2 ){
-  return new RNumber(addExt(*n1,*n1));
+  return new RNumber(addExt(*n1,*n2));
 }
  struct RNumber * rnumber_rn_add_ext_ui( const struct RNumber * n1, unsigned int n2 ) {
   return new RNumber(addExt(*n1,n2));
