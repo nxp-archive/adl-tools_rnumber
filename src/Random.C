@@ -225,6 +225,7 @@ void Random::popGen(int n)
 // Specify a new generator to use.
 int Random::setCurGen(int g)
 {
+  V1("Setting random generator to " << dec << g);
   int cg = _currentGen;
   assert (g >= 0 && g < (int)_generators.size());
   _currentGen = g;

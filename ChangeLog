@@ -1,3 +1,7 @@
+2003-02-05  Brian Kahne  <bkahne@ibmoto.com>
+
+	* Moved the Merseinne Twist class into rnumber, from rutil.
+
 2003-01-29  Brian Kahne  <bkahne@ibmoto.com>
 
 	* Ported rnumber to the newest automake/autoconf.

@@ -4,6 +4,7 @@ libRNumber_a_SOURCES = \
 	Trace.C \
 	KissRand.C \
 	LcgRand.C \
+	MtRand.C \
 	RNumber.C \
 	C-RNumber.C \
 	Random.C \
