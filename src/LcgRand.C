@@ -26,6 +26,8 @@ static const uint64 a = 279470273UL;
 static const uint64 m = 4294967291UL;
 static const uint64 b = 1815976680UL;
 
+using namespace rnumber;
+
 unsigned long LcgRand::genrand ()
 {
   _x = (a * _x) % m;

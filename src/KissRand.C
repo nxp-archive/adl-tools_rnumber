@@ -12,6 +12,8 @@
 #include "rnumber_exceptions.h"
 #include "KissRand.h"
 
+using namespace rnumber;
+
 void KissState::save(ostream &os) const
 {
   for (int i = 0; i != Size; ++i) {

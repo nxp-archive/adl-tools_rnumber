@@ -91,6 +91,7 @@ public:
   bool signedGT( const RNumber& number ) const;
   bool signedGE( const RNumber& number ) const;
   int compare( const RNumber& number ) const;
+  bool iszero() const;
 
   // Miscellaneous bit manipulation methods.
   RNumber& invert();

@@ -3778,6 +3778,14 @@ RNumber& RNumber::truncate( unsigned int size )
     return truncateExtended( size );
 }
 
+// Returns true if zero (all bits clear).     
+bool RNumber::iszero() const {
+  unsigned z = _valueBuffer[0];       
+  for (int i = 1; i != _wordCount; ++i) {         
+    z |= _valueBuffer[i];
+  }       
+  return !z;
+}
 
 //
 // Get the specified bit. Bit 0 is the most significant bit.
@@ -4132,6 +4140,15 @@ void RNumber::write( ostream& os ) const
     throw std::runtime_error ( "io_fail_error - writing" );
 }
 
+// Return number of underscore characters.     
+inline int count_underscores(const string &s) {
+  int count = 0;       
+  for (string::const_iterator i = s.begin(); i != s.end(); ++i) {         
+    if ( *i == '_' ) ++count;       
+  }       
+  return count; 
+}
+
 //
 // Calculate the size of the string using the following steps. The first step
 // that is correct wins.
@@ -4184,12 +4201,12 @@ unsigned int RNumber::getSizeWithRadix( const string& str, Radix& radix )
   // if the radix is rbin, each digit represents a bit; otherwise, default to
   // nibbled digits and set the radix to rdec.
   if ( radix == rdec || radix == rhex )
-    size = ( str.length() - n ) << 2;
+    size = ( str.length() - n -count_underscores(str)) << 2;
   else if ( radix == rbin )
-    size = str.length() - n;
+    size = str.length() - n - count_underscores(str);
   else
     {
-      size = ( str.length() - n ) << 2;
+      size = ( str.length() - n - count_underscores(str)) << 2;
       radix = rdec;
     }
 

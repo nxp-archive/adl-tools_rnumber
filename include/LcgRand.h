@@ -23,6 +23,8 @@
 class ostream;
 class istream;
 
+namespace rnumber {
+
 // KISS random number generator.
 class LcgRand {
 public:
@@ -42,5 +44,6 @@ private:
   // This is the state element of the generator.
   unsigned _x;
 };
+}
 
 #endif

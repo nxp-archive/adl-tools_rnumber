@@ -15,5 +15,11 @@ INCLUDES = -I$(top_srcdir)/include
 noinst_HEADERS = \
 	rnumber_exceptions.h 
 
+pkginclude_HEADERS = \
+	trace.h
+
+
+
+
 
 

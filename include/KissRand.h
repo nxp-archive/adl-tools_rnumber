@@ -14,6 +14,7 @@
 class ostream;
 class istream;
 
+namespace rnumber {
 // Momento object for storing state of the random number generator.
 class KissState {
   friend class KissRand;
@@ -63,5 +64,5 @@ inline unsigned long KissRand::genrand ()
   ++_count;
   return _x + _y + _w;
 }
-
+}
 #endif
