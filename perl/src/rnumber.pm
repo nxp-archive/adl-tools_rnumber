@@ -8,7 +8,7 @@ pl_rnumber::rnumber_predicate_init();
 
 @EXPORT = qw(stringp integerp rnumberp rn_version rn_ctor rn_cstr rn_parse_string rn_int
 	     rn_eq rn_neq rn_lt rn_le rn_gt rn_ge rn_ls rn_rs rn_plus rn_minus rn_div 
-	     rn_mult rn_bitor rn_bitand rn_mod);
+	     rn_mult rn_bitor rn_bitand rn_mod rn_size);
 
 sub rnumberp
 {
@@ -26,22 +26,42 @@ sub rn_version
 
 sub rn_ctor 
 {
-  if ( rnumberp ($_[0])) {
-    return pl_rnumber::rnumber_create_from_rnumber($_[0]);
-  } elsif ( integerp ($_[0])) {
-    return pl_rnumber::rnumber_create_from_unsigned($_[0]);
-  } elsif ( stringp ($_[0])) {
-    return pl_rnumber::rnumber_created_from_string($_[0]);
+  my $number = shift;
+  my $size;
+  if ($size = shift) {
+    if ( rnumberp ($number)) {
+      return pl_rnumber::rnumber_create_from_rnumber($number);
+    } elsif ( integerp ($number)) {
+      return pl_rnumber::rnumber_create_from_unsigned_of_size($number,$size);
+    } elsif ( stringp ($number)) {
+      return pl_rnumber::rnumber_create_from_string_of_size($number,$size);
+    }
+  } else {
+    if ( rnumberp ($number)) {
+      return pl_rnumber::rnumber_create_from_rnumber($number);
+    } elsif ( integerp ($number)) {
+      return pl_rnumber::rnumber_create_from_unsigned($number);
+    } elsif ( stringp ($number)) {
+      return pl_rnumber::rnumber_create_from_string($number);
+    }
   }
-  print ("rnumber_ctor should be called with an integer, rnumber, or a string.\n");
+  print("rnumber_ctor should be called with an integer, rnumber, or a string with an optional ",
+	"2nd integer parameter for size.\n");
   return 0;
 }
 
 sub rn_cstr
 {
   my $number = shift @_;
-  if ($radix = shift @_) {
-    return pl_rnumber::rnumber_cstr_with_radix($rnumber, $radix);
+  my $radix;
+  if ( $radix = shift @_) {
+    my $prefix;
+    if ( @_ ) {
+      $prefix = shift @_;
+      return pl_rnumber::rnumber_cstr_radix($number, $radix, $prefix);
+    } else {
+      return pl_rnumber::rnumber_cstr_radix($number, $radix, 1);      
+    }
   }
   return pl_rnumber::rnumber_cstr($number);
 }
@@ -297,6 +317,10 @@ sub rn_mod {
   } else {
     return ($a % $b);
   }
+}
+
+sub rn_size {
+  return pl_rnumber::rnumber_size($_[0]);
 }
 
 1;
