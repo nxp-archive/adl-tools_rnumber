@@ -3,7 +3,7 @@ perllibdir=$(pkglibdir)
 
 noinst_DATA = example.so 
 
-perllib_DATA = pl_rnumber.so pl_rnumber.pm 
+perllib_DATA = pl_rnumber.so pl_rnumber.pm  rnumber.pm
 
 CLEANFILES = $(EXAMPLE_CLEANFILES) $(PL_RNUMBER_CLEANFILES) 
 
