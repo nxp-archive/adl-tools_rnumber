@@ -3,7 +3,7 @@ AC_INIT(src/RNumber.C)
 
 RNUMBER_MAJOR_VERSION=1
 RNUMBER_MINOR_VERSION=18
-RNUMBER_MICRO_VERSION=2
+RNUMBER_MICRO_VERSION=3
 RNUMBER_INTERFACE_AGE=0
 RNUMBER_BINARY_AGE=0
 RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
@@ -546,6 +546,7 @@ AC_CONFIG_FILES([\
    bigloo/src/Makefile \
    bigloo/src/rnumber-version.h \
    bigloo/src/rnumber/Makefile \
+   bigloo/src/bl-rnumber.init \
    bigloo/tests/Makefile \
    perl/Makefile \
    perl/src/Makefile \

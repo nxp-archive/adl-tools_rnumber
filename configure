@@ -1256,7 +1256,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 RNUMBER_MAJOR_VERSION=1
 RNUMBER_MINOR_VERSION=18
-RNUMBER_MICRO_VERSION=2
+RNUMBER_MICRO_VERSION=3
 RNUMBER_INTERFACE_AGE=0
 RNUMBER_BINARY_AGE=0
 RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
@@ -5449,7 +5449,7 @@ _ACEOF
 fi
 
 
-                                                                                                                                                                ac_config_files="$ac_config_files Makefile doc/Makefile doc/user/Makefile macros/Makefile include/Makefile src/rnumber_feature.h src/Makefile bigloo/Makefile bigloo/src/Makefile bigloo/src/rnumber-version.h bigloo/src/rnumber/Makefile bigloo/tests/Makefile perl/Makefile perl/src/Makefile perl/tests/Makefile tests/Makefile"
+                                                                                                                                                                          ac_config_files="$ac_config_files Makefile doc/Makefile doc/user/Makefile macros/Makefile include/Makefile src/rnumber_feature.h src/Makefile bigloo/Makefile bigloo/src/Makefile bigloo/src/rnumber-version.h bigloo/src/rnumber/Makefile bigloo/src/bl-rnumber.init bigloo/tests/Makefile perl/Makefile perl/src/Makefile perl/tests/Makefile tests/Makefile"
 
 
           ac_config_files="$ac_config_files rnumber-config"
@@ -6063,6 +6063,7 @@ do
   "bigloo/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES bigloo/src/Makefile" ;;
   "bigloo/src/rnumber-version.h" ) CONFIG_FILES="$CONFIG_FILES bigloo/src/rnumber-version.h" ;;
   "bigloo/src/rnumber/Makefile" ) CONFIG_FILES="$CONFIG_FILES bigloo/src/rnumber/Makefile" ;;
+  "bigloo/src/bl-rnumber.init" ) CONFIG_FILES="$CONFIG_FILES bigloo/src/bl-rnumber.init" ;;
   "bigloo/tests/Makefile" ) CONFIG_FILES="$CONFIG_FILES bigloo/tests/Makefile" ;;
   "perl/Makefile" ) CONFIG_FILES="$CONFIG_FILES perl/Makefile" ;;
   "perl/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES perl/src/Makefile" ;;

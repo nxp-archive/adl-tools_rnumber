@@ -19,7 +19,7 @@ LIBDIRS="-L${pkglibdir} -R${pkglibdir} "
 HELPER_PATH="${pkgdatadir}"
 
 rnumber_libs="$LIBDIRS -lRNumber "
-rnumber_bl_libs="-lRNumber "
+rnumber_bl_libs="-lbl-rnumber_s "
 rnumber_bl_lib_path="-L ${pkglibdir} "
 rnumber_cflags="$CFLAGS"
 STATIC_LIBS_DEPEND="${pkglibdir}/libRUtil.a "
