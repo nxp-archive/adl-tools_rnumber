@@ -1690,7 +1690,13 @@ if test "${enable_dbg+set}" = set; then
 echo "${ECHO_T}\"Debugging with -g\"" >&6
 fi;
 
-DYNLINK="-fPIC"
+ARCH=`/usr/bin/env uname -m`
+if test x$ARCH = xi686 ; then
+   DYNLINK=
+else
+   DYNLINK="-fPIC"
+fi
+
 # Check whether --enable-static or --disable-static was given.
 if test "${enable_static+set}" = set; then
   enableval="$enable_static"
@@ -1707,7 +1713,7 @@ if test "${enable_profile+set}" = set; then
  echo "$as_me:$LINENO: result: \"Profiling with -pg\"" >&5
 echo "${ECHO_T}\"Profiling with -pg\"" >&6
  if test x$OS = xSunOS ; then
-   echo "Turning off position-independent code b/c we're on Solaris".
+   echo "Turning off position-independent code b/c we're on Solaris and we are profiling."
    DYNLINK=
  fi
 fi;

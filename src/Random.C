@@ -126,7 +126,7 @@ RNumber RandomObj::getFromRange( const RNumber& min, const RNumber& max )
   if ( min <= max ) {
     // Normal, unsigned range.
     return fromRange(min,max);
-  } else if ( min.signedLT(0) && max.signedGT(0)) {
+  } else if ( min.signedLT(RNumber(0)) && max.signedGT(RNumber(0))) {
     // We're spanning from a neg number to a pos number.
     // Must break up range into two non-intersecting ranges.
     if (getInteger(2)) {
@@ -138,7 +138,7 @@ RNumber RandomObj::getFromRange( const RNumber& min, const RNumber& max )
     }
   } else if (max == 0) {
     // Spans from a negative number to 0.
-    return fromRange(0,min);
+    return fromRange(RNumber(0),min);
   } else {
     // Spans from a negative number to a negative number.
     return fromRange(max,min);

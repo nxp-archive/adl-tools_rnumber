@@ -33,8 +33,7 @@ const unsigned int WORD_THRESHOLD = 2;
 
 namespace rnumber {
 
-  class RNumber
-  {
+  class RNumber {
   public:
     // Format values used by str().
     enum Format { 
@@ -55,8 +54,17 @@ namespace rnumber {
     RNumber( const RNumber& number );
     RNumber( const RNumber& number, unsigned int size, Sizing sizing = fixed );
     // Create from an integer.
-    RNumber( unsigned int number, Sizing sizing = fixed );
-    RNumber( unsigned int number, unsigned int size, Sizing sizing = fixed );
+        explicit RNumber( long long number, Sizing sizing = fixed );
+        explicit RNumber( unsigned long long number, Sizing sizing = fixed );
+        explicit RNumber( int number, Sizing sizing = fixed );
+        RNumber( unsigned int number, Sizing sizing = fixed );
+        
+        
+        explicit RNumber( int number, unsigned int size, Sizing sizing = fixed );
+        explicit RNumber( unsigned int number, unsigned int size, Sizing sizing = fixed );
+        explicit RNumber( long long number, unsigned int size, Sizing sizing = fixed );
+        explicit RNumber( unsigned long long, unsigned int size, Sizing sizing = fixed );
+        
     // Create from a string.  Where radix is explicitly set, the input should
     // contain a prefix, e.g. 0x...
     RNumber( const std::string& number, Sizing sizing = fixed );
@@ -318,7 +326,6 @@ namespace rnumber {
     initNumber( _defaultSize, dynamic );
   }
 
-
   //
   // Create a new RNumber which is a clone of the specified number.
   //
@@ -327,10 +334,15 @@ namespace rnumber {
     cloneNumber( number );
   }
 
-
   //
   // Create a new RNumber with the specified value.
   //
+  inline RNumber::RNumber( int number, Sizing sizing )
+  {
+    initNumber( _defaultSize, sizing );
+    _valueBuffer[_wordCount - 1] = number;
+  }
+
   inline RNumber::RNumber( unsigned int number, Sizing sizing )
   {
     initNumber( _defaultSize, sizing );
@@ -338,6 +350,21 @@ namespace rnumber {
   }
 
   //
+  // Create a new RNumber with the specified value.
+  //
+   inline RNumber::RNumber( unsigned long long number, Sizing sizing ) {
+      initNumber( sizeof (unsigned long long) * 8, sizing );
+      _valueBuffer[0] = (number>>32)& 0xffffffff;
+      _valueBuffer[1] = number & 0xffffffff;
+   }
+
+   inline RNumber::RNumber( long long number, Sizing sizing ) {
+      initNumber( sizeof (unsigned long long) * 8, sizing );
+      _valueBuffer[0] = (number>>32)& 0xffffffff;
+      _valueBuffer[1] = number & 0xffffffff;
+   }
+
+   //
   // Cleanup the memory allocation if necessary.
   //
   inline RNumber::~RNumber()

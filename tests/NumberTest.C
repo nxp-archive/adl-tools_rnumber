@@ -847,6 +847,10 @@ static unsigned checkConstructors ()
   unsigned i;
   unsigned rc = 0;
 
+  unsigned long long x = 0x12345678deadbeefULL;
+  RNumber a(x);
+  cout << "x " << ::hex << x << " a " << a << endl;
+  
   for (i = 0; i < maxIter; i++) {
     unsigned size1 = Random::getFromRange (1, 90);
     unsigned size2 = Random::getFromRange (91, 100);

@@ -1,3 +1,8 @@
+2003-08-29  from_import  <Todd.Dukes@motorola.com>
+
+	* fPIC is not used on i686 platforms.
+	* added new ctor to construct RNumbers from long longs.
+
         ============= rnumber release 1.18.3 (v1_18_3) on SunOS =============
 
 2003-08-12  Todd Dukes  <Todd.Dukes@motorola.com>

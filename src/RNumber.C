@@ -352,6 +352,37 @@ RNumber::RNumber( unsigned int number, unsigned int size, Sizing sizing )
   truncateTop();
 }
 
+RNumber::RNumber( int number, unsigned int size, Sizing sizing )
+{
+  initNumber( ( size ) ? size : _defaultSize, sizing );
+  _valueBuffer[_wordCount - 1] = number;
+  truncateTop();
+}
+
+RNumber::RNumber( long long number, unsigned int size, Sizing sizing ) {
+   assert(size <= 64);
+   initNumber( size, sizing );
+   if (size <= 32) {
+      _valueBuffer[0] = number & 0xffffffff;
+   } else {
+      _valueBuffer[0] = (number>>32)& 0xffffffff;
+      _valueBuffer[1] = number & 0xffffffff;
+   }
+   truncateTop();
+}
+
+RNumber::RNumber( unsigned long long number, unsigned int size, Sizing sizing ) {
+   assert(size <= 64);
+   initNumber( size, sizing );
+   if (size <= 32) {
+      _valueBuffer[0] = number & 0xffffffff;
+   } else {
+      _valueBuffer[0] = (number>>32)& 0xffffffff;
+      _valueBuffer[1] = number & 0xffffffff;
+   }
+   truncateTop();
+}
+
 
 //
 // Create a new RNumber with the specified value but constrained to the
@@ -1345,7 +1376,7 @@ const RNumber rnumber::operator*( const RNumber& n1, unsigned int n2 )
 const RNumber rnumber::operator*( unsigned int n1, const RNumber& n2 )
 {
 
-  return multiply( n1, n2, false );
+  return multiply( RNumber(n1), n2, false );
 }
 
 
@@ -1378,7 +1409,7 @@ const RNumber rnumber::multiplyExt( const RNumber& n1, unsigned int n2 )
 const RNumber rnumber::multiplyExt( unsigned int n1, const RNumber& n2 )
 {
 
-  return multiply( n1, n2, true );
+  return multiply( RNumber(n1), n2, true );
 }
 
 
