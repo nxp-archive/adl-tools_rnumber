@@ -1,3 +1,7 @@
+        ==================== rnumber release 1.8.3 (v1_8_3) ====================
+
+        ==================== rnumber release 1.8.3 (v1_8_3) ====================
+
 2002-11-01  Brian Kahne  <bkahne@ibmoto.com>
 
 	* Moved includes in Trace.C outside of ifdef so that an optimized
