@@ -1,0 +1,12 @@
+Simple example of bigloo garbage collecting a c data structure.
+
+The data structure is a C++ class that contains an integer.  The class
+is private to simple.C. A 'C' interface to the class is given in
+simple.h
+
+simple_proxy.h and simple_proxy.c are supposed to be the interface
+between the c world and the bigloo world. It is assumed that only
+bigloo will own and control the lifetime of the c objects.
+
+b-simple.scm is a simple test program. It should allocate and
+destroy a simple object.
