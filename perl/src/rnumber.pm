@@ -6,7 +6,9 @@ require Exporter;
 
 pl_rnumber::rnumber_predicate_init();
 
-@EXPORT = qw(stringp integerp rnumberp);
+@EXPORT = qw(stringp integerp rnumberp rn_version rn_ctor rn_cstr rn_parse_string rn_int
+	     rn_eq rn_neq rn_lt rn_le rn_gt rn_ge rn_ls rn_rs rn_plus rn_minus rn_div 
+	     rn_mult rn_bitor rn_bitand rn_mod);
 
 sub rnumberp
 {
@@ -35,7 +37,7 @@ sub rn_ctor
   return 0;
 }
 
-sub rn_to_cstr
+sub rn_cstr
 {
   my $number = shift @_;
   if ($radix = shift @_) {
@@ -49,7 +51,7 @@ sub rn_parse_string
   print "rnumber_parse_string is currently unimplemented\n";
 }
 
-sub rn_to_integer
+sub rn_int
 {
   return rnumber_get_uint($_[0]);
 }
@@ -72,7 +74,7 @@ sub rn_eq
   }
 }
 
-sub rn_not_eq {
+sub rn_neq {
   return not rnumber_equal(@_);
 }
 
@@ -277,6 +279,23 @@ sub rn_bitand {
     return pl_rnumber::rnumber_ui_bitand_rn(@_);
   } else {
     return ($a & $b);
+  }
+}
+
+sub rn_mod {
+  my $first_rn = rnumberp($_[0]);
+  my $first_ui = integerp($_[0]);
+  my $second_rn = rnumberp($_[1]);
+  my $second_ui = integerp($_[1]);
+
+  if ($first_rn && $second_rn) {
+    return pl_rnumber::rnumber_rn_mod_rn(@_);
+  } elsif ($first_rn && $second_ui) {
+    return pl_rnumber::rnumber_rn_mod_ui(@_);
+  } elsif ($first_ui && $second_rn) {
+    return pl_rnumber::rnumber_ui_mod_rn(@_);
+  } else {
+    return ($a % $b);
   }
 }
 
