@@ -1256,7 +1256,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 RNUMBER_MAJOR_VERSION=1
 RNUMBER_MINOR_VERSION=18
-RNUMBER_MICRO_VERSION=12
+RNUMBER_MICRO_VERSION=13
 RNUMBER_INTERFACE_AGE=0
 RNUMBER_BINARY_AGE=0
 RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
@@ -2863,7 +2863,7 @@ else
     if depmode=$depmode \
        source=conftest.c object=conftest.o \
        depfile=conftest.Po tmpdepfile=conftest.TPo \
-       $SHELL ./depcomp $depcc -c conftest.c -o conftest.o >/dev/null 2>&1 &&
+       $SHELL ./depcomp $depcc -c -o conftest.o conftest.c >/dev/null 2>&1 &&
        grep conftest.h conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
       am_cv_CC_dependencies_compiler_type=$depmode
@@ -3463,9 +3463,9 @@ then
   echo "$as_me:$LINENO: result: found" >&5
 echo "${ECHO_T}found" >&6
 else
-  { { echo "$as_me:$LINENO: error: FlexLexer.h could not be found" >&5
-echo "$as_me: error: FlexLexer.h could not be found" >&2;}
-   { (exit it is required); exit it is required; }; }
+  { { echo "$as_me:$LINENO: error: FlexLexer.h could not be found, it is required" >&5
+echo "$as_me: error: FlexLexer.h could not be found, it is required" >&2;}
+   { (exit 1); exit 1; }; }
 fi
 
 for ac_prog in gm4 m4
@@ -4227,7 +4227,7 @@ else
     if depmode=$depmode \
        source=conftest.c object=conftest.o \
        depfile=conftest.Po tmpdepfile=conftest.TPo \
-       $SHELL ./depcomp $depcc -c conftest.c -o conftest.o >/dev/null 2>&1 &&
+       $SHELL ./depcomp $depcc -c -o conftest.o conftest.c >/dev/null 2>&1 &&
        grep conftest.h conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
       am_cv_CXX_dependencies_compiler_type=$depmode
