@@ -30,6 +30,7 @@
 
 using namespace std;
 using namespace rnumber;
+using namespace rnumber_types;
 
 unsigned int RNumber::_defaultSize = 32;
 
@@ -64,7 +65,7 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
 //
 static inline unsigned int lowHalf( unsigned int n )
 {
-  return n & HALF_WORD_MASK;
+  return n & HalfWordMask;
 }
 
 
@@ -73,7 +74,7 @@ static inline unsigned int lowHalf( unsigned int n )
 //
 static inline unsigned int highHalf( unsigned int n )
 {
-  return n >> HALF_WORD_BITS;
+  return n >> HalfWordBits;
 }
 
 
@@ -82,7 +83,7 @@ static inline unsigned int highHalf( unsigned int n )
 //
 static inline unsigned int highLowConcat( unsigned int nh, unsigned int nl )
 {
-  return ( nh << HALF_WORD_BITS ) | ( nl & HALF_WORD_MASK );
+  return ( nh << HalfWordBits ) | ( nl & HalfWordMask );
 }
 
 class TempBuffer {
@@ -171,8 +172,8 @@ static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned 
   assert( nLen != 0 );
 
   const unsigned int* p = n;
-  const unsigned int START_BIT_POS = 0x1 << ( WORD_BITS - 1 );
-  unsigned off = ((nLen - 1) % WORD_BITS) + 1;
+  const unsigned int START_BIT_POS = 0x1 << ( WordBits - 1 );
+  unsigned off = ((nLen - 1) % WordBits) + 1;
   unsigned int bitPos = 0x1 << ( off - 1 );
 
   do
@@ -188,7 +189,7 @@ static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned 
 	  break;
       } else {
 	nLen -= off;
-	off = WORD_BITS;
+	off = WordBits;
       }
       // Go to the next word.
       p++;
@@ -209,10 +210,10 @@ static inline void convertToBytes( const unsigned int* wordBuffer,
 
   for ( unsigned int i = 0; i < wordCount; i++ )
     {
-      *(byteBuffer++) = ( wordBuffer[i] >> ( 3 * BYTE_BITS ) ) & BYTE_MASK;
-      *(byteBuffer++) = ( wordBuffer[i] >> ( 2 * BYTE_BITS ) ) & BYTE_MASK;
-      *(byteBuffer++) = ( wordBuffer[i] >> BYTE_BITS ) & BYTE_MASK;
-      *(byteBuffer++) = wordBuffer[i] & BYTE_MASK;
+      *(byteBuffer++) = ( wordBuffer[i] >> ( 3 * ByteBits ) ) & ByteMask;
+      *(byteBuffer++) = ( wordBuffer[i] >> ( 2 * ByteBits ) ) & ByteMask;
+      *(byteBuffer++) = ( wordBuffer[i] >> ByteBits ) & ByteMask;
+      *(byteBuffer++) = wordBuffer[i] & ByteMask;
     }
 }
 
@@ -289,7 +290,7 @@ inline void RNumber::assignNumber( const RNumber& number )
 inline RNumber& RNumber::truncateTop()
 {
 
-  const unsigned int bitPos = _size % WORD_BITS;
+  const unsigned int bitPos = _size % WordBits;
 
   if ( bitPos )
     _valueBuffer[0] &= ( 0x1 << bitPos ) - 1;
@@ -304,7 +305,7 @@ inline RNumber& RNumber::truncateTop()
 inline RNumber& RNumber::truncateInt( unsigned int size )
 {
 
-  if ( size < WORD_BITS )
+  if ( size < WordBits )
     _valueBuffer[0] &= ( 0x1 << size ) - 1;
 
   return *this;
@@ -317,13 +318,13 @@ inline RNumber& RNumber::truncateInt( unsigned int size )
 inline RNumber& RNumber::truncateExtended( unsigned int size )
 {
 
-  if ( size < ( _wordCount * WORD_BITS ) )
+  if ( size < ( _wordCount * WordBits ) )
     {
-      unsigned int n = _wordCount - ( size / WORD_BITS );
+      unsigned int n = _wordCount - ( size / WordBits );
 
-      if ( size % WORD_BITS )
+      if ( size % WordBits )
 	{
-	  unsigned int mask = ( 0x1 << ( size % WORD_BITS ) ) - 1;
+	  unsigned int mask = ( 0x1 << ( size % WordBits ) ) - 1;
 
 	  _valueBuffer[n - 1] &= mask;
 	  n--;
@@ -457,7 +458,7 @@ RNumber::RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned
 {
   // Update the RNumber internal members.
   _size = size;
-  _wordCount = ( _size + WORD_BITS - 1 ) / WORD_BITS;
+  _wordCount = ( _size + WordBits - 1 ) / WordBits;
   _sizing = sizing;
 
   unsigned int i;
@@ -508,13 +509,13 @@ RNumber& RNumber::operator=( unsigned int number )
 
   // If assigning to a number of size less than an integer, resize the number
   // if it is too small to represent the value and the _sizing is dynamic.
-  if ( _size < WORD_BITS )
+  if ( _size < WordBits )
     {
       truncateInt( _size );
 
       if ( _valueBuffer[0] != number && _sizing == dynamic )
 	{
-	  _size = WORD_BITS;
+	  _size = WordBits;
 	  _valueBuffer[0] = number;
 	}
     }
@@ -598,7 +599,7 @@ void RNumber::resize( unsigned int size )
   // No sizes of zero for now.
   assert( size );
 
-  const unsigned int nwc = ( size + WORD_BITS - 1 ) / WORD_BITS;
+  const unsigned int nwc = ( size + WordBits - 1 ) / WordBits;
   unsigned int i = 0;
 
   if ( nwc == _wordCount )
@@ -755,7 +756,7 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
       a = *( value-- );
       b = *( numValue-- );
       c = *( sumValue-- );
-      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
     }
 
   const unsigned int* leftOver = ( n1wc < n2wc ) ? numValue : value;
@@ -765,12 +766,12 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
       *sumValue = *leftOver + cin;
       a = *( leftOver-- );
       c = *( sumValue-- );
-      cin = ( a & ~c ) >> ( WORD_BITS - 1 );
+      cin = ( a & ~c ) >> ( WordBits - 1 );
     }
 
   if ( extend )
     {
-      if ( cin && ( ( maxs - 1 ) % WORD_BITS == WORD_BITS - 1 ) )
+      if ( cin && ( ( maxs - 1 ) % WordBits == WordBits - 1 ) )
 	{
 	  // If we have a final carry-in, then this becomes a 1 
 	  // in the new word.  In this case, we have truly grown by
@@ -780,7 +781,7 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
 	  maxwc++;
 	  maxs++;
 	} else {
-	  if ( *( sumValue0 + 1 ) >> ( maxs % WORD_BITS ) == 1 ) {
+	  if ( *( sumValue0 + 1 ) >> ( maxs % WordBits ) == 1 ) {
 	    // We've grown, but not into a new word, just by one bit
 	    // in the existing word.
 	    maxs++;
@@ -801,7 +802,7 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
 inline const RNumber rnumber::add( const RNumber& n1, unsigned int n2, bool extend )
 {
 
-  unsigned int maxs = max( n1._size, WORD_BITS );
+  unsigned int maxs = max( n1._size, WordBits );
   unsigned int n1wc = n1._wordCount;
 
   const unsigned int* value = n1._valueBuffer + n1wc - 1;
@@ -813,19 +814,19 @@ inline const RNumber rnumber::add( const RNumber& n1, unsigned int n2, bool exte
   unsigned int a = *( value-- );
   unsigned int b = n2;
   unsigned int c = *( sumValue-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < n1wc - 1; i++ )
     {
       *sumValue = *value + cin;
       a = *( value-- );
       c = *( sumValue-- );
-      cin = ( a & ~c ) >> ( WORD_BITS - 1 );
+      cin = ( a & ~c ) >> ( WordBits - 1 );
     }
 
   if ( extend )
     {
-      if ( cin && ( ( maxs - 1 ) % WORD_BITS == WORD_BITS - 1 ) )
+      if ( cin && ( ( maxs - 1 ) % WordBits == WordBits - 1 ) )
 	{
 	  // If we have a final carry-in, then this becomes a 1 
 	  // in the new word.  In this case, we have truly grown by
@@ -835,7 +836,7 @@ inline const RNumber rnumber::add( const RNumber& n1, unsigned int n2, bool exte
 	  n1wc++;
 	  maxs++;
 	} else {
-	  if ( *( sumValue0 + 1 ) >> ( maxs % WORD_BITS ) == 1 ) {
+	  if ( *( sumValue0 + 1 ) >> ( maxs % WordBits ) == 1 ) {
 	    // We've grown, but not into a new word, just by one bit
 	    // in the existing word.
 	    maxs++;
@@ -936,7 +937,7 @@ RNumber& RNumber::operator+=( const RNumber& number )
       *value += *numValue + cin;
       b = *( numValue-- );
       c = *( value-- );
-      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
     }
 
   for ( i = minwc; i < _wordCount; i++ )
@@ -944,7 +945,7 @@ RNumber& RNumber::operator+=( const RNumber& number )
       a = *value;
       *value += cin;
       c = *( value-- );
-      cin = ( a & ~c ) >> ( WORD_BITS - 1 );
+      cin = ( a & ~c ) >> ( WordBits - 1 );
     }
 
   truncateTop();
@@ -962,8 +963,8 @@ RNumber& RNumber::operator+=( unsigned int number )
 
   // If the right operand is larger than us and our sizing is dynamic,
   // enlarge our size to match the right operand.
-  if ( _sizing == dynamic && _size < WORD_BITS )
-    resize( WORD_BITS );
+  if ( _sizing == dynamic && _size < WordBits )
+    resize( WordBits );
 
   unsigned int* value = _valueBuffer + _wordCount - 1;
   unsigned int a = *value;
@@ -972,7 +973,7 @@ RNumber& RNumber::operator+=( unsigned int number )
 
   unsigned int b = number;
   unsigned int c = *( value-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   if ( cin )
     {
@@ -981,7 +982,7 @@ RNumber& RNumber::operator+=( unsigned int number )
 	  a = *value;
 	  *value += cin;
 	  c = *( value-- );
-	  cin = ( a & ~c ) >> ( WORD_BITS - 1 );
+	  cin = ( a & ~c ) >> ( WordBits - 1 );
 	}
     }
 
@@ -1019,7 +1020,7 @@ inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
       a = *( value-- );
       b = inv;
       c = *( diffValue-- );
-      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
     }
 
   if ( n1wc < n2wc )
@@ -1030,7 +1031,7 @@ inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
 	  *diffValue = inv + cin;
 	  b = inv;
 	  c = *( diffValue-- );
-	  cin = ( b & ~c ) >> ( WORD_BITS - 1 );
+	  cin = ( b & ~c ) >> ( WordBits - 1 );
 	}
     }
   else
@@ -1040,7 +1041,7 @@ inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
 	  *diffValue = *value + cin - 1;
 	  a = *( value-- );
 	  c = *( diffValue-- );
-	  cin = ( a | ~c ) >> ( WORD_BITS - 1 );
+	  cin = ( a | ~c ) >> ( WordBits - 1 );
 	}
     }
 
@@ -1065,17 +1066,17 @@ inline const RNumber rnumber::subtract( const RNumber& n1, unsigned int n2 )
   unsigned int a = *( value-- );
   unsigned int b = ~n2;
   unsigned int c = *( diffValue-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < n1wc - 1; i++ )
     {
       *diffValue = *value + cin - 1;
       a = *( value-- );
       c = *( diffValue-- );
-      cin = ( a | ~c ) >> ( WORD_BITS - 1 );
+      cin = ( a | ~c ) >> ( WordBits - 1 );
     }
 
-  return RNumber( diffValue0, n1wc, max( n1._size, WORD_BITS ) );
+  return RNumber( diffValue0, n1wc, max( n1._size, WordBits ) );
 }
 
 
@@ -1097,17 +1098,17 @@ inline const RNumber rnumber::subtract( unsigned int n1, const RNumber& n2 )
   unsigned int a = n1;
   unsigned int b = inv;
   unsigned int c = *( diffValue-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < n2wc - 1; i++ )
     {
       *diffValue = *numValue + cin - 1;
       a = *( numValue-- );
       c = *( diffValue-- );
-      cin = ( a | ~c ) >> ( WORD_BITS - 1 );
+      cin = ( a | ~c ) >> ( WordBits - 1 );
     }
 
-  return RNumber( diffValue0, n2wc, max( n2._size, WORD_BITS ) );
+  return RNumber( diffValue0, n2wc, max( n2._size, WordBits ) );
 }
 
 
@@ -1171,7 +1172,7 @@ RNumber& RNumber::operator-=( const RNumber& number )
       *value += inv + cin;
       b = inv;
       c = *( value-- );
-      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+      cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
     }
 
   for ( i = minwc; i < _wordCount; i++ )
@@ -1179,7 +1180,7 @@ RNumber& RNumber::operator-=( const RNumber& number )
       a = *value;
       *value += cin - 1;
       c = *( value-- );
-      cin = ( a | ~c ) >> ( WORD_BITS - 1 );
+      cin = ( a | ~c ) >> ( WordBits - 1 );
     }
 
   truncateTop();
@@ -1199,8 +1200,8 @@ RNumber& RNumber::operator-=( unsigned int number )
 
   // If the right operand is larger than us and our sizing is dynamic,
   // enlarge our size to match the right operand.
-  if ( _sizing == dynamic && _size < WORD_BITS )
-    resize( WORD_BITS );
+  if ( _sizing == dynamic && _size < WordBits )
+    resize( WordBits );
 
   unsigned int* value = _valueBuffer + _wordCount - 1;
   unsigned int a = *value;
@@ -1209,14 +1210,14 @@ RNumber& RNumber::operator-=( unsigned int number )
 
   unsigned int b = ~number;
   unsigned int c = *( value-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WORD_BITS - 1 );
+  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < _wordCount - 1; i++ )
     {
       a = *value;
       *value += cin - 1;
       c = *( value-- );
-      cin = ( a | ~c ) >> ( WORD_BITS - 1 );
+      cin = ( a | ~c ) >> ( WordBits - 1 );
     }
 
   truncateTop();
@@ -1265,8 +1266,8 @@ inline const RNumber rnumber::multiply( const RNumber& n1, const RNumber& n2, bo
 
   if ( extend )
     {
-      maxs = skipLeadingZeroBits( resultValue0, (n1wc+n2wc)*WORD_BITS );
-      maxwc = ( maxs + WORD_BITS - 1 ) / WORD_BITS;
+      maxs = skipLeadingZeroBits( resultValue0, (n1wc+n2wc)*WordBits );
+      maxwc = ( maxs + WordBits - 1 ) / WordBits;
       resultValue0 += ((n1wc + n2wc) - maxwc );
     }
 
@@ -1288,7 +1289,7 @@ inline const RNumber rnumber::multiply( const RNumber& n1, const RNumber& n2, bo
 inline const RNumber rnumber::multiply( const RNumber& n1, unsigned int n2, bool extend )
 {
 
-  unsigned int maxs = max( n1._size, WORD_BITS );
+  unsigned int maxs = max( n1._size, WordBits );
   unsigned int n1wc = n1._wordCount;
   const unsigned int* n1vb = n1._valueBuffer;
 
@@ -1308,8 +1309,8 @@ inline const RNumber rnumber::multiply( const RNumber& n1, unsigned int n2, bool
 
   if ( extend )
     {
-      maxs = skipLeadingZeroBits( resultValue0, (wc)*WORD_BITS );
-      wc = ( maxs + WORD_BITS - 1 ) / WORD_BITS;
+      maxs = skipLeadingZeroBits( resultValue0, (wc)*WordBits );
+      wc = ( maxs + WordBits - 1 ) / WordBits;
       resultValue0 += ((n1wc + 1) - wc );
     }
 
@@ -1437,8 +1438,8 @@ RNumber& RNumber::operator*=( unsigned int number )
 
   // If the right operand is larger than us and our sizing is dynamic,
   // enlarge our size to match the right operand.
-  if ( _sizing == dynamic && _size < WORD_BITS )
-    resize( WORD_BITS );
+  if ( _sizing == dynamic && _size < WordBits )
+    resize( WordBits );
 
   if ( _wordCount == 1 )
     {
@@ -1695,7 +1696,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
     }
 
   // Case 5.
-  if ( xlen <= WORD_BYTES && ylen <= WORD_BYTES )
+  if ( xlen <= WordBytes && ylen <= WordBytes )
     {
       delete [] p;
       delete [] y;
@@ -1772,7 +1773,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
 inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
 {
 
-  const unsigned int maxs = max( n1._size, WORD_BITS );
+  const unsigned int maxs = max( n1._size, WordBits );
   const unsigned int n1wc = n1._wordCount;
 
   const unsigned int* n1vb = n1._valueBuffer;
@@ -1819,7 +1820,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
     }
 
   // Case 5.
-  if ( xlen <= WORD_BYTES )
+  if ( xlen <= WordBytes )
     {
       delete [] p;
       delete [] y;
@@ -1894,7 +1895,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
 inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
 {
 
-  const unsigned int maxs = max( WORD_BITS, n2._size );
+  const unsigned int maxs = max( WordBits, n2._size );
   const unsigned int n2wc = n2._wordCount;
 
   const unsigned int* n2vb = n2._valueBuffer;
@@ -1941,7 +1942,7 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
     }
 
   // Case 5.
-  if ( ylen <= WORD_BYTES )
+  if ( ylen <= WordBytes )
     {
       delete [] p;
       delete [] y;
@@ -2093,7 +2094,7 @@ RNumber& RNumber::operator/=( const RNumber& number )
     }
 
   // Case 5.
-  if ( xlen <= WORD_BYTES && ylen <= WORD_BYTES )
+  if ( xlen <= WordBytes && ylen <= WordBytes )
     {
       delete [] p;
       delete [] y;
@@ -2156,8 +2157,8 @@ RNumber& RNumber::operator/=( unsigned int number )
 
   // If the right operand is larger than us and our sizing is dynamic,
   // enlarge our size to match the right operand.
-  if ( _sizing == dynamic && _size < WORD_BITS )
-    resize( WORD_BITS );
+  if ( _sizing == dynamic && _size < WordBits )
+    resize( WordBits );
 
   if ( _wordCount == 1 )
     {
@@ -2206,7 +2207,7 @@ RNumber& RNumber::operator/=( unsigned int number )
     }
 
   // Case 5.
-  if ( xlen <= WORD_BYTES )
+  if ( xlen <= WordBytes )
     {
       delete [] p;
       delete [] y;
@@ -2284,18 +2285,18 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
   unsigned int x3;    // most significant 3 bytes of x
   unsigned int y2;    // most significant 2 bytes of y.
 
-  y2 = ( yb[0] << BYTE_BITS ) + yb[1];
+  y2 = ( yb[0] << ByteBits ) + yb[1];
 
   // Find each q[k]. qk is a guess for q[k] such that q[k] = qk or qk - 1.
   // Find qk by just using 2 bytes of y and 3 bytes of x.
   for ( unsigned int k = 0; k <= xlen - ylen; k++ )
     {
-      x3 = ( xb[k - 1] << ( 2 * BYTE_BITS ) ) + ( xb[k] << BYTE_BITS ) + xb[k + 1];
+      x3 = ( xb[k - 1] << ( 2 * ByteBits ) ) + ( xb[k] << ByteBits ) + xb[k + 1];
       qk = x3 / y2;
 
-      // qk cannot be larger than the largest value in BYTE_RADIX.
-      if ( qk >= BYTE_RADIX )
-	qk = BYTE_RADIX - 1;
+      // qk cannot be larger than the largest value in ByteRadix.
+      if ( qk >= ByteRadix )
+	qk = ByteRadix - 1;
 
       // Determine if q[k] = qk or qk - 1.
       if ( qk )
@@ -2315,17 +2316,17 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
 	  for ( int i = ylen - 1; i >= 0; i-- )
 	    {
 	      carry += yb[i] * qk;
-	      diff = ( xk[i] + BYTE_RADIX ) - ( carry & BYTE_MASK );
-	      xk[i] = (unsigned char) ( diff & BYTE_MASK );
-	      carry = ( carry >> BYTE_BITS ) + ( 1 - ( diff >> BYTE_BITS ) );
+	      diff = ( xk[i] + ByteRadix ) - ( carry & ByteMask );
+	      xk[i] = (unsigned char) ( diff & ByteMask );
+	      carry = ( carry >> ByteBits ) + ( 1 - ( diff >> ByteBits ) );
 	    }
 
 	  if ( carry )
 	    {
 	      // extend the carry out to the most significant byte.
-	      carry = ( xk[-1] + BYTE_RADIX ) - carry;
-	      xk[-1] = (unsigned char) ( carry & BYTE_MASK );
-	      carry = 1 - ( carry >> BYTE_BITS );
+	      carry = ( xk[-1] + ByteRadix ) - carry;
+	      xk[-1] = (unsigned char) ( carry & ByteMask );
+	      carry = 1 - ( carry >> ByteBits );
         
 	      if ( carry )
 		{
@@ -2341,12 +2342,12 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
 		  for ( int i = ylen - 1; i >= 0; i-- )
 		    {
 		      carry2 += xk[i] + yb[i];
-		      xk[i] = (unsigned char) ( carry2 & BYTE_MASK );
-		      carry2 >>= BYTE_BITS;
+		      xk[i] = (unsigned char) ( carry2 & ByteMask );
+		      carry2 >>= ByteBits;
 		    }
 
 		  if ( carry2 )
-		    xk[-1] = (unsigned char) ( ( xk[-1] + 1 ) & BYTE_MASK );
+		    xk[-1] = (unsigned char) ( ( xk[-1] + 1 ) & ByteMask );
 
 		}
 	    }
@@ -2377,7 +2378,7 @@ inline const RNumber rnumber::mod( const RNumber& n1, const RNumber& n2 )
 inline const RNumber rnumber::mod( const RNumber& n1, unsigned int n2 )
 {
 
-  RNumber result( 0, WORD_BITS );
+  RNumber result( 0, WordBits );
 
   result = n1 - ( n1 / n2 ) * n2;
 
@@ -2500,7 +2501,7 @@ inline const RNumber rnumber::bitWiseAnd( const RNumber& n1, unsigned int n2 )
   for ( unsigned int i = 1; i < n1wc; i++ )
     *( resValue-- ) = 0;
 
-  return RNumber( resValue0, n1wc, max( n1._size, WORD_BITS ) );
+  return RNumber( resValue0, n1wc, max( n1._size, WordBits ) );
 }
 
 
@@ -2571,8 +2572,8 @@ RNumber& RNumber::operator&=( unsigned int number )
 
   // If the right operand is larger than us and our sizing is dynamic,
   // enlarge our size to match the right operand.
-  if ( _sizing == dynamic && _size < WORD_BITS )
-    resize( WORD_BITS );
+  if ( _sizing == dynamic && _size < WordBits )
+    resize( WordBits );
 
   unsigned int* value = _valueBuffer;
 
@@ -2634,7 +2635,7 @@ inline const RNumber rnumber::bitWiseOr( const RNumber& n1, unsigned int n2 )
 
   *resValue = *value | n2;
 
-  return RNumber( resValue0, n1wc, max( n1._size, WORD_BITS ) );
+  return RNumber( resValue0, n1wc, max( n1._size, WordBits ) );
 }
 
 
@@ -2702,8 +2703,8 @@ RNumber& RNumber::operator|=( unsigned int number )
 
   // If the right operand is larger than us and our sizing is dynamic,
   // enlarge our size to match the right operand.
-  if ( _sizing == dynamic && _size < WORD_BITS )
-    resize( WORD_BITS );
+  if ( _sizing == dynamic && _size < WordBits )
+    resize( WordBits );
 
   unsigned int* value = _valueBuffer + _wordCount - 1;
 
@@ -2765,7 +2766,7 @@ inline const RNumber rnumber::bitWiseXor( const RNumber& n1, unsigned int n2 )
 
   *resValue = *value ^ n2;
 
-  return RNumber( resValue0, n1wc, max( n1._size, WORD_BITS ) );
+  return RNumber( resValue0, n1wc, max( n1._size, WordBits ) );
 }
 
 
@@ -2833,8 +2834,8 @@ RNumber& RNumber::operator^=( unsigned int number )
 
   // If the right operand is larger than us and our sizing is dynamic,
   // enlarge our size to match the right operand.
-  if ( _sizing == dynamic && _size < WORD_BITS )
-    resize( WORD_BITS );
+  if ( _sizing == dynamic && _size < WordBits )
+    resize( WordBits );
 
   unsigned int* value = _valueBuffer + _wordCount - 1;
 
@@ -2855,7 +2856,7 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift.uint32();
   unsigned int nwc = n._wordCount;
-  const unsigned int totalwc = nwc + ( shift.uint32() / WORD_BITS ) + 1;
+  const unsigned int totalwc = nwc + ( shift.uint32() / WordBits ) + 1;
 
   const unsigned int* value = n._valueBuffer + nwc - 1;
   unsigned alloc  = (extend) ? totalwc : nwc;
@@ -2876,10 +2877,10 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
 	  // final result.
 	  resValue0 += adjust;
 	}
-      else if ( shift < WORD_BITS )
+      else if ( shift < WordBits )
 	{
 	  unsigned int intShift = shift.uint32();
-	  int invShift = WORD_BITS - intShift;
+	  int invShift = WordBits - intShift;
 	  unsigned int mask = ( 0x1 << intShift ) - 1;
 	  unsigned int cin = 0;
 
@@ -2895,9 +2896,9 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
 	      cin = ( *( value-- ) >> invShift ) & mask;
 	    }
 	}
-      else if ( ( shift % WORD_BITS ) == 0 )
+      else if ( ( shift % WordBits ) == 0 )
 	{
-	  unsigned int offset = shift.uint32() / WORD_BITS;
+	  unsigned int offset = shift.uint32() / WordBits;
 
 	  if ( extend )
 	    {
@@ -2912,9 +2913,9 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
 	    *( resValue-- ) = *( value-- );
 	}
       else if ( extend )
-	return leftShiftExt( leftShiftExt( n, shift % WORD_BITS ), shift - ( shift % WORD_BITS ) );
+	return leftShiftExt( leftShiftExt( n, shift % WordBits ), shift - ( shift % WordBits ) );
       else
-	return ( n << ( shift % WORD_BITS ) ) << ( shift - ( shift % WORD_BITS ) );
+	return ( n << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
     }
   else
     {
@@ -2934,7 +2935,7 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift;
   unsigned int nwc = n._wordCount;
-  const unsigned int totalwc = nwc + ( shift / WORD_BITS ) + 1;
+  const unsigned int totalwc = nwc + ( shift / WordBits ) + 1;
 
   const unsigned int* value = n._valueBuffer + nwc - 1;
   unsigned alloc  = (extend) ? totalwc : nwc;
@@ -2955,9 +2956,9 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
 	  // final result.
 	  resValue0 += adjust;
 	}
-      else if ( shift < WORD_BITS )
+      else if ( shift < WordBits )
 	{
-	  int invShift = WORD_BITS - shift;
+	  int invShift = WordBits - shift;
 	  unsigned int mask = ( 1 << shift ) - 1;
 	  unsigned int cin = 0;
 
@@ -2973,9 +2974,9 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
 	      cin = ( *( value-- ) >> invShift ) & mask;
 	    }
 	}
-      else if ( ( shift % WORD_BITS ) == 0 )
+      else if ( ( shift % WordBits ) == 0 )
 	{
-	  unsigned int offset = shift / WORD_BITS;
+	  unsigned int offset = shift / WordBits;
 
 	  if ( extend )
 	    {
@@ -2991,11 +2992,11 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
 	}
       else if ( extend )
 	{
-	  return leftShiftExt( leftShiftExt( n, shift % WORD_BITS ), shift - ( shift % WORD_BITS ) );
+	  return leftShiftExt( leftShiftExt( n, shift % WordBits ), shift - ( shift % WordBits ) );
 	}
       else
 	{
-	  return ( n << ( shift % WORD_BITS ) ) << ( shift - ( shift % WORD_BITS ) );
+	  return ( n << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
 	}
     }
   else
@@ -3018,12 +3019,12 @@ inline const RNumber rnumber::leftShift( unsigned int n, const RNumber& shift, b
 
   if ( shift == 0 )
     *resValue0 = n;
-  else if ( shift < WORD_BITS )
+  else if ( shift < WordBits )
     *resValue0 = n << shift.uint32();
   else
     *resValue0 = 0;
 
-  return RNumber( resValue0, 1, WORD_BITS );
+  return RNumber( resValue0, 1, WordBits );
 }
 
 
@@ -3097,11 +3098,11 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
 
   if ( shift < _size )
     {
-      if ( shift < WORD_BITS )
+      if ( shift < WordBits )
 	{
 	  unsigned int* value = _valueBuffer + _wordCount - 1;
 	  unsigned int intShift = shift.uint32();
-	  int invShift = WORD_BITS - intShift;
+	  int invShift = WordBits - intShift;
 	  unsigned int mask = ( 1 << intShift ) - 1;
 	  unsigned int cin = 0;
 	  unsigned int old;
@@ -3116,10 +3117,10 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
 
 	  truncateTop();
 	}
-      else if ( ( shift % WORD_BITS ) == 0 )
+      else if ( ( shift % WordBits ) == 0 )
 	{
 	  unsigned int* value = _valueBuffer;
-	  unsigned int offset = shift.uint32() / WORD_BITS;
+	  unsigned int offset = shift.uint32() / WordBits;
 
 	  for ( i = offset; i < _wordCount; i++ )
 	    {
@@ -3133,7 +3134,7 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
 	  truncateTop();
 	}
       else if ( shift != 0 )
-	*this = ( *this << ( shift % WORD_BITS ) ) << ( shift - ( shift % WORD_BITS ) );
+	*this = ( *this << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
     }
   else
     {
@@ -3158,10 +3159,10 @@ RNumber& RNumber::operator<<=( unsigned int shift )
 
   if ( shift < _size )
     {
-      if ( shift < WORD_BITS )
+      if ( shift < WordBits )
 	{
 	  unsigned int* value = _valueBuffer + _wordCount - 1;
-	  int invShift = WORD_BITS - shift;
+	  int invShift = WordBits - shift;
 	  unsigned int mask = ( 1 << shift ) - 1;
 	  unsigned int cin = 0;
 	  unsigned int old;
@@ -3176,10 +3177,10 @@ RNumber& RNumber::operator<<=( unsigned int shift )
 
 	  truncateTop();
 	}
-      else if ( ( shift % WORD_BITS ) == 0 )
+      else if ( ( shift % WordBits ) == 0 )
 	{
 	  unsigned int* value = _valueBuffer;
-	  unsigned int offset = shift / WORD_BITS;
+	  unsigned int offset = shift / WordBits;
 
 	  for ( i = offset; i < _wordCount; i++ )
 	    {
@@ -3193,7 +3194,7 @@ RNumber& RNumber::operator<<=( unsigned int shift )
 	  truncateTop();
 	}
       else if ( shift != 0 )
-	*this = ( *this << ( shift % WORD_BITS ) ) << ( shift - ( shift % WORD_BITS ) );
+	*this = ( *this << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
     }
   else
     {
@@ -3220,9 +3221,9 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
   unsigned int i;
 
   if (shift < n._size) {
-    if (shift < WORD_BITS) {
+    if (shift < WordBits) {
       unsigned int intShift = shift.uint32();
-      int invShift = WORD_BITS - intShift;
+      int invShift = WordBits - intShift;
       unsigned int mask = ( 1 << intShift ) - 1;
       unsigned int cin = 0;
 
@@ -3231,8 +3232,8 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
 	cin = (*(value++) & mask) << invShift;
       }
     }
-    else if ((shift % WORD_BITS) == 0) {
-      unsigned int offset = shift.uint32() / WORD_BITS;
+    else if ((shift % WordBits) == 0) {
+      unsigned int offset = shift.uint32() / WordBits;
 
       for ( i = 0; i < offset; i++ ) {
 	*( resValue++ ) = 0;
@@ -3246,7 +3247,7 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
 	*( resValue++ ) = *( value++ );
       }
     } else {
-      return ( n >> ( shift % WORD_BITS ) ) >> ( shift - ( shift % WORD_BITS ) );
+      return ( n >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
     }
   } else {
     for ( i = 0; i < nwc; i++ ) {
@@ -3274,9 +3275,9 @@ inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
 
   if ( shift < n._size )
     {
-      if ( shift < WORD_BITS )
+      if ( shift < WordBits )
 	{
-	  int invShift = WORD_BITS - shift;
+	  int invShift = WordBits - shift;
 	  unsigned int mask = ( 1 << shift ) - 1;
 	  unsigned int cin = 0;
 
@@ -3286,9 +3287,9 @@ inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
 	      cin = ( *( value++ ) & mask ) << invShift;
 	    }
 	}
-      else if ( ( shift % WORD_BITS ) == 0 )
+      else if ( ( shift % WordBits ) == 0 )
 	{
-	  unsigned int offset = shift / WORD_BITS;
+	  unsigned int offset = shift / WordBits;
 
 	  for ( i = 0; i < offset; i++ )
 	    *( resValue++ ) = 0;
@@ -3302,7 +3303,7 @@ inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
 	    *( resValue++ ) = *( value++ );
 	}
       else
-	return ( n >> ( shift % WORD_BITS ) ) >> ( shift - ( shift % WORD_BITS ) );
+	return ( n >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
     }
   else
     {
@@ -3324,12 +3325,12 @@ inline const RNumber rnumber::rightShift( unsigned int n, const RNumber& shift )
 
   if ( shift == 0 )
     *resValue0 = n;
-  else if ( shift < WORD_BITS )
+  else if ( shift < WordBits )
     *resValue0 = n >> shift.uint32();
   else
     *resValue0 = 0;
 
-  return RNumber( resValue0, 1, WORD_BITS );
+  return RNumber( resValue0, 1, WordBits );
 }
 
 
@@ -3375,10 +3376,10 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
 
   if ( shift < _size )
     {
-      if ( shift < WORD_BITS )
+      if ( shift < WordBits )
 	{
 	  unsigned int intShift = shift.uint32();
-	  int invShift = WORD_BITS - intShift;
+	  int invShift = WordBits - intShift;
 	  unsigned int mask = ( 1 << intShift ) - 1;
 	  unsigned int cin = 0;
 	  unsigned int old;
@@ -3391,9 +3392,9 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
 	      cin = ( old & mask ) << invShift;
 	    }
 	}
-      else if ( ( shift % WORD_BITS ) == 0 )
+      else if ( ( shift % WordBits ) == 0 )
 	{
-	  unsigned int offset = shift.uint32() / WORD_BITS;
+	  unsigned int offset = shift.uint32() / WordBits;
 
 	  value = _valueBuffer + _wordCount - 1;
 
@@ -3407,7 +3408,7 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
 	    *( value-- ) = 0;
 	}
       else if ( shift != 0 )
-	*this = ( *this >> ( shift % WORD_BITS ) ) >> ( shift - ( shift % WORD_BITS ) );
+	*this = ( *this >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
     }
   else
     {
@@ -3431,9 +3432,9 @@ RNumber& RNumber::operator>>=( unsigned int shift )
 
   if ( shift < _size )
     {
-      if ( shift < WORD_BITS )
+      if ( shift < WordBits )
 	{
-	  int invShift = WORD_BITS - shift;
+	  int invShift = WordBits - shift;
 	  unsigned int mask = ( 1 << shift ) - 1;
 	  unsigned int cin = 0;
 	  unsigned int old;
@@ -3446,9 +3447,9 @@ RNumber& RNumber::operator>>=( unsigned int shift )
 	      cin = ( old & mask ) << invShift;
 	    }
 	}
-      else if ( ( shift % WORD_BITS ) == 0 )
+      else if ( ( shift % WordBits ) == 0 )
 	{
-	  unsigned int offset = shift / WORD_BITS;
+	  unsigned int offset = shift / WordBits;
 
 	  value = _valueBuffer + _wordCount - 1;
 
@@ -3462,7 +3463,7 @@ RNumber& RNumber::operator>>=( unsigned int shift )
 	    *( value-- ) = 0;
 	}
       else if ( shift != 0 )
-	*this = ( *this >> ( shift % WORD_BITS ) ) >> ( shift - ( shift % WORD_BITS ) );
+	*this = ( *this >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
     }
   else
     {
@@ -3554,11 +3555,11 @@ RNumber& RNumber::signExtend( unsigned int bit )
     {
       int sign = getBit( bit );
       int size = _size - bit;
-      int n    = _wordCount - ( size / WORD_BITS );
+      int n    = _wordCount - ( size / WordBits );
 
-      if ( size % WORD_BITS )
+      if ( size % WordBits )
 	{
-	  unsigned int mask = ( 1 << ( size % WORD_BITS ) ) - 1;
+	  unsigned int mask = ( 1 << ( size % WordBits ) ) - 1;
 
 	  _valueBuffer[n - 1] = ( sign ) ? ( _valueBuffer[n - 1] | ~mask ) :
 	    ( _valueBuffer[n - 1] & mask );
@@ -3583,7 +3584,7 @@ RNumber& RNumber::signExtend( unsigned int bit )
 RNumber& RNumber::truncate( unsigned int size )
 {
 
-  if ( _size <= WORD_BITS )
+  if ( _size <= WordBits )
     return truncateInt( size );
   else
     return truncateExtended( size );
@@ -3606,8 +3607,8 @@ unsigned int RNumber::getBit( unsigned int pos ) const
 
   pos = _size - pos - 1;
 
-  int word = _wordCount - ( pos / WORD_BITS ) - 1;
-  int shift = pos % WORD_BITS;
+  int word = _wordCount - ( pos / WordBits ) - 1;
+  int shift = pos % WordBits;
   const unsigned int* value = _valueBuffer;
 
   return ( ( word >= 0 ) ? ( value[word] >> shift ) & 0x1 : 0 );
@@ -3620,8 +3621,8 @@ unsigned int RNumber::getBit( unsigned int pos ) const
 unsigned int RNumber::getBitLSB( unsigned int pos ) const
 {
 
-  int word = _wordCount - ( pos / WORD_BITS ) - 1;
-  int shift = pos % WORD_BITS;
+  int word = _wordCount - ( pos / WordBits ) - 1;
+  int shift = pos % WordBits;
   const unsigned int* value = _valueBuffer;
 
   return ( ( word >= 0 ) ? ( value[word] >> shift ) & 0x1 : 0 );
@@ -3636,8 +3637,8 @@ void RNumber::setBit( unsigned int pos, unsigned int val )
 
   pos = _size - pos - 1;
 
-  int word = _wordCount - ( pos / WORD_BITS ) - 1;
-  int shift = pos % WORD_BITS;
+  int word = _wordCount - ( pos / WordBits ) - 1;
+  int shift = pos % WordBits;
   unsigned int mask = 1 << shift;
   unsigned int* value = _valueBuffer;
 
@@ -3651,8 +3652,8 @@ void RNumber::setBit( unsigned int pos, unsigned int val )
 //
 void RNumber::setBitLSB( unsigned int pos, unsigned int val )
 {
-  int word = _wordCount - ( pos / WORD_BITS ) - 1;
-  int shift = pos % WORD_BITS;
+  int word = _wordCount - ( pos / WordBits ) - 1;
+  int shift = pos % WordBits;
   unsigned int mask = 1 << shift;
   unsigned int* value = _valueBuffer;
 
@@ -3706,12 +3707,12 @@ unsigned int RNumber::getUIntField( unsigned int start, unsigned int end ) const
       start = _size - start - 1;
       end = _size - end - 1;
 
-      if ( start / WORD_BITS == end / WORD_BITS )
+      if ( start / WordBits == end / WordBits )
 	{
 	  // The start and end values do not cross over word boundaries, with
 	  // respect to the total size. Shift over and mask the proper field.
-	  unsigned int word = _wordCount - ( start / WORD_BITS ) - 1;
-	  unsigned int shift = end % WORD_BITS;
+	  unsigned int word = _wordCount - ( start / WordBits ) - 1;
+	  unsigned int shift = end % WordBits;
 
 	  return ( _valueBuffer[word] >> shift ) & mask;
 	}
@@ -3730,7 +3731,7 @@ RNumber RNumber::getField( unsigned int start, unsigned int end ) const
 
   unsigned int length = end - start + 1;
 
-  if ( length <= WORD_BITS )
+  if ( length <= WordBits )
     return RNumber( getUIntField ( start, end ), _size );
   else
     {
@@ -3908,8 +3909,8 @@ void RNumber::printHex( ostream& os,int format ) const
     os << "0x";
   }
 
-  if ( width > WORD_BITS / 4 || ( width == 0 && _wordCount > 1 )) {
-    unsigned int n = ( ( _size % WORD_BITS ) + 3 ) / 4;
+  if ( width > WordBits / 4 || ( width == 0 && _wordCount > 1 )) {
+    unsigned int n = ( ( _size % WordBits ) + 3 ) / 4;
     char oldFill = os.fill( '0' );
 
     if ( n == 0 )
@@ -3923,7 +3924,7 @@ void RNumber::printHex( ostream& os,int format ) const
 
   char oldFill = os.fill( '0' );
   for ( unsigned int i = 1; i < _wordCount; i++ ) {
-    os << setw( WORD_BITS / 4 );
+    os << setw( WordBits / 4 );
     os << value[i];
   }
 
@@ -4165,7 +4166,7 @@ void RNumber::read( istream& is )
   if ( is.fail() )
     throw std::runtime_error ( "io_fail_error" );
 
-  _wordCount = ( _size + WORD_BITS - 1 ) / WORD_BITS;
+  _wordCount = ( _size + WordBits - 1 ) / WordBits;
 
   if ( _wordCount > WORD_THRESHOLD )
     _valueBuffer = _value.varValue = new unsigned int [_wordCount];
