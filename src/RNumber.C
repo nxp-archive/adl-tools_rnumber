@@ -13,12 +13,12 @@
 ** particular implementation has limited support for signed numbers.
 ** ===========================================================================
 */
+#include <stdexcept>
 #include <memory.h>
 #include <iostream.h>
 #include <iomanip.h>
 #include <strstream.h>
 
-#include "rnumber_exceptions.h"
 #include "RNumber.h"
 #include "trace.h"
 

@@ -174,34 +174,53 @@ if test "x$PERLPROG" = x ; then
 fi
 
 dnl find bigloo
-AC_PATH_PROG(BIGLOOPROG,bigloo)
-if test "x$BIGLOOPROG" = x ; then
-   AC_WARN("Could not find bigloo. Check your path to make sure it is present.")
-   AC_WARN("Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/.")
-   AC_WARN("Bigloo bindings will *not* be built.")
-   BIGLOO=
+AC_ARG_ENABLE(bigloo-bindings,
+[  --disable-bigloo-bindings    Enable the building of Bigloo bindings.],
+ BIGLOOBINDINGS=,
+ BIGLOOBINDINGS=1
+)
+if test "x$BIGLOOBINDINGS" != x ; then
+	AC_PATH_PROG(BIGLOOPROG,bigloo)
+	if test "x$BIGLOOPROG" = x ; then
+   	AC_WARN("Could not find bigloo. Check your path to make sure it is present.")
+	   AC_WARN("Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/.")
+   	AC_WARN("Bigloo bindings will *not* be built.")
+	   BIGLOO=
+	else
+   	BIGLOO=bigloo
+	   AC_MSG_RESULT([Bigloo Program:  $BIGLOOPROG])
+   	BIGLOO_BINDIR=`dirname $BIGLOOPROG`
+	   BIGLOO_REVISION=`bigloo -revision`
+   	BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
+	   AC_MSG_RESULT([Bigloo bin dir:  $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR])
+   	AC_SUBST(BIGLOO_LIBDIR)
+	fi
 else
-   BIGLOO=bigloo
-   AC_MSG_RESULT([Bigloo Program:  $BIGLOOPROG])
-   BIGLOO_BINDIR=`dirname $BIGLOOPROG`
-   BIGLOO_REVISION=`bigloo -revision`
-   BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
-   AC_MSG_RESULT([Bigloo bin dir:  $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR])
-   AC_SUBST(BIGLOO_LIBDIR)
+	echo "The building of Bigloo bindings has been disabled."
 fi
+
 AC_SUBST([BIGLOO])
 AM_CONDITIONAL(WITHOUT_BIGLOO,test x$BIGLOO = x)
 
 dnl find swig
-AC_PATH_PROG(SWIGPROG,swig)
-if test "x$SWIGPROG" = x ; then
-   AC_WARN("Could not find swig. Check your path to make sure it is present.")
-   AC_WARN("Swig is available from http://www.swig.org/.")
-   AC_WARN("Since swig is needed for the perl bindings\, the perl bindings will *not* be built.")
-   PERLBINDINGS=
+AC_ARG_ENABLE(perl-bindings,
+[  --disable-perl-bindings    Enable the building of Perl bindings.],
+ PERLBINDINGS=,
+ PERLBINDINGS=1
+)
+if test "x$PERLBINDINGS" != x ; then
+	AC_PATH_PROG(SWIGPROG,swig)
+	if test "x$SWIGPROG" = x ; then
+   	AC_WARN("Could not find swig. Check your path to make sure it is present.")
+	   AC_WARN("Swig is available from http://www.swig.org/.")
+   	AC_WARN("Since swig is needed for the perl bindings\, the perl bindings will *not* be built.")
+	   PERLBINDINGS=
+	else
+   	PERLBINDINGS=perl
+	   AC_MSG_RESULT([SWIG: $SWIGPROG])
+	fi
 else
-   PERLBINDINGS=perl
-   AC_MSG_RESULT("SWIG $SWIGPROG")
+	echo "The building of Perl bindings has been disabled."
 fi
 AC_SUBST([PERLBINDINGS])
 AM_CONDITIONAL(WITHOUT_SWIG,test x$PERLBINDINGS = x)
@@ -476,29 +495,6 @@ if test "x$config_error" = xyes ; then
 fi
 AC_MSG_RESULT([yes])
 
-dnl See whether c++ lib has std exceptions
-dnl this sets EXCEPTION_FILE to "local_exceptions.h" or <exceptions>
-dnl GCC_STD_EXCEPTIONS
- AC_TRY_COMPILE(
- [
-   #include <stdexcept>
-   #include <iostream>
-
-	using namespace std;
- ],[
-   std::runtime_error ( "runtime error" );
-   cout << "test" << endl;
- ],[
-   STD_LIB_EXCEPTIONS=true;
-   EXCEPTION_FILE="<stdexcept>"
-   AC_MSG_RESULT(c++ library has standard exceptions.)
- ],[
-   AC_MSG_RESULT(c++ library does not have standard exceptions local_exceptions.h will be used)
-   EXCEPTION_FILE="\"local_exceptions.h\""
- ]) dnl end of AC_TRY_COMPILE
-
-AC_SUBST(EXCEPTION_FILE)
-
 CXXFLAGS="-Wall $CXXFLAGS $DYNLINK $PROFILE $TEMPLATE_CONTROL"
 
 AC_SUBST(PROFILE)
@@ -514,7 +510,6 @@ AC_CONFIG_FILES([\
 	doc/user/Makefile \
 	macros/Makefile \
 	include/Makefile \
-   src/rnumber_exceptions.h \
 	src/rnumber_feature.h \
    src/Makefile \
 	bigloo/Makefile \

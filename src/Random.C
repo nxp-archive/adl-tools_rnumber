@@ -7,8 +7,8 @@
 ** ===========================================================================
 */
 #include <sys/time.h>
+#include <stdexcept>
 
-#include "rnumber_exceptions.h"
 #include "Random.h"
 
 //#define VERBOSE1

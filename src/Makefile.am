@@ -13,9 +13,6 @@ libRNumber_a_SOURCES = \
 
 INCLUDES = -I$(top_srcdir)/include
 
-noinst_HEADERS = \
-	rnumber_exceptions.h 
-
 cinstall:
 	$(MAKE) install
 

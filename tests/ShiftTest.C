@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <strstream.h>
+#include <stdexcept>
 
 #include "gccversion.h"
 
@@ -10,7 +11,6 @@
 #  include <stl_algobase.h>
 #endif
 
-#include "rnumber_exceptions.h"
 #include "RNumber.h"
 #include "Random.h"
 

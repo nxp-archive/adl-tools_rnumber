@@ -7,9 +7,9 @@
 // $Id$
 //
 
+#include <stdexcept>
 #include <iostream>
 
-#include "rnumber_exceptions.h"
 #include "KissRand.h"
 
 using namespace std;
