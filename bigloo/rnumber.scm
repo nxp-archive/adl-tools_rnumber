@@ -2,7 +2,12 @@
   (export *rnumber-version* (rnumber-ctor arg) (rnumber-cstr arg) (rn=? a b) (rn!=? a b) (rn<? a b) (rn<=? a b)
 	  (rn>? a b) (rn>=? a b))
   (eval (export-exports))
+  (type (subtype RNumber_proxy_t "obj_t" (obj))
+	(coerce RNumber_proxy_t obj () ())
+	(coerce obj RNumber_proxy_t (bgl_rnumber_proxy_t?) ())
+	(coerce RNumber_proxy_t bool () ((lambda (x) #t))))
   (extern
+   (macro RNumber_proxy_t?::bool (::obj) "rnumber_proxyp")
    ;; beginning of cl-bl-rnumber.h
    (bl-rnumber-create::RNumber_proxy_t () "bl_rnumber_create")
    (bl-rnumber-create-from-unsigned::RNumber_proxy_t (uint) "bl_rnumber_create_from_unsigned")
@@ -72,8 +77,8 @@
    (rnumber-rn-rightshift-rn::RNumber_proxy_t (RNumber_proxy_t RNumber_proxy_t) "bl_rnumber_rn_rightshift_rn")
    (rnumber-rn-rightshift-ui::RNumber_proxy_t (RNumber_proxy_t uint) "bl_rnumber_rn_rightshift_ui")
    (rnumber-ui-rightshift-rn::RNumber_proxy_t (uint RNumber_proxy_t) "bl_rnumber_ui_rightshift_rn")
-   (type s-RNumber_proxy (opaque) "struct RNumber_proxy")
-   (type RNumber_proxy_t (pointer s-RNumber_proxy) "RNumber_proxy_t")
+;   (type s-RNumber_proxy (opaque) "struct RNumber_proxy")
+;   (type RNumber_proxy_t (pointer s-RNumber_proxy) "RNumber_proxy_t")
    (type ->RNumber_proxy_t "RNumber_proxy_t ($())")
    (type uint->RNumber_proxy_t "RNumber_proxy_t ($(unsigned int))")
    (type uint,uint->RNumber_proxy_t "RNumber_proxy_t ($(unsigned int,unsigned int))")
@@ -215,7 +220,7 @@
 (define (rnumber-ctor arg)
    (cond ((null? arg) (bl-rnumber-create))
          ((integer? arg) (bl-rnumber-create-from-unsigned arg))
-	 ((string? arg) (print "rnumber create from string '" arg "'") (bl-rnumber-create-from-string arg))
+	 ((string? arg) (bl-rnumber-create-from-string arg))
 	 ((RNumber_proxy_t? arg) (bl-rnumber-create-from-rnumber arg))
          (else (error "rnumber-ctor" "unknown arg type " arg))))
 

@@ -62,3 +62,11 @@ RNumber_proxy_t proxy_from_rnumber( struct RNumber * rnumber)
   RNUMBER_PROXY_ERROR( "proxy_from_rnumber" );
 }
 
+/*---------------------------------------------------------------------*/
+/*    char                                                             */
+/*    rnumber_proxyp ...                                               */
+/*---------------------------------------------------------------------*/
+char
+rnumber_proxyp( obj_t o ) {
+   return (CUSTOMP( o ) && (!strcmp( CUSTOM( o ).identifier, RNUMBER_IDENTIFIER)));
+}
