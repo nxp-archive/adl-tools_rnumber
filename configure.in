@@ -13,8 +13,8 @@ AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 # set RNUMBER_BINARY_AGE and RNUMBER_INTERFACE_AGE to 0.
 #
 RNUMBER_MAJOR_VERSION=1
-RNUMBER_MINOR_VERSION=8
-RNUMBER_MICRO_VERSION=6
+RNUMBER_MINOR_VERSION=9
+RNUMBER_MICRO_VERSION=1
 RNUMBER_INTERFACE_AGE=0
 RNUMBER_BINARY_AGE=0
 RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
@@ -209,6 +209,20 @@ else
 fi
 AC_SUBST([BIGLOO])
 AM_CONDITIONAL(WITHOUT_BIGLOO,test x$BIGLOO = x)
+
+dnl find swig
+AC_PATH_PROG(SWIGPROG,swig)
+if test "x$SWIGPROG" = x ; then
+   AC_WARN("Could not find swig. Check your path to make sure it is present.")
+   AC_WARN("Swig is available from http://www.swig.org/.")
+   AC_WARN("Since swig is needed for the perl bindings\, the perl bindings will *not* be built.")
+   PERLBINDINGS=
+else
+   PERLBINDINGS=perl
+   AC_MSG_RESULT("SWIG $SWIGPROG")
+fi
+AC_SUBST([PERLBINDINGS])
+AM_CONDITIONAL(WITHOUT_SWIG,test x$SWIG = x)
 
 dnl C++ compiler feature check start here
 dnl moved the c++ compiler alittle to make the basename check work right..
@@ -510,6 +524,9 @@ AC_OUTPUT([Makefile \
 	bigloo/src/Makefile \
 	bigloo/src/rnumber/Makefile \
 	bigloo/tests/Makefile \
+	perl/Makefile \
+	perl/src/Makefile \
+	perl/tests/Makefile \
         tests/Makefile \
 	tests/NumberRegress
         ], [chmod +x \
