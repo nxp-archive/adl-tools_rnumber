@@ -1,3 +1,11 @@
+2002-12-05  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  perl: There is a problem with large integers (msb being set) not 
+	   being considered to be integers by perl's SvIOK function. This is
+	   what integerp uses to detect whether a variable is an integer or
+	   not. I have resolved this by adding a new predicate numericp and
+	   using that to determine whether a variable is numeric or not.
+
         ============== rnumber release 1.10.4 (v1_10_4) on SunOS ==============
 
         ============== rnumber release 1.10.3 (v1_10_3) on SunOS ==============
