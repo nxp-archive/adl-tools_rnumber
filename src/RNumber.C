@@ -16,6 +16,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
 #include "gccversion.h"
 #ifdef STD_CPP
@@ -56,7 +57,7 @@ void readstr(RNumber &,const string &);
 void readstr(RNumber &,const string &,int format);
 
 static void multiplyExtended( const unsigned int* vb1, unsigned int wc1, const unsigned int* vb2, unsigned int wc2, 
-			      unsigned int* resValue0,bool extend );
+                              unsigned int* resValue0,bool extend );
 static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char* yb, unsigned int ylen, unsigned char* q );
 
 
@@ -95,7 +96,7 @@ public:
       delete [] _buf;
       _size *= 2;
       if (wc > _size) {
-	_size = wc;
+        _size = wc;
       }
       _buf = new unsigned[_size];
     }
@@ -179,17 +180,17 @@ static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned 
   do
     {
       if (*p) {
-	// Scan through the number, looking for a 1.
-	while ( nLen-- && bitPos && !(*p & bitPos) )
-	  bitPos >>= 1;
+        // Scan through the number, looking for a 1.
+        while ( nLen-- && bitPos && !(*p & bitPos) )
+          bitPos >>= 1;
           
-	// Stop if we've found a 1 or we're 
-	// at the end of the word.
-	if ( !nLen || (*p & bitPos) )
-	  break;
+        // Stop if we've found a 1 or we're 
+        // at the end of the word.
+        if ( !nLen || (*p & bitPos) )
+          break;
       } else {
-	nLen -= off;
-	off = WordBits;
+        nLen -= off;
+        off = WordBits;
       }
       // Go to the next word.
       p++;
@@ -204,8 +205,8 @@ static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned 
 // Convert word-based number representation to byte-based representation.
 //
 static inline void convertToBytes( const unsigned int* wordBuffer,
-				   unsigned char* byteBuffer,
-				   unsigned int wordCount )
+                                   unsigned char* byteBuffer,
+                                   unsigned int wordCount )
 {
 
   for ( unsigned int i = 0; i < wordCount; i++ )
@@ -249,19 +250,19 @@ inline void RNumber::assignNumber( const RNumber& number )
       unsigned int* nvb = number._valueBuffer;
 
       for ( unsigned int i = 0; i < _wordCount; i++ )
-	_valueBuffer[i] = nvb[i];
+        _valueBuffer[i] = nvb[i];
     }
   else if ( _size < number._size )
     {
       if ( _sizing == dynamic )
-	{
-	  if ( _wordCount > WORD_THRESHOLD )
-	    delete [] _value.varValue;
+        {
+          if ( _wordCount > WORD_THRESHOLD )
+            delete [] _value.varValue;
 
-	  cloneNumber( number );
-	}
+          cloneNumber( number );
+        }
       else
-	assignAndTruncateNumber( number );
+        assignAndTruncateNumber( number );
     }
   else
     {
@@ -270,8 +271,8 @@ inline void RNumber::assignNumber( const RNumber& number )
       // This loop will be tight but we do not incur the memset() function
       // call penalty.
       if ( wordDiff > 0 )
-	for ( int i = 0; i < wordDiff; i++ )
-	  _valueBuffer[i] = 0;
+        for ( int i = 0; i < wordDiff; i++ )
+          _valueBuffer[i] = 0;
 
       unsigned int* vb  = _valueBuffer + wordDiff;
       unsigned int* nvb = number._valueBuffer;
@@ -279,7 +280,7 @@ inline void RNumber::assignNumber( const RNumber& number )
       // This loop will be tight but we do not incur the memcpy() function
       // call penalty.
       for ( unsigned int i = 0; i < number._wordCount; i++ )
-	vb[i] = nvb[i];
+        vb[i] = nvb[i];
     }
 }
 
@@ -323,15 +324,15 @@ inline RNumber& RNumber::truncateExtended( unsigned int size )
       unsigned int n = _wordCount - ( size / WordBits );
 
       if ( size % WordBits )
-	{
-	  unsigned int mask = ( 0x1 << ( size % WordBits ) ) - 1;
+        {
+          unsigned int mask = ( 0x1 << ( size % WordBits ) ) - 1;
 
-	  _valueBuffer[n - 1] &= mask;
-	  n--;
-	}
+          _valueBuffer[n - 1] &= mask;
+          n--;
+        }
 
       for ( unsigned int i = 0; i < n; i++ )
-	_valueBuffer[i] = 0;
+        _valueBuffer[i] = 0;
     }
 
   return *this;
@@ -367,7 +368,7 @@ RNumber::RNumber( const RNumber& number, unsigned int size, Sizing sizing )
     {
       // The bit sizes match so just copy.
       for ( unsigned int i = 0; i < _wordCount; i++ )
-	_valueBuffer[i] = nvb[i];
+        _valueBuffer[i] = nvb[i];
     }
   else if ( _size < number._size )
     {
@@ -381,7 +382,7 @@ RNumber::RNumber( const RNumber& number, unsigned int size, Sizing sizing )
       unsigned int* vb = _valueBuffer + diff;
 
       for ( unsigned int i = 0, nwc = number._wordCount; i < nwc; i++ )
-	vb[i] = nvb[i];
+        vb[i] = nvb[i];
     }
 }
 
@@ -466,7 +467,7 @@ RNumber::RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned
   if ( _wordCount <= WORD_THRESHOLD )
     {
       for ( i = 0; i < WORD_THRESHOLD; i++ )
-	_value.fixedValue[i] = 0;
+        _value.fixedValue[i] = 0;
 
       _valueBuffer = _value.fixedValue + WORD_THRESHOLD - _wordCount;
     }
@@ -483,10 +484,10 @@ RNumber::RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned
   if ( i < _wordCount )
     {
       while ( i < _wordCount )
-	{
-	  *(vb--) = 0;
-	  i++;
-	}
+        {
+          *(vb--) = 0;
+          i++;
+        }
     }
   else
     truncateTop();
@@ -514,10 +515,10 @@ RNumber& RNumber::operator=( unsigned int number )
       truncateInt( _size );
 
       if ( _valueBuffer[0] != number && _sizing == dynamic )
-	{
-	  _size = WordBits;
-	  _valueBuffer[0] = number;
-	}
+        {
+          _size = WordBits;
+          _valueBuffer[0] = number;
+        }
     }
 
   return *this;
@@ -607,12 +608,12 @@ void RNumber::resize( unsigned int size )
       // If the new size is smaller, truncate the top; otherwise, just assign
       // the new size.
       if ( size < _size )
-	{
-	  _size = size;
-	  truncateTop();
-	}
+        {
+          _size = size;
+          truncateTop();
+        }
       else
-	_size = size;
+        _size = size;
     }
   else if ( nwc < _wordCount )
     {
@@ -624,27 +625,27 @@ void RNumber::resize( unsigned int size )
       unsigned int wordDiff = _wordCount - nwc;
 
       if ( _wordCount > WORD_THRESHOLD && nwc <= WORD_THRESHOLD )
-	{
-	  unsigned int* vb = _valueBuffer + wordDiff;
-	  unsigned int threshDiff = WORD_THRESHOLD - nwc;
+        {
+          unsigned int* vb = _valueBuffer + wordDiff;
+          unsigned int threshDiff = WORD_THRESHOLD - nwc;
 
-	  for ( i = 0; i < threshDiff; i++ )
-	    _value.fixedValue[i] = 0;
+          for ( i = 0; i < threshDiff; i++ )
+            _value.fixedValue[i] = 0;
 
-	  for ( i = threshDiff; i < WORD_THRESHOLD; i++ )
-	    _value.fixedValue[i] = *vb++;
+          for ( i = threshDiff; i < WORD_THRESHOLD; i++ )
+            _value.fixedValue[i] = *vb++;
 
-	  delete [] _valueBuffer;
-	  _valueBuffer = _value.fixedValue + WORD_THRESHOLD - nwc;
-	}
+          delete [] _valueBuffer;
+          _valueBuffer = _value.fixedValue + WORD_THRESHOLD - nwc;
+        }
       else
-	{
-	  if ( _wordCount <= WORD_THRESHOLD )
-	    for ( i = 0; i < wordDiff; i++ )
-	      _valueBuffer[i] = 0;
+        {
+          if ( _wordCount <= WORD_THRESHOLD )
+            for ( i = 0; i < wordDiff; i++ )
+              _valueBuffer[i] = 0;
 
-	  _valueBuffer += wordDiff;
-	}
+          _valueBuffer += wordDiff;
+        }
 
       _wordCount = nwc;
       _size = size;
@@ -658,35 +659,35 @@ void RNumber::resize( unsigned int size )
       unsigned int wordDiff = nwc - _wordCount;
 
       if ( _wordCount <= WORD_THRESHOLD && nwc > WORD_THRESHOLD )
-	{
-	  unsigned int* fv = _value.fixedValue + WORD_THRESHOLD - _wordCount;
+        {
+          unsigned int* fv = _value.fixedValue + WORD_THRESHOLD - _wordCount;
 
-	  _valueBuffer = new unsigned int[nwc];
+          _valueBuffer = new unsigned int[nwc];
 
-	  for ( i = 0; i < wordDiff; i++ )
-	    _valueBuffer[i] = 0;
+          for ( i = 0; i < wordDiff; i++ )
+            _valueBuffer[i] = 0;
 
-	  for ( i = wordDiff; i < nwc; i++ )
-	    _valueBuffer[i] = *fv++;
+          for ( i = wordDiff; i < nwc; i++ )
+            _valueBuffer[i] = *fv++;
 
-	  _value.varValue = _valueBuffer;
-	}
+          _value.varValue = _valueBuffer;
+        }
       else if ( nwc <= WORD_THRESHOLD )
-	_valueBuffer -= wordDiff;
+        _valueBuffer -= wordDiff;
       else
-	{
-	  unsigned int* nvb = new unsigned int[nwc];
-	  unsigned int* vb = _valueBuffer;
+        {
+          unsigned int* nvb = new unsigned int[nwc];
+          unsigned int* vb = _valueBuffer;
 
-	  for ( i = 0; i < wordDiff; i++ )
-	    nvb[i] = 0;
+          for ( i = 0; i < wordDiff; i++ )
+            nvb[i] = 0;
 
-	  for ( i = wordDiff; i < nwc; i++ )
-	    nvb[i] = *vb++;
+          for ( i = wordDiff; i < nwc; i++ )
+            nvb[i] = *vb++;
 
-	  delete [] _valueBuffer;
-	  _valueBuffer = _value.varValue = nvb;
-	}
+          delete [] _valueBuffer;
+          _valueBuffer = _value.varValue = nvb;
+        }
 
       _wordCount = nwc;
       _size = size;
@@ -772,24 +773,24 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
   if ( extend )
     {
       if ( cin && ( ( maxs - 1 ) % WordBits == WordBits - 1 ) )
-	{
-	  // If we have a final carry-in, then this becomes a 1 
-	  // in the new word.  In this case, we have truly grown by
-	  // one word, so we make sure that we include it in the 
-	  // final RNumber.
-	  *sumValue = 1;
-	  maxwc++;
-	  maxs++;
-	} else {
-	  if ( *( sumValue0 + 1 ) >> ( maxs % WordBits ) == 1 ) {
-	    // We've grown, but not into a new word, just by one bit
-	    // in the existing word.
-	    maxs++;
-	  }
-	  // We haven't grown by a whole word, so we make sure to 
-	  // ignore the extra word in our final RNumber.
-	  sumValue0++;
-	}
+        {
+          // If we have a final carry-in, then this becomes a 1 
+          // in the new word.  In this case, we have truly grown by
+          // one word, so we make sure that we include it in the 
+          // final RNumber.
+          *sumValue = 1;
+          maxwc++;
+          maxs++;
+        } else {
+          if ( *( sumValue0 + 1 ) >> ( maxs % WordBits ) == 1 ) {
+            // We've grown, but not into a new word, just by one bit
+            // in the existing word.
+            maxs++;
+          }
+          // We haven't grown by a whole word, so we make sure to 
+          // ignore the extra word in our final RNumber.
+          sumValue0++;
+        }
     }
 
   return RNumber( sumValue0, maxwc, maxs );
@@ -827,24 +828,24 @@ inline const RNumber rnumber::add( const RNumber& n1, unsigned int n2, bool exte
   if ( extend )
     {
       if ( cin && ( ( maxs - 1 ) % WordBits == WordBits - 1 ) )
-	{
-	  // If we have a final carry-in, then this becomes a 1 
-	  // in the new word.  In this case, we have truly grown by
-	  // one word, so we make sure that we include it in the 
-	  // final RNumber.
-	  *sumValue = 1;
-	  n1wc++;
-	  maxs++;
-	} else {
-	  if ( *( sumValue0 + 1 ) >> ( maxs % WordBits ) == 1 ) {
-	    // We've grown, but not into a new word, just by one bit
-	    // in the existing word.
-	    maxs++;
-	  }
-	  // We haven't grown by a whole word, so we make sure to 
-	  // ignore the extra word in our final RNumber.
-	  sumValue0++;
-	}
+        {
+          // If we have a final carry-in, then this becomes a 1 
+          // in the new word.  In this case, we have truly grown by
+          // one word, so we make sure that we include it in the 
+          // final RNumber.
+          *sumValue = 1;
+          n1wc++;
+          maxs++;
+        } else {
+          if ( *( sumValue0 + 1 ) >> ( maxs % WordBits ) == 1 ) {
+            // We've grown, but not into a new word, just by one bit
+            // in the existing word.
+            maxs++;
+          }
+          // We haven't grown by a whole word, so we make sure to 
+          // ignore the extra word in our final RNumber.
+          sumValue0++;
+        }
     }
 
   return RNumber( sumValue0, n1wc, maxs );
@@ -978,12 +979,12 @@ RNumber& RNumber::operator+=( unsigned int number )
   if ( cin )
     {
       for ( unsigned int i = 0; i < _wordCount - 1; i++ )
-	{
-	  a = *value;
-	  *value += cin;
-	  c = *( value-- );
-	  cin = ( a & ~c ) >> ( WordBits - 1 );
-	}
+        {
+          a = *value;
+          *value += cin;
+          c = *( value-- );
+          cin = ( a & ~c ) >> ( WordBits - 1 );
+        }
     }
 
   truncateTop();
@@ -1026,23 +1027,23 @@ inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
   if ( n1wc < n2wc )
     {
       for ( i = minwc; i < maxwc; i++ )
-	{
-	  inv = ~( *( numValue-- ) );
-	  *diffValue = inv + cin;
-	  b = inv;
-	  c = *( diffValue-- );
-	  cin = ( b & ~c ) >> ( WordBits - 1 );
-	}
+        {
+          inv = ~( *( numValue-- ) );
+          *diffValue = inv + cin;
+          b = inv;
+          c = *( diffValue-- );
+          cin = ( b & ~c ) >> ( WordBits - 1 );
+        }
     }
   else
     {
       for ( i = minwc; i < maxwc; i++ )
-	{
-	  *diffValue = *value + cin - 1;
-	  a = *( value-- );
-	  c = *( diffValue-- );
-	  cin = ( a | ~c ) >> ( WordBits - 1 );
-	}
+        {
+          *diffValue = *value + cin - 1;
+          a = *( value-- );
+          c = *( diffValue-- );
+          cin = ( a | ~c ) >> ( WordBits - 1 );
+        }
     }
 
   return RNumber( diffValue0, maxwc, max( n1._size, n2._size ) );
@@ -1417,10 +1418,10 @@ RNumber& RNumber::operator*=( const RNumber& number )
       multiplyExtended( _valueBuffer, _wordCount, nvb, nwc, resultValue0, false );
 
       if ( _wordCount < number._wordCount )
-	resultValue += number._wordCount - _wordCount;
+        resultValue += number._wordCount - _wordCount;
 
       for ( unsigned int i = 0; i < _wordCount; i++ )
-	_valueBuffer[i] = resultValue[i];
+        _valueBuffer[i] = resultValue[i];
 
       truncateTop();
     }
@@ -1459,7 +1460,7 @@ RNumber& RNumber::operator*=( unsigned int number )
       multiplyExtended( _valueBuffer, _wordCount, &number, 1, resultValue0, false );
 
       for ( unsigned int i = 0; i < _wordCount; i++ )
-	_valueBuffer[i] = resultValue0[i];
+        _valueBuffer[i] = resultValue0[i];
 
       truncateTop();
     }
@@ -1525,8 +1526,8 @@ RNumber& RNumber::operator*=( unsigned int number )
 // Note2: The word size of vb1 must *always* be >= the word size of vb2.
 //
 static void multiplyExtended( const unsigned int* vb1, unsigned int wc1,
-			      const unsigned int* vb2, unsigned int wc2,
-			      unsigned int* resValue0, bool extend )
+                              const unsigned int* vb2, unsigned int wc2,
+                              unsigned int* resValue0, bool extend )
 {
   const unsigned int* valEnd = vb1 + wc1 - 1;
   const unsigned int* numEnd = vb2 + wc2 - 1;
@@ -1557,64 +1558,64 @@ static void multiplyExtended( const unsigned int* vb1, unsigned int wc1,
       v = numEnd - i2;
 
       for ( unsigned int j = 0; j < i; j += 2 )
-	{
-	  // If we're in extending-arithmetic mode, we might pass the
-	  // most-significant word.  In that case, we use 0.
-	  unsigned uval = (u < vb1) ? 0 : *u;
-	  // This does the first half of the word we're processing;
-	  // i.e. even indices in the pseudo code above.
-	  if ( v >= vb2 )
-	    {
-	      uj = lowHalf( uval );
-	      vij = lowHalf( *v );
-	      vij1 = highHalf( *v );
+        {
+          // If we're in extending-arithmetic mode, we might pass the
+          // most-significant word.  In that case, we use 0.
+          unsigned uval = (u < vb1) ? 0 : *u;
+          // This does the first half of the word we're processing;
+          // i.e. even indices in the pseudo code above.
+          if ( v >= vb2 )
+            {
+              uj = lowHalf( uval );
+              vij = lowHalf( *v );
+              vij1 = highHalf( *v );
 
-	      mult1 = uj * vij;
-	      mult2 = uj * vij1;
-	      lw += lowHalf( mult1 );
-	      hw += highHalf( mult1 ) + lowHalf( mult2 );
-	      carry += highHalf( mult2 );
-	    }
+              mult1 = uj * vij;
+              mult2 = uj * vij1;
+              lw += lowHalf( mult1 );
+              hw += highHalf( mult1 ) + lowHalf( mult2 );
+              carry += highHalf( mult2 );
+            }
 
-	  // This does the second half- the odd indices in the
-	  // pseudo code algorithm.
-	  if ( ( v + 1 ) >= vb2 )
-	    {
-	      uj = highHalf( uval );
-	      // We'll use 0 on the boundary condition.
-	      vij1 = ( v >= vb2 ) ? lowHalf( *v ) : 0;
-	      v++;
-	      vij = highHalf( *v );
+          // This does the second half- the odd indices in the
+          // pseudo code algorithm.
+          if ( ( v + 1 ) >= vb2 )
+            {
+              uj = highHalf( uval );
+              // We'll use 0 on the boundary condition.
+              vij1 = ( v >= vb2 ) ? lowHalf( *v ) : 0;
+              v++;
+              vij = highHalf( *v );
 
-	      mult1 = uj * vij;
-	      mult2 = uj * vij1;
-	      lw += lowHalf( mult1 );
-	      hw += highHalf( mult1 ) + lowHalf( mult2 );
-	      carry += highHalf( mult2 );
-	    }
-	  else
-	    {
-	      // The sizes of the two items are not equal,
-	      // so we advance towards lower-sig words.
-	      v++;
-	    }
-	  // We advance towards more-significant bytes.
-	  u--;
-	}
+              mult1 = uj * vij;
+              mult2 = uj * vij1;
+              lw += lowHalf( mult1 );
+              hw += highHalf( mult1 ) + lowHalf( mult2 );
+              carry += highHalf( mult2 );
+            }
+          else
+            {
+              // The sizes of the two items are not equal,
+              // so we advance towards lower-sig words.
+              v++;
+            }
+          // We advance towards more-significant bytes.
+          u--;
+        }
 
       unsigned uval = (u < vb1) ? 0 : *u;
       if ( v >= vb2 )
-	{
-	  uj = lowHalf( uval );
-	  vij = lowHalf( *v );
-	  vij1 = highHalf( *v );
+        {
+          uj = lowHalf( uval );
+          vij = lowHalf( *v );
+          vij1 = highHalf( *v );
 
-	  mult1 = uj * vij;
-	  mult2 = uj * vij1;
-	  lw += lowHalf( mult1 );
-	  hw += highHalf( mult1 ) + lowHalf( mult2 );
-	  carry += highHalf( mult2 );
-	}
+          mult1 = uj * vij;
+          mult2 = uj * vij1;
+          lw += lowHalf( mult1 );
+          hw += highHalf( mult1 ) + lowHalf( mult2 );
+          carry += highHalf( mult2 );
+        }
 
       mult2 = highHalf( uval ) * lowHalf( *numEnd );
       hw += lowHalf( mult2 );
@@ -1659,7 +1660,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
       unsigned int result = 0xffffffff;
 
       if ( n2vb[0] )
-	result = n1vb[0] / n2vb[0];
+        result = n1vb[0] / n2vb[0];
 
       return RNumber( result, maxs );
     }
@@ -1704,14 +1705,14 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
       unsigned int v = n2vb[n2wc - 1];
       
       if ( v )
-	return RNumber( n1vb[n1wc - 1] / v, maxs );
+        return RNumber( n1vb[n1wc - 1] / v, maxs );
       else
-	{
-	  RNumber result( 0, maxs );
-	  result.setAll();
+        {
+          RNumber result( 0, maxs );
+          result.setAll();
 
-	  return result;
-	}
+          return result;
+        }
     }
 
   unsigned char* xb = x + n1wc * sizeof( unsigned int ) - xlen;
@@ -1738,12 +1739,12 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
       shift = ( shift + 8 ) % 32;
 
       if ( shift == 0 )
-	{
-	  s--;
+        {
+          s--;
 
-	  if ( s >= r )
-	    *s = 0;
-	}
+          if ( s >= r )
+            *s = 0;
+        }
     }
 
   s--;
@@ -1783,7 +1784,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
       unsigned int result = 0xffffffff;
 
       if ( n2 )
-	result = n1vb[0] / n2;
+        result = n1vb[0] / n2;
 
       return RNumber( result, maxs );
     }
@@ -1826,14 +1827,14 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
       delete [] y;
       
       if ( n2 )
-	return RNumber( n1vb[n1wc - 1] / n2, maxs );
+        return RNumber( n1vb[n1wc - 1] / n2, maxs );
       else
-	{
-	  RNumber result( 0, maxs );
-	  result.setAll();
+        {
+          RNumber result( 0, maxs );
+          result.setAll();
 
-	  return result;
-	}
+          return result;
+        }
     }
 
   unsigned char* xb = x + n1wc * sizeof( unsigned int ) - xlen;
@@ -1860,12 +1861,12 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
       shift = ( shift + 8 ) % 32;
 
       if ( shift == 0 )
-	{
-	  s--;
+        {
+          s--;
 
-	  if ( s >= r )
-	    *s = 0;
-	}
+          if ( s >= r )
+            *s = 0;
+        }
     }
 
   s--;
@@ -1905,7 +1906,7 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
       unsigned int result = 0xffffffff;
 
       if ( n2vb[0] )
-	result = n1 / n2vb[0];
+        result = n1 / n2vb[0];
 
       return RNumber( result, maxs );
     }
@@ -1950,14 +1951,14 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
       unsigned int v = n2vb[n2wc - 1];
       
       if ( v )
-	return RNumber( n1 / v, maxs );
+        return RNumber( n1 / v, maxs );
       else
-	{
-	  RNumber result( 0, maxs );
-	  result.setAll();
+        {
+          RNumber result( 0, maxs );
+          result.setAll();
 
-	  return result;
-	}
+          return result;
+        }
     }
 
   unsigned char* xb = x + sizeof( unsigned int ) - xlen;
@@ -1984,12 +1985,12 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
       shift = ( shift + 8 ) % 32;
 
       if ( shift == 0 )
-	{
-	  s--;
+        {
+          s--;
 
-	  if ( s >= r )
-	    *s = 0;
-	}
+          if ( s >= r )
+            *s = 0;
+        }
     }
 
   s--;
@@ -2051,9 +2052,9 @@ RNumber& RNumber::operator/=( const RNumber& number )
     {
       // Case 1.
       if ( nvb[0] )
-	_valueBuffer[0] /= nvb[0];
+        _valueBuffer[0] /= nvb[0];
       else
-	_valueBuffer[0] = 0xffffffff;
+        _valueBuffer[0] = 0xffffffff;
 
       truncateTop();
 
@@ -2063,7 +2064,7 @@ RNumber& RNumber::operator/=( const RNumber& number )
     {
       // Cases 2 and 3.
       if ( !number )
-	setAll();
+        setAll();
 
       return *this;
     }
@@ -2102,9 +2103,9 @@ RNumber& RNumber::operator/=( const RNumber& number )
       unsigned int v = nvb[nwc - 1];
 
       if ( v )
-	_valueBuffer[_wordCount - 1] /= v;
+        _valueBuffer[_wordCount - 1] /= v;
       else
-	setAll( );
+        setAll( );
 
       return *this;
     }
@@ -2131,12 +2132,12 @@ RNumber& RNumber::operator/=( const RNumber& number )
       shift = ( shift + 8 ) % 32;
 
       if ( shift == 0 )
-	{
-	  s--;
+        {
+          s--;
 
-	  if ( s >= _valueBuffer )
-	    *s = 0;
-	}
+          if ( s >= _valueBuffer )
+            *s = 0;
+        }
     }
 
   s--;
@@ -2164,9 +2165,9 @@ RNumber& RNumber::operator/=( unsigned int number )
     {
       // Case 1.
       if ( number )
-	_valueBuffer[0] /= number;
+        _valueBuffer[0] /= number;
       else
-	_valueBuffer[0] = 0xffffffff;
+        _valueBuffer[0] = 0xffffffff;
 
       truncateTop();
 
@@ -2176,7 +2177,7 @@ RNumber& RNumber::operator/=( unsigned int number )
     {
       // Cases 2 and 3.
       if ( !number )
-	setAll();
+        setAll();
 
       return *this;
     }
@@ -2213,9 +2214,9 @@ RNumber& RNumber::operator/=( unsigned int number )
       delete [] y;
 
       if ( number )
-	_valueBuffer[_wordCount - 1] /= number;
+        _valueBuffer[_wordCount - 1] /= number;
       else
-	setAll();
+        setAll();
 
       return *this;
     }
@@ -2242,12 +2243,12 @@ RNumber& RNumber::operator/=( unsigned int number )
       shift = ( shift + 8 ) % 32;
 
       if ( shift == 0 )
-	{
-	  s--;
+        {
+          s--;
 
-	  if ( s >= _valueBuffer )
-	    *s = 0;
-	}
+          if ( s >= _valueBuffer )
+            *s = 0;
+        }
     }
 
   s--;
@@ -2279,7 +2280,7 @@ RNumber& RNumber::operator/=( unsigned int number )
 //            dividend = dividend + divisor
 //
 static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char* yb, unsigned int ylen,
-			    unsigned char* q )
+                            unsigned char* q )
 {
   unsigned int qk;    // qk is a guess for q[k] such that q[k] = qk or qk - 1.
   unsigned int x3;    // most significant 3 bytes of x
@@ -2296,62 +2297,62 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
 
       // qk cannot be larger than the largest value in ByteRadix.
       if ( qk >= ByteRadix )
-	qk = ByteRadix - 1;
+        qk = ByteRadix - 1;
 
       // Determine if q[k] = qk or qk - 1.
       if ( qk )
-	{
-	  int carry;
-	  int carry2;
-	  int diff;
-	  unsigned char* xk;
+        {
+          int carry;
+          int carry2;
+          int diff;
+          unsigned char* xk;
 
-	  // A shortcut for x[k].
-	  xk = xb + k;
+          // A shortcut for x[k].
+          xk = xb + k;
 
-	  // adjust dividend based on divisor byte:
-	  //   x = x - y * qk;
-	  carry = 0;
+          // adjust dividend based on divisor byte:
+          //   x = x - y * qk;
+          carry = 0;
 
-	  for ( int i = ylen - 1; i >= 0; i-- )
-	    {
-	      carry += yb[i] * qk;
-	      diff = ( xk[i] + ByteRadix ) - ( carry & ByteMask );
-	      xk[i] = (unsigned char) ( diff & ByteMask );
-	      carry = ( carry >> ByteBits ) + ( 1 - ( diff >> ByteBits ) );
-	    }
+          for ( int i = ylen - 1; i >= 0; i-- )
+            {
+              carry += yb[i] * qk;
+              diff = ( xk[i] + ByteRadix ) - ( carry & ByteMask );
+              xk[i] = (unsigned char) ( diff & ByteMask );
+              carry = ( carry >> ByteBits ) + ( 1 - ( diff >> ByteBits ) );
+            }
 
-	  if ( carry )
-	    {
-	      // extend the carry out to the most significant byte.
-	      carry = ( xk[-1] + ByteRadix ) - carry;
-	      xk[-1] = (unsigned char) ( carry & ByteMask );
-	      carry = 1 - ( carry >> ByteBits );
+          if ( carry )
+            {
+              // extend the carry out to the most significant byte.
+              carry = ( xk[-1] + ByteRadix ) - carry;
+              xk[-1] = (unsigned char) ( carry & ByteMask );
+              carry = 1 - ( carry >> ByteBits );
         
-	      if ( carry )
-		{
-		  // qk was one too large, so decrement it.
-		  --qk;
+              if ( carry )
+                {
+                  // qk was one too large, so decrement it.
+                  --qk;
         
-		  // re-adjust dividend for correct divisor byte:
-		  //    x = x - y * (qk - 1) 
-		  //      = x - y * qk + y 
-		  //      = x_above + y.
-		  carry2 = 0;
+                  // re-adjust dividend for correct divisor byte:
+                  //    x = x - y * (qk - 1) 
+                  //      = x - y * qk + y 
+                  //      = x_above + y.
+                  carry2 = 0;
 
-		  for ( int i = ylen - 1; i >= 0; i-- )
-		    {
-		      carry2 += xk[i] + yb[i];
-		      xk[i] = (unsigned char) ( carry2 & ByteMask );
-		      carry2 >>= ByteBits;
-		    }
+                  for ( int i = ylen - 1; i >= 0; i-- )
+                    {
+                      carry2 += xk[i] + yb[i];
+                      xk[i] = (unsigned char) ( carry2 & ByteMask );
+                      carry2 >>= ByteBits;
+                    }
 
-		  if ( carry2 )
-		    xk[-1] = (unsigned char) ( ( xk[-1] + 1 ) & ByteMask );
+                  if ( carry2 )
+                    xk[-1] = (unsigned char) ( ( xk[-1] + 1 ) & ByteMask );
 
-		}
-	    }
-	}
+                }
+            }
+        }
 
       q[k] = (unsigned char) qk;
     }
@@ -2869,58 +2870,58 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
   if ( shift < n._size || extend )
     {
       if ( shift == 0 )
-	{
-	  for ( i = 0; i < nwc; i++ )
-	    *( resValue-- ) = *( value-- );
-	  // We didn't use the extra space, so we 
-	  // make sure that we don't count it in the
-	  // final result.
-	  resValue0 += adjust;
-	}
+        {
+          for ( i = 0; i < nwc; i++ )
+            *( resValue-- ) = *( value-- );
+          // We didn't use the extra space, so we 
+          // make sure that we don't count it in the
+          // final result.
+          resValue0 += adjust;
+        }
       else if ( shift < WordBits )
-	{
-	  unsigned int intShift = shift.uint32();
-	  int invShift = WordBits - intShift;
-	  unsigned int mask = ( 0x1 << intShift ) - 1;
-	  unsigned int cin = 0;
+        {
+          unsigned int intShift = shift.uint32();
+          int invShift = WordBits - intShift;
+          unsigned int mask = ( 0x1 << intShift ) - 1;
+          unsigned int cin = 0;
 
-	  if ( extend )
-	    {
-	      nwc = totalwc;
-	      ns = totals;
-	    }
+          if ( extend )
+            {
+              nwc = totalwc;
+              ns = totals;
+            }
 
-	  for ( i = 0; i < nwc; i++ )
-	    {
-	      *( resValue-- ) = ( *value << intShift ) | cin;
-	      cin = ( *( value-- ) >> invShift ) & mask;
-	    }
-	}
+          for ( i = 0; i < nwc; i++ )
+            {
+              *( resValue-- ) = ( *value << intShift ) | cin;
+              cin = ( *( value-- ) >> invShift ) & mask;
+            }
+        }
       else if ( ( shift % WordBits ) == 0 )
-	{
-	  unsigned int offset = shift.uint32() / WordBits;
+        {
+          unsigned int offset = shift.uint32() / WordBits;
 
-	  if ( extend )
-	    {
-	      nwc = totalwc;
-	      ns = totals;
-	    }
+          if ( extend )
+            {
+              nwc = totalwc;
+              ns = totals;
+            }
 
-	  for ( i = 0; i < offset; i++ )
-	    *( resValue-- ) = 0;
+          for ( i = 0; i < offset; i++ )
+            *( resValue-- ) = 0;
 
-	  for ( i = offset; i < nwc; i++ )
-	    *( resValue-- ) = *( value-- );
-	}
+          for ( i = offset; i < nwc; i++ )
+            *( resValue-- ) = *( value-- );
+        }
       else if ( extend )
-	return leftShiftExt( leftShiftExt( n, shift % WordBits ), shift - ( shift % WordBits ) );
+        return leftShiftExt( leftShiftExt( n, shift % WordBits ), shift - ( shift % WordBits ) );
       else
-	return ( n << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
+        return ( n << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
     }
   else
     {
       for ( i = 0; i < nwc; i++ )
-	*( resValue-- ) = 0;
+        *( resValue-- ) = 0;
     }
 
   return RNumber( resValue0, nwc, ns );
@@ -2948,61 +2949,61 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
   if ( shift < n._size || extend )
     {
       if ( shift == 0 )
-	{
-	  for ( i = 0; i < nwc; i++ )
-	    *( resValue-- ) = *( value-- );
-	  // We didn't use the extra space, so we 
-	  // make sure that we don't count it in the
-	  // final result.
-	  resValue0 += adjust;
-	}
+        {
+          for ( i = 0; i < nwc; i++ )
+            *( resValue-- ) = *( value-- );
+          // We didn't use the extra space, so we 
+          // make sure that we don't count it in the
+          // final result.
+          resValue0 += adjust;
+        }
       else if ( shift < WordBits )
-	{
-	  int invShift = WordBits - shift;
-	  unsigned int mask = ( 1 << shift ) - 1;
-	  unsigned int cin = 0;
+        {
+          int invShift = WordBits - shift;
+          unsigned int mask = ( 1 << shift ) - 1;
+          unsigned int cin = 0;
 
-	  if ( extend )
-	    {
-	      nwc = totalwc;
-	      ns = totals;
-	    }
+          if ( extend )
+            {
+              nwc = totalwc;
+              ns = totals;
+            }
 
-	  for ( i = 0; i < nwc; i++ )
-	    {
-	      *( resValue-- ) = ( *value << shift ) | cin;
-	      cin = ( *( value-- ) >> invShift ) & mask;
-	    }
-	}
+          for ( i = 0; i < nwc; i++ )
+            {
+              *( resValue-- ) = ( *value << shift ) | cin;
+              cin = ( *( value-- ) >> invShift ) & mask;
+            }
+        }
       else if ( ( shift % WordBits ) == 0 )
-	{
-	  unsigned int offset = shift / WordBits;
+        {
+          unsigned int offset = shift / WordBits;
 
-	  if ( extend )
-	    {
-	      nwc = totalwc;
-	      ns = totals;
-	    }
+          if ( extend )
+            {
+              nwc = totalwc;
+              ns = totals;
+            }
 
-	  for ( i = 0; i < offset; i++ )
-	    *( resValue-- ) = 0;
+          for ( i = 0; i < offset; i++ )
+            *( resValue-- ) = 0;
 
-	  for ( i = offset; i < nwc; i++ )
-	    *( resValue-- ) = *( value-- );
-	}
+          for ( i = offset; i < nwc; i++ )
+            *( resValue-- ) = *( value-- );
+        }
       else if ( extend )
-	{
-	  return leftShiftExt( leftShiftExt( n, shift % WordBits ), shift - ( shift % WordBits ) );
-	}
+        {
+          return leftShiftExt( leftShiftExt( n, shift % WordBits ), shift - ( shift % WordBits ) );
+        }
       else
-	{
-	  return ( n << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
-	}
+        {
+          return ( n << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
+        }
     }
   else
     {
       for ( i = 0; i < nwc; i++ )
-	*( resValue-- ) = 0;
+        *( resValue-- ) = 0;
     }
 
   return RNumber( resValue0, nwc, ns );
@@ -3099,49 +3100,49 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
   if ( shift < _size )
     {
       if ( shift < WordBits )
-	{
-	  unsigned int* value = _valueBuffer + _wordCount - 1;
-	  unsigned int intShift = shift.uint32();
-	  int invShift = WordBits - intShift;
-	  unsigned int mask = ( 1 << intShift ) - 1;
-	  unsigned int cin = 0;
-	  unsigned int old;
+        {
+          unsigned int* value = _valueBuffer + _wordCount - 1;
+          unsigned int intShift = shift.uint32();
+          int invShift = WordBits - intShift;
+          unsigned int mask = ( 1 << intShift ) - 1;
+          unsigned int cin = 0;
+          unsigned int old;
 
-	  for ( i = 0; i < _wordCount; i++ )
-	    {
-	      old = *value;
-	      *value = ( *value << intShift ) | cin;
-	      value--;
-	      cin = ( old >> invShift ) & mask;
-	    }
+          for ( i = 0; i < _wordCount; i++ )
+            {
+              old = *value;
+              *value = ( *value << intShift ) | cin;
+              value--;
+              cin = ( old >> invShift ) & mask;
+            }
 
-	  truncateTop();
-	}
+          truncateTop();
+        }
       else if ( ( shift % WordBits ) == 0 )
-	{
-	  unsigned int* value = _valueBuffer;
-	  unsigned int offset = shift.uint32() / WordBits;
+        {
+          unsigned int* value = _valueBuffer;
+          unsigned int offset = shift.uint32() / WordBits;
 
-	  for ( i = offset; i < _wordCount; i++ )
-	    {
-	      *value = *( value + offset );
-	      value++;
-	    }
+          for ( i = offset; i < _wordCount; i++ )
+            {
+              *value = *( value + offset );
+              value++;
+            }
 
-	  for ( i = 0; i < offset; i++ )
-	    *( value++ ) = 0;
+          for ( i = 0; i < offset; i++ )
+            *( value++ ) = 0;
 
-	  truncateTop();
-	}
+          truncateTop();
+        }
       else if ( shift != 0 )
-	*this = ( *this << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
+        *this = ( *this << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
     }
   else
     {
       unsigned int* value = _valueBuffer;
 
       for ( i = 0; i < _wordCount; i++ )
-	*( value++ ) = 0;
+        *( value++ ) = 0;
     }
 
   return *this;
@@ -3160,48 +3161,48 @@ RNumber& RNumber::operator<<=( unsigned int shift )
   if ( shift < _size )
     {
       if ( shift < WordBits )
-	{
-	  unsigned int* value = _valueBuffer + _wordCount - 1;
-	  int invShift = WordBits - shift;
-	  unsigned int mask = ( 1 << shift ) - 1;
-	  unsigned int cin = 0;
-	  unsigned int old;
+        {
+          unsigned int* value = _valueBuffer + _wordCount - 1;
+          int invShift = WordBits - shift;
+          unsigned int mask = ( 1 << shift ) - 1;
+          unsigned int cin = 0;
+          unsigned int old;
 
-	  for ( i = 0; i < _wordCount; i++ )
-	    {
-	      old = *value;
-	      *value = ( *value << shift ) | cin;
-	      value--;
-	      cin = ( old >> invShift ) & mask;
-	    }
+          for ( i = 0; i < _wordCount; i++ )
+            {
+              old = *value;
+              *value = ( *value << shift ) | cin;
+              value--;
+              cin = ( old >> invShift ) & mask;
+            }
 
-	  truncateTop();
-	}
+          truncateTop();
+        }
       else if ( ( shift % WordBits ) == 0 )
-	{
-	  unsigned int* value = _valueBuffer;
-	  unsigned int offset = shift / WordBits;
+        {
+          unsigned int* value = _valueBuffer;
+          unsigned int offset = shift / WordBits;
 
-	  for ( i = offset; i < _wordCount; i++ )
-	    {
-	      *value = *( value + offset );
-	      value++;
-	    }
+          for ( i = offset; i < _wordCount; i++ )
+            {
+              *value = *( value + offset );
+              value++;
+            }
 
-	  for ( i = 0; i < offset; i++ )
-	    *( value++ ) = 0;
+          for ( i = 0; i < offset; i++ )
+            *( value++ ) = 0;
 
-	  truncateTop();
-	}
+          truncateTop();
+        }
       else if ( shift != 0 )
-	*this = ( *this << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
+        *this = ( *this << ( shift % WordBits ) ) << ( shift - ( shift % WordBits ) );
     }
   else
     {
       unsigned int* value = _valueBuffer;
 
       for ( i = 0; i < _wordCount; i++ )
-	*( value++ ) = 0;
+        *( value++ ) = 0;
     }
       
   return *this;
@@ -3228,23 +3229,23 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
       unsigned int cin = 0;
 
       for (i = 0; i < nwc; i++) {
-	*(resValue++) = (*value >> intShift) | cin;
-	cin = (*(value++) & mask) << invShift;
+        *(resValue++) = (*value >> intShift) | cin;
+        cin = (*(value++) & mask) << invShift;
       }
     }
     else if ((shift % WordBits) == 0) {
       unsigned int offset = shift.uint32() / WordBits;
 
       for ( i = 0; i < offset; i++ ) {
-	*( resValue++ ) = 0;
+        *( resValue++ ) = 0;
       }
 
       for ( i = offset; i < nwc; i++ ) {
-	*( resValue++ ) = *( value++ );
+        *( resValue++ ) = *( value++ );
       }
     } else if (shift == 0) {
       for ( i = 0; i < nwc; i++ ) {
-	*( resValue++ ) = *( value++ );
+        *( resValue++ ) = *( value++ );
       }
     } else {
       return ( n >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
@@ -3276,39 +3277,39 @@ inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
   if ( shift < n._size )
     {
       if ( shift < WordBits )
-	{
-	  int invShift = WordBits - shift;
-	  unsigned int mask = ( 1 << shift ) - 1;
-	  unsigned int cin = 0;
+        {
+          int invShift = WordBits - shift;
+          unsigned int mask = ( 1 << shift ) - 1;
+          unsigned int cin = 0;
 
-	  for ( i = 0; i < nwc; i++ )
-	    {
-	      *( resValue++ ) = ( *value >> shift ) | cin;
-	      cin = ( *( value++ ) & mask ) << invShift;
-	    }
-	}
+          for ( i = 0; i < nwc; i++ )
+            {
+              *( resValue++ ) = ( *value >> shift ) | cin;
+              cin = ( *( value++ ) & mask ) << invShift;
+            }
+        }
       else if ( ( shift % WordBits ) == 0 )
-	{
-	  unsigned int offset = shift / WordBits;
+        {
+          unsigned int offset = shift / WordBits;
 
-	  for ( i = 0; i < offset; i++ )
-	    *( resValue++ ) = 0;
+          for ( i = 0; i < offset; i++ )
+            *( resValue++ ) = 0;
 
-	  for ( i = offset; i < nwc; i++ )
-	    *( resValue++ ) = *( value++ );
-	}
+          for ( i = offset; i < nwc; i++ )
+            *( resValue++ ) = *( value++ );
+        }
       else if ( shift == 0 )
-	{
-	  for ( i = 0; i < nwc; i++ )
-	    *( resValue++ ) = *( value++ );
-	}
+        {
+          for ( i = 0; i < nwc; i++ )
+            *( resValue++ ) = *( value++ );
+        }
       else
-	return ( n >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
+        return ( n >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
     }
   else
     {
       for ( i = 0; i < nwc; i++ )
-	*( resValue++ ) = 0;
+        *( resValue++ ) = 0;
     }
 
   return RNumber( resValue0, nwc, n._size );
@@ -3377,43 +3378,43 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
   if ( shift < _size )
     {
       if ( shift < WordBits )
-	{
-	  unsigned int intShift = shift.uint32();
-	  int invShift = WordBits - intShift;
-	  unsigned int mask = ( 1 << intShift ) - 1;
-	  unsigned int cin = 0;
-	  unsigned int old;
+        {
+          unsigned int intShift = shift.uint32();
+          int invShift = WordBits - intShift;
+          unsigned int mask = ( 1 << intShift ) - 1;
+          unsigned int cin = 0;
+          unsigned int old;
 
-	  for ( i = 0; i < _wordCount; i++ )
-	    {
-	      old = *value;
-	      *value = ( *value >> intShift ) | cin;
-	      value++;
-	      cin = ( old & mask ) << invShift;
-	    }
-	}
+          for ( i = 0; i < _wordCount; i++ )
+            {
+              old = *value;
+              *value = ( *value >> intShift ) | cin;
+              value++;
+              cin = ( old & mask ) << invShift;
+            }
+        }
       else if ( ( shift % WordBits ) == 0 )
-	{
-	  unsigned int offset = shift.uint32() / WordBits;
+        {
+          unsigned int offset = shift.uint32() / WordBits;
 
-	  value = _valueBuffer + _wordCount - 1;
+          value = _valueBuffer + _wordCount - 1;
 
-	  for ( i = _wordCount - 1; i >= offset; i-- )
-	    {
-	      *value = *( value - offset );
-	      value--;
-	    }
+          for ( i = _wordCount - 1; i >= offset; i-- )
+            {
+              *value = *( value - offset );
+              value--;
+            }
 
-	  for ( i = 0; i < offset; i++ )
-	    *( value-- ) = 0;
-	}
+          for ( i = 0; i < offset; i++ )
+            *( value-- ) = 0;
+        }
       else if ( shift != 0 )
-	*this = ( *this >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
+        *this = ( *this >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
     }
   else
     {
       for ( i = 0; i < _wordCount; i++ )
-	*( value++ ) = 0; 
+        *( value++ ) = 0; 
     }
       
   return *this;
@@ -3433,42 +3434,42 @@ RNumber& RNumber::operator>>=( unsigned int shift )
   if ( shift < _size )
     {
       if ( shift < WordBits )
-	{
-	  int invShift = WordBits - shift;
-	  unsigned int mask = ( 1 << shift ) - 1;
-	  unsigned int cin = 0;
-	  unsigned int old;
+        {
+          int invShift = WordBits - shift;
+          unsigned int mask = ( 1 << shift ) - 1;
+          unsigned int cin = 0;
+          unsigned int old;
 
-	  for ( i = 0; i < _wordCount; i++ )
-	    {
-	      old = *value;
-	      *value = ( *value >> shift ) | cin;
-	      value++;
-	      cin = ( old & mask ) << invShift;
-	    }
-	}
+          for ( i = 0; i < _wordCount; i++ )
+            {
+              old = *value;
+              *value = ( *value >> shift ) | cin;
+              value++;
+              cin = ( old & mask ) << invShift;
+            }
+        }
       else if ( ( shift % WordBits ) == 0 )
-	{
-	  unsigned int offset = shift / WordBits;
+        {
+          unsigned int offset = shift / WordBits;
 
-	  value = _valueBuffer + _wordCount - 1;
+          value = _valueBuffer + _wordCount - 1;
 
-	  for ( i = _wordCount - 1; i >= offset; i-- )
-	    {
-	      *value = *( value - offset );
-	      value--;
-	    }
+          for ( i = _wordCount - 1; i >= offset; i-- )
+            {
+              *value = *( value - offset );
+              value--;
+            }
 
-	  for ( i = 0; i < offset; i++ )
-	    *( value-- ) = 0;
-	}
+          for ( i = 0; i < offset; i++ )
+            *( value-- ) = 0;
+        }
       else if ( shift != 0 )
-	*this = ( *this >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
+        *this = ( *this >> ( shift % WordBits ) ) >> ( shift - ( shift % WordBits ) );
     }
   else
     {
       for ( i = 0; i < _wordCount; i++ )
-	*( value++ ) = 0; 
+        *( value++ ) = 0; 
     }
       
   return *this;
@@ -3558,18 +3559,18 @@ RNumber& RNumber::signExtend( unsigned int bit )
       int n    = _wordCount - ( size / WordBits );
 
       if ( size % WordBits )
-	{
-	  unsigned int mask = ( 1 << ( size % WordBits ) ) - 1;
+        {
+          unsigned int mask = ( 1 << ( size % WordBits ) ) - 1;
 
-	  _valueBuffer[n - 1] = ( sign ) ? ( _valueBuffer[n - 1] | ~mask ) :
-	    ( _valueBuffer[n - 1] & mask );
-	  n--;
-	}
+          _valueBuffer[n - 1] = ( sign ) ? ( _valueBuffer[n - 1] | ~mask ) :
+            ( _valueBuffer[n - 1] & mask );
+          n--;
+        }
 
       unsigned int v = ( sign ? 0xffffffff : 0x0 );
 
       for ( int i = 0; i < n; i++ )
-	_valueBuffer[i] = v;
+        _valueBuffer[i] = v;
 
       truncateTop();
     }
@@ -3708,16 +3709,16 @@ unsigned int RNumber::getUIntField( unsigned int start, unsigned int end ) const
       end = _size - end - 1;
 
       if ( start / WordBits == end / WordBits )
-	{
-	  // The start and end values do not cross over word boundaries, with
-	  // respect to the total size. Shift over and mask the proper field.
-	  unsigned int word = _wordCount - ( start / WordBits ) - 1;
-	  unsigned int shift = end % WordBits;
+        {
+          // The start and end values do not cross over word boundaries, with
+          // respect to the total size. Shift over and mask the proper field.
+          unsigned int word = _wordCount - ( start / WordBits ) - 1;
+          unsigned int shift = end % WordBits;
 
-	  return ( _valueBuffer[word] >> shift ) & mask;
-	}
+          return ( _valueBuffer[word] >> shift ) & mask;
+        }
       else
-	return ( ( *this >> end ).uint32() & mask );
+        return ( ( *this >> end ).uint32() & mask );
     }
 }
 
@@ -3873,11 +3874,11 @@ void RNumber::printDec( ostream& os,int format ) const
       RNumber div( 0, _size );
 
       while ( tmp != 0 )
-	{
-	  div = tmp / 10;
-	  *p-- = '0' + ( tmp - div * 10 ).uint32();
-	  tmp = div;
-	}
+        {
+          div = tmp / 10;
+          *p-- = '0' + ( tmp - div * 10 ).uint32();
+          tmp = div;
+        }
 
       p++;
     }
@@ -3898,7 +3899,7 @@ void RNumber::printHex( ostream& os,int format ) const
 
   // Set hex format and save old flags.
   ios::fmtflags old_options = os.flags( ( os.flags() & ~ios::basefield ) |
-					ios::hex );
+                                        ios::hex );
 
   // Hexadecimal format.
   unsigned int width = os.width();

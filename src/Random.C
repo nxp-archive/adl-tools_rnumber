@@ -8,6 +8,7 @@
 */
 #include <sys/time.h>
 #include <stdexcept>
+#include <cassert>
 
 #include "Random.h"
 

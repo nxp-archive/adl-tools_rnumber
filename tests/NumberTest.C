@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdexcept>
+#include <cassert>
 
 #include "gccversion.h"
 
@@ -1404,7 +1405,7 @@ const char *nextArg()
 {
   ++_cur;
   if (_cur >= _argc) {
-	 throw runtime_error(string("Error:  Expected an argument for option '")+_argv[_cur-1]+"'.");
+         throw runtime_error(string("Error:  Expected an argument for option '")+_argv[_cur-1]+"'.");
   }
   return _argv[_cur];
 }
@@ -1427,34 +1428,34 @@ int main (int argc, char **argv)
   unsigned seed = 0;
 
   try {
-	 for ( ; _cur < _argc; ++_cur) {
-		if (!strcmp (curArg(), "-seed")) {
-		  seed = atoi (nextArg());
-		}
-		else if (!strcmp (curArg(), "-n")) {
-		  maxIter = atoi (nextArg());
-		}
-		else if (!strcmp (curArg(), "-dcpath")) {
-		  path = nextArg();
-		}
-		else if (!strcmp (curArg(), "-dc")) {
-		  pgm = nextArg();
-		}
-		else if (!strcmp (curArg(), "-trace_level")) {
-		  set_tracing_level( strtoul(nextArg(),0,0));
-		  printf("trace_level_set 0x%x\n", get_tracing_level());
-		}
-		else {
-		  usage (argv[0]);
-		}
-	 }	
+         for ( ; _cur < _argc; ++_cur) {
+                if (!strcmp (curArg(), "-seed")) {
+                  seed = atoi (nextArg());
+                }
+                else if (!strcmp (curArg(), "-n")) {
+                  maxIter = atoi (nextArg());
+                }
+                else if (!strcmp (curArg(), "-dcpath")) {
+                  path = nextArg();
+                }
+                else if (!strcmp (curArg(), "-dc")) {
+                  pgm = nextArg();
+                }
+                else if (!strcmp (curArg(), "-trace_level")) {
+                  set_tracing_level( strtoul(nextArg(),0,0));
+                  printf("trace_level_set 0x%x\n", get_tracing_level());
+                }
+                else {
+                  usage (argv[0]);
+                }
+         }      
   }
   catch (runtime_error &err) {
-	 cerr << err.what() << endl;
+         cerr << err.what() << endl;
   }
 
   if (pgm.empty())
-	 pgm = path + "/" + prog;
+         pgm = path + "/" + prog;
 
   seed = Random::init(seed);
 
