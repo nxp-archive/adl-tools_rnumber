@@ -1,5 +1,7 @@
         ============== rnumber release 1.12.1 (v1_12_1) on SunOS ==============
 
+        ============== rnumber release 1.12.1 (v1_12_1) on SunOS ==============
+
 2002-12-13  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	*  CDCpp33115 - fixed core dump on left and right shifts of integers
