@@ -22,11 +22,13 @@ RNUMBER_STATIC_LIBS = \
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
+BIGLOO_C_OPT = -copt "-I ../include"  
+BIGLOO_LIB_PATH = -L ../src -L ../bigloo
+BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber
+
+% : %.scm
+	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
+
 simple-number-test: simple-number-test.scm
-	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ +rm -o simple-number-test simple-number-test.scm -lstdc++ -lRNumber
-
 number-tests: number-tests.scm
-	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ +rm -o number-tests number-tests.scm -lstdc++ -lRNumber
-
 driver: driver.scm
-	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ -rm -o driver driver.scm -lstdc++ -lRNumber
