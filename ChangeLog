@@ -1,3 +1,10 @@
+2003-01-29  Brian Kahne  <bkahne@ibmoto.com>
+
+	* Ported rnumber to the newest automake/autoconf.
+
+	* New option:  --enable-static allows for building a non-position-indepedent
+	module.  On Solaris, --enable-profile implies --enable-static.
+
 2003-01-23  Brian Kahne  <bkahne@ibmoto.com>
 
 	* Re-did how profiling is setup so that on Linux, we build with
