@@ -1,3 +1,13 @@
+2003-03-18  Brian Kahne  <bkahne@ibmoto.com>
+
+	* The tests of the C bindings have been moved to rnumber/tests so
+	that they'll be run even if Bigloo or Perl bindings are not being
+	created.
+
+	* Modified RNumber::getSizeWithRadix() so that it will never return
+	a size of 0 (which can cause other problems).  Instead, it will return
+	a size of _defaultSize;
+
 2003-03-17  Brian Kahne  <bkahne@ibmoto.com>
 
 	* I removed strradix and moved that functionality into str().  The

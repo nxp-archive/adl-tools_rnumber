@@ -4214,6 +4214,7 @@ inline int count_underscores(const string &s) {
 //   5) Otherwise, default to decimal and adjust the radix to 10.
 //
 // The passed in radix will be updated to the determined correct value.
+// If the string is empty, the default RNumber size is used.
 //
 unsigned int RNumber::getSizeWithRadix( const string& str, int &radix )
 {
@@ -4228,28 +4229,24 @@ unsigned int RNumber::getSizeWithRadix( const string& str, int &radix )
 
   // if no explicit radix requested, try to determine the
   // radix by prefix hints.
-  if ( radix & rios )
-    {
-      if ( c == '+' || c == '-' )
-        radix = rdec;
-      else if ( c == '0' )
-        {
-          c = str[++n];
+  if ( radix & rios ) {
+    if ( c == '+' || c == '-' )
+      radix = rdec;
+    else if ( c == '0' ) {
+      c = str[++n];
 
-          if ( tolower( c ) == 'x' )
-            {
-              radix = rhex;
-              n++;
-            }
-          else if ( tolower( c ) == 'b' )
-            {
-              radix = rbin;
-              n++;
-            }
-          else
-            n--;
-        }
+      if ( tolower( c ) == 'x' ) {
+        radix = rhex;
+        n++;
+      }
+      else if ( tolower( c ) == 'b' ) {
+        radix = rbin;
+        n++;
+      }
+      else
+        n--;
     }
+  }
 
   // For a radix of rdec or rhex, the max number of bits per digit is a nibble;
   // if the radix is rbin, each digit represents a bit; otherwise, default to
@@ -4261,6 +4258,9 @@ unsigned int RNumber::getSizeWithRadix( const string& str, int &radix )
   else {
     size = ( str.length() - n - count_underscores(str)) << 2;
     radix = rdec;
+  }
+  if (!size) {
+    size = defaultSize();
   }
 
   return size;
