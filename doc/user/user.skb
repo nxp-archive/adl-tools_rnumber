@@ -6,7 +6,7 @@
 
 (bibliography "bib.scr")
 (skribe-load "web-book.skr")
-(skribe-load "./s.skr")
+(skribe-load "s.skr")
 
 ;;(style 'web-book 'web 'user-margin
 ;;       'abbrev)
@@ -15,8 +15,8 @@
  :title "RNumber User Manual"
  :author (author :name "Todd Dukes" 
 		 :affiliation "Motorola High Performance Tools"
-		 :email (mailto :email "Todd.Dukes@motorola.com"
-				"Todd.Dukes@motorola.com")
+		 :email (mailto "Todd.Dukes@motorola.com"
+			   :text "Todd.Dukes@motorola.com")
 		 :phone "512-996-4865")
 
 
@@ -50,7 +50,7 @@
 
    (subsection
     :title "types"
-    (prgm
+      (prog (source :language C) :line 1
 [  enum Radix { rdec, rhex, rbin, rios };
   enum Sizing { fixed, dynamic }]
    ))
@@ -59,7 +59,8 @@
    :title "Constructors and destructor."
    (paragraph
     [All numbers are fixed size by default.])
-   (prgm :language c :bg *prgm-color*
+   (color :bg *prgm-color* 
+      (prog (source :language C) :line 1
 [
     RNumber();
     RNumber( const RNumber& number );
@@ -73,14 +74,15 @@
     RNumber( unsigned int radix, const string& str, int size = -1 );  /// deprecated 
     RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size,
             Sizing sizing = fixed );
-    ~RNumber();]
-    ))
+    ~RNumber();
+])))
+    
 (subsection
  :title "Assignment methods."
  (paragraph [operator=() assigns the value constrained by sizing.
  assign() assigns the value with dynamic sizing; clone() assigns all
  attributes; resize() truncates/expands the value and sets fixed sizing. ])
-   (prgm :language c :bg *prgm-color*
+   (color  :bg *prgm-color* (prog (source :language C)
 [
     RNumber& operator=( unsigned int number );
     RNumber& operator=( const string& number );
@@ -88,21 +90,22 @@
     RNumber& assign( const RNumber& number );
     RNumber& set( const RNumber& number );  /// deprecated 
     RNumber& copy( const RNumber& number );
-    void resize( unsigned int size );]
-))
+    void resize( unsigned int size );
+])))
 
 (subsection
  :title "Unary arithmetic operators."
-   (prgm :language c :bg *prgm-color*
+   (color :bg *prgm-color* (prog (source :language C)
 [
    const RNumber operator-() const;
-   const RNumber operator~() const;]
-   ))
+   const RNumber operator~() const;
+]
+   )))
 
 (subsection
  :title "Arithmetic assignment operators"
  (paragraph [Assignment size depends on sizing state.])
- (prgm :language c :bg *prgm-color*
+   (color :bg *prgm-color* (prog (source :language C)
 [
    RNumber& operator+=( const RNumber& number );
    RNumber& operator+=( unsigned int number );
@@ -123,31 +126,34 @@
    RNumber& operator<<=( const RNumber& shift );
    RNumber& operator<<=( unsigned int shift );
    RNumber& operator>>=( const RNumber& shift );
-   RNumber& operator>>=( unsigned int shift );]
-   ))
+   RNumber& operator>>=( unsigned int shift );
+]
+   )))
 
 (subsection
  :title "Unary conditional expression operators."
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
-   bool operator!() const;]
-	))
+   bool operator!() const;
+]
+	)))
 
 (subsection
  :title "Signed conditional expression operators."
- (prgm :language c :bg *prgm-color*
+   (color :bg *prgm-color* (prog (source :language C)
 [
    bool signedLT( const RNumber& number ) const;
    bool signedLE( const RNumber& number ) const;
    bool signedGT( const RNumber& number ) const;
    bool signedGE( const RNumber& number ) const;
    int  compare( const RNumber& number ) const;
-   bool iszero() const;]
-   ))
+   bool iszero() const;
+]
+   )))
 
 (subsection
  :title "Miscellaneous bit manipulation methods"
- (prgm :language c :bg *prgm-color*
+(color  :bg *prgm-color* (prog (source :language C)
 [
    RNumber& invert();
    RNumber& negate();
@@ -155,80 +161,86 @@
    RNumber& setToAllOnes();   /// deprecated 
    RNumber& clearAll();
    RNumber& signExtend( unsigned int bit );
-   RNumber& truncate( unsigned int size );]
-   ))
+   RNumber& truncate( unsigned int size );
+]
+   )))
 
 (subsection
  :title "Bit value accessors and manipulators"
- (prgm :language c :bg *prgm-color*
+   (color :bg *prgm-color* (prog (source :language C)
 [
    unsigned int getBit( unsigned int pos ) const;
    unsigned int getBitLSB( unsigned int pos ) const;
    void         setBit( unsigned int pos, unsigned int value );
    void         setBitLSB( unsigned int pos, unsigned int value );
    void         assignBit( unsigned int pos, unsigned int value ); /// deprecated
-   void         assignBitLSB( unsigned int pos, unsigned int value ); /// deprecated]
-   ))
+   void         assignBitLSB( unsigned int pos, unsigned int value ); /// deprecated
+]
+   )))
 
 (subsection
  :title "Value accessors."
- (prgm :language c :bg *prgm-color*
+ (color  :bg *prgm-color* (prog (source :language C)
 [
    unsigned int intValue() const;  ///  deprecated
    unsigned int getInt() const;  /// deprecated
    unsigned int getUInt() const;
    string       str() const;
-   string       strradix(Radix=RNumber::rdec,bool prefix=false) const;]
-   ))
+   string       strradix(Radix=RNumber::rdec,bool prefix=false) const;
+])))
 
 (subsection
  :title "Value field accessors and manipulators"
- (prgm :language c :bg *prgm-color*
+   (color :bg *prgm-color* (prog (source :language C)
 [
    unsigned int getIntField( unsigned int start, unsigned int end ) const; /// deprecated
    unsigned int getUIntField( unsigned int start, unsigned int end ) const;
    RNumber      getField( unsigned int start, unsigned int end ) const;
-   void         setField( unsigned int start, unsigned int end, const RNumber& num );]
-   ))
+   void         setField( unsigned int start, unsigned int end, const RNumber& num );
+]
+   )))
 
 (subsection
  :title "Attribute accessors and manipulators"
- (prgm :language c :bg *prgm-color*
+   (color  :bg *prgm-color* (prog (source :language C)
 [
   unsigned    size() const;
   unsigned    wordCount() const;
   const       unsigned *buffer() const;
   static      unsigned int defaultSize(); /// deprecated, use getDefaultSize()
   static      unsigned int getDefaultSize();
-  static void setDefaultSize( unsigned int size );]
-  ))
+  static void setDefaultSize( unsigned int size );
+]
+  )))
 
 (subsection
  :title "Sizing"
- (prgm :language c :bg *prgm-color*
+   (color :bg *prgm-color* (prog (source :language C)
 [
   Sizing sizing() const;
   void   setDynamic();
-  void   setFixed();]
-  ))
+  void   setFixed();
+]
+  )))
   
 (subsection
  :title "Streaming I/O methods"
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   void            printToOS( ostream& os ) const;
   ostream&        printWithRadix( ostream& os, Radix = rios, bool prefix=false ) const;
   friend istream& operator>>( istream& is, RNumber& number );
   friend ostream& operator<<( ostream& os, const RNumber& number );
   void            read( istream& is );
-  void            write( ostream& os ) const;]
-   ))
+  void            write( ostream& os ) const;
+]
+   )))
 
 (subsection
  :title "Friends"
  (paragraph
   [The Hash and Equal functors can be used to hashmap from the stl class libraries.])
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   friend struct Hash {
       size_t operator()( const RNumber& num ) const;
@@ -273,15 +285,16 @@
   friend  bool lessThan( unsigned int n1, const RNumber& n2, bool orEqual );
   friend  bool greaterThan( const RNumber& n1, const RNumber& n2, bool orEqual );
   friend  bool greaterThan( const RNumber& n1, unsigned int n2, bool orEqual );
-  friend  bool greaterThan( unsigned int n1, const RNumber& n2, bool orEqual );]
-  ))
+  friend  bool greaterThan( unsigned int n1, const RNumber& n2, bool orEqual );
+]
+  )))
 
 (subsection
  :title "Non-member functions"
  (paragraph
   [These functions are not member functions. They allow for mixed arithmetic expressions between
 	 RNumbers and unsigned integers. Notice that there are three versions of each function.])
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   const RNumber operator+( const RNumber& n1, const RNumber& n2 );
   const RNumber operator+( const RNumber& n1, unsigned int n2 );
@@ -321,13 +334,14 @@
   const RNumber leftShiftExt( unsigned int n1, const RNumber& n2 );
   const RNumber operator>>( const RNumber& n, const RNumber& shift );
   const RNumber operator>>( const RNumber& n, unsigned int shift );
-  const RNumber operator>>( unsigned int n, const RNumber& shift );]
-  )
+  const RNumber operator>>( unsigned int n, const RNumber& shift );
+]
+  ))
 
 (paragraph
  [These functions are not member functions. They 
  allow for mixed conditional expressions between RNumbers and unsigned integers.])
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color*   (prog (source :language C
 [
   bool operator!=( const RNumber& n1, const RNumber& n2 );
   bool operator!=( const RNumber& n1, unsigned int n2 );
@@ -346,13 +360,15 @@
   bool operator>( unsigned int n1, const RNumber& n2 );
   bool operator>=( const RNumber& n1, const RNumber& n2 );
   bool operator>=( const RNumber& n1, unsigned int n2 );
-  bool operator>=( unsigned int n1, const RNumber& n2 );]
-  )))
+  bool operator>=( unsigned int n1, const RNumber& n2 );
+]
+  ))))
+     
 (section
  :title "types"
  (paragraph
   [Here are miscellaneous types that are defined in ,(code [types.h])])
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   const unsigned NIBBLE_BITS  = 4;
   const unsigned NIBBLE_RADIX = ( (unsigned) 0x1 ) << NIBBLE_BITS;
@@ -395,8 +411,10 @@
   typedef signed short int         int16;
 
   typedef unsigned char            uint8;
-  typedef signed char              int8;]
-  ))
+  typedef signed char              int8;
+]
+  )))
+     
 (section
  :title "Random"
  
@@ -412,7 +430,7 @@
 	multiple RandomObj generators which may be swapped in and out- the
 	current generator is then used by the various get functions.])
 
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
    /// By default, we set the seed based upon the time.
    Random();
@@ -452,15 +470,16 @@
    static RandState getState();
    static void setState(const RandState &);
    /// Return the offset that the current generator is at.
-   static unsigned getCount();]
-))
+   static unsigned getCount();
+]
+)))
 
 (subsection
  :title "RandomObj"
  (paragraph
   [Each of these items represents a random number generator.  
  The class is self contained, but they all share the same seed.])
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   RandomObj();
   RandomObj(unsigned);
@@ -490,21 +509,23 @@
   void setState(const RandState &);
   unsigned getCount();
   /// Gate control.
-  void set_gate(bool g);]
+  void set_gate(bool g);
+]
 ))
 
 (subsection
  :title "RandomSTL"
  (paragraph
   [Functor for use with STL generic algorithms.])
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog  (source :language C)
 [
   class RandomSTL
   {
     public:
     int operator()( int n )  { return Random::getInteger( n ); }
-  };]
-    )))
+  };
+]
+    ))))
 
 (section
  :title "LcgRand"
@@ -523,7 +544,7 @@
    combine the two results using addition -- this creates a fairly good
    distribution with about double the period. ])
 
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   LcgRand (unsigned seed = 4937) { sgenrand(seed); };
   /// Specify a seed (initial state).
@@ -536,8 +557,9 @@
   unsigned long state() const { return _x; };
   /// Save/load state from a binary stream.
   void save(ostream &) const;
-  void load(istream &);]
-  ))
+  void load(istream &);
+])))
+ 
 
 (section
  :title "KissRand"
@@ -550,7 +572,7 @@
  (paragraph
   [KissState is a memento object for storing state of the random number generator.])
 
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   KissRand (unsigned seed = 4937);
   /// Specify a seed.
@@ -563,8 +585,9 @@
   unsigned count() const { return _count; };
   /// Get/set state of generator.
   KissState getState() const;
-  void setState(const KissState &);]
-  )))
+  void setState(const KissState &);
+]
+  ))))
 
 (chapter
  :title "C functions"
@@ -574,7 +597,7 @@
        return a pointer to a newly allocated pointer to an rnumber. The deviant functions
        (ie. the ones who do not return a newly allocated rnumber) are noted below.])
 
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   struct RNumber * rnumber_create();
   struct RNumber * rnumber_create_from_unsigned( unsigned int number );
@@ -784,12 +807,14 @@
    
    int rnumber_rhex();
    int rnumber_rbin();
-   int rnumber_rdec();]
-   )
+   int rnumber_rdec();
+]
+   ))
+   
 (paragraph
  [Below are the functions that return RNumber pointers that are not allocated, all other functions
 	return newly allocated memory.])
- (prgm :language c :bg *prgm-color*
+(color :bg *prgm-color* (prog (source :language C)
 [
   RNumber * rnumber_assign_from_uint ( RNumber * rnumber, unsigned int number )
   RNumber * rnumber_assign_from_string ( RNumber * rnumber, char * number_string )
@@ -821,13 +846,13 @@
   RNumber * rnumber_clear_all( RNumber * rnumber)
   RNumber * rnumber_sign_extend( RNumber * rnumber, unsigned int bit )
   RNumber * rnumber_truncate( RNumber * rnumber, unsigned int size )]
-))
+)))
 
 (chapter
  :title "Perl Bindings"
  (paragraph
   [All of the c functions can be called from perl by using the rnumber module
-       (see ,(ref :url *project-example-ftp-site* [examples])). Several
+       (see ,(ref :url *project-example-ftp-site* :text [examples])). Several
        of the functions are exported for convenience. Also, some of the functions have be made polymorphic.
        They can accept rnumbers or integers as any of their parameters. They are also listed here.])
 
@@ -1012,16 +1037,16 @@
 (chapter
   :title "Bibliography"
   :number #f 
-  (font :size -1 (print-bibliography :all #t)))
+  (font :size -1 (the-bibliography :all #t)))
 
  (chapter
   :title "Variable Index"
   :number #f
   (paragraph
    [The Variable index contains entries for variables and functions.])
-  (print-index "variable-index"))
+    (the-index *variable-index*))
  (chapter
   :title "Concept Index"
   :number #f
-  (print-index "concept-index"))
+  (the-index *concept-index*))
  )

@@ -21,7 +21,7 @@ PROJECT_URL = http://www.somerset.sps.mot.com/projects/tools/tlv/$(PROJECT)
 PROJECT_EXAMPLE_FTP_SITE = http://www.somerset.sps.mot.com/projects/tools/tlv/$(PROJECT)/examples
 USER_URL = $(PROJECT_URL)/user
 
-SCRIBE = scribe
+SCRIBE = skribe
 SCRIBEFLAGS =
 SCRIBEVARS = --eval "\(define *project-url* \"$(PROJECT_URL)\"\)" \
 	--eval "\(define *user-dir* \"$(USER_URL)\"\)" \
