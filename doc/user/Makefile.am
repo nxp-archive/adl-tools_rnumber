@@ -4,7 +4,10 @@ userwebdatadir = $(WEB_HOME)/user
 userwebdata_DATA =	user.html \
 			user-1.html \
 			user-2.html \
-			user-3.html 
+			user-3.html \
+			user-4.html \
+			user-5.html \
+			user-6.html 
 
 
 ps : user.ps
