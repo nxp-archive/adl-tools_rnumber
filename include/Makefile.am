@@ -10,7 +10,8 @@ pkginclude_HEADERS = \
 	C-Random.h \
 	rnumber_version.h \
 	types.h \
-	trace.h
+	trace.h \
+	gccversion.h
 
 TEST=/usr/bin/test
 cinstall: all-am

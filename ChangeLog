@@ -1,3 +1,7 @@
+2003-03-07  Brian Kahne  <bkahne@ibmoto.com>
+
+	* rnumber is now compatible with gcc 3.2.2.
+
         ============== rnumber release 1.16.7 (v1_16_7) on SunOS ==============
 
         ============== rnumber release 1.16.7 (v1_16_7) on SunOS ==============
