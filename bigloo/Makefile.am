@@ -1,8 +1,18 @@
-pkglib_LIBRARIES = libBLRNumber.a
+pkglib_LIBRARIES = libbl-rnumber.a
+# libbl-rnumber.so
+pkginclude_HEADERS = simple_proxy.h
 
-libBLRNumber_a_SOURCES = \
-	bl-rnumber.c \
-	rnumber_proxy.c
+EXTRA_DIST = $(bigloo_DATA)
+BUILT_SOURCES = bl-rnumber.heap
+
+bigloodir = $(pkglibdir)
+bigloo_DATA = bl-rnumber.init bl-rnumber.heap
+
+libbl_rnumber_a_SOURCES =  bl-rnumber.c rnumber.scm  rnumber_proxy.c
+#libbl_rnumber_so_SOURCES = bl-rnumber.c rnumber.scm  rnumber_proxy.c
+
+#noinst_HEADERS = \
+#	rnumber_exceptions.h 
 
 INCLUDES = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
 

@@ -1,4 +1,4 @@
-check_PROGRAMS =  simple_test NumberTest RandTest number_test  driver number-tests
+check_PROGRAMS =  simple_test NumberTest RandTest number_test  driver 
 
 # randtest
 
@@ -7,6 +7,7 @@ RandTest_SOURCES = RandTest.C
 number_test_SOURCES = c-io.C number_test.c
 simple_test_SOURCES = simple_test.c c-io.C
 # randtest_SOURCES = randtest.c
+driver_SOURCES = driver.scm
 
 EXTRA_DIST = $(TESTS) 
 

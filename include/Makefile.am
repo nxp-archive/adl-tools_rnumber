@@ -7,4 +7,5 @@ pkginclude_HEADERS = \
 	C-RNumber.h \
 	Random.h \
 	C-Random.h \
+	rnumber_version.h \
 	types.h
