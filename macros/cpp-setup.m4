@@ -88,4 +88,30 @@ dnl Include this flag in CXXFLAGS.
 dnl
 CPPSETUP="$OPT $FPIC $PROFILE"
 
+dnl
+dnl Remember GCC major, minor, and micro versions. Sometimes
+dnl micro is missing. In those cases, set micro to 0.
+dnl
+AC_MSG_RESULT([cxx is $CXX])
+AC_MSG_RESULT([cc is $CC])
+CC_VERSION=`$CC -dumpversion`
+CXX_VERSION=`$CXX -dumpversion`
+GCC_MAJOR=`echo $CC_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+GCC_MINOR=`echo $CC_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+AC_MSG_RESULT([gcc_major $GCC_MAJOR gcc_minor $GCC_MINOR])
+
+GXX_MAJOR=`echo $CXX_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+GXX_MINOR=`echo $CXX_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+
+AC_MSG_RESULT([gxx_major $GXX_MAJOR gxx_minor $GXX_MINOR])
+
+AC_SUBST(GCC_MINOR)
+AC_SUBST(GCC_MAJOR)
+AC_SUBST(GXX_MINOR)
+AC_SUBST(GXX_MAJOR)
+
 ])

@@ -24,6 +24,7 @@ AM_MAINTAINER_MODE
 AC_PROG_RANLIB
 AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_CXX
 AM_CPP_SETUP
 
 #########################################################################
@@ -104,6 +105,11 @@ if test "x$BIGLOOBINDINGS" != x ; then
    	   BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
 	   AC_MSG_RESULT([Bigloo bin dir:  $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR])
    	   AC_SUBST(BIGLOO_LIBDIR)
+	   if test $GCC_MAJOR -ge 3; then
+              BIGLOO_GCC3X="-lgcc_s"
+	   else
+              BIGLOO_GCC3X=""
+           fi
 	fi
 else
 	echo "The building of Bigloo bindings has been disabled."
@@ -162,7 +168,6 @@ AM_CONDITIONAL(WITHOUT_DOC,test x$DOC = x)
 
 dnl C++ compiler feature check start here
 dnl moved the c++ compiler alittle to make the basename check work right..
-AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
 CXXFLAGS="-Wall -g $CPPSETUP"
