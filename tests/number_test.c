@@ -3,6 +3,7 @@
 
 #include "C-RNumber.h"
 #include "C-Random.h"
+#include "c-io.h"
 
 unsigned maxIter = 100;
 
@@ -212,8 +213,8 @@ static unsigned checkMultSpecialCases (struct Calculator *calc)
 
   // first op is 0:
   for (i = 0; i < maxIter; i++) {
-    struct RNumber * x = rnumber_create_from_unsigned_of_size(0, random_get_from_range_rnumber (33, 100));
-    struct RNumber * y = random_get_rnumber (random_get_from_range_rnumber (1, 100));
+    struct RNumber * x = rnumber_create_from_unsigned_of_size(0, random_get_from_range_unsigned (33, 100));
+    struct RNumber * y = random_get_rnumber (random_get_from_range_unsigned (1, 100));
     struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
     rc |= calculator_check_arith( calc,x, y, rnumber_rn_multiply_rn(x, y), "*", 0);
     rnumber_rn_multiply_assign(tmp, y);
@@ -222,8 +223,8 @@ static unsigned checkMultSpecialCases (struct Calculator *calc)
 
   // second op is 0
   for (i = 0; i < maxIter; i++) {
-    struct RNumber * x = random_get_rnumber ( random_get_from_range_rnumber (1, 100));
-    struct RNumber * y = rnumber_create_from_unsigned_of_size(0, random_get_from_range_rnumber (33, 100));
+    struct RNumber * x = random_get_rnumber ( random_get_from_range_unsigned (1, 100));
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(0, random_get_from_range_unsigned (33, 100));
     struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
     rc |= calculator_check_arith(calc, x, y, rnumber_rn_multiply_rn(x, y), "*", 0);
     rnumber_multiply_assign(tmp, y);
@@ -232,7 +233,7 @@ static unsigned checkMultSpecialCases (struct Calculator *calc)
 
   // first op is 1:
   for (i = 0; i < maxIter; i++) {
-    struct RNumber * x = rnumber_create_from_unsigned_of_size (1, random_get_from_range_rnumber (33, 100));
+    struct RNumber * x = rnumber_create_from_unsigned_of_size (1, random_get_from_range_unsigned (33, 100));
     struct RNumber * y = random_get_rnumber(random_get_from_range (1, 100));
     struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
     rc |= calculator_check_arith(calc, x, y, rnumber_rn_multiply_rn(x, y), "*", 0);
@@ -243,7 +244,7 @@ static unsigned checkMultSpecialCases (struct Calculator *calc)
   // second op is 1
   for (i = 0; i < maxIter; i++) {
     struct RNumber * x = random_get_rnumber(random_get_from_range (1, 100));
-    struct RNumber * y = rnumber_create_from_unsigned_of_size(1, random_get_from_range (33, 100));
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(1, random_get_from_unsigned (33, 100));
     struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
     rc |= calculator_check_arith(calc, x, y, rnumber_rn_multiply_rn(x, y), "*",0);
     rnumber_multiply_assign(tmp, y);
@@ -261,7 +262,7 @@ static unsigned checkDivideSpecialCases (struct Calculator *calc)
 
   // first op is 0:
   for (i = 0; i < maxIter; i++) {
-    struct RNumber * x = rnumber_create_from_unsigned_of_size (0, random_get_from_range (33, 100));
+    struct RNumber * x = rnumber_create_from_unsigned_of_size (0, random_get_from_range_unsigned(33, 100));
     unsigned size2 = random_get_from_range (1, 100);
     struct RNumber * y = rnumber_create_from_unsigned_of_size (0, size2);
     struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
@@ -276,7 +277,7 @@ static unsigned checkDivideSpecialCases (struct Calculator *calc)
   // second op is 1
   for (i = 0; i < maxIter; i++) {
     struct RNumber * x = random_get_rnumber(random_get_from_range (1, 100));
-    struct RNumber * y = rnumber_create_from_unsigned_of_size(1, random_get_from_range (33, 100));
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(1, random_get_from_range_unsigned(33, 100));
     struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
     rc |= calculator_check_arith(calc, x, y, rnumber_rn_divide_rn(x, y), "/",0);
     rnumber_divide_assign(tmp, y);
@@ -285,8 +286,8 @@ static unsigned checkDivideSpecialCases (struct Calculator *calc)
 
   // first op has size > 32 bits, but can be represented in 32 bits
   for (i = 0; i < maxIter; i++) {
-    struct RNumber * x = random_get_rnumber (random_get_from_range (33, 100));
-    unsigned size2 = random_get_from_range_unsigned (33, 100);
+    struct RNumber * x = random_get_rnumber (random_get_from_range_unsigned(33, 100));
+    unsigned size2 = random_get_from_range_unsigned(33, 100);
     struct RNumber * y = rnumber_create_from_unsigned_of_size(0, size2);
     do {
       y = random_get_rnumber(size2);
@@ -307,48 +308,49 @@ static unsigned checkDivideSpecialCases (struct Calculator *calc)
   // both ops have size > 32 bits, but can be represented in 32 bits
   // first op has size > 32 bits, but can be represented in 32 bits
   for (i = 0; i < maxIter; i++) {
-    struct RNumber * x = random_get_rnumber (random_get_from_range_rnumber (33, 100));
+    struct RNumber * x = random_get_rnumber (random_get_from_range_unsigned(33, 100));
     unsigned size2 = random_get_from_range (33, 100);
     unsigned s, n;
     struct RNumber * y = rnumber_create_from_unsigned_of_size(0, size2);
     do {
       y = random_get_rnumber (size2);
-      s = y . size ();
+      s = rnumber_size(y);
       n = random_get_from_range (s - 32, s - 1);
-      y >>= n;
+      rnumber_rn_rightshift_assign_ui(y, n);
     } while ( rnumber_rn_equal_ui(y, 0));
-    s = x . size ();
-    n = Random::getFromRange (s - 32, s - 1);
-    x >>= n;
-    rc |= calc -> checkArith (x, y, x / y, "/");
+    s = rnumber_size(x);
+    n = random_get_from_range_unsigned (s - 32, s - 1);
+    rnumber_rn_rightshift_ui(x, n);
+    rc |= calculator_check_arith(calc, x, y, rnumber_rn_divide_rn(x, y), "/",0);
     {
-      RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp /= y;
-    rc |= calc -> checkArith (x, y, tmp, "/=");
+      struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+      rnumber_rn_divide_assign_rn(tmp, y);
+      rc |= calculator_check_arith(calc, x, y, tmp, "/=",0);
     }
   }
 
   // ops have leading bytes that are 0
   for (i = 0; i < maxIter; i++) {
-    RNumber x = Random::getRNumber (Random::getFromRange (40, 100));
-    unsigned size2 = Random::getFromRange (40, 100);
+    struct RNumber * x = random_get_rnumber(random_get_from_range_unsigned(40, 100));
+    unsigned size2 = random_get_from_range_unsigned(40, 100);
     unsigned s, n;
-    RNumber y (0, size2);
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(0, size2);
     do {
-      y = Random::getRNumber (size2);
-      s = y . size ();
-      n = Random::getFromRange (8, s - 32);
-      y >>= n;
+      y = random_get_rnumber (size2);
+      s = rnumber_size(y);
+      n = random_get_from_range_unsigned(8, s - 32);
+      rnumber_rn_rightshift_assign_ui(y, n);
     } while(rnumber_rn_equal_ui(y, 0));
-    s = x . size ();
-    n = Random::getFromRange (8, s - 32);
-    x >>= n;
-    rc |= calc -> checkArith (x, y, x / y, "/");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp /= y;
-    rc |= calc -> checkArith (x, y, tmp, "/=");
+    s = rnumber_size(x);
+    n = random_get_from_range_unsigned (8, s - 32);
+    rnumber_rn_rightshift_ui(x, n);
+    rc |= calculator_check_arith(calc, x, y, rnumber_rn_divide_rn(x, y), "/",0);
+    {
+      struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+      rnumber_divide_assign(tmp, y);
+      rc |= calculator_check_arith(calc, x, y, tmp, "/=",0);
+    }
   }
-
   return rc;
 }
 
@@ -358,49 +360,49 @@ static unsigned checkComparator (unsigned size, char *op, struct Calculator *cal
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    unsigned size2 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a = Random::getRNumber (size1);
-    RNumber b = Random::getRNumber (size2);
-    RNumber c = Random::getRNumber (size2);
-    if (size1 < size2)
-      c = a;
-    else
-      a = c;
-
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
+    unsigned size2 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
+    struct RNumber * a = random_get_rnumber(size1);
+    struct RNumber * b = random_get_rnumber(size2);
+    struct RNumber * c = random_get_rnumber(size2);
     int res1, res2;
+    if (size1 < size2) {
+      rnumber_assign(c, a);
+    } else {
+      rnumber_assign(a, c);
+    }
     if (strcmp (op, ">") == 0) {
-      res1 = a > b;
-      res2 = a > c;
+      res1 = rnumber_rn_greaterthan_rn(a, b);
+      res2 = rnumber_rn_greaterthan_rn(a, c);
     }
     else if (strcmp (op, ">=") == 0) {
-      res1 = a >= b;
-      res2 = a >= c;
+      res1 = rnumber_rn_greaterequal_rn(a, b);
+      res2 = rnumber_rn_greaterequal_rn(a, c);
     }
     else if (strcmp (op, "<") == 0) {
-      res1 = a < b;
-      res2 = a < c;
+      res1 = rnumber_rn_lessthan_rn(a, b);
+      res2 = rnumber_rn_lessthan_rn(a, c);
     }
     else if (strcmp (op, "<=") == 0) {
-      res1 = a <= b;
-      res2 = a <= c;
+      res1 = rnumber_rn_lessequal_rn(a, b);
+      res2 = rnumber_rn_lessequal_rn(a, c);
     }
     else if (strcmp (op, "==") == 0) {
-      res1 = a == b;
-      res2 = a == c;
+      res1 = rnumber_rn_equal_rn(a, b);
+      res2 = rnumber_rn_equal_rn(a, c);
     }
     else if (strcmp (op, "!=") == 0) {
-      res1 = a != b;
-      res2 = a != c;
+      res1 = rnumber_rn_notequal_rn(a, b);
+      res2 = rnumber_rn_notequal_rn(a, c);
     }
     else if (strcmp (op, "compare") == 0) {
-      res1 = a . compare (b);
-      res2 = a . compare (c);
+      res1 = rnumber_compare(a, b);
+      res2 = rnumber_compare(a, c);
     }
     else
       assert (0);
-    rc |= calc -> checkComparator (a, b, res1, op);
-    rc |= calc -> checkComparator (a, c, res2, op);
+    rc |= calculator_check_comparator(calc, a, b, res1, op);
+    rc |= calculator_check_comparator(calc, a, c, res2, op);
   }
 
   return rc;
@@ -412,69 +414,72 @@ static unsigned checkIntComparator (unsigned size, char *op, struct Calculator *
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a = Random::getRNumber (size1);
-    unsigned b = Random::getInteger ();
-    unsigned c = Random::getInteger ();
-    if (size1 < 32)
-      c = a . getInt ();
-    else
-      a = c;
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
+    struct RNumber * a = random_get_rnumber (size1);
+    unsigned b = random_get_integer();
+    unsigned c = random_get_integer();
+    int res1, res2;
+    if (size1 < 32) {
+      c = rnumber_get_uint(a);
+    } else {
+      rnumber_assign_uint(a, c);
+    }
 
-    bool res1, res2;
     if (strcmp (op, ">") == 0) {
-      res1 = a > b;
-      res2 = a > c;
+      res1 = rnumber_rn_greater_ui(a, b);
+      res2 = rnumber_rn_greater_ui(a, c);
     }
     else if (strcmp (op, ">=") == 0) {
-      res1 = a >= b;
-      res2 = a >= c;
+      res1 = rnumber_rn_lessequal_ui(a, b);
+      res2 = rnumber_rn_lessequal_ui(a, c);
     }
     else if (strcmp (op, "<") == 0) {
-      res1 = a < b;
-      res2 = a < c;
+      res1 = rnumber_rn_lessthan_ui(a, b);
+      res2 = rnumber_rn_lessthan_ui(a, c);
     }
     else if (strcmp (op, "<=") == 0) {
-      res1 = a <= b;
-      res2 = a <= c;
+      res1 = rnumber_rn_lessequal_ui(a, b);
+      res2 = rnumber_rn_lessequal_ui(a, c);
     }
     else if (strcmp (op, "==") == 0) {
-      res1 = a == b;
-      res2 = a == c;
+      res1 = rnumber_rn_equal_ui(a, b);
+      res2 = rnumber_rn_equal_ui(a, c);
     }
     else if (strcmp (op, "!=") == 0) {
-      res1 = a != b;
-      res2 = a != c;
+      res1 = rnumber_rn_notequal_ui(a, b);
+      res2 = rnumber_rn_notequal_ui(a, c);
     }
-    else
+    else {
       assert (0);
-    rc |= calc -> checkComparator (a, b, res1, op);
-    rc |= calc -> checkComparator (a, c, res2, op);
+    }
+    rc |= calculator_check_comparator_unsigned(calc, a, b, res1, op);
+    rc |= calculator_check_comparator_unsigned(calc, a, c, res2, op);
   }
 
   // special cases:  a == b
   for (i = 0; i < 5; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a = Random::getRNumber (size1);
-    unsigned b = Random::getInteger ();
-    if (size1 < 32)
-      a = b;
-    else
-      b = a . getInt ();
-    bool res;
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
+    struct RNumber * a = random_get_rnumber(size1);
+    unsigned b = random_get_uint ();
+    int res;
+    if (size1 < 32) {
+      rnumber_assign_from_int(a, b);
+    } else {
+      b = rnumber_get_uint(a);
+    }
     if (strcmp (op, ">") == 0)
-      res = a > b;
+      res = rnumber_rn_greaterthan_ui(a, b);
     else if (strcmp (op, ">=") == 0)
-      res = a >= b;
+      res = rnumber_rn_greaterequal_ui(a, b);
     else if (strcmp (op, "<") == 0)
-      res = a < b;
+      res = rnumber_rn_lessthan_ui(a, b);
     else if (strcmp (op, "<=") == 0)
-      res = a <= b;
+      res = rnumber_rn_lessequal_ui(a, b);
     else if (strcmp (op, "==") == 0)
-      res = a == b;
+      res = rnumber_rn_equal_ui(a, b);
     else if (strcmp (op, "!=") == 0)
-      res = a != b;
-    rc |= calc -> checkComparator (a, b, res, op);
+      res = rnumber_rn_notequal_ui(a, b);
+    rc |= calculator_check_comparator_unsigned(calc, a, b, res, op);
   }
   return rc;
 }
@@ -485,173 +490,175 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    unsigned size2 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a = Random::getRNumber (size1);
-    RNumber b = Random::getRNumber (size2);
-    RNumber c = Random::getRNumber (size2);
-    bool cmp, failed;
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
+    unsigned size2 = (size == 0) ? random_get_from_range_unsinged (1, 100) : size;
+    struct RNumber * a = random_get_rnumber (size1);
+    struct RNumber * b = random_get_rnumber (size2);
+    struct RNumber * c = random_get_rnumber (size2);
+    int cmp, failed;
 
     // test b negative, a positive
     if (size1 <= size2) {
-      a . setBit (0, 0);
-      b . setBit (0, 1);
-      failed = false;
+      rnumber_setbit(a, 0, 0);
+      rnumber_setbit(b, 0, 1);
+      failed = 0;
       if (strcmp (op, "GT") == 0) {
-        cmp = a . signedGT (b);
+        cmp = rnumber_signed_greaterthan(a,b);
         failed = (! cmp);
       }
       else if (strcmp (op, "GE") == 0) {
-        cmp = a . signedGE (b);
+        cmp = rnumber_signed_greaterequal(a, b);
         failed = (! cmp);
       }
       else if (strcmp (op, "LT") == 0) {
-        cmp = a . signedLT (b);
+        cmp = rnumber_signed_lessthan(a, b);
         failed = cmp;
       }
       else if (strcmp (op, "LE") == 0) {
-        cmp = a. signedLE (b);
+        cmp = rnumber_signed_lessequal(a,b);
         failed = cmp;
       }
       if (failed) {
         printf ("Error occurred in comparison signed%s on values %s(%d) and %s(%d)\n", op,
-                a . str () . c_str (), a . size (), b . str () . c_str (), b . size ());
+		rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b));
         rc = 1;
       }
     }
 
     // test a negative, b positive
     if (size1 >= size2) {
-      a . setBit (0, 1);
-      b . setBit (0, 0);
-      failed = false;
+      rnumber_setbit(a, 0, 1);
+      rnumber_setbit(b, 0, 0);
+      failed = 0;
       if (strcmp (op, "GT") == 0) {
-        cmp = a . signedGT (b);
+        cmp = rnumber_signed_greaterthan(a,b);
         failed = cmp;
       }
       else if (strcmp (op, "GE") == 0) {
-        cmp = a . signedGE (b);
+        cmp = rnumber_signed_greaterequal(a,b);
         failed = cmp;
       }
       else if (strcmp (op, "LT") == 0) {
-        cmp = a . signedLT (b);
+        cmp = rnumber_signed_lessthan(a,b);
         failed = (! cmp);
       }
       else if (strcmp (op, "LE") == 0) {
-        cmp = a. signedLE (b);
+        cmp = rnumber_signed_lessequal(a,b);
         failed = (! cmp);
       }
       else
         assert (0);
       if (failed) {
         printf ("Error occurred in comparison signed%s on values %s(%d) and %s(%d)\n", op,
-                a . str () . c_str (), a . size (), b . str () . c_str (), b . size ());
+		rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b));
         rc = 1;
       }
     }
 
-    // test same sign
-    unsigned s = Random::getInteger (2);
-    a . setBit (0, s);
-    b . setBit (0, s);
-    c . setBit (0, s);
+    {
+      // test same sign
+      unsigned s = random_get_integer_n(2);
+      rnumber_setbit(a, 0, s);
+      rnumber_setbit(b, 0, s);
+      rnumber_setbit(c, 0, s);
+    }
     if (size1 < size2) {
-      c = a;
-      b . setBit (0, 0);
+      rnumber_assign(c, a);
+      rnumber_setbit(b, 0, 0);
     }
     else {
-      a = c;
+      rnumber_assign(a, c);
     }
-
-    int res1, res2;
-    char *newop;
-    if (strcmp (op, "GT") == 0) {
-      res1 = a . signedGT (b);
-      res2 = a . signedGT (c);
-      newop = ">";
+    
+    {
+      int res1, res2;
+      char *newop;
+      if (strcmp (op, "GT") == 0) {
+	res1 = rnumber_signed_greaterthan(a, b);
+	res2 = rnumber_signed_greaterthan(a, c);
+	newop = ">";
+      }
+      else if (strcmp (op, "GE") == 0) {
+	res1 = rnumber_signed_greaterequal(a, b);
+	res2 = rnumber_signed_greaterequal(a, c);
+	newop = ">=";
+      }
+      else if (strcmp (op, "LT") == 0) {
+	res1 = rnumber_signed_lessthan(a, b);
+	res2 = rnumber_signed_lessthan(a, c);
+	newop = "<";
+      }
+      else if (strcmp (op, "LE") == 0) {
+	res1 = rnumber_signed_lessequal(a, b);
+	res2 = rnumber_signed_lessequal(a, c);
+	newop = "<=";
+      }
+      else
+	assert (0);
+      rc |= calculator_check_comparator(calc, a, b, res1, newop);
+      rc |= calculator_check_comparator(calc, a, c, res2, newop);
     }
-    else if (strcmp (op, "GE") == 0) {
-      res1 = a . signedGE (b);
-      res2 = a . signedGE (c);
-      newop = ">=";
-    }
-    else if (strcmp (op, "LT") == 0) {
-      res1 = a . signedLT (b);
-      res2 = a . signedLT (c);
-      newop = "<";
-    }
-    else if (strcmp (op, "LE") == 0) {
-      res1 = a . signedLE (b);
-      res2 = a . signedLE (c);
-      newop = "<=";
-    }
-    else
-      assert (0);
-    rc |= calc -> checkComparator (a, b, res1, newop);
-    rc |= calc -> checkComparator (a, c, res2, newop);
   }
-
   return rc;
 }
 
-static unsigned checkBitAccessors (unsigned size)
+  static unsigned checkBitAccessors (unsigned size)
 {
   unsigned rc = 0;
   unsigned i;
 
   for (i = 0; i < 50; i++) {
-    unsigned size1 = (size > 0) ? size : Random::getFromRange (1, 100);
-    RNumber a (0, size1);
-    unsigned n = Random::getInteger (size1);
-    RNumber b (1, size1);
-    RNumber c (1, size1);
+    unsigned size1 = (size > 0) ? size : random_get_from_range_unsigned (1, 100);
+    struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
+    unsigned n = random_get_integer(size1);
+    struct RNumber * b = rnumber_create_from_unsigned_of_size(1, size1);
+    struct RNumber * c = rnumber_create_from_unsigned_of_size(1, size1);
     unsigned shift = size1 - n - 1;
-    b <<= shift;
-    c <<= n;
+    rnumber_rn_leftshift_assign_ui(b, shift);
+    rnumber_rn_leftshift_assign_ui(c, n);
 
-    a . setBit (n, 1);
-    if (a != b) {
-      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, a . str () . c_str (), size1);
+    rnumber_setbit(a, n, 1);
+    if (rnumber_rn_notequal_rn(a, b)) {
+      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, rnumber_cstr(a), size1);
       rc = 1;
     }
-    if (a . getBit (n) != 1) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
-      rc = 1;
-    }
-
-    a = 0;
-    a . setBitLSB (n, 1);
-    if (a != c) {
-      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, a . str () . c_str (), size1);
-      rc = 1;
-    }
-    if (a . getBitLSB (n) != 1) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
+    if (rnumber_getbit(a, n) != 1) {
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
-    a . setAll ();
-    b . invert ();
-    c . invert ();
-
-    a . setBit (n, 0);
-    if (a != b) {
-      printf ("Error occurred in clearing bit %d of ones to produce %s(%d)\n", n, a . str () . c_str (), size1);
+    rnumber_assign_from_uint(a, 0);
+    rnumber_setbit_lsb(a, n, 1);
+    if (rnumber_rn_notequal_rn(a, c)) {
+      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, rnumber_str(a), size1);
       rc = 1;
     }
-    if (a . getBit (n) != 0) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
+    if (rnumber_getbit_lsb(a, n) != 1) {
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, rnumber_str(a), size1);
       rc = 1;
     }
 
-    a . setAll ();
-    a . setBitLSB (n, 0);
-    if (a != c) {
-      printf ("Error occurred in setting bit %d of ones to produce %s(%d)\n", n, a . str () . c_str (), size1);
+    rnumber_set_all(a);
+    rnumber_invert(b);
+    rnumber_invert(c);
+
+    rnumber_setbit(a, n, 0);
+    if (rnumber_rn_notequal_rn(a, b)) {
+      printf ("Error occurred in clearing bit %d of ones to produce %s(%d)\n", n, rnumber_cstr(a), size1);
       rc = 1;
     }
-    if (a . getBitLSB (n) != 0) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
+    if (rnumber_getbit(a,n) != 0) {
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, rnumber_cstr(a), size1);
+      rc = 1;
+    }
+    rnumber_set_all(a);
+    rnumber_setbit_lsb(a, n, 0);
+    if (rnumber_rn_notequal_rn(a, c)) {
+      printf ("Error occurred in setting bit %d of ones to produce %s(%d)\n", n, rnumber_cstr(a), size1);
+      rc = 1;
+    }
+    if (rnumber_getbit_lsb(a,n) != 0) {
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, rnumber_cstr(a), size1);
       rc = 1;
     }
   }
@@ -665,53 +672,54 @@ static unsigned checkFieldAccessors (unsigned size)
   unsigned i;
 
   for (i = 0; i < 50; i++) {
-    unsigned size1 = (size > 0) ? size : Random::getFromRange (1, 100);
-    RNumber a (0, size1);
-    unsigned n1 = Random::getInteger (size1);
-    unsigned n2 = Random::getFromRange (n1, size1 - 1);
+    unsigned size1 = (size > 0) ? size : random_get_from_range_unsigned (1, 100);
+    struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
+    unsigned n1 = random_get_integer (size1);
+    unsigned n2 = random_get_from_range_unsigned(n1, size1 - 1);
     unsigned len = n2 - n1 + 1;
-    RNumber field (0, len);
-    field . setAll ();
-    RNumber b (field, size1);
+    struct RNumber *  field = rnumber_create_from_unsigned_of_size(0, len);
+    struct RNumber * b = rnumber_copy_to_size(field, size1);
     unsigned shift = size1 - n2 - 1;
-    b <<= shift;
 
-    a . setField (n1, n2, field);
-    if (a != b) {
-      printf ("Error occurred in setting field %d:%d of 0 to produce %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+    rnumber_set_all(field);
+    rnumber_rn_leftshift_assign_ui(b, shift);
+
+    rnumber_set_field(a, n1, n2, field);
+    if (rnumber_rn_notequal_rn(a, b)) {
+      printf ("Error occurred in setting field %d:%d of 0 to produce %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
-    if (a . getField (n1, n2) != field) {
-      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+    if (rnumber_getfield(a, n1, n2) != field) {
+      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
-      if (field != a . getIntField (n1, n2)) {
-        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+      if (rnumber_rn_notequal_ui(field, rnumber_get_int_field(a, n1, n2))) {
+        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
         rc = 1;
       }
     }
 
-    a . setAll ();
-    b . invert ();
+    rnumber_set_all(a);
+    rnumber_invert(b);
 
-    a . setField (n1, n2, 0);
-    if (a != b) {
-      printf ("Error occurred in clearing field %d:%d of ones to produce %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+    rnumber_set_field(a,n1, n2, 0);
+    if (rnumber_rn_notequal_rn(a, b)) {
+      printf ("Error occurred in clearing field %d:%d of ones to produce %s(%d)\n", n1, n2, 
+	      rnumber_cstr(a), size1);
       rc = 1;
     }
-    if (a . getField (n1, n2) != 0) {
-      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+    if (rnumber_get_field(a, n1, n2) != 0) {
+      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
-      if (a . getIntField (n1, n2) != 0) {
-        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+      if (rnumber_get_int_field(a, n1, n2) != 0) {
+        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
         rc = 1;
       }
     }
   }
-
   return rc;
 }
 
@@ -721,28 +729,28 @@ static unsigned checkSignExtends (unsigned size)
   unsigned i;
 
   for (i = 0; i < 50; i++) {
-    unsigned size1 = (size > 0) ? size : Random::getFromRange (1, 100);
-    RNumber a (0, size1);
-    unsigned n = Random::getInteger (size1);
-    RNumber b (0, size1);
+    unsigned size1 = (size > 0) ? size : random_get_from_range (1, 100);
+    struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
+    unsigned n = random_get_integer(size1);
+    struct RNumber * b = rnumber_create_from_unsigned_of_size (0, size1);
     unsigned shift = size1 - n - 1;
-    b . setAll ();
-    b <<= shift;
+    rnumber_set_all(b);
+    rnumber_rn_leftshift_assign_ui(b, shift);
 
-    a . setBit (n, 1);
-    a . signExtend (n);
-    if (a != b) {
-      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, a . str () . c_str (), size1);
+    rnumber_set_bit(a,n, 1);
+    rnumber_sign_extend(a,n);
+    if (rnumber_rn_notequal_rn(a, b)) {
+      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
-    a . setAll ();
-    a . setBit (n, 0);
-    b . invert ();
+    rnumber_set_all(a);
+    rnumber_set_bit(a,n, 0);
+    rnumber_invert(b);
 
-    a . signExtend (n);
+    rnumber_sign_extend(a,n);
     if (a != b) {
-      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, rnumber_cstr(a), size1);
       rc = 1;
     }
   }
@@ -750,55 +758,71 @@ static unsigned checkSignExtends (unsigned size)
   return rc;
 }
 
-static unsigned checkReadWrite (const RNumber& numa, RNumber::Radix radix)
+static unsigned checkReadWrite (const struct RNumber * numa, int radix)
 {
   unsigned rc = 0;
-  unsigned size1 = numa . size ();
+  unsigned size1 = rnumber_size(numa);
 
-  strstream ss1;
-  numa . printWithRadix (ss1, radix, true);
-  ss1 << ends;
-  char *str1 = ss1 . str ();
-  RNumber num1 (str1);
-  if (numa != num1) {
-    printf ("Error in reading/writing of %s(%d) with implied radix %d\n", numa . str () . c_str (), size1, radix);
-    rc = 1;
-  }
+  void * ss1 = ss_create();
+  rnumber_print_with_radix( numa, ss1, radix, 1);
+  ss_ends(ss1);
+
+  {
+    char *str1;
+    str1 = ss_str(ss1);
+    {
+      struct RNumber * num1 = rnumber_create_from_string(str1);
+      
+      if (numa != num1) {
+	printf ("Error in reading/writing of %s(%d) with implied radix %d\n", 
+		rnumber_str(numa), size1, radix);
+	rc = 1;
+      }
   if (size1 > 1) {
     // construct a smaller number with the string
-    unsigned size2 = Random::getFromRange (1, size1 - 1);
-    RNumber numb = numa;
-    numb = (numb << (size1 - size2)) >> (size1 - size2);
+    unsigned size2 = random_get_from_range_unsigned(1, size1 - 1);
+    struct RNumber * numb = rnumber_create_from_rnumber(numa);
+    rnumber_assign (numb, rnumber_rn_rightshift_ui( rnumber_rn_leftshift_ui(numb, (size1 - size2)), (size1 - size2)));
  
-    RNumber nums1 (str1, size2);
-    if (nums1 != numb || nums1 . size () != size2) {
-      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str () . c_str (), size1, size2, radix);
-      rc = 1;
-    }
+    {
+      struct RNumber * nums1 = rnumber_create_from_string_of_size(str1, size2);
+      if ( rnumber_rn_notequal(nums1, numb) || rnumber_size(nums1) != size2) {
+	printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", 
+		rnumber_str(numa), size1, size2, radix);
+	rc = 1;
+      }
 
-    // construct a larger number with the string
-    unsigned size3 = Random::getFromRange (size1 + 1, 100);
-    RNumber nums2 (str1, size3);
-    if (nums2 != numa || nums2 . size () != size3) {
-      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str () . c_str (), size1, size3, radix);
-      rc = 1;
+      {
+	// construct a larger number with the string
+	unsigned size3 = random_get_from_range_unsigned(size1 + 1, 100);
+	struct RNumber * nums2 = rnumber_create_from_string_of_size(str1, size3);
+	if ( rnumber_rn_notequal_rn(nums2, numa) || rnumber_size(nums2) != size3) {
+	  printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", 
+		  rnumber_str(numa), size1, size3, radix);
+	  rc = 1;
+	}
+      }
     }
   }
-
-  strstream ss3;
-  numa . printWithRadix (ss3, radix);
-  ss3 << ends;
-  char *str3 = ss3 . str ();
-  RNumber num3 (str3, radix);
-  if (numa != num3) {
-    printf ("Error in hex reading/writing of %s(%d) with explicit radix %d\n", numa . str () . c_str (), numa . size (), radix);
-    rc = 1;
+  {
+    void * ss3 = ss_create();
+    rnumber_print_with_radix(numa, ss3, radix,1);
+    ss_ends(ss3);
+    {
+      char * str3 = ss_str(ss3);
+      struct RNumber * num3 = rnumber_create_from_string_of_radix (str3, radix);
+      if (rnumber_rn_notequal_rn(numa, num3)) {
+	printf ("Error in hex reading/writing of %s(%d) with explicit radix %d\n", 
+		rnumber_str(numa), rnumber_size(numa), radix);
+	rc = 1;
+      }
+    }
   }
   if (size1 > 1) {
     // construct a smaller number with the string
-    unsigned size2 = Random::getFromRange (1, size1 - 1);
-    RNumber numb = numa;
-    numb = (numb << (size1 - size2)) >> (size1 - size2);
+    unsigned size2 = random_get_from_range_unsigned(1, size1 - 1);
+    struct RNumber * numb = rnumber_create_from_rnumber(numa);
+    rnumber_assign(numb, rnumber_rn_rightshift_ui(rnumber_rn_leftshift_ui(numb, (size1 - size2)), (size1 - size2)));
  
     RNumber nums1 (str3, size2, radix);
     if (nums1 != numb || nums1 . size () != size2) {
