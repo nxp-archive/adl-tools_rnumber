@@ -15,20 +15,22 @@ struct Calculator
   int _fd2[2];
 };
 
-Calculator * make_calculator (const char *pgm);
-destroy_calculator ( Calculator * calculator);
+struct Calculator * make_calculator (const char *pgm);
+void destroy_calculator ( struct Calculator * calculator);
 
-unsigned calculator_check_arith ( Calculator * calculator, const RNumber * a, 
-				  const RNumber * b, const RNumber * c, char *op, int bool_ext);
-unsigned calculator_check_arith_unsigned (const RNumber * a, unsigned b, 
-					  const RNumber * c, char *op, int bool_ext);
-unsigned calculator_check_comparator (const RNumber * a, const RNumber * b, int res, char *op);
-unsigned calculator_check_comparator_unsigned (const RNumber * a, unsigned b, int res, char *op);
+unsigned calculator_check_arith ( struct Calculator * calculator, const struct RNumber * a, 
+				  const struct RNumber * b, const struct RNumber * c, char *op, int bool_ext);
+unsigned calculator_check_arith_unsigned (struct Calculator * calculator, const struct RNumber * a, 
+					  unsigned b, const struct RNumber * c, char *op, int bool_ext);
+unsigned calculator_check_comparator ( struct Calculator * calculator, const struct RNumber * a, 
+				       const struct RNumber * b, int res, char *op);
+unsigned calculator_check_comparator_unsigned ( struct Calculator * calculator, const struct RNumber * a, 
+						unsigned b, int res, char *op);
 
-void calculator_private_init ( Calculator * calculator);
-void calculator_private_terminate ( Calculator * calculator);
+void calculator_private_init ( struct Calculator * calculator);
+void calculator_private_terminate ( struct Calculator * calculator);
 unsigned calculator_private_arith_calc (const char *astr,unsigned asize, const char *bstr,unsigned bsize,
-					const RNumber * c,const char *op, int bool_ext);
+					const struct RNumber * c,const char *op, int bool_ext);
 
 static void usage (char *pgm)
 {
@@ -36,179 +38,184 @@ static void usage (char *pgm)
   exit (1);
 }
 
-static unsigned checkOperator (unsigned size, char *op, Calculator *calc)
+static unsigned checkOperator (unsigned size, char *op, struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    unsigned size2 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a (0, size1);
-    RNumber b (0, size2);
-    RNumber c (0, 1, RNumber::dynamic);
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
+    unsigned size2 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
+    struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
+    struct RNumber * b = rnumber_create_from_unsigned_of_size(0, size2);
+    struct RNumber * c = rnumber_create_from_unsigned_of_size_variable_sizing(0, 1);
+    int ext = 0;    
 
-    a = Random::getRNumber (size1);
+    a = random_get_rnumber(size1);
     if (op[0] == '/' || op[0] == '%') {
       do {
-        b = Random::getRNumber (size2);
-      } while (b == 0);
+        b = random_get_rnumber (size2);
+      } while (rnumber_rn_equal_ui(b,0));
+    } else {
+      b = random_get_rnumber (size2);
     }
-    else
-      b = Random::getRNumber (size2);
 
-    bool ext = false;    
     if (!strcmp(op,"+")) {
-      c = a + b;
+      c = rnumber_rn_plus_rn(a,b);
     } else if (!strcmp(op,"-")) {
-      c = a - b;
+      c = rnumber_rn_minus_rn(a, b);
     } else if (!strcmp(op,"*")) {
-      c = a * b;
+      c = rnumber_rn_multiply_rn(a, b);
     } else if (!strcmp(op,"/")) {
-      c = a / b;
+      c = rnumber_rn_divide_rn(a, b);
     } else if (!strcmp(op,"%")) {
-      c = a % b;
+      c = rnumber_rn_mod_rn(a, b);
     } else if (!strcmp(op,"+.")) {
-      c = addExt(a,b);
-      ext = true;
+      c = rnumber_rn_add_ext_rn(a,b);
+      ext = 1;
     } else if (!strcmp(op,"*.")) {
-      c = multiplyExt(a,b);
-      ext = true;
+      c = rnumber_rn_multiply_ext_rn(a,b);
+      ext = 1;
     } else {
       assert(0);
     }
 
-    rc |= calc -> checkArith (a, b, c, op, ext);
+    /*    rc |= calc -> checkArith (a, b, c, op, ext);*/
+    rc |= calculator_check_arith(calc, a, b, c, op, ext);
 
   }
   return rc;
 }
 
-static unsigned checkIntOperator (unsigned size, char *op, Calculator *calc)
+static unsigned checkIntOperator (unsigned size, char *op, struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a (0, size1);
-    unsigned b;
-    RNumber c (0, 1, RNumber::dynamic);
+    unsigned size1 = (size == 0) ? random_get_from_range(1, 100) : size;
+    struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
+    unsigned b = 0;
+    struct RNumber * c = rnumber_create_from_unsigned_of_size_variable_sizing(0, 1);
+    int ext = 0;    
 
-    a = Random::getRNumber (size1);
+    a = random_get_rnumber (size1);
     if (op[0] == '/' || op[0] == '%') {
       do {
-        b = Random::getInteger ();
+        b = random_get_integer ();
       } while (b == 0);
+    } else {
+      b = random_get_interger ();
     }
-    else
-      b = Random::getInteger ();
 
-    bool ext = false;    
     if (!strcmp(op,"+")) {
-      c = a + b;
+      c = rnumber_rn_plus_ui(a, b);
     } else if (!strcmp(op,"-")) {
-      c = a - b;
+      c = rnumber_rn_minus_ui(a, b);
     } else if (!strcmp(op,"*")) {
-      c = a * b;
+      c = rnumber_rn_multiply_ui(a, b);
     } else if (!strcmp(op,"/")) {
-      c = a / b;
+      c = rnumber_rn_divide_ui(a, b);
     } else if (!strcmp(op,"%")) {
-      c = a % b;
+      c = rnumber_rn_mod_ui(a, b);
     } else if (!strcmp(op,"+.")) {
-      c = addExt(a,b);
-      ext = true;
+      c = rnumber_rn_add_ext_ui(a,b);
+      ext = 1;
     } else if (!strcmp(op,"*.")) {
-      c = multiplyExt(a,b);
-      ext = true;
+      c = rnumber_rn_multiply_ext_ui(a,b);
+      ext = 1;
     } else {
       assert(0);
     }
 
-    rc |= calc -> checkArith (a, b, c, op, ext);
+    /*    rc |= calc -> checkArith (a, b, c, op, ext);*/
+    rc |= calculator_check_arith_unsigned( calc, a, b, c, op, ext);
+
   }
   return rc;
 }
 
-static unsigned checkMutator (unsigned size, char *op, Calculator *calc)
+static unsigned checkMutator (unsigned size, char *op, struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    unsigned size2 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a (0, size1, RNumber::dynamic);
-    RNumber b (0, size2);
-    RNumber tmp (0, size1);
+    unsigned size1 = (size == 0) ? random_get_from_range (1, 100) : size;
+    unsigned size2 = (size == 0) ? random_get_from_range (1, 100) : size;
+    struct RNumber * a = rnumber_create_from_unsigned_of_size_variable_sizing(0, size1);
+    struct RNumber * b = rnumber_create_from_unsigned_of_size(0, size2);
+    struct RNumber * tmp = rnumber_create_from_unsigned_of_size(0, size1);
 
-    a = Random::getRNumber (size1);
-    tmp = a;
+    a = random_get_rnumber(size1);
+    rnumber_assign(tmp, a);
     if (op[0] == '/' || op[0] == '%') {
       do {
-        b = Random::getRNumber (size2);
-      } while (b == 0);
+        b = random_get_rnumber (size2);
+      } while (rnumber_rn_equal_ui(b, 0));
+    } else {
+      b = random_get_rnumber(size2);
     }
-    else
-      b = Random::getRNumber (size2);
     switch (op[0]) {
-      case '+': a += b; break;
-      case '-': a -= b; break;
-      case '*': a *= b; break;
-      case '/': a /= b; break;
-      case '%': a %= b; break;
+      case '+': rnumber_plus_assign(a, b); break;
+      case '-': rnumber_minus_assign(a, b); break;
+      case '*': rnumber_multiply_assign(a, b); break;
+      case '/': rnumber_divide_assign(a, b); break;
+      case '%': rnumber_mod_assign(a, b); break;
       default:  assert (0);
     }
-    rc |= calc -> checkArith (tmp, b, a, op);
+    /*    rc |= calc -> checkArith (tmp, b, a, op); */
+    rc |= calculator_check_arith (calc,tmp, b, a, op,0); 
+     
   }
   return rc;
 }
 
-static unsigned checkIntMutator (unsigned size, char *op, Calculator *calc)
+static unsigned checkIntMutator (unsigned size, char *op, struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? Random::getFromRange (1, 100) : size;
-    RNumber a (0, size1, RNumber::dynamic);
+    unsigned size1 = (size == 0) ? random_get_from_range(1, 100) : size;
+    struct RNumber * a = rnumber_create_from_unsigned_of_size_variable_sizing(0, size1);
     unsigned b;
-    RNumber tmp (0, size1);
+    struct RNumber *tmp = rnumber_create_from_unsigned_of_size(0, size1);
 
-    a = Random::getRNumber (size1);
+    a = random_get_rnumber (size1);
     tmp = a;
     if (op[0] == '/' || op[0] == '%') {
       do {
-        b = Random::getInteger ();
+        b = random_get_integer ();
       } while (b == 0);
+    } else {
+      b = random_get_integer ();
     }
-    else
-      b = Random::getInteger ();
     switch (op[0]) {
-      case '+': a += b; break;
-      case '-': a -= b; break;
-      case '*': a *= b; break;
-      case '/': a /= b; break;
-      case '%': a %= b; break;
-      default:  assert (0);
+    case '+': rnumber_plus_assign_unsigned(a, b); break;
+    case '-': rnumber_minus_assign_unsigned(a, b); break;
+    case '*': rnumber_multiply_assign_unsigned(a, b); break;
+    case '/': rnumber_divide_assign_unsigned(a, b); break;
+    case '%': rnumber_mod_assign_unsigned(a, b); break;
+    default:  assert (0);
     }
-    rc |= calc -> checkArith (tmp, b, a, op);
+    rc |= calculator_check_arith_unsigned(calc,tmp, b, a, op,0);
   }
   return rc;
 }
 
 // special cases for multiply
-static unsigned checkMultSpecialCases (Calculator *calc)
+static unsigned checkMultSpecialCases (struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
 
   // first op is 0:
   for (i = 0; i < maxIter; i++) {
-    RNumber x (0, Random::getFromRange (33, 100));
-    RNumber y = Random::getRNumber (Random::getFromRange (1, 100));
-    rc |= calc -> checkArith (x, y, x * y, "*");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
+    struct RNumber * x = rnumber_create_from_unsigned_of_size(0, random_get_from_range (33, 100));
+    struct RNumber * y = random_get_rnumber (random_get_from_range (1, 100));
+    rc |= calculator_check_arith( calc,x, y, rnumber_rn_multiply_rn(x, y), "*");
+    struct RNumber * tmp = rnumber_copy_to_size_variable_size(x, x.size());
     tmp *= y;
     rc |= calc -> checkArith (x, y, tmp, "*=");
   }
@@ -247,7 +254,7 @@ static unsigned checkMultSpecialCases (Calculator *calc)
 }
 
 // special cases for divide
-static unsigned checkDivideSpecialCases (Calculator *calc)
+static unsigned checkDivideSpecialCases (struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -339,7 +346,7 @@ static unsigned checkDivideSpecialCases (Calculator *calc)
   return rc;
 }
 
-static unsigned checkComparator (unsigned size, char *op, Calculator *calc)
+static unsigned checkComparator (unsigned size, char *op, struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -393,7 +400,7 @@ static unsigned checkComparator (unsigned size, char *op, Calculator *calc)
   return rc;
 }
 
-static unsigned checkIntComparator (unsigned size, char *op, Calculator *calc)
+static unsigned checkIntComparator (unsigned size, char *op, struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -466,7 +473,7 @@ static unsigned checkIntComparator (unsigned size, char *op, Calculator *calc)
   return rc;
 }
 
-static unsigned checkSignedComparator (unsigned size, char *op, Calculator *calc)
+static unsigned checkSignedComparator (unsigned size, char *op, struct Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;

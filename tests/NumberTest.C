@@ -1212,7 +1212,8 @@ static unsigned checkLogicalOp (const RNumber& a, const RNumber& b, const RNumbe
   return rc;
 }
 
-static unsigned checkLogicalOp (const RNumber& a, unsigned b, const RNumber& res1, const RNumber& res2, char *op)
+//static unsigned checkLogicalOp (const RNumber& a, unsigned b, const RNumber& res1, const RNumber& res2, char *op)
+static unsigned checkLogicalOp (const RNumber& a, int b, const RNumber& res1, const RNumber& res2, char *op)
 {
   unsigned rc = (res1 != res2);
   if (rc) {

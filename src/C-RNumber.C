@@ -16,22 +16,22 @@ RNumber * rnumber_create()
   return new RNumber();
 }
 
-RNumber * rnumber_create_from_int( unsigned int number )
+RNumber * rnumber_create_from_unsigned( unsigned int number )
 {
   return new RNumber (number);
 }
 
-RNumber * rnumber_create_from_int_variable_sizing( unsigned int number )
+RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned int number )
 {
   return new RNumber(number, RNumber::dynamic);
 }
 
-RNumber * rnumber_create_of_size( unsigned int number, unsigned int size )
+RNumber * rnumber_create_from_unsigned_of_size( unsigned int number, unsigned int size )
 {
   return new RNumber(number, size);
 }
 
-RNumber * rnumber_create_of_size_variable_sizing( unsigned int number, unsigned int size )
+RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number, unsigned int size )
 {
   return new RNumber(number, size, RNumber::dynamic);
 }
@@ -107,7 +107,7 @@ RNumber * rnumber_create_from_numVector_variable_size(unsigned int* numVector, u
   return new RNumber( numVector, wordCount, size, RNumber::dynamic);
 }
 
-RNumber * rnumber_copy_ctor( const RNumber * rnumber )
+RNumber * rnumber_copy_from_rnumber( const RNumber * rnumber )
 {
   return new RNumber(*rnumber);
 }
@@ -172,7 +172,7 @@ RNumber * rnumber_plus_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)+=(*number));
 }
 
-RNumber * rnumber_plus_assign_from_int ( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_plus_assign_from_unsigned ( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)+=number);
 }
@@ -182,27 +182,27 @@ RNumber * rnumber_minus_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)-=(*number));
 }
 
-RNumber * rnumber_minus_assign_from_int( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_minus_assign_from_unsigned( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)-=number);
 }
 
-RNumber * rnumber_mult_assign( RNumber * rnumber, RNumber * number )
+RNumber * rnumber_multiply_assign( RNumber * rnumber, RNumber * number )
 {
   return &((*rnumber)*=(*number));
 }
 
-RNumber * rnumber_mult_assign_from_int( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_multiply_assign_from_unsigned( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)*=number);
 }
 
-RNumber * rnumber_div_assign( RNumber * rnumber, RNumber * number )
+RNumber * rnumber_divide_assign( RNumber * rnumber, RNumber * number )
 {
   return &((*rnumber)/=(*number));
 }
 
-RNumber * rnumber_div_assign( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_divide_assign_from_unsigned( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)/=number);
 }
@@ -212,7 +212,7 @@ RNumber * rnumber_mod_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)%=(*number));
 }
 
-RNumber * rnumber_mod_assign_from_int( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_mod_assign_from_unsigned( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)%=number);
 }
@@ -222,7 +222,7 @@ RNumber * rnumber_bitand_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)&=(*number));
 }
 
-RNumber * rnumber_bitand_assign_from_int( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_bitand_assign_from_unsigned( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)&=number);
 }
@@ -232,7 +232,7 @@ RNumber * rnumber_bitor_assign( RNumber * rnumber,  RNumber * number )
   return &((*rnumber)|=(*number));
 }
 
-RNumber * rnumber_bitor_assign_from_int( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_bitor_assign_from_unsigned( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)|=number);
 }
@@ -242,7 +242,7 @@ RNumber * rnumber_bitxor_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)^=(*number));
 }
 
-RNumber * rnumber_bitxor_assign_from_int( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_bitxor_assign_from_unsigned( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber)^=number);
 }
@@ -252,7 +252,7 @@ RNumber * rnumber_leftshift_assign( RNumber * rnumber, RNumber * shift )
   return &((*rnumber)<<=(*shift));
 }
 
-RNumber * rnumber_leftshift_assign_from_int( RNumber * rnumber, unsigned int shift )
+RNumber * rnumber_leftshift_assign_from_unsigned( RNumber * rnumber, unsigned int shift )
 {
   return &((*rnumber)<<=shift);
 }
@@ -262,7 +262,7 @@ RNumber * rnumber_rightshift_assign( RNumber * rnumber,  RNumber * shift )
   return &((*rnumber)>>=(*shift));
 }
 
-RNumber * rnumber_rightshift_assign_from_int( RNumber * rnumber, unsigned int shift )
+RNumber * rnumber_rightshift_assign_from_unsigned( RNumber * rnumber, unsigned int shift )
 {
   return &((*rnumber)>>=shift);
 }
@@ -452,10 +452,10 @@ void rnumber_print_to_os( RNumber * rnumber, void * os )
   rnumber->printToOS(*oos);
 }
 
-void rnumber_print_with_radix( RNumber * rnumber, void * os, int radix, int prefix ) 
+void rnumber_print_with_radix( RNumber * rnumber, void * os, int radix, int bool_prefix ) 
 {
   ostream * oos = reinterpret_cast<ostream *>(os);
-  rnumber->printWithRadix(*oos, get_radix(radix), prefix);
+  rnumber->printWithRadix(*oos, get_radix(radix), bool_prefix);
 }
 
 //friend istream& operator>>( istream& is, RNumber& number );
@@ -472,3 +472,179 @@ void rnumber_write_to_os( RNumber * rnumber, void * os )
   (*oos) << (*rnumber);
 }
 
+// Non-member functions that allow for mixed arithmetic expressions between
+// RNumbers and unsigned integers.
+struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber(*n1 + *n2);
+}
+ struct RNumber * rnumber_rn_plus_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber(*n1 + n2);
+}
+ struct RNumber * rnumber_ui_plus_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(n1 + *n2);
+}
+ struct RNumber * rnumber_rn_add_ext_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber(addExt(*n1,*n1));
+}
+ struct RNumber * rnumber_rn_add_ext_ui( const struct RNumber * n1, unsigned int n2 ) {
+  return new RNumber(addExt(*n1,n2));
+}
+ struct RNumber * rnumber_ui_add_ext_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(addExt(n1,*n2));
+}
+ struct RNumber * rnumber_rn_minus_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber((*n1)-(*n2));
+}
+ struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber(*n1-n2);
+}
+ struct RNumber * rnumber_ui_minus_rn( unsigned int n1, const struct RNumber * n2 ) {
+  return new RNumber(n1-(*n2));
+}
+ struct RNumber * rnumber_rn_multiply_rn( const struct RNumber * n1, const struct RNumber * n2 ) {
+  return new RNumber((*n1)*(*n2));
+}
+ struct RNumber * rnumber_rn_multiply_ui( const struct RNumber * n1, unsigned int n2 ) {
+  return new RNumber((*n1)*n2);
+}
+ struct RNumber * rnumber_ui_multiply_ui( unsigned int n1, const struct RNumber * n2 ) {
+  return new RNumber(n1*(*n2));
+}
+ struct RNumber * rnumber_rn_multiply_ext_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber(multiplyExt(*n1,*n2));
+}
+ struct RNumber * rnumber_rn_multiply_ext_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber(multiplyExt(*n1,n2));
+}
+ struct RNumber * rnumber_ui_multiply_ext_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(multiplyExt(n1,*n2));
+}
+ struct RNumber * rnumber_rn_divide_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber((*n1)/(*n2));
+}
+ struct RNumber * rnumber_rn_divide_ui( const struct RNumber * n1, unsigned int n2 ) {
+  return new RNumber((*n1)/n2);
+}
+ struct RNumber * rnumber_ui_divide_rn( unsigned int n1, const struct RNumber * n2 ) {
+  return new RNumber(n1/(*n2));
+}
+ struct RNumber * rnumber_rn_mod_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber((*n1)%(*n2));
+}
+ struct RNumber * rnumber_rn_mod_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber((*n1)%n2);
+}
+ struct RNumber * rnumber_ui_mod_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(n1%(*n2));
+}
+ struct RNumber * rnumber_rn_bitand_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber((*n1)&(*n2));
+}
+ struct RNumber * rnumber_rn_bitand_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber((*n1)&n2);
+}
+ struct RNumber * rnumber_ui_bitand_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(n1&(*n2));
+}
+ struct RNumber * rnumber_rn_bitor_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber((*n1)|(*n2));
+}
+ struct RNumber * rnumber_rn_bitor_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber((*n1)|n2);
+}
+ struct RNumber * rnumber_ui_bitor_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(n1|(*n2));
+}
+ struct RNumber * rnumber_rn_bitxor_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber((*n1)^(*n2));
+}
+ struct RNumber * rnumber_rn_bitxor_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber((*n1)^n2);
+}
+ struct RNumber * rnumber_ui_bitxor_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(n1^(*n2));
+}
+ struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct RNumber * shift ){
+  return new RNumber((*n)<<(*shift));
+}
+ struct RNumber * rnumber_rn_leftshift_ui( const struct RNumber * n, unsigned int shift ){
+  return new RNumber((*n)<<shift);
+}
+ struct RNumber * rnumber_ui_leftshift_rn( unsigned int n, const struct RNumber * shift ){
+  return new RNumber(n<<(*shift));
+}
+ struct RNumber * rnumber_rn_leftshift_ext_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return new RNumber(leftShiftExt(*n1,*n2));
+}
+ struct RNumber * rnumber_rn_leftshift_ext_ui( const struct RNumber * n1, unsigned int n2 ){
+  return new RNumber(leftShiftExt(*n1,n2));
+}
+ struct RNumber * rnumber_ui_leftshift_ext_rn( unsigned int n1, const struct RNumber * n2 ){
+  return new RNumber(leftShiftExt(n1,*n2));
+}
+ struct RNumber * rnumber_rn_rightshift_rn( const struct RNumber * n, const struct RNumber * shift ){
+  return new RNumber((*n)>>(*shift));
+}
+ struct RNumber * rnumber_rn_rightshift_ui( const struct RNumber * n, unsigned int shift ){
+  return new RNumber((*n)>>shift);
+}
+ struct RNumber * rnumber_ui_rightshift_rn( unsigned int n, const struct RNumber * shift ){
+  return new RNumber(n>>(*shift));
+}
+
+// Non-member functions that allow for mixed conditional expressions between
+// RNumbers and unsigned integers.
+int rnumber_rn_notequal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return (*n1)!=(*n2);
+}
+int rnumber_rn_notequal_ui( const struct RNumber * n1, unsigned int n2 ) {
+  return (*n1)!=n2;
+}
+int rnumber_ui_notequal_rn( unsigned int n1, const struct RNumber * n2 ){
+  return n1!=(*n2);
+}
+int rnumber_rn_equal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return (*n1)==(*n2);
+}
+int rnumber_rn_equal_ui( const struct RNumber * n1, unsigned int n2 ){
+  return (*n1)==n2;
+}
+int rnumber_ui_equal_rn( unsigned int n1, const struct RNumber * n2 ){
+  return n1==(*n2);
+}
+int rnumber_rn_lessthan_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return (*n1)<(*n2);
+}
+int rnumber_rn_lessthan_ui( const struct RNumber * n1, unsigned int n2 ){
+  return (*n1)<n2;
+}
+int rnumber_ui_lessthan_rn( unsigned int n1, const struct RNumber * n2 ){
+  return n1<(*n2);
+}
+int rnumber_rn_lessequal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return (*n1)<=(*n2);
+}
+int rnumber_rn_lessequal_ui( const struct RNumber * n1, unsigned int n2 ){
+  return (*n1)<=n2;
+}
+int rnumber_ui_lessequal_rn( unsigned int n1, const struct RNumber * n2 ){
+  return n1<=(*n2);
+}
+int rnumber_rn_greaterthan_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return (*n1)>(*n2);
+}
+int rnumber_rn_greaterthan_ui( const struct RNumber * n1, unsigned int n2 ){
+  return (*n1)>n2;
+}
+int rnumber_ui_greaterthan_rn( unsigned int n1, const struct RNumber * n2 ){
+  return n1>(*n2);
+}
+int rnumber_rn_greaterequal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
+  return (*n1)>=(*n2);
+}
+int rnumber_rn_greaterequal_ui( const struct RNumber * n1, unsigned int n2 ){
+  return (*n1)>=n2;
+}
+int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNumber * n2 ){
+  return n1>=(*n2);
+}

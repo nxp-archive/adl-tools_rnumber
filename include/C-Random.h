@@ -42,12 +42,12 @@ int random_get_cur_gen();
 int random_get_num_gen();
 
 // Get a value from the current generator.
-RNumber * random_get_rnumber( int size );
+struct RNumber * random_get_rnumber( int size );
 unsigned  random_get_integer();
 unsigned  random_get_integer_n( unsigned n );
 double    random_get_double();
 
-RNumber *  random_get_from_range_rnumber( RNumber * minimum, RNumber * maximum );
+struct RNumber *  random_get_from_range_rnumber( struct RNumber * minimum, struct RNumber * maximum );
 unsigned   random_get_from_range_unsigned( unsigned minimum, unsigned maximum );
 
 // Load/save the state of the random number generator.
