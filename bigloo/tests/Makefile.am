@@ -20,7 +20,7 @@ LDADD = $(RNUMBER_STATIC_LIBS)
 
 BIGLOO_C_OPT = -copt "-I ../include"  
 BIGLOO_LIB_PATH = -L $(top_srcdir)/src -L $(top_srcdir)/bigloo/src
-BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber
+BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber -lgcc_s -ldopt "-R $(BIGLOO_LIBDIR)"
 
 % : %.scm
 	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH)  -o $@ $< $(BIGLOO_LIB_OPTIONS)
