@@ -174,7 +174,7 @@ void bl_rnumber_print_with_radix( RNumber_proxy_t rnumber, void * os, int radix,
 //friend ostream& operator<<( ostream& os, const RNumber& number );
 void bl_rnumber_read_from_is( RNumber_proxy_t rnumber, void * is );
 void bl_rnumber_write_to_os( RNumber_proxy_t rnumber, void * os );
-int bl_rnumber_rn_equal_rn( RNumber_proxy_t n1, RNumber_proxy_t n2 );
+int bl_rnumber_rn_notequal_rn( RNumber_proxy_t n1, RNumber_proxy_t n2 );
 int bl_rnumber_rn_notequal_ui( RNumber_proxy_t n1, unsigned int n2 );
 int bl_rnumber_ui_notequal_rn( unsigned int n1, RNumber_proxy_t n2 );
 int bl_rnumber_rn_equal_rn( RNumber_proxy_t n1, RNumber_proxy_t n2 );

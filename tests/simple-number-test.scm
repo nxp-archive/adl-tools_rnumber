@@ -1,12 +1,33 @@
-(module number-test
-	(main main)
-	(library bl-rnumber))
+#!./driver
+
+; (module number-test
+; 	(main main)
+; 	(library bl-rnumber))
 
 
-(define (main argv)
-  (let ((a (rnumber-create-from-unsigned 10))
-	(b (rnumber-create-from-unsigned 15))
-	(c (rnumber-create-from-unsigned 10)))
-    (print "rnumber-rn-equal-rn a b " (rnumber-rn-equal-rn a b))
-    (print "rnumber-rn-equal-rn a c " (rnumber-rn-equal-rn a c))))
+(define (do-tests a b)
+    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn=?"  (rn=? a b))
+    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn!=?" (rn!=? a b))
+    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn<?"  (rn<? a b))
+    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn<=?" (rn<=? a b))
+    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn>?"  (rn>? a b))
+    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn>=?" (rn>=? a b)))
+
+;(define (main argv)
+(print "create from int")
+(let ((a (rnumber-ctor 10))
+      (b (rnumber-ctor 15)))
+  (do-tests a b))
+
+(print "create from string")
+(let ((a (rnumber-ctor "10"))
+      (b (rnumber-ctor "15")))
+  (do-tests a b))
+
+(print "equal numbers")
+(let ((a (rnumber-ctor "10")))
+  (do-tests a a))
+
+
+
     

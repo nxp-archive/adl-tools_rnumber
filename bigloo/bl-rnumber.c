@@ -506,6 +506,10 @@ void bl_rnumber_write_to_os( RNumber_proxy_t rnumber, void * os ) {
   return rnumber_write_to_os(RNUM_FROM_PROXY(rnumber),  os );
 }
 
+int bl_rnumber_rn_notequal_rn( RNumber_proxy_t n1, RNumber_proxy_t n2 ) {
+  return rnumber_rn_notequal_rn(RNUM_FROM_PROXY(n1),  RNUM_FROM_PROXY(n2) );
+}
+
 int bl_rnumber_rn_notequal_ui( RNumber_proxy_t n1, unsigned int n2 ) {
   return rnumber_rn_notequal_ui(RNUM_FROM_PROXY(n1),  n2 );
 }

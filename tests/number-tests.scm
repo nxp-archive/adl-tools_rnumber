@@ -1,59 +1,26 @@
-(module number-test
-  	(library bl-rnumber)
-  	(main main)
-  	(extern (environ::string* "environ")
-		(pipe::int (int-array-2) "pipe")
-		(close::int (int) "close")
-		(fork::pid_t () "fork")
-		(execl::int (string string . string) "execl")
-		(execlp::int (string string . string) "execlp")
-		(execv::int (string int**) "execv")
-		(execvp::int (string int**) "execvp")
-		(getpid::pid_t () "getpid")
-		(getppid::pid_t () "getppid")
-		(_write::ssize_t (int string size_t) "write")
-		(type pid_t int "pid_t")
-		(type ssize_t int "ssize_t")
-		(type size_t long "size_t")
-		(type string* (pointer string) "char **")
-		(type int-array-2 (array int) "int $[ 2 ]")
-		(type int-array-2->int "int ($(int [ 2 ]))")
-		(type void->pid_t "pid_t ($(void))")
-		(type string,string,...string->int "int ($(char *,char *,...))")
-		(type int* (pointer int) "int *")
-		(type int*-array (array int*) "int *$[  ]")
-		(type int** (pointer int*) "int **")
-		(type string,int**->int "int ($(char *,int **))")
-		))
+#!./driver
 
 (define *max-iter* 100)
 (define *verbose* 0)
 
 ;; define-struct is bigloo specific
-;(define-struct Calculator (pgm "/usr/bin/dc") (fd1 (make-int-array-2)) (fd2 (make-int-array-2)))
 (define-struct Calculator process write-port-to-calc read-port-from-calc)
 
 (define (calculator-create pgm)
   (let ((calc (make-Calculator)))
-    (print "here i am")
     (Calculator-process-set! calc (run-process pgm output: pipe: input: pipe:))
-    (print "after starting process")
     (Calculator-write-port-to-calc-set! calc (process-input-port (Calculator-process calc)))
     (Calculator-read-port-from-calc-set! calc (process-output-port (Calculator-process calc)))
-    (print "calling private init")
     (calculator-private-init calc)
     calc))
 
 ;; this puts dc in hex mode 
 (define (calculator-private-init  calc)
-  (let ((cmd-string #"16 o 16 i\n"))
-    (print "cmd-string " cmd-string)
-    (let ((rc (write cmd-string (Calculator-write-port-to-calc calc))))
-      (print "rc " rc)
-      (write  #"10 10 + p\n" (Calculator-write-port-to-calc calc))
-      (print "after write")
-      (let ((res (read-line (Calculator-read-port-from-calc calc))))
-	(print "res " res)))))
+  (let ((cmd-string #"16 o 16 i")
+	(out-port (Calculator-write-port-to-calc calc))
+	(in-port (Calculator-read-port-from-calc calc)))
+    (fprint out-port cmd-string)
+    (flush-output-port out-port)))
     
 (define (calculator-destroy calculator) 1)
 
@@ -73,10 +40,10 @@
 
 (define *the-calculator '())
 
-(define (main argv)
-  (print "in main")
-  (begin (set! *the-calculator (calculator-create "/usr/bin/dc"))))
+;; this would be main, if there was one
+(begin (set! *the-calculator (calculator-create "/usr/bin/dc")))
 
+;;; <end of scheme code>
 ;;;===========================================
 ;;; C++ code starts here
 ;;;===========================================

@@ -9,6 +9,7 @@ simple_test_SOURCES = simple_test.c c-io.C
 # randtest_SOURCES = randtest.c
 driver_SOURCES = driver.scm
 
+CLEANFILES = driver.c 
 EXTRA_DIST = $(TESTS) 
 
 #INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
@@ -28,4 +29,4 @@ number-tests: number-tests.scm
 	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ +rm -o number-tests number-tests.scm -lstdc++ -lRNumber
 
 driver: driver.scm
-	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ +rm -o driver driver.scm -lstdc++ -lRNumber
+	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ -rm -o driver driver.scm -lstdc++ -lRNumber
