@@ -958,7 +958,9 @@
 					    rnumbers. The return value is an rnumber unless both ,(code [a]) and ,(code [b]) are
 					    integers.]))
    (tr (td (code [(rn-bitand ,(emph [a b]))]))(td [Return logical bit and of ,(code [a]) and ,(code [b]). Either ,(code [a]) or
-							  ,(code [b]) must be an rnumber. Both can not be integers.]))
+   (tr (td (code [(rn-bitxor ,(emph [a b]))]))(td [Return logical bit xor of ,(code [a]) and ,(code [b]). Either ,(code [a]) or
+   (tr (td (code [(rn-bitnot ,(emph [a]))]))(td [Return logical bit not of ,(code [a]). 
+,(code [a]) may be an integer or an rnumber.]))
    (tr (td (code [(rn-bitor ,(emph [a b]))]))(td [Return logical bit or of ,(code [a]) and ,(code [b]). Either ,(code [a]) or
 							  ,(code [b]) must be an rnumber. Both can not be integers.]))))
 

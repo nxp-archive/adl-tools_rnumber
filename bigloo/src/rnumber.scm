@@ -17,6 +17,8 @@
 	   (rn+ a b)
 	   (rn* a b)
 	   (rn-bitand a b)
+	   (rn-bitnot a)
+	   (rn-bitxor a b)
 	   (rn-bitor a b))
    (include "rnumber-version.h")
    (eval (export-exports))
@@ -30,7 +32,8 @@
     ;; beginning of cl-bl-rnumber.h
     (bl-rnumber-create::RNumber_proxy_t () "bl_rnumber_create")
     (bl-rnumber-create-from-unsigned::RNumber_proxy_t (uint) "bl_rnumber_create_from_unsigned")
-    (rnumber-create-from-unsigned_variable_sizing::RNumber_proxy_t (uint) "bl_rnumber_create_from_unsigned_variable_sizing")
+    (rnumber-create-from-unsigned_variable_sizing::RNumber_proxy_t
+     (uint) "bl_rnumber_create_from_unsigned_variable_sizing")
     (rnumber-create-from-unsigned_of_size::RNumber_proxy_t (uint uint) "bl_rnumber_create_from_unsigned_of_size")
     (rnumber-create-from-unsigned_of_size_variable_sizing::RNumber_proxy_t 
      (uint uint) "bl_rnumber_create_from_unsigned_of_size_variable_sizing")
@@ -267,6 +270,7 @@
    (RNumber_proxy_t? a))
 
 (define *rnumber-two-arg-error* "needs two argument one needs to be a rnumber, the other an rnumber or an int ")
+(define *rnumber-one-arg-error* "needs one argument that is either a rnumber on an int.")
 
 (define (rn=? a b)
    ;(print "(rn=? " a " " b ")")
@@ -411,6 +415,23 @@
 	    ((and first-rn second-ui) (rnumber-rn-bitor-ui a b))
 	    ((and first-ui second-rn) (rnumber-ui-bitor-rn a b))
 	    (else (error "rn-bitor" *rnumber-two-arg-error* (cons a b))))))
+
+(define (rn-bitnot a)
+   (let ((first-rn (RNumber_proxy_t? a))
+	 (first-ui (integer? a)))
+      (cond ((and first-rn) (rnumber-negate a))
+	    ((and first-ui) (bit-not a))
+	    (else (error "rn-bitnot" *rnumber-one-arg-error* a)))))
+
+(define (rn-bitxor a b)
+   (let ((first-rn (RNumber_proxy_t? a))
+	 (first-ui (integer? a))
+	 (second-rn (RNumber_proxy_t? b))
+	 (second-ui (integer? b)))
+      (cond ((and first-rn second-rn) (rnumber-rn-bitxor-rn a b))
+	    ((and first-rn second-ui) (rnumber-rn-bitxor-ui a b))
+	    ((and first-ui second-rn) (rnumber-ui-bitxor-rn a b))
+	    (else (error "rn-bitxor" *rnumber-two-arg-error* (cons a b))))))
 
 (define (rnumber-parse-string str)
    ;(print "(rnumber-parse-string " str ")")
