@@ -1,22 +1,26 @@
-check_PROGRAMS =   simple_test NumberTest RandTest number_test  driver 
 
-# randtest
+if WITHOUT_BIGLOO
+bigloo_tests = 
+else
+bigloo_tests = simple_test number_test driver
+endif
 
-simple_test_SOURCES = simple_test.c c-io.C
+check_PROGRAMS = NumberTest RandTest
+
+EXTRA_PROGRAMS = simple_test number_test driver
+
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
 number_test_SOURCES = c-io.C number_test.c
-# randtest_SOURCES = randtest.c
+simple_test_SOURCES = simple_test.c c-io.C
 driver_SOURCES = driver.scm
 
 CLEANFILES = driver.c 
 EXTRA_DIST = $(TESTS) 
 
-#INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
-TESTS = simple_test NumberRegress  RandTest number_test
-#number-tests.scm simple_test NumberRegress  RandTest number_test
+TESTS = NumberRegress RandTest
 
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a

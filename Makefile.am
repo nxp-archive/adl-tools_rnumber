@@ -13,13 +13,7 @@ cinstall:
 
 EXTRA_DIST = $(m4data_DATA)
 
-SUBDIRS = \
-	macros \
-	doc   \
-	include \
-	src   \
-	bigloo \
-	tests 
+SUBDIRS = macros doc	include src	$(BIGLOO) tests
 
 bin_SCRIPTS = rnumber-config
 

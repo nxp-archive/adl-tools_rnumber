@@ -1,3 +1,9 @@
+2002-10-30  Brian Kahne  <bkahne@ibmoto.com>
+
+	* Made the compilation of Bigloo bindings optional.  However, the
+	regression test doesn't yet work correctly- it won't run the Bigloo
+	tests.  I'll let Todd handle that. :)
+
 	================== release-1-8-1 ======================================
 	
 2002-10-29  Todd Dukes  <Todd.Dukes@motorola.com>
