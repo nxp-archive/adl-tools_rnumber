@@ -36,7 +36,7 @@
   :title "Current Status"
 
   (paragraph
-    [RNumber is a faily mature library that has been used in the development of Raptor and
+    [RNumber is a fairly mature library that has been used in the development of Raptor and
 	     Figleaf at Somerset. ]))
 
  (section
