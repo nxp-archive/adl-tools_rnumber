@@ -1,3 +1,8 @@
+	================== rnumber-release-1-8-3 ==============================
+
+2002-11-01 Brian changed the version but didn't leave a note. I think all that
+	was changed was the version number in configure.in
+	
 	================== rnumber-release-1-8-2 ==============================
 
 2002-10-31  Todd Dukes  <Todd.Dukes@motorola.com>
