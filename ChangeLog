@@ -1,3 +1,13 @@
+2002-12-13  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	* add perl operator overloading. There is some problem with shifting
+	  integers by rnumbers that needs to be worked out.
+
+2002-12-12  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	* perl added memory reclamation.
+	
+
         ============== rnumber release 1.11.3 (v1_11_3) on SunOS ==============
 
         ============== rnumber release 1.11.3 (v1_11_3) on Linux ==============

@@ -1,23 +1,26 @@
 
 package rnumber;
-require pl_rnumber;
+require RNumber;
 require Exporter;
 @ISA = qw(Exporter);
 
-pl_rnumber::rnumber_predicate_init();
+RNumber::rnumber_predicate_init();
 
 @EXPORT = qw(stringp integerp rnumberp numericp rn_version rn_ctor rn_cstr rn_parse_string 
 	     rn_int rn_eq rn_neq rn_lt rn_le rn_gt rn_ge rn_ls rn_rs rn_plus rn_minus 
 	     rn_div rn_mult rn_bitor rn_bitand rn_mod rn_size);
 
-sub rnumberp
-{
+sub rnumberp {
   my $a = shift @_;
   unless (ref $a) {
     return 0;
   };
-  return $a->isa("struct RNumberPtr");
+  if ($a->isa("RNumber")) {
+    return 1;
+  }
+  return 0;
 }
+
 
 sub rn_version
 {
@@ -30,19 +33,19 @@ sub rn_ctor
   my $size;
   if ($size = shift) {
     if ( rnumberp ($number)) {
-      return pl_rnumber::rnumber_create_from_rnumber($number);
+      return RNumber::rnumber_create_from_rnumber($number);
     } elsif ( numericp ($number)) {
-      return pl_rnumber::rnumber_create_from_unsigned_of_size($number,$size);
+      return RNumber::rnumber_create_from_unsigned_of_size($number,$size);
     } elsif ( stringp ($number)) {
-      return pl_rnumber::rnumber_create_from_string_of_size($number,$size);
+      return RNumber::rnumber_create_from_string_of_size($number,$size);
     }
   } else {
     if ( rnumberp ($number)) {
-      return pl_rnumber::rnumber_create_from_rnumber($number);
+      return RNumber::rnumber_create_from_rnumber($number);
     } elsif ( numericp ($number)) {
-      return pl_rnumber::rnumber_create_from_unsigned($number);
+      return RNumber::rnumber_create_from_unsigned($number);
     } elsif ( stringp ($number)) {
-      return pl_rnumber::rnumber_create_from_string($number);
+      return RNumber::rnumber_create_from_string($number);
     }
   }
   print("rnumber_ctor should be called with an integer, rnumber, or a string with an optional ",
@@ -58,12 +61,12 @@ sub rn_cstr
     my $prefix;
     if ( @_ ) {
       $prefix = shift @_;
-      return pl_rnumber::rnumber_cstr_radix($number, $radix, $prefix);
+      return RNumber::rnumber_cstr_radix($number, $radix, $prefix);
     } else {
-      return pl_rnumber::rnumber_cstr_radix($number, $radix, 1);      
+      return RNumber::rnumber_cstr_radix($number, $radix, 1);      
     }
   }
-  return pl_rnumber::rnumber_cstr($number);
+  return RNumber::rnumber_cstr($number);
 }
 
 sub rn_parse_string 
@@ -84,18 +87,18 @@ sub rn_eq
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_equal_rn(@_);
+    return RNumber::rnumber_rn_equal_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_equal_ui(@_);
+    return RNumber::rnumber_rn_equal_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_equal_rn(@_);
+    return RNumber::rnumber_ui_equal_rn(@_);
   } else {
     return ($a = $b);
   }
 }
 
 sub rn_neq {
-  return not rnumber_equal(@_);
+  return not rn_eq(@_);
 }
 
 sub rn_lt {
@@ -105,11 +108,11 @@ sub rn_lt {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_lessthan_rn(@_);
+    return RNumber::rnumber_rn_lessthan_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_lessthan_ui(@_);
+    return RNumber::rnumber_rn_lessthan_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_lessthan_rn(@_);
+    return RNumber::rnumber_ui_lessthan_rn(@_);
   } else {
     return ($a < $b);
   }
@@ -122,11 +125,11 @@ sub rn_le {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_lessequal_rn(@_);
+    return RNumber::rnumber_rn_lessequal_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_lessequal_ui(@_);
+    return RNumber::rnumber_rn_lessequal_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_lessequal_rn(@_);
+    return RNumber::rnumber_ui_lessequal_rn(@_);
   } else {
     return ($a <= $b);
   }
@@ -139,11 +142,11 @@ sub rn_gt {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_greaterthan_rn(@_);
+    return RNumber::rnumber_rn_greaterthan_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_greaterthan_ui(@_);
+    return RNumber::rnumber_rn_greaterthan_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_greaterthan_rn(@_);
+    return RNumber::rnumber_ui_greaterthan_rn(@_);
   } else {
     return ($a > $b);
   }
@@ -156,11 +159,11 @@ sub rn_ge {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_greaterequal_rn(@_);
+    return RNumber::rnumber_rn_greaterequal_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_greaterequal_ui(@_);
+    return RNumber::rnumber_rn_greaterequal_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_greaterequal_rn(@_);
+    return RNumber::rnumber_ui_greaterequal_rn(@_);
   } else {
     return ($a <= $b);
   }
@@ -173,11 +176,13 @@ sub rn_ls {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_leftshift_rn(@_);
+    return RNumber::rnumber_rn_leftshift_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_leftshift_ui(@_);
+    return RNumber::rnumber_rn_leftshift_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_leftshift_rn(@_);
+    #don't do this
+    return 0;
+#    return RNumber::rnumber_ui_leftshift_rn(@_);
   } else {
     return ($a << $b);
   }
@@ -190,11 +195,11 @@ sub rn_rs {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_rightshift_rn(@_);
+    return RNumber::rnumber_rn_rightshift_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_rightshift_ui(@_);
+    return RNumber::rnumber_rn_rightshift_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_rightshift_rn(@_);
+    return RNumber::rnumber_ui_rightshift_rn(@_);
   } else {
     return ($a >> $b);
   }
@@ -206,15 +211,15 @@ sub rn_plus {
   my $second_rn = rnumberp($_[1]);
   my $second_ui = numericp($_[1]);
 
-  #print  "first_rn  $first_rn first_ui  $first_ui second_rn $second_rn second_ui $second_ui\n";
-  #print "\@_ @_\n";
+#  print  "first_rn  '$first_rn' first_ui  '$first_ui' second_rn '$second_rn' second_ui '$second_ui'\n";
+#  print "\@_ @_\n";
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_plus_rn(@_);
+    return RNumber::rnumber_rn_plus_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_plus_ui(@_);
+    return RNumber::rnumber_rn_plus_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_plus_rn(@_);
+    return RNumber::rnumber_ui_plus_rn(@_);
   } else {
     return ($a + $b);
   }
@@ -226,12 +231,15 @@ sub rn_minus {
   my $second_rn = rnumberp($_[1]);
   my $second_ui = numericp($_[1]);
 
+#  print  "first_rn  '$first_rn' first_ui  '$first_ui' second_rn '$second_rn' second_ui '$second_ui'\n";
+#  print "\@_ @_\n";
+
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_minus_rn(@_);
+    return RNumber::rnumber_rn_minus_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_minus_ui(@_);
+    return RNumber::rnumber_rn_minus_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_minus_rn(@_);
+    return RNumber::rnumber_ui_minus_rn(@_);
   } else {
     return ($a - $b);
   }
@@ -244,11 +252,11 @@ sub rn_div {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_divide_rn(@_);
+    return RNumber::rnumber_rn_divide_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_divide_ui(@_);
+    return RNumber::rnumber_rn_divide_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_divide_rn(@_);
+    return RNumber::rnumber_ui_divide_rn(@_);
   } else {
     return ($a / $b);
   }
@@ -261,11 +269,11 @@ sub rn_mult {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_multiply_rn(@_);
+    return RNumber::rnumber_rn_multiply_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_multiply_ui(@_);
+    return RNumber::rnumber_rn_multiply_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_multiply_rn(@_);
+    return RNumber::rnumber_ui_multiply_rn(@_);
   } else {
     return ($a * $b);
   }
@@ -278,11 +286,11 @@ sub rn_bitor {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_bitor_rn(@_);
+    return RNumber::rnumber_rn_bitor_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_bitor_ui(@_);
+    return RNumber::rnumber_rn_bitor_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_bitor_rn(@_);
+    return RNumber::rnumber_ui_bitor_rn(@_);
   } else {
     return ($a | $b);
   }
@@ -295,11 +303,11 @@ sub rn_bitand {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_bitand_rn(@_);
+    return RNumber::rnumber_rn_bitand_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_bitand_ui(@_);
+    return RNumber::rnumber_rn_bitand_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_bitand_rn(@_);
+    return RNumber::rnumber_ui_bitand_rn(@_);
   } else {
     return ($a & $b);
   }
@@ -312,18 +320,185 @@ sub rn_mod {
   my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
-    return pl_rnumber::rnumber_rn_mod_rn(@_);
+    return RNumber::rnumber_rn_mod_rn(@_);
   } elsif ($first_rn && $second_ui) {
-    return pl_rnumber::rnumber_rn_mod_ui(@_);
+    return RNumber::rnumber_rn_mod_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return pl_rnumber::rnumber_ui_mod_rn(@_);
+    return RNumber::rnumber_ui_mod_rn(@_);
   } else {
     return ($a % $b);
   }
 }
 
 sub rn_size {
-  return pl_rnumber::rnumber_size($_[0]);
+  return RNumber::rnumber_size($_[0]);
+}
+
+package RNumber;
+
+sub DESTROY {
+  my ($rnumber) = @_;
+  #print( "(destroy ". $rnumber .")");
+  RNumber::rnumber_destroy($rnumber);
+}
+
+use overload 
+    '+' => \&overload_add,
+    '-' => \&overload_minus,
+    '%' => \&overload_mod,
+    '*' => \&overload_mult,
+    '/' => \&overload_div,
+    '&' => \&overload_bitand,
+    '|' => \&overload_bitor,
+    '==' => \&overload_equal,
+    '!=' => \&overload_not_equal,
+    '<'  => \&overload_lessthan,
+    '<=' => \&overload_lessequal,
+    '>'  => \&overload_greaterthan,
+    '>=' => \&overload_greaterequal,
+    '<<' => \&overload_leftshift,
+    '>>' => \&overload_rightshift,
+    '""' => \&overload_to_string;
+
+sub overload_add {
+  my ($x, $y, $swapped) = @_;
+  if ( $swapped ) {
+    rnumber::rn_plus($y, $x);
+  } else {
+    rnumber::rn_plus($x, $y);
+  }
+}
+
+sub overload_minus {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_minus($y, $x);
+  } else {
+    rnumber::rn_minus($x, $y);
+  }
+}
+
+sub overload_mod {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_mod($y, $x);
+  } else {
+    rnumber::rn_mod($x, $y);
+  }
+}
+
+sub overload_mult {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_mult($y, $x);
+  } else {
+    rnumber::rn_mult($x, $y);
+  }
+}
+
+sub overload_div {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_div($y, $x);
+  } else {
+    rnumber::rn_div($x, $y);
+  }
+}
+
+sub overload_bitand {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_bitand($y, $x);
+  } else {
+    rnumber::rn_bitand($x, $y);
+  }
+}
+
+sub overload_bitor {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_bitor($y, $x);
+  } else {
+    rnumber::rn_bitor($x, $y);
+  }
+}
+
+sub overload_equal {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_eq($y, $x);
+  } else {
+    rnumber::rn_eq($x, $y);
+  }
+}
+
+sub overload_not_equal {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_neq($y, $x);
+  } else {
+    rnumber::rn_neq($x, $y);
+  }
+}
+
+sub overload_lessthan {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_lt($y, $x);
+  } else {
+    rnumber::rn_lt($x, $y);
+  }
+}
+
+sub overload_lessequal {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_le($y, $x);
+  } else {
+    rnumber::rn_le($x, $y);
+  }
+}
+
+sub overload_greaterthan {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_gt($y, $x);
+  } else {
+    rnumber::rn_gt($x, $y);
+  }
+}
+
+sub overload_greaterequal {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_ge($y, $x);
+  } else {
+    rnumber::rn_ge($x, $y);
+  }
+}
+
+sub overload_leftshift {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_ls($y, $x);
+  } else {
+    rnumber::rn_ls($x, $y);
+  }
+}
+
+sub overload_rightshift {
+  my ($x, $y, $swapped) = @_;
+  if ($swapped) {
+    rnumber::rn_rs($y, $x);
+  } else {
+    rnumber::rn_rs($x, $y);
+  }
+}
+
+sub overload_to_string {
+  my ($x, $y, $swapped) = @_;
+  rnumber::rn_cstr($x);
 }
 
 1;
+

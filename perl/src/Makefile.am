@@ -3,7 +3,7 @@ perllibdir=$(pkglibdir)
 
 noinst_DATA = example.so 
 
-perllib_DATA = pl_rnumber.so pl_rnumber.pm  rnumber.pm
+perllib_DATA = RNumber.so RNumber.pm rnumber.pm
 
 CLEANFILES = $(EXAMPLE_CLEANFILES) $(PL_RNUMBER_CLEANFILES) 
 
@@ -28,8 +28,8 @@ example.pm example_wrap.c: example.i example.c
 example.so : example.o example_wrap.o 
 	g++ -shared example.o example_wrap.o -o example.so 
 
-pl_rnumber.pm pl_rnumber_wrap.c: pl_rnumber.i 
-	swig -perl5 pl_rnumber.i
+RNumber.pm RNumber_wrap.c: RNumber.i 
+	swig -perl5 -shadow RNumber.i
 
-pl_rnumber.so : pl_rnumber_wrap.o pl_rnumber.o $(RNUMBER_LIB)	
+RNumber.so : RNumber_wrap.o RNumber.o $(RNUMBER_LIB)	
 	g++ -shared $^ -o $@ 
