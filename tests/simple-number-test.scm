@@ -1,12 +1,13 @@
 #!./driver
 
 (define (do-tests a b)
-    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn=?"  (rn=? a b))
-    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn!=?" (rn!=? a b))
-    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn<?"  (rn<? a b))
-    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn<=?" (rn<=? a b))
-    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn>?"  (rn>? a b))
-    (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn>=?" (rn>=? a b)))
+   (print "a " a " b " b)
+   (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn=?"  (rn=? a b))
+   (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn!=?" (rn!=? a b))
+   (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn<?"  (rn<? a b))
+   (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn<=?" (rn<=? a b))
+   (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn>?"  (rn>? a b))
+   (print "a=0x" (rnumber-cstr a) " b=0x" (rnumber-cstr b) " rn>=?" (rn>=? a b)))
 
 (define (real-main argv)
    (print "create from int")
@@ -33,7 +34,12 @@
       (print "a = b " (equal? a b))
       (print "b = c " (equal? b c))
       (print "a = 10 " (equal? a 10))
-      (print "10 = a "  (equal? 10 a))))
+      (print "10 = a "  (equal? 10 a))
+      (print "parse from string qtv -> " (rnumber-parse-string "qtv"))
+      (print "parse from string \"10\" -> " (rnumber-parse-string "10"))))
     
 (define (simple-number-test . args)
    (real-main args))
+
+
+

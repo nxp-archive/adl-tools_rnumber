@@ -80,7 +80,6 @@ int rnumber_proxy_is_equal( obj_t lhs, obj_t rhs)
   int lhs_int = INTEGERP(lhs);
   int rhs_int = INTEGERP(rhs);
 
-  printf("hello\n");
   if ( !(lhs_rnumber || lhs_int) || !(rhs_rnumber || rhs_int))
     return 0;
   

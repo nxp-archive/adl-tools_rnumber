@@ -523,7 +523,7 @@ inline bool operator==( const RNumber& n1, const RNumber& n2 )
 //
 inline bool operator==( const RNumber& n1, unsigned int n2 )
 {
-  return equal( n1, n2 );
+  return equal(n1,n2);
 }
 
 
