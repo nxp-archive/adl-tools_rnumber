@@ -1,7 +1,8 @@
-check_PROGRAMS =  simple_test NumberTest RandTest number_test  driver 
+check_PROGRAMS =  ls_defect simple_test NumberTest RandTest number_test  driver 
 
 # randtest
 
+ls_defect_SOURCES = ls_defect.C
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
 number_test_SOURCES = c-io.C number_test.c
@@ -15,7 +16,9 @@ EXTRA_DIST = $(TESTS)
 #INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
-TESTS = number-tests.scm simple_test NumberRegress  RandTest number_test
+TESTS = ls_defect
+#TESTS = simple_test NumberRegress  RandTest number_test
+#number-tests.scm simple_test NumberRegress  RandTest number_test
 
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a

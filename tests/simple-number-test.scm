@@ -36,7 +36,9 @@
       (print "a = 10 " (equal? a 10))
       (print "10 = a "  (equal? 10 a))
       (print "parse from string qtv -> " (rnumber-parse-string "qtv"))
-      (print "parse from string \"10\" -> " (rnumber-parse-string "10"))))
+      (print "parse from string \"10\" -> " (rnumber-parse-string "10"))
+      (print "5 - 3 -> " (rn- (rnumber-ctor 5) (rnumber-ctor "3")))
+      ))
     
 (define (simple-number-test . args)
    (real-main args))
