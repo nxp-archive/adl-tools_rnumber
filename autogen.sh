@@ -5,7 +5,7 @@ if test ! -x "$MAKE" ; then MAKE=`which make` ; fi
 HAVE_GNU_MAKE=`$MAKE --version|grep -c "Free Software Foundation"`
 
 if test "$HAVE_GNU_MAKE" != "1"; then 
-echo !!!! ERROR: You need GNU make to build BitNum; 
+echo !!!! ERROR: You need GNU make to build rnumber; 
 echo !!!! $MAKE is not GNU make;
 exit 1; 
 fi
@@ -18,7 +18,7 @@ srcdir=`dirname $0`
 echo "srcdir $srcdir"
 test -z "$srcdir" && srcdir=.
 
-PKG_NAME="BitNum"
+PKG_NAME="rnumber"
 
 (test -f $srcdir/configure.in \
   && test -d $srcdir/src \
