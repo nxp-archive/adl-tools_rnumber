@@ -27,8 +27,8 @@ static char * rnumber_to_string( RNumber_proxy_t array, char *c, int len ) {
 }
 
 static RNumber_proxy_t rnumber_output( RNumber_proxy_t array, FILE *fout ) {
-    char * str = bl_rnumber_cstr(array);
-    fprintf( fout, "0x%s", str);
+    char * str = bl_rnumber_cstr_radix(array, 16, 1);
+    fprintf( fout, "%s", str);
     free (str);
     return array;
 }
