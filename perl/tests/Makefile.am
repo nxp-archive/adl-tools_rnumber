@@ -6,3 +6,8 @@ TESTS = float-test.pl \
 	simple_mem_test.pl \
 	simple_test.pl
 
+
+EXTRA_DIST = $(webdata_DATA)
+
+webdatadir = $(WEB_HOME)/examples
+webdata_DATA = $(TESTS)
