@@ -1,3 +1,5 @@
+        ==================== rnumber release 1.8.4 (v1_8_4) ====================
+
 2002-11-04  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	*  now correctly runs bigloo regression if bigloo support is compiled in.
