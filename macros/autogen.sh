@@ -1,9 +1,9 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
-(autoconf --version) < /dev/null > /dev/null 2>&1 || {
+(autoconf --version ) < /dev/null > /dev/null 2>&1 || {
   echo
-  echo "Error: You must have \`autoconf' installed to compile bitnum."
+  echo "Error: You must have \`autoconf'  installed to compile rnumber."
   echo "It is available at ftp://ftp.gnu.org/pub/gnu/"
   exit 1;
 }
@@ -11,7 +11,7 @@
 (grep "^AM_PROG_LIBTOOL" $srcdir/configure.in >/dev/null) && {
   (libtool --version) < /dev/null > /dev/null 2>&1 || {
     echo
-    echo "Error: You must have \`libtool' installed to compile bitnum."
+    echo "Error: You must have \`libtool' installed to compile rnumber."
     echo "It is available at ftp://ftp.gnu.org/pub/gnu/"
     exit 1;
   }
@@ -19,7 +19,7 @@
 
 (automake --version) < /dev/null > /dev/null 2>&1 || {
   echo
-  echo "Error: You must have \`automake' installed to compile bitnum."
+  echo "Error: You must have \`automake' installed to compile rnumber."
   echo "It is available at ftp://ftp.gnu.org/pub/gnu/automake-1.3.tar.gz"
   exit 1;
 }

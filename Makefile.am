@@ -1,12 +1,16 @@
 ## Please update this variable if any new macros are created
 MACROS= \
-	std-exceptions.m4
+	std-exceptions.m4 \
+	rnumber.m4
 
-EXTRA_DIST = $(m4data_DATA)
-EXTRA_DIST = $(MACROS)
+EXTRA_DIST = $(MACROS) $(m4data_DATA)
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = $(MACROS)
+
+SUBDIRS = macros include src tests $(PERLBINDINGS) $(BIGLOO) $(DOC)
+
+bin_SCRIPTS = rnumber-config
 
 cinstall:
 	@set fnord $(MAKEFLAGS); amf=$$2; \
@@ -27,14 +31,6 @@ cinstall:
 	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
 	fi; test -z "$$fail"
 
-EXTRA_DIST = $(m4data_DATA)
-
-SUBDIRS = macros include src tests $(PERLBINDINGS) $(BIGLOO) $(DOC)
-
-bin_SCRIPTS = rnumber-config
-
-m4datadir = $(datadir)/aclocal
-m4data_DATA = rnumber.m4
 
 # This is run after the distribution directory is created
 # This target is here to remove src/rcparser.yy from the dist

@@ -9,13 +9,7 @@ TESTS = float-test.pl \
 
 EXTRA_DIST = $(webdata_DATA)
 
-webdata_DATA =
+webdata_DATA = $(TESTS)
 
 webdatadir = $(WEB_HOME)/examples
-if WEB_STUFF
-	webdata_DATA = $(TESTS)
-else
-	webdata_DATA = 
-endif
-
 

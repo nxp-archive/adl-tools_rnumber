@@ -2,7 +2,7 @@ pdnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/RNumber.C)
 dnl we to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
 dnl are available for $ac_help expansion (don't we all *love* autoconf?)
-AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+dnl AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 #
 # Making releases:
 #   RNUMBER_MICRO_VERSION += 1;
@@ -19,7 +19,10 @@ RNUMBER_INTERFACE_AGE=0
 RNUMBER_BINARY_AGE=0
 RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
 dnl
-AC_DIVERT_POP()dnl
+dnl AC_DIVERT_POP()dnl
+
+dnl AH_TOP([#if 0])
+dnl AH_BOTTOM([#endif])
 
 AC_SUBST(RNUMBER_MAJOR_VERSION)
 AC_SUBST(RNUMBER_MINOR_VERSION)
@@ -112,7 +115,7 @@ AC_MSG_RESULT(efence will not be used)
 AC_SUBST(EFENCE)
 
 web_stuff=0
-WEB_HOME=/nfs/ibmoto/www/projects/tools/tlv/rnumber/
+WEB_HOME=./web-home
 AC_ARG_ENABLE(web-home,
 [  --enable-web-home=<prefix>    Prefix directory to install web-stuff. (examples, html documentation, etc...)
                           If not specified, web materials are not installed.],
@@ -130,6 +133,7 @@ AM_CONDITIONAL(WEB_STUFF, test x$web_stuff = xtrue)
 AC_SUBST(WEB_HOME)
 
 AM_MAINTAINER_MODE
+AC_PROG_RANLIB
 AC_PROG_CC
 AC_PROG_CPP
 AM_PROG_LEX
@@ -187,9 +191,10 @@ else
 fi
 
 
+dnl currently, rnumber doesn't use libtool
 dnl libtool does all checks with $CC, not with $CXX
 dnl maybe this should be fixed in libtool, not here
-AM_PROG_LIBTOOL
+dnl AM_PROG_LIBTOOL
 
 dnl On FreeBSD 3.0 (and perhaps some other systems) GNU m4 is
 dnl called `gm4' where `m4' is the system's own m4.
@@ -271,7 +276,7 @@ using namespace std;
 cout << "test" << endl;
 ],[
  ac_namespaces=yes
- AC_DEFINE(RNUMBER_CXX_HAVE_NAMESPACES)
+ AC_DEFINE(RNUMBER_CXX_HAVE_NAMESPACES,1,/*namespaces*/)
 ],[
  ac_namespaces=maybe
 ])
@@ -289,7 +294,7 @@ using namespace std;
 cout << "test" << endl;
 ],[
  ac_namespaces=yes
- AC_DEFINE(RNUMBER_CXX_HAVE_NAMESPACES)
+ AC_DEFINE(RNUMBER_CXX_HAVE_NAMESPACES,1,/*namespaces*/)
 ],[
  ac_namespaces=no
 ])
@@ -323,7 +328,7 @@ public:
 ],[
 ],[
   ac_mutable=yes
-  AC_DEFINE(RNUMBER_CXX_HAVE_MUTABLE)
+  AC_DEFINE(RNUMBER_CXX_HAVE_MUTABLE, 1, /*have mutable*/)
 ],[
   ac_mutable=no
 ]) 
@@ -376,7 +381,7 @@ template <class T> void foo::method(T t) {t = 0;}
 ],[
 ],[
    ac_member_templates=yes
-   AC_DEFINE(RNUMBER_CXX_HAVE_MEMBER_TEMPLATES)
+   AC_DEFINE(RNUMBER_CXX_HAVE_MEMBER_TEMPLATES, 1, /* member templates */)
    AC_MSG_RESULT([$ac_member_templates])
 ],[
   ac_member_templates=no
@@ -399,7 +404,7 @@ template<class T> class k<void,T> { };
   k<void,void> a;
 ],[
   ac_partial_specialization=yes
-  AC_DEFINE(RNUMBER_CXX_HAVE_PARTIAL_SPECIALIZATION)
+  AC_DEFINE(RNUMBER_CXX_HAVE_PARTIAL_SPECIALIZATION, 1, /* partial specialization */)
 ],[
   ac_partial_specialization=no
 ]) 
@@ -432,9 +437,6 @@ using namespace std;
 ])
 AC_MSG_RESULT([$rnumber_string_ok])
 
-
-
-
 AC_MSG_CHECKING(if C++ compiler has HP ambiguous template bug)
 AC_TRY_COMPILE(
 [
@@ -456,7 +458,7 @@ struct P {typedef int foo; };
   ac_cxx_ambiguous_templates=no
 ],[
   ac_cxx_ambiguous_templates=yes
-  AC_DEFINE(RNUMBER_CXX_AMBIGUOUS_TEMPLATES)
+  AC_DEFINE(RNUMBER_CXX_AMBIGUOUS_TEMPLATES, 1, /*ambiguouse templates bug*/)
 ])
 AC_MSG_RESULT([$ac_cxx_ambiguous_templates])
 
@@ -490,7 +492,7 @@ int main(int argc,char **argv)
   }
 ],[
   ac_gcc_au_bug=yes
-  AC_DEFINE(RNUMBER_CXX_GAUB)
+  AC_DEFINE(RNUMBER_CXX_GAUB,1, gaub)
 ],[
   ac_gcc_au_bug=no
 ],[

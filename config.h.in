@@ -38,5 +38,26 @@
 /* Version number of package */
 #undef VERSION
 
+/* /*namespaces*/ */
+#undef RNUMBER_CXX_HAVE_NAMESPACES
+
+/* /*namespaces*/ */
+#undef RNUMBER_CXX_HAVE_NAMESPACES
+
+/* /*have mutable*/ */
+#undef RNUMBER_CXX_HAVE_MUTABLE
+
+/* /* member templates */ */
+#undef RNUMBER_CXX_HAVE_MEMBER_TEMPLATES
+
+/* /* partial specialization */ */
+#undef RNUMBER_CXX_HAVE_PARTIAL_SPECIALIZATION
+
+/* /*ambiguouse templates bug*/ */
+#undef RNUMBER_CXX_AMBIGUOUS_TEMPLATES
+
+/* gaub */
+#undef RNUMBER_CXX_GAUB
+
 
 #endif /* _ACCONFIG_H */
