@@ -11,7 +11,8 @@ EXAMPLE_CLEANFILES = example.o example_wrap.o example_wrap.c example_wrap.o exam
 
 PL_RNUMBER_CLEANFILES = pl_rnumber.pm pl_rnumber_wrap.c pl_rnumber_wrap.o pl_rnumber.so
 
-PERL_INC=-I/local/tdukes/lib/perl5/5.00503/sun4-solaris/CORE
+PERL_INC=-I/usr/local/lib/perl5/sun4-solaris/5.00404/CORE
+#PERL_INC=-I/local/tdukes/lib/perl5/5.00503/sun4-solaris/CORE
 
 RNUMBER_LIB = $(top_srcdir)/src/libRNumber.a
 STD_CPP_LIB = -lstdc++
