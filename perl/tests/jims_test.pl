@@ -2,7 +2,7 @@
 
 use strict;
 #use lib '/local1/work/lib/rnumber';
-#use lib '/cad/tools/rnumber/1.10.4/lib/rnumber';
+#use lib '/cad/tools/rnumber/1.11.2/lib/rnumber';
 use lib '../src';
 use rnumber;
 
