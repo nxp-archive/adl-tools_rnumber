@@ -15,7 +15,7 @@
    (rnumber-create-from-string-of-size::RNumber_proxy_t (string uint) "bl_rnumber_create_from_string_of_size")
    (rnumber-create-from-string-of-size_variable_sizing::RNumber_proxy_t 
     (string uint) "bl_rnumber_create_from_string_of_size_variable_sizing")
-   (rnumber-create-from-string-of-radix::RNumber_proxy_t (string int) "bl_rnumber_create_from_string_of_radix")
+   (bl-rnumber-create-from-string-of-radix::RNumber_proxy_t (string int) "bl_rnumber_create_from_string_of_radix")
    (rnumber-create-from-string-of-radix_variable_sizing::RNumber_proxy_t
     (string int) "bl_rnumber_create_from_string_of_radix_variable_sizing")
    (rnumber-create-from-string-of-size-of-radix::RNumber_proxy_t
@@ -166,9 +166,9 @@
    (bl-rnumber-rn-greaterequal-rn::int (RNumber_proxy_t RNumber_proxy_t) "bl_rnumber_rn_greaterequal_rn")
    (bl-rnumber-rn-greaterequal-ui::int (RNumber_proxy_t uint) "bl_rnumber_rn_greaterequal_ui")
    (bl-rnumber-ui-greaterequal-rn::int (uint RNumber_proxy_t) "bl_rnumber_ui_greaterequal_rn")
-   (rnumber-rhex::int () "bl_rnumber_rhex")
-   (rnumber-rbin::int () "bl_rnumber_rbin")
-   (rnumber-rdec::int () "bl_rnumber_rdec")
+   (bl-rnumber-rhex::int () "bl_rnumber_rhex")
+   (bl-rnumber-rbin::int () "bl_rnumber_rbin")
+   (bl-rnumber-rdec::int () "bl_rnumber_rdec")
    (type uint* (pointer uint) "unsigned int *")
    (type ->uint "unsigned int ($())")
    (type uint->void "void ($(unsigned int))")
@@ -215,7 +215,7 @@
 (define (rnumber-ctor arg)
    (cond ((null? arg) (bl-rnumber-create))
          ((integer? arg) (bl-rnumber-create-from-unsigned arg))
-	 ((string? arg) (bl-rnumber-create-from-string arg))
+	 ((string? arg) (print "rnumber create from string '" arg "'") (bl-rnumber-create-from-string arg))
 	 ((RNumber_proxy_t? arg) (bl-rnumber-create-from-rnumber arg))
          (else (error "rnumber-ctor" "unknown arg type " arg))))
 
