@@ -28,6 +28,9 @@ AC_SUBST(RNUMBER_INTERFACE_AGE)
 AC_SUBST(RNUMBER_BINARY_AGE)
 AC_SUBST(RNUMBER_VERSION)
 
+WEB_HOME=/nfs/ibmoto/www/projects/tools/tlv/rnumber/
+AC_SUBST(WEB_HOME)
+
 VERSION=$RNUMBER_VERSION
 PACKAGE=rnumber
 
@@ -222,7 +225,22 @@ else
    AC_MSG_RESULT("SWIG $SWIGPROG")
 fi
 AC_SUBST([PERLBINDINGS])
-AM_CONDITIONAL(WITHOUT_SWIG,test x$SWIG = x)
+AM_CONDITIONAL(WITHOUT_SWIG,test x$PERLBINDINGS = x)
+
+dnl find scribe. If scribe is not available, don't build the documentation
+AC_PATH_PROG(SCRIBEPROG,scribe)
+if test "x$SCRIBEPROG" = x ; then
+   AC_WARN("Could not find scribe. Check your path to make sure it is present.")
+   AC_WARN("Scribe is available from http://www-sop.inria.fr/mimosa/Manuel.Serrano/scribe/")
+   AC_WARN("Since scribe is needed for the documentation\, the documentation will *not* be built.")
+   DOC=
+else
+   DOC=doc
+   AC_MSG_RESULT("SCRIBE $SCRIBEPROG")
+fi
+AC_SUBST([DOC])
+AM_CONDITIONAL(WITHOUT_DOC,test x$DOC = x)
+
 
 dnl C++ compiler feature check start here
 dnl moved the c++ compiler alittle to make the basename check work right..
@@ -515,6 +533,7 @@ dnl AC_ALLOCA
 AC_OUTPUT([Makefile \
         rnumber-config \
         doc/Makefile \
+	doc/user/Makefile \
 	macros/Makefile \
 	include/Makefile \
         src/rnumber_exceptions.h \

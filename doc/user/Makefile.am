@@ -28,10 +28,10 @@ user.html: user.scr bib.scr user-margin.scr
 user.ps: user.scr bib.scr
 
 PROJECT = rnumber
-PROJECT_VERSION = $RNUMBER_VERSION
+PROJECT_VERSION = $(RNUMBER_VERSION)
 USER_TITLE = RNumber
-PROJECT_URL = http://www.somerset.sps.mot.com/projects/tools/tlv/$PROJECT
-PROJECT_EXAMPLE_FTP_SITE = http://www.somerset.sps.mot.com/projects/tools/tlv/$PROJECT/examples
+PROJECT_URL = http://www.somerset.sps.mot.com/projects/tools/tlv/$(PROJECT)
+PROJECT_EXAMPLE_FTP_SITE = http://www.somerset.sps.mot.com/projects/tools/tlv/$(PROJECT)/examples
 USER_URL = $(PROJECT_URL)/user
 
 SCRIBE = scribe

@@ -24,8 +24,855 @@
  (paragraph
   [This document desribes
 	version ] *project-version* [ of RNumber.])
+ (paragraph
+  [The rnumber library provides two different areas of functionality. There are
+       large integers, referred to as rnumber's, and there are the random sequences.])
 
  (chapter
+  :title "C++ classes"
+  (paragraph [The RNumber library was implemented in C++, but there are language bindings available for
+       using RNumber with other languages. This section describes each of the C++ classes the rnumber
+       library makes available.])
+
+  (section
+   :title "RNumber"
+   
+   (paragraph
+    [This number class provides arithmetic and boolean expression support for
+	  numeric data of arbitrary sizes.  The programmer is no longer constrained
+	  by the size of a platform's registers.  The number's sizing may be fixed
+	  or dynamic thus making it suitable for mimicking computer architecture
+	  components (such as registers) or for general purpose arithmetic. This
+	  particular implementation has limited support for signed numbers.])
+
+   (subsection
+    :title "types"
+    (prgm
+[  enum Radix { rdec, rhex, rbin, rios };
+  enum Sizing { fixed, dynamic }]
+   ))
+
+(subsection
+   :title "Constructors and destructor."
+   (paragraph
+    [All numbers are fixed size by default.])
+   (prgm :language c :bg *prgm-color*
+[
+    RNumber();
+    RNumber( const RNumber& number );
+    RNumber( unsigned int number, Sizing sizing = fixed );
+    RNumber( unsigned int number, unsigned int size, Sizing sizing = fixed );
+    RNumber( const string& number, Sizing sizing = fixed );
+    RNumber( const string& number, unsigned int size, Sizing sizing = fixed );
+    RNumber( const string& number, Radix radix, Sizing sizing = fixed );
+    RNumber( const string& number, unsigned int size, Radix radix, Sizing sizing = fixed );
+    RNumber( const RNumber& number, unsigned int size, Sizing sizing = fixed );
+    RNumber( unsigned int radix, const string& str, int size = -1 );  /// deprecated 
+    RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size,
+            Sizing sizing = fixed );
+    ~RNumber();]
+    ))
+(subsection
+ :title "Assignment methods."
+ (paragraph [operator=() assigns the value constrained by sizing.
+ assign() assigns the value with dynamic sizing; clone() assigns all
+ attributes; resize() truncates/expands the value and sets fixed sizing. ])
+   (prgm :language c :bg *prgm-color*
+[
+    RNumber& operator=( unsigned int number );
+    RNumber& operator=( const string& number );
+    RNumber& operator=( const RNumber& number );
+    RNumber& assign( const RNumber& number );
+    RNumber& set( const RNumber& number );  /// deprecated 
+    RNumber& copy( const RNumber& number );
+    void resize( unsigned int size );]
+))
+
+(subsection
+ :title "Unary arithmetic operators."
+   (prgm :language c :bg *prgm-color*
+[
+   const RNumber operator-() const;
+   const RNumber operator~() const;]
+   ))
+
+(subsection
+ :title "Arithmetic assignment operators"
+ (paragraph [Assignment size depends on sizing state.])
+ (prgm :language c :bg *prgm-color*
+[
+   RNumber& operator+=( const RNumber& number );
+   RNumber& operator+=( unsigned int number );
+   RNumber& operator-=( const RNumber& number );
+   RNumber& operator-=( unsigned int number );
+   RNumber& operator*=( const RNumber& number );
+   RNumber& operator*=( unsigned int number );
+   RNumber& operator/=( const RNumber& number );
+   RNumber& operator/=( unsigned int number );
+   RNumber& operator%=( const RNumber& number );
+   RNumber& operator%=( unsigned int number );
+   RNumber& operator&=( const RNumber& number );
+   RNumber& operator&=( unsigned int number );
+   RNumber& operator|=( const RNumber& number );
+   RNumber& operator|=( unsigned int number );
+   RNumber& operator^=( const RNumber& number );
+   RNumber& operator^=( unsigned int number );
+   RNumber& operator<<=( const RNumber& shift );
+   RNumber& operator<<=( unsigned int shift );
+   RNumber& operator>>=( const RNumber& shift );
+   RNumber& operator>>=( unsigned int shift );]
+   ))
+
+(subsection
+ :title "Unary conditional expression operators."
+ (prgm :language c :bg *prgm-color*
+[
+   bool operator!() const;]
+	))
+
+(subsection
+ :title "Signed conditional expression operators."
+ (prgm :language c :bg *prgm-color*
+[
+   bool signedLT( const RNumber& number ) const;
+   bool signedLE( const RNumber& number ) const;
+   bool signedGT( const RNumber& number ) const;
+   bool signedGE( const RNumber& number ) const;
+   int  compare( const RNumber& number ) const;
+   bool iszero() const;]
+   ))
+
+(subsection
+ :title "Miscellaneous bit manipulation methods"
+ (prgm :language c :bg *prgm-color*
+[
+   RNumber& invert();
+   RNumber& negate();
+   RNumber& setAll();
+   RNumber& setToAllOnes();   /// deprecated 
+   RNumber& clearAll();
+   RNumber& signExtend( unsigned int bit );
+   RNumber& truncate( unsigned int size );]
+   ))
+
+(subsection
+ :title "Bit value accessors and manipulators"
+ (prgm :language c :bg *prgm-color*
+[
+   unsigned int getBit( unsigned int pos ) const;
+   unsigned int getBitLSB( unsigned int pos ) const;
+   void         setBit( unsigned int pos, unsigned int value );
+   void         setBitLSB( unsigned int pos, unsigned int value );
+   void         assignBit( unsigned int pos, unsigned int value ); /// deprecated
+   void         assignBitLSB( unsigned int pos, unsigned int value ); /// deprecated]
+   ))
+
+(subsection
+ :title "Value accessors."
+ (prgm :language c :bg *prgm-color*
+[
+   unsigned int intValue() const;  ///  deprecated
+   unsigned int getInt() const;  /// deprecated
+   unsigned int getUInt() const;
+   string       str() const;
+   string       strradix(Radix=RNumber::rdec,bool prefix=false) const;]
+   ))
+
+(subsection
+ :title "Value field accessors and manipulators"
+ (prgm :language c :bg *prgm-color*
+[
+   unsigned int getIntField( unsigned int start, unsigned int end ) const; /// deprecated
+   unsigned int getUIntField( unsigned int start, unsigned int end ) const;
+   RNumber      getField( unsigned int start, unsigned int end ) const;
+   void         setField( unsigned int start, unsigned int end, const RNumber& num );]
+   ))
+
+(subsection
+ :title "Attribute accessors and manipulators"
+ (prgm :language c :bg *prgm-color*
+[
+  unsigned    size() const;
+  unsigned    wordCount() const;
+  const       unsigned *buffer() const;
+  static      unsigned int defaultSize(); /// deprecated, use getDefaultSize()
+  static      unsigned int getDefaultSize();
+  static void setDefaultSize( unsigned int size );]
+  ))
+
+(subsection
+ :title "Sizing"
+ (prgm :language c :bg *prgm-color*
+[
+  Sizing sizing() const;
+  void   setDynamic();
+  void   setFixed();]
+  ))
+  
+(subsection
+ :title "Streaming I/O methods"
+ (prgm :language c :bg *prgm-color*
+[
+  void            printToOS( ostream& os ) const;
+  ostream&        printWithRadix( ostream& os, Radix = rios, bool prefix=false ) const;
+  friend istream& operator>>( istream& is, RNumber& number );
+  friend ostream& operator<<( ostream& os, const RNumber& number );
+  void            read( istream& is );
+  void            write( ostream& os ) const;]
+   ))
+
+(subsection
+ :title "Friends"
+ (paragraph
+  [The Hash and Equal functors can be used to hashmap from the stl class libraries.])
+ (prgm :language c :bg *prgm-color*
+[
+  friend struct Hash {
+      size_t operator()( const RNumber& num ) const;
+  };
+
+  friend struct Equal {
+      size_t operator()( const RNumber& num1, const RNumber& num2 ) const;
+  };
+  
+  friend  const RNumber add( const RNumber& n1, const RNumber& n2, bool extend );
+  friend  const RNumber add( const RNumber& n1, unsigned int n2, bool extend );
+  friend  const RNumber subtract( const RNumber& n1, const RNumber& n2 );
+  friend  const RNumber subtract( const RNumber& n1, unsigned int n2 );
+  friend  const RNumber subtract( unsigned int n1, const RNumber& n2 );
+  friend  const RNumber multiply( const RNumber& n1, const RNumber& n2, bool extend );
+  friend  const RNumber multiply( const RNumber& n1, unsigned int n2, bool extend );
+  friend  const RNumber divide( const RNumber& n1, const RNumber& n2 );
+  friend  const RNumber divide( const RNumber& n1, unsigned int n2 );
+  friend  const RNumber divide( unsigned int n1, const RNumber& n2 );
+  friend  const RNumber mod( const RNumber& n1, const RNumber& n2 );
+  friend  const RNumber mod( const RNumber& n1, unsigned int n2 );
+  friend  const RNumber mod( unsigned int n1, const RNumber& n2 );
+  friend  const RNumber bitWiseAnd( const RNumber& n1, const RNumber& n2 );
+  friend  const RNumber bitWiseAnd( const RNumber& n1, unsigned int n2 );
+  friend  const RNumber bitWiseOr( const RNumber& n1, const RNumber& n2 );
+  friend  const RNumber bitWiseOr( const RNumber& n1, unsigned int n2 );
+  friend  const RNumber bitWiseXor( const RNumber& n1, const RNumber& n2 );
+  friend  const RNumber bitWiseXor( const RNumber& n1, unsigned int n2 );
+  friend  const RNumber leftShift( const RNumber& num, const RNumber& shift, bool extend );
+  friend  const RNumber leftShift( const RNumber& num, unsigned int shift, bool extend );
+  friend  const RNumber leftShift( unsigned int num, const RNumber& shift, bool extend );
+  friend  const RNumber rightShift( const RNumber& num, const RNumber& shift );
+  friend  const RNumber rightShift( const RNumber& num, unsigned int shift );
+  friend  const RNumber rightShift( unsigned int num, const RNumber& shift );
+
+  friend  bool notEqual( const RNumber& n1, const RNumber& n2 );
+  friend  bool notEqual( const RNumber& n1, unsigned int n2 );
+  friend  bool equal( const RNumber& n1, const RNumber& n2 );
+  friend  bool equal( const RNumber& n1, unsigned int n2 );
+  friend  bool lessThan( const RNumber& n1, const RNumber& n2, bool orEqual );
+  friend  bool lessThan( const RNumber& n1, unsigned int n2, bool orEqual );
+  friend  bool lessThan( unsigned int n1, const RNumber& n2, bool orEqual );
+  friend  bool greaterThan( const RNumber& n1, const RNumber& n2, bool orEqual );
+  friend  bool greaterThan( const RNumber& n1, unsigned int n2, bool orEqual );
+  friend  bool greaterThan( unsigned int n1, const RNumber& n2, bool orEqual );]
+  ))
+
+(subsection
+ :title "Non-member functions"
+ (paragraph
+  [These functions are not member functions. They allow for mixed arithmetic expressions between
+	 RNumbers and unsigned integers. Notice that there are three versions of each function.])
+ (prgm :language c :bg *prgm-color*
+[
+  const RNumber operator+( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator+( const RNumber& n1, unsigned int n2 );
+  const RNumber operator+( unsigned int n1, const RNumber& n2 );
+  const RNumber addExt( const RNumber& n1, const RNumber& n2 );
+  const RNumber addExt( const RNumber& n1, unsigned int n2 );
+  const RNumber addExt( unsigned int n1, const RNumber& n2 );
+  const RNumber operator-( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator-( const RNumber& n1, unsigned int n2 );
+  const RNumber operator-( unsigned int n1, const RNumber& n2 );
+  const RNumber operator*( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator*( const RNumber& n1, unsigned int n2 );
+  const RNumber operator*( unsigned int n1, const RNumber& n2 );
+  const RNumber multiplyExt( const RNumber& n1, const RNumber& n2 );
+  const RNumber multiplyExt( const RNumber& n1, unsigned int n2 );
+  const RNumber multiplyExt( unsigned int n1, const RNumber& n2 );
+  const RNumber operator/( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator/( const RNumber& n1, unsigned int n2 );
+  const RNumber operator/( unsigned int n1, const RNumber& n2 );
+  const RNumber operator%( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator%( const RNumber& n1, unsigned int n2 );
+  const RNumber operator%( unsigned int n1, const RNumber& n2 );
+  const RNumber operator&( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator&( const RNumber& n1, unsigned int n2 );
+  const RNumber operator&( unsigned int n1, const RNumber& n2 );
+  const RNumber operator|( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator|( const RNumber& n1, unsigned int n2 );
+  const RNumber operator|( unsigned int n1, const RNumber& n2 );
+  const RNumber operator^( const RNumber& n1, const RNumber& n2 );
+  const RNumber operator^( const RNumber& n1, unsigned int n2 );
+  const RNumber operator^( unsigned int n1, const RNumber& n2 );
+  const RNumber operator<<( const RNumber& n, const RNumber& shift );
+  const RNumber operator<<( const RNumber& n, unsigned int shift );
+  const RNumber operator<<( unsigned int n, const RNumber& shift );
+  const RNumber leftShiftExt( const RNumber& n1, const RNumber& n2 );
+  const RNumber leftShiftExt( const RNumber& n1, unsigned int n2 );
+  const RNumber leftShiftExt( unsigned int n1, const RNumber& n2 );
+  const RNumber operator>>( const RNumber& n, const RNumber& shift );
+  const RNumber operator>>( const RNumber& n, unsigned int shift );
+  const RNumber operator>>( unsigned int n, const RNumber& shift );]
+  )
+
+(paragraph
+ [These functions are not member functions. They 
+ allow for mixed conditional expressions between RNumbers and unsigned integers.])
+ (prgm :language c :bg *prgm-color*
+[
+  bool operator!=( const RNumber& n1, const RNumber& n2 );
+  bool operator!=( const RNumber& n1, unsigned int n2 );
+  bool operator!=( unsigned int n1, const RNumber& n2 );
+  bool operator==( const RNumber& n1, const RNumber& n2 );
+  bool operator==( const RNumber& n1, unsigned int n2 );
+  bool operator==( unsigned int n1, const RNumber& n2 );
+  bool operator<( const RNumber& n1, const RNumber& n2 );
+  bool operator<( const RNumber& n1, unsigned int n2 );
+  bool operator<( unsigned int n1, const RNumber& n2 );
+  bool operator<=( const RNumber& n1, const RNumber& n2 );
+  bool operator<=( const RNumber& n1, unsigned int n2 );
+  bool operator<=( unsigned int n1, const RNumber& n2 );
+  bool operator>( const RNumber& n1, const RNumber& n2 );
+  bool operator>( const RNumber& n1, unsigned int n2 );
+  bool operator>( unsigned int n1, const RNumber& n2 );
+  bool operator>=( const RNumber& n1, const RNumber& n2 );
+  bool operator>=( const RNumber& n1, unsigned int n2 );
+  bool operator>=( unsigned int n1, const RNumber& n2 );]
+  )))
+(section
+ :title "types"
+ (paragraph
+  [Here are miscellaneous types that are defined in ,(code [types.h])])
+ (prgm :language c :bg *prgm-color*
+[
+  const unsigned NIBBLE_BITS  = 4;
+  const unsigned NIBBLE_RADIX = ( (unsigned) 0x1 ) << NIBBLE_BITS;
+  const unsigned NIBBLE_MASK  = NIBBLE_RADIX - 1;
+
+  /// Attributes of a byte.
+  const unsigned BYTE_BITS  = 8;
+  const unsigned BYTE_RADIX = ( (unsigned) 0x1 ) << BYTE_BITS;
+  const unsigned BYTE_MASK  = BYTE_RADIX - 1;
+
+  /// Attributes of a word.
+  const unsigned WORD_BYTES = sizeof( unsigned );
+  const unsigned WORD_BITS  = WORD_BYTES * BYTE_BITS;
+  const unsigned WORD_MASK  = (unsigned) ((int) -1);
+  /// Make sure that WORD_BYTES = ceil(WORD_BITS / BYTE_BITS).
+
+  /// Attributes of a half word.
+  const unsigned HALF_WORD_BYTES = WORD_BYTES / 2;
+  const unsigned HALF_WORD_BITS  = HALF_WORD_BYTES * BYTE_BITS;
+  const unsigned HALF_WORD_RADIX = ( (unsigned) 0x1 ) << HALF_WORD_BITS;
+  const unsigned HALF_WORD_MASK  = HALF_WORD_RADIX - 1;
+
+  /// Attributes of a digit.
+  const unsigned DIGIT_BYTES = sizeof( unsigned );
+  const unsigned DIGIT_BITS  = ( DIGIT_BYTES * BYTE_BITS ) - 2;
+  const unsigned DIGIT_RADIX = ( (unsigned) 0x1 ) << DIGIT_BITS;
+  const unsigned DIGIT_MASK  = DIGIT_RADIX - 1;
+  /// Make sure that DIGIT_BYTES = ceil(DIGIT_BITS / BYTE_BITS).
+
+  /// Similar attributes for the half of a digit.
+  const unsigned HALF_DIGIT_BYTES = DIGIT_BYTES / 2;
+  const unsigned HALF_DIGIT_BITS  = DIGIT_BITS / 2;
+  const unsigned HALF_DIGIT_RADIX = ( (unsigned) 0x1 ) << HALF_DIGIT_BITS;
+  const unsigned HALF_DIGIT_MASK  = HALF_DIGIT_RADIX - 1;
+
+  /// Various integer types.
+  typedef unsigned long long int   uint64;
+  typedef signed long long int     int64;
+  typedef unsigned short int       uint16;
+  typedef signed short int         int16;
+
+  typedef unsigned char            uint8;
+  typedef signed char              int8;]
+  ))
+(section
+ :title "Random"
+ 
+(paragraph
+ [The Random class provides random number generation for Raptor.
+ It contains a completely static interface, so the actual class need
+ never be instantiated.])
+(subsection
+ :title "Random"
+ (paragraph
+  [
+   This class is never instantiated- it's purely static.  It contains
+	multiple RandomObj generators which may be swapped in and out- the
+	current generator is then used by the various get functions.])
+
+ (prgm :language c :bg *prgm-color*
+[
+   /// By default, we set the seed based upon the time.
+   Random();
+
+   static void set_gate ( bool state_in,bool apply_to_all = true );
+   /// Generated seed (time based).
+   static unsigned init();
+   /// Explicitly set seed.  If the value is 0, the time will be used.
+   static unsigned init( unsigned seed );
+
+   /// Create a new generator and store its handle.
+   /// This does not select the generator for use.
+   static int      addNewGen();
+   static int      addNewGen(unsigned seed);
+   /// Remove n generators from the end of the list.
+   static void     popGen(int);
+   /// Specify a new generator to use.
+   static int      setCurGen(int);
+   /// Get the current generator handle.
+   static int      getCurGen();
+   /// Return the number of generators that we currently have.
+   static int      getNumGen();
+
+   /// Get a value from the current generator.
+   static RNumber  getRNumber( int size );
+   static unsigned getInteger();
+   static unsigned getInteger( unsigned n );
+   static double   getDouble();
+
+   static RNumber  getFromRange( const RNumber& minimum, const RNumber& maximum );
+   static unsigned getFromRange( unsigned minimum, unsigned maximum );
+
+   /// Load/save the state of the random number generator.
+   static void save (ostream &os);
+   static void load (istream &is);
+   /// Get/set info about the random number generator.
+   static RandState getState();
+   static void setState(const RandState &);
+   /// Return the offset that the current generator is at.
+   static unsigned getCount();]
+))
+
+(subsection
+ :title "RandomObj"
+ (paragraph
+  [Each of these items represents a random number generator.  
+ The class is self contained, but they all share the same seed.])
+ (prgm :language c :bg *prgm-color*
+[
+  RandomObj();
+  RandomObj(unsigned);
+  RandomObj(const RandomObj &);
+
+  /// Initializes the random number generator.  
+  /// The seed is returned.
+  unsigned init();
+  /// Same as above, except that a seed is supplied.
+  /// If the seed is zero, we generate a new seed.
+  unsigned init( unsigned seed );
+  /// Various functions for getting random data.
+  RNumber  getRNumber( unsigned int size );
+  unsigned getInteger();
+  unsigned getInteger( unsigned n );
+  double   getDouble();
+  /// Range-based gets.  Handles those awful signed ranges that are still
+  /// in Raptor.
+  RNumber  getFromRange( const RNumber& minimum, const RNumber& maximum );
+  /// Simple unsigned range- min must be less than max.
+  unsigned getFromRange( unsigned minimum, unsigned maximum );
+  /// Load/save the state of the random number generator.
+  void save (ostream &os);
+  void load (istream &is);
+  /// Get/set info about the random number generator.
+  RandState getState() const;
+  void setState(const RandState &);
+  unsigned getCount();
+  /// Gate control.
+  void set_gate(bool g);]
+))
+
+(subsection
+ :title "RandomSTL"
+ (paragraph
+  [Functor for use with STL generic algorithms.])
+ (prgm :language c :bg *prgm-color*
+[
+  class RandomSTL
+  {
+    public:
+    int operator()( int n )  { return Random::getInteger( n ); }
+  };]
+    )))
+
+(section
+ :title "LcgRand"
+ (paragraph
+  [Implements a lineaer congruential pseudo-random number generator.
+   This is a simple generator of the form x(n+1) = x(n)*a mod m.  In
+   this case, m is prime, so the result is a group with the above as
+   its function.  The function visits all elements in the group before
+   repeating, i.e. it orbits the entire group.  Since it's a group, it
+   has an inverse, which is essentially The function itself is simply
+   x(n-1) = x(n)*b mod m, where b is computed as b = a^(m-2) mod m,
+   (i.e. go through the entire orbit but 1).  The end result is that
+   this function is reversible, requires one 32-bit integer to
+   represent state, and has a period of 2^32-1.  Note that if a larger
+   period is desired, it's possible to simply create another lcg and
+   combine the two results using addition -- this creates a fairly good
+   distribution with about double the period. ])
+
+ (prgm :language c :bg *prgm-color*
+[
+  LcgRand (unsigned seed = 4937) { sgenrand(seed); };
+  /// Specify a seed (initial state).
+  void sgenrand (unsigned long seed) { _x = seed & 0xffffffff; };
+  /// Generate the next value.
+  unsigned long genrand ();
+  /// Generate the previous value.
+  unsigned long rgenrand ();
+  /// Access the state element.
+  unsigned long state() const { return _x; };
+  /// Save/load state from a binary stream.
+  void save(ostream &) const;
+  void load(istream &);]
+  ))
+
+(section
+ :title "KissRand"
+ (paragraph
+  [Implements the KISS random number generator.  This is a simple, but
+   quite good, random number generator with a period of 2^127.  The
+   function is not reversible (that I know of).  It requires six words
+   to store state (actually, just 5, but I include a count for
+   debugging purposes). ])
+ (paragraph
+  [KissState is a memento object for storing state of the random number generator.])
+
+ (prgm :language c :bg *prgm-color*
+[
+  KissRand (unsigned seed = 4937);
+  /// Specify a seed.
+  void sgenrand (unsigned long seed);
+  /// Generate the next value.
+  unsigned long genrand ();
+  /// Save/load state from a binary stream.
+  void save(ostream &) const;
+  void load(istream &);
+  unsigned count() const { return _count; };
+  /// Get/set state of generator.
+  KissState getState() const;
+  void setState(const KissState &);]
+  )))
+
+(chapter
+ :title "C functions"
+ (paragraph
+  [All off the rnumber functions start with the prefix ,(code [rnumber_]).
+       Most of these functions take a pointer to a rnumber as their first argument and
+       return a pointer to a newly allocated pointer to an rnumber. The deviant functions
+       (ie. the ones who do not return a newly allocated rnumber) are noted below.])
+
+ (prgm :language c :bg *prgm-color*
+[
+  struct RNumber * rnumber_create();
+  struct RNumber * rnumber_create_from_unsigned( unsigned int number );
+  struct RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned int number );
+  struct RNumber * rnumber_create_from_unsigned_of_size( unsigned int number,
+                           unsigned int size );
+  struct RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number,
+                           unsigned int size );
+  struct RNumber * rnumber_create_from_string( char * number  );
+  struct RNumber * rnumber_create_from_string_variable_sizing( char * number );
+  struct RNumber * rnumber_create_from_string_of_size( char * number, unsigned int size );
+  struct RNumber * rnumber_create_from_string_of_size_variable_sizing( char * number,
+                           unsigned int size );
+  struct RNumber * rnumber_create_from_string_of_radix( char * number, int radix );
+  struct RNumber * rnumber_create_from_string_of_radix_variable_sizing( char * number,
+                           int radix );
+  struct RNumber * rnumber_create_from_string_of_size_of_radix( char * number,
+                           unsigned int size, int radix);
+  struct RNumber * rnumber_create_from_string_of_size_of_radix_variable_sizing( char * number,
+                           unsigned int size, int radix);
+  struct RNumber * rnumber_create_from_numVector( unsigned int* numVector, unsigned int wordCount,
+                           unsigned int size );
+  struct RNumber * rnumber_create_from_numVector_variable_sizing( unsigned int* numVector,
+                           unsigned int wordCount, unsigned int size );
+  struct RNumber * rnumber_create_from_rnumber( const struct RNumber * rnumber );
+  struct RNumber * rnumber_copy_to_size( const struct RNumber * number, unsigned int size);
+  struct RNumber * rnumber_copy_to_size_variable_sizing( const struct RNumber * number,
+                           unsigned int size);
+  void rnumber_destroy( struct RNumber * rnumber );
+
+  // Assignment methods. operator=() assigns the value constrained by sizing;
+  // assign() assigns the value with dynamic sizing; clone() assigns all
+  // attributes; resize() truncates/expands the value and sets fixed sizing.
+  struct RNumber * rnumber_assign_from_uint ( struct RNumber * rnumber, unsigned int number );
+  struct RNumber * rnumber_assign_from_string ( struct RNumber * rnumber, char * number_string );
+  struct RNumber * rnumber_assign( struct RNumber * rnumber, struct RNumber * number );
+  struct RNumber * rnumber_copy( struct RNumber * rnumber, struct RNumber * number );
+  void      rnumber_resize( struct RNumber * rnumber, unsigned int size );
+
+  // Unary arithmetic operators.
+  struct RNumber * rnumber_unary_minus( struct RNumber * rnumber);
+  struct RNumber * rnumber_unary_tilde( struct RNumber * rnumber);
+
+  // Arithmetic assignment operators; assignment size depends on sizing state.
+  struct RNumber * rnumber_plus_assign( struct RNumber * rnumber, struct RNumber * number );
+  struct RNumber * rnumber_plus_assign_from_unsigned ( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_minus_assign( struct RNumber * rnumber,
+                           struct RNumber * number );
+  struct RNumber * rnumber_minus_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_multiply_assign( struct RNumber * rnumber,
+                           struct RNumber * number );
+  struct RNumber * rnumber_multiply_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_divide_assign( struct RNumber * rnumber,
+                           struct RNumber * number );
+  struct RNumber * rnumber_divide_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_mod_assign( struct RNumber * rnumber,
+                           struct RNumber * number );
+  struct RNumber * rnumber_mod_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_bitand_assign( struct RNumber * rnumber,
+                           struct RNumber * number );
+  struct RNumber * rnumber_bitand_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_bitor_assign( struct RNumber * rnumber,
+                           struct RNumber * number );
+  struct RNumber * rnumber_bitor_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_bitxor_assign( struct RNumber * rnumber,
+                           struct RNumber * number );
+  struct RNumber * rnumber_bitxor_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int number );
+  struct RNumber * rnumber_leftshift_assign( struct RNumber * rnumber,
+                           struct RNumber * shift );
+  struct RNumber * rnumber_leftshift_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int shift );
+  struct RNumber * rnumber_rightshift_assign( struct RNumber * rnumber,
+                           struct RNumber * shift );
+  struct RNumber * rnumber_rightshift_assign_from_unsigned( struct RNumber * rnumber,
+                           unsigned int shift );
+  // Unary conditional expression operators.
+  int rnumber_not( struct RNumber * rnumber);
+
+  // Signed conditional expression operators.
+  int rnumber_signed_lessthan( struct RNumber * rnumber, struct RNumber * number );
+  int rnumber_signed_lessequal( struct RNumber * rnumber, struct RNumber * number );
+  int rnumber_signed_greaterthan( struct RNumber * rnumber, struct RNumber * number );
+  int rnumber_signed_greaterequal( struct RNumber * rnumber, struct RNumber * number );
+  int  rnumber_compare( struct RNumber * rnumber, struct RNumber * number );
+
+  // Miscellaneous bit manipulation methods.
+  struct RNumber * rnumber_invert( struct RNumber * rnumber);
+  struct RNumber * rnumber_negate( struct RNumber * rnumber);
+  struct RNumber * rnumber_set_all( struct RNumber * rnumber);
+  struct RNumber * rnumber_clear_all( struct RNumber * rnumber);
+  struct RNumber * rnumber_sign_extend( struct RNumber * rnumber, unsigned int bit );
+  struct RNumber * rnumber_truncate( struct RNumber * rnumber, unsigned int size );
+
+  // Bit value accessors and manipulators.
+  unsigned int rnumber_getbit( struct RNumber * rnumber, unsigned int pos);
+  unsigned int rnumber_getbit_lsb( struct RNumber * rnumber, unsigned int pos );
+  void rnumber_setbit( struct RNumber * rnumber, unsigned int pos, unsigned int value );
+  void rnumber_setbit_lsb( struct RNumber * rnumber,unsigned int pos, unsigned int value );
+  void rnumber_assignbit( struct RNumber * rnumber, unsigned int pos, unsigned int value );
+  void rnumber_assignbit_lsb( struct RNumber * rnumber, unsigned int pos, unsigned int value );
+
+  // Value accessors.
+  unsigned int rnumber_get_uint( struct RNumber * rnumber);
+  char * rnumber_cstr( const struct RNumber * rnumber);
+  char * rnumber_cstr_radix( const struct RNumber * rnumber, int radix,int bool_prefix);
+
+  // Value field accessors and manipulators.
+  int rnumber_get_int_field( struct RNumber * rnumber, unsigned int start,
+                             unsigned int end );
+  unsigned int rnumber_get_uint_field( struct RNumber * rnumber,unsigned int start,
+                           unsigned int end );
+  struct RNumber * rnumber_getfield( struct RNumber * rnumber, unsigned int start,
+                           unsigned int end );
+  void rnumber_set_field( struct RNumber * rnumber, unsigned int start,
+                           unsigned int end, struct RNumber * num );
+
+  // Attribute accessors and manipulators.
+  unsigned rnumber_size( const struct RNumber * rnumber);
+  unsigned rnumber_wordcount( const struct RNumber * rnumber);
+
+  const unsigned * rnumber_buffer( struct RNumber * rnumber);
+  
+  unsigned int rnumber_get_default_size();
+  void rnumber_set_default_size( unsigned int size );
+
+  int rnumber_sizing( struct RNumber * rnumber);
+  int rnumber_dynamic();
+  int rnumber_fixed(); 
+  void rnumber_set_dynamic( struct RNumber * rnumber);
+  void rnumber_set_fixed( struct RNumber * rnumber);
+
+  // Streaming I/O methods.
+  void rnumber_print_to_os( const struct RNumber * rnumber, void * os );
+  void rnumber_print_with_radix( const struct RNumber * rnumber, void * os,
+                           int radix, int bool_prefix );
+
+  void rnumber_read_from_is( struct RNumber * rnumber, void * is );
+  void rnumber_write_to_os( struct RNumber * rnumber, void * os );
+
+  // RNumbers and unsigned integers.
+   struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_plus_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_plus_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_add_ext_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_add_ext_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_add_ext_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_minus_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_minus_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_multiply_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_multiply_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_multiply_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_multiply_ext_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_multiply_ext_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_multiply_ext_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_divide_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_divide_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_divide_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_mod_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_mod_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_mod_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_bitand_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_bitand_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_bitand_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_bitor_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_bitor_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_bitor_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_bitxor_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_bitxor_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_bitxor_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct RNumber * shift );
+   struct RNumber * rnumber_rn_leftshift_ui( const struct RNumber * n, unsigned int shift );
+   struct RNumber * rnumber_ui_leftshift_rn( unsigned int n, const struct RNumber * shift );
+   struct RNumber * rnumber_rn_leftshift_ext_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_leftshift_ext_ui( const struct RNumber * n1, unsigned int n2 );
+   struct RNumber * rnumber_ui_leftshift_ext_rn( unsigned int n1, const struct RNumber * n2 );
+   struct RNumber * rnumber_rn_rightshift_rn( const struct RNumber * n, const struct RNumber * shift );
+   struct RNumber * rnumber_rn_rightshift_ui( const struct RNumber * n, unsigned int shift );
+   struct RNumber * rnumber_ui_rightshift_rn( unsigned int n, const struct RNumber * shift );
+
+   int rnumber_rn_notequal_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   int rnumber_rn_notequal_ui( const struct RNumber * n1, unsigned int n2 );
+   int rnumber_ui_notequal_rn( unsigned int n1, const struct RNumber * n2 );
+   int rnumber_rn_equal_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   int rnumber_rn_equal_ui( const struct RNumber * n1, unsigned int n2 );
+   int rnumber_ui_equal_rn( unsigned int n1, const struct RNumber * n2 );
+   int rnumber_rn_lessthan_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   int rnumber_rn_lessthan_ui( const struct RNumber * n1, unsigned int n2 );
+   int rnumber_ui_lessthan_rn( unsigned int n1, const struct RNumber * n2 );
+   int rnumber_rn_lessequal_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   int rnumber_rn_lessequal_ui( const struct RNumber * n1, unsigned int n2 );
+   int rnumber_ui_lessequal_rn( unsigned int n1, const struct RNumber * n2 );
+   int rnumber_rn_greaterthan_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   int rnumber_rn_greaterthan_ui( const struct RNumber * n1, unsigned int n2 );
+   int rnumber_ui_greaterthan_rn( unsigned int n1, const struct RNumber * n2 );
+   int rnumber_rn_greaterequal_rn( const struct RNumber * n1, const struct RNumber * n2 );
+   int rnumber_rn_greaterequal_ui( const struct RNumber * n1, unsigned int n2 );
+   int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNumber * n2 );
+   
+   int rnumber_rhex();
+   int rnumber_rbin();
+   int rnumber_rdec();]
+   )
+(paragraph
+ [Below are the functions that return RNumber pointers that are not allocated, all other functions
+	return newly allocated memory.])
+ (prgm :language c :bg *prgm-color*
+[
+  RNumber * rnumber_assign_from_uint ( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_assign_from_string ( RNumber * rnumber, char * number_string )
+  RNumber * rnumber_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_copy( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_plus_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_plus_assign_from_unsigned ( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_minus_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_minus_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_multiply_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_multiply_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_divide_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_divide_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_mod_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_mod_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_bitand_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_bitand_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_bitor_assign( RNumber * rnumber,  RNumber * number )
+  RNumber * rnumber_bitor_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_bitxor_assign( RNumber * rnumber, RNumber * number )
+  RNumber * rnumber_bitxor_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+  RNumber * rnumber_leftshift_assign( RNumber * rnumber, RNumber * shift )
+  RNumber * rnumber_leftshift_assign_from_unsigned( RNumber * rnumber, unsigned int shift )
+  RNumber * rnumber_rightshift_assign( RNumber * rnumber,  RNumber * shift )
+  RNumber * rnumber_rightshift_assign_from_unsigned( RNumber * rnumber, unsigned int shift )
+  RNumber * rnumber_invert( RNumber * rnumber)
+  RNumber * rnumber_negate( RNumber * rnumber)
+  RNumber * rnumber_set_all( RNumber * rnumber)
+  RNumber * rnumber_clear_all( RNumber * rnumber)
+  RNumber * rnumber_sign_extend( RNumber * rnumber, unsigned int bit )
+  RNumber * rnumber_truncate( RNumber * rnumber, unsigned int size )]
+))
+
+(chapter
+ :title "Perl Bindings"
+ (paragraph
+  [All of the c functions can be called from perl by using the rnumber module (see example). Several
+       of the functions are exported for convenience. Also, some of the functions have be made polymorphic.
+       They can accept rnumbers or integers as any of their parameters. They are also listed here.])
+ (table
+  (tr :bg "#cccccc" (th :align 'center :colspan 3 "Exported Functions"))
+  (tr :bg "#cccccc" (th "Function name")(th "Parameters")(th "Description"))
+  (tr (td [stringp])(td [(scalar)])(td [string predicate, is argument a string]))
+  (tr (td [integerp])(td [(scalar)])(td [integer predicate, is argument an integer]))
+  (tr (td [rnumberp])(td [(scalar)])(td [rnumber predicate, is argument an rnumber]))
+  (tr (td [rn_version])(td [none])(td [return library version number]))
+  (tr (td [rn_ctor])(td [(<integer, rnumber or string>)])(td [rnumber constructor]))
+  (tr (td [rn_cstr])(td [(rnumber, optional-radix, optional-prefix)])(td [convert rnumber to a string]))
+  (tr (td [rn_int])(td [(rnumber)])(td [convert rnumber to integer (may cause truncation)]))
+  (tr (td [rn_eq])(td [(scalar, scalar)])(td [are integers or rnumbers equal.]))
+  (tr (td [rn_neq])(td [(scalar, scalar)])(td [are integers or rnumbers not equal.]))
+  (tr (td [rn_lt])(td [(scalar, scalar)])(td [is first variable less than second (integers or rnumbers)]))
+  (tr (td [rn_le])(td [(scalar, scalar)])(td [is first variable less than or equal to
+						 second (integers or rnumbers)]))
+  (tr (td [rn_gt])(td [(scalar, scalar)])(td [is first variable greater than
+						 second (integers or rnumbers)]))
+  (tr (td [rn_ge])(td [(scalar, scalar)])(td [is first variable greater than or equal to
+						 second (integers or rnumbers)]))
+  (tr (td [rn_ls])(td [(scalar, scalar)])(td [left shift first variable by second number of bits.
+						   (integers or rnumbers)]))
+  (tr (td [rn_rs])(td [(scalar, scalar)])(td [right shift first variable by second number of bits.
+						    (integers or rnumbers)]))
+  (tr (td [rn_plus])
+      (td [(scalar, scalar)])(td [add first and second variables together and return an
+				    rnumber. Arguments may be either rnumbers or integers]))
+  (tr (td [rn_minus])
+      (td [(scalar, scalar)])(td [subtrace second variable from first and return an
+					 rnumber. Arguments may be either rnumbers or integers]))
+  (tr (td [rn_div])
+      (td [(scalar, scalar)])(td [divide first variable by second and return an
+				       rnumber. Arguments may be either rnumbers or integers]))
+  (tr (td [rn_mult])
+      (td [(scalar, scalar)])(td [multiply first and second variables together and return an
+					 rnumber. Arguments may be either rnumbers or integers]))
+  (tr (td [rn_bitor])
+      (td [(scalar, scalar)])(td [bitwise or  first and second variables together and return an
+					rnumber. Arguments may be either rnumbers or integers]))
+  (tr (td [rn_bitand])
+      (td [(scalar, scalar)])(td [bitwise and first and second variables together and return an
+					rnumber. Arguments may be either rnumbers or integers]))
+  (tr (td [rn_mod])
+      (td [(scalar, scalar)])(td [mod first variable by second and return an
+				    rnumber. Arguments may be either rnumbers or integers]))
+  (tr (td [rn_size])(td [(rnumber)])(td [Return the number of bits in the RNumber passed as an argument.]))))
+
+(chapter
   :title "Bibliography"
   :number #f 
   (font :size -1 (print-bibliography :all #t)))
