@@ -18,6 +18,7 @@ AC_DEFUN(AM_PATH_RNUMBER,
      RNUMBER_BL_LIB_PATH=`$RNUMBER_CONFIG --bl-libs-only-L`
      RNUMBER_BL_LIB_LIB=`$RNUMBER_CONFIG --bl-libs-only-l`
      RNUMBER_HELPERS=`$RNUMBER_CONFIG $rnumber_config_args --helper-path`
+     RNUMBER_DEPEND=`$RNUMBER_CONFIG $rnumber_config_args --depend`
      rnumber_config_major_version=`$RNUMBER_CONFIG $rnumber_config_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
      rnumber_config_minor_version=`$RNUMBER_CONFIG $rnumber_config_args --version | \
@@ -180,5 +181,6 @@ dnl action if cross-compiling
   AC_SUBST(RNUMBER_BL_LIB_PATH)
   AC_SUBST(RNUMBER_BL_LIB_LIB)
   AC_SUBST(RNUMBER_HELPERS)
+  AC_SUBST(RNUMBER_DEPEND)
   rm -f conf.rnumbertest
 ])

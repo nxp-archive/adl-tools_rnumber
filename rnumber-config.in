@@ -24,7 +24,7 @@ rnumber_bl_lib_path="-L ${pkglibdir} "
 rnumber_cflags="$CFLAGS"
 rnumber_perl_libs="${pkglibdir}"
 
-STATIC_LIBS_DEPEND="${pkglibdir}/libRUtil.a "
+STATIC_LIBS_DEPEND="${pkglibdir}/libRNumber.a "
 STATIC_LIBS="${pkglibdir}/libRNumber.a "
 
 usage()
