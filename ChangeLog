@@ -1,3 +1,5 @@
+        ============= rnumber release 1.19.1 (r_1_19_1) =====================
+	
 2003-08-29  from_import  <Todd.Dukes@motorola.com>
 
 	* fPIC is not used on i686 platforms.
