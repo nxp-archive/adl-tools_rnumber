@@ -6,8 +6,8 @@
 ** $Author$
 ** ===========================================================================
 */
-#ifndef RUtilVersion_h
-#define RUtilVersion_h "$Id$"
+#ifndef RNumberVersion_h
+#define RNumberVersion_h "$Id$"
 
 extern const unsigned rnumber_major_version;
 extern const unsigned rnumber_minor_version;
