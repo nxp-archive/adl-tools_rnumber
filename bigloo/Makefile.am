@@ -1,6 +1,8 @@
 pkglib_LIBRARIES = libbl-rnumber.a
 # libbl-rnumber.so
 
+SUBDIRS = rnumber
+
 EXTRA_DIST = $(bigloo_DATA)
 CLEANFILES = bl-rnumber.heap 
 BUILT_SOURCES = bl-rnumber.heap
