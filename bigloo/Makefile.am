@@ -1,6 +1,6 @@
 pkglib_LIBRARIES = libbl-rnumber.a
 # libbl-rnumber.so
-pkginclude_HEADERS = simple_proxy.h
+pkginclude_HEADERS = rnumber_proxy.h
 
 EXTRA_DIST = $(bigloo_DATA)
 BUILT_SOURCES = bl-rnumber.heap

@@ -1,5 +1,6 @@
 dnl AM_PATH_RNUMBER([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
-dnl Test for RNUMBER, and define RNUMBER_CFLAGS, RNUMBER_LIBS, RNUMBER_STATIC_LIBS and RNUMBER_HELPERS
+dnl Test for RNUMBER, and define RNUMBER_CFLAGS, RNUMBER_LIBS, RNUMBER_STATIC_LIBS, RNUMBER_HELPERS, RNUMBER_LIB_PATH, 
+dnl and RNUMBER_LIB_LIB
 dnl
 AC_DEFUN(AM_PATH_RNUMBER,
 [dnl 
@@ -14,6 +15,8 @@ AC_DEFUN(AM_PATH_RNUMBER,
      RNUMBER_CFLAGS=`$RNUMBER_CONFIG $rnumber_config_args --cflags`
      RNUMBER_LIBS=`$RNUMBER_CONFIG $rnumber_config_args --libs`
      RNUMBER_STATIC_LIBS=`$RNUMBER_CONFIG $rnumber_config_args --static-libs`
+     RNUMBER_BL_LIB_PATH=`$RNUMBER_CONFIG --bl-libs-only-L`
+     RNUMBER_BL_LIB_LIB=`$RNUMBER_CONFIG --bl-libs-only-l`
      RNUMBER_HELPERS=`$RNUMBER_CONFIG $rnumber_config_args --helper-path`
      rnumber_config_major_version=`$RNUMBER_CONFIG $rnumber_config_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
@@ -174,6 +177,8 @@ dnl action if cross-compiling
   AC_SUBST(RNUMBER_CFLAGS)
   AC_SUBST(RNUMBER_LIBS)
   AC_SUBST(RNUMBER_STATIC_LIBS)
+  AC_SUBST(RNUMBER_BL_LIB_PATH)
+  AC_SUBST(RNUMBER_BL_LIB_LIB)
   AC_SUBST(RNUMBER_HELPERS)
   rm -f conf.rnumbertest
 ])

@@ -21,6 +21,8 @@ LIBDIRS="-L${pkglibdir} -R${pkglibdir} "
 HELPER_PATH="${pkgdatadir}"
 
 rnumber_libs="$LIBDIRS -lRNumber "
+rnumber_bl_libs="-lRNumber "
+rnumber_bl_lib_path="-L${pkglibdir} "
 rnumber_cflags="$CFLAGS"
 STATIC_LIBS="${pkglibdir}/libRNumber.a "
 
@@ -41,7 +43,8 @@ Compilation support options
   --helper-path print path to installed scripts and binaries
                 that support RNUMBER.
   --static-libs print path to .a file.
-
+  --bl-libs-only-l library for bigloo.
+  --bl-libs-only-L library path for bigloo.
 EOF
 
     exit $1
@@ -53,6 +56,8 @@ fi
 
 cflags=false
 libs_L=false
+bl_libs_l=false
+bl_libs_L=false
 libs_l=false
 helper_path=false
 static_libs=false
@@ -93,6 +98,12 @@ while test $# -gt 0; do
     --libs-only-l)
 	libs_l=true
 	;;
+    --bl-libs-only-l)
+	bl_libs_l=true
+	;;
+    --bl-libs-only-L)
+	bl_libs_L=true
+	;;
     rnumber)
         # defined above to avoid double definiton with default values below
 	the_libs="$the_libs $rnumber_libs"
@@ -120,6 +131,14 @@ if $libs_L || $libs_l; then
     all_flags="$all_flags $the_libs $profile"
 fi
 
+if $bl_libs_L; then
+    all_flags="$rnumber_bl_lib_path "
+fi
+
+if $bl_libs_l; then
+    all_flags="$all_flags $rnumber_bl_libs"
+fi
+
 if $helper_path; then
    all_flags="$HELPER_PATH"
 fi
@@ -143,6 +162,12 @@ for i in $all_flags; do
     -l*) rev_libs="$i $rev_libs" ;;
     -L*)
 	if $libs_L; then
+	    case " $lib_L_flags " in
+	    *\ $i\ *) ;;			# already there
+	    *) lib_L_flags="$lib_L_flags $i" ;;	# add it to output
+	    esac 
+	elif
+	    $bl_libs_L; then
 	    case " $lib_L_flags " in
 	    *\ $i\ *) ;;			# already there
 	    *) lib_L_flags="$lib_L_flags $i" ;;	# add it to output
