@@ -1,41 +1,35 @@
+check_PROGRAMS = NumberTest RandTest 
 
-if WITHOUT_BIGLOO
-bigloo_tests = 
-else
-bigloo_tests = simple_test number_test driver
-endif
-
-check_PROGRAMS = NumberTest RandTest
-
-EXTRA_PROGRAMS = simple_test number_test driver
+EXTRA_DIST = $(TESTS) 
 
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
-number_test_SOURCES = c-io.C number_test.c
-simple_test_SOURCES = simple_test.c c-io.C
-driver_SOURCES = driver.scm
-
-CLEANFILES = driver.c 
-EXTRA_DIST = $(TESTS) 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
-TESTS = NumberRegress RandTest
+TESTS = NumberRegress RandTest 
 
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
-BIGLOO_C_OPT = -copt "-I ../include"  
-BIGLOO_LIB_PATH = -L ../src -L ../bigloo
-BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber
+#bigloo_tests = simple_test number_test driver
+#EXTRA_PROGRAMS = simple_test number_test driver
+#number_test_SOURCES = c-io.C number_test.scm
+#simple_test_SOURCES = simple_test.scm c-io.C
+#driver_SOURCES = driver.scm
+#CLEANFILES = driver.c 
 
-% : %.scm
-	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
+#BIGLOO_C_OPT = -copt "-I ../include"  
+#BIGLOO_LIB_PATH = -L ../src -L ../bigloo
+#BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber
 
-simple-number-test: simple-number-test.scm
-number-tests: number-tests.scm
+#% : %.scm
+#	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
 
-driver: driver.scm
-	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
+#simple-number-test: simple-number-test.scm
+#number-tests: number-tests.scm
+
+#driver: driver.scm
+#	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
