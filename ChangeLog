@@ -1,7 +1,13 @@
+	================== release-1-8-2 ======================================
+
+2002-10-31  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  added missing RNumber features to C++ version.
+
 2002-10-30  Brian Kahne  <bkahne@ibmoto.com>
 
 	* Made the compilation of Bigloo bindings optional.  However, the
-	regression test doesn't yet work correctly- it won't run the Bigloo
+	regression test doesn't yet work correctly- it doesn't run the Bigloo
 	tests.  I'll let Todd handle that. :)
 
 	================== release-1-8-1 ======================================
