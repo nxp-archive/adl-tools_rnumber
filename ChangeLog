@@ -1,3 +1,15 @@
+	================== version 1.8.1 ======================================
+	
+2002-10-29  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  moved C++ RNumber  and Random into rnumber namespace.
+
+	================== version 1.7.1 ======================================
+	
+2002-10-18  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  added (rnumber->int rnumber) to convert small rnumbers to integers.
+
 2002-10-17  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	*  added rnumber to the SUBDIRS of bigloo/Makefile.am
