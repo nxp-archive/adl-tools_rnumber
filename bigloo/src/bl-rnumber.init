@@ -1,3 +1,12 @@
 (set! *additional-include-foreign*
 	(cons "rnumber/rnumber_proxy.h" *additional-include-foreign*))
 
+(set! *cc-options*
+      (string-append "-I /local/tdukes/devel/include" *cflags*))
+
+(set! *ld-options*
+      (string-append "-L /local/tdukes/devel/lib/rnumber " *ld-options*))
+
+(set! *bigloo-user-lib*
+      (cons "-lRNumber" *bigloo-user-lib*))
+

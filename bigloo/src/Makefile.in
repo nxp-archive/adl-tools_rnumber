@@ -151,7 +151,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-pkglib_LIBRARIES = libbl-rnumber_s.a
+pkglib_LIBRARIES = libbl-rnumber_s.a libbl-rnumber_u.a
 
 # libbl-rnumber.so
 SUBDIRS = rnumber
@@ -164,24 +164,22 @@ bigloodir = $(pkglibdir)
 bigloo_DATA = bl-rnumber.init bl-rnumber.heap 
 
 libbl_rnumber_s_a_SOURCES = bl-rnumber.c rnumber.scm rnumber_proxy.c
+libbl_rnumber_u_a_SOURCES = bl-rnumber.c rnumber.scm rnumber_proxy.c
 
-#libbl_rnumber_so_SOURCES = bl-rnumber.c rnumber.scm  rnumber_proxy.c
 noinst_HEADERS = \
 	bl-rnumber.h 
 
 
 INCLUDES = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
 
-
-#TESTS = simple_test NumberRegress  RandTest number_test
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a
 
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
-BIGLOO_O_OPTIONS_OPT = -v2 -O3 -mkaddlib -g4 -cg -cc gcc -fsharing -q +rm -unsafe
-BIGLOO_O_OPTIONS_DEBUG = -v2 -mkaddlib -g4 -cg -cc gcc -fsharing -q +rm 
+BIGLOO_O_OPTIONS_OPT = -c -v2 -O3 -mkaddlib -cc gcc -fsharing -q -unsafe -unsafev -c
+BIGLOO_O_OPTIONS_DEBUG = -c -v2     -mkaddlib -g4 -cg -cc gcc -fsharing -q -rm
 BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
@@ -190,7 +188,7 @@ BIGLOO_HEAP_OPTIONS = $(BIGLOO_HEAP_OPTIONS_OPT)
 subdir = bigloo/src
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = rnumber-version.h
+CONFIG_CLEAN_FILES = rnumber-version.h bl-rnumber.init
 LIBRARIES = $(pkglib_LIBRARIES)
 
 libbl_rnumber_s_a_AR = $(AR) cru
@@ -198,6 +196,11 @@ libbl_rnumber_s_a_LIBADD =
 am_libbl_rnumber_s_a_OBJECTS = bl-rnumber.$(OBJEXT) \
 	rnumber_proxy.$(OBJEXT)
 libbl_rnumber_s_a_OBJECTS = $(am_libbl_rnumber_s_a_OBJECTS)
+libbl_rnumber_u_a_AR = $(AR) cru
+libbl_rnumber_u_a_LIBADD =
+am_libbl_rnumber_u_a_OBJECTS = bl-rnumber.$(OBJEXT) \
+	rnumber_proxy.$(OBJEXT)
+libbl_rnumber_u_a_OBJECTS = $(am_libbl_rnumber_u_a_OBJECTS)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -208,7 +211,7 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libbl_rnumber_s_a_SOURCES)
+DIST_SOURCES = $(libbl_rnumber_s_a_SOURCES) $(libbl_rnumber_u_a_SOURCES)
 DATA = $(bigloo_DATA)
 
 HEADERS = $(noinst_HEADERS)
@@ -220,9 +223,9 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
 DIST_COMMON = $(noinst_HEADERS) Makefile.am Makefile.in \
-	rnumber-version.h.in
+	bl-rnumber.init.in rnumber-version.h.in
 DIST_SUBDIRS = $(SUBDIRS)
-SOURCES = $(libbl_rnumber_s_a_SOURCES)
+SOURCES = $(libbl_rnumber_s_a_SOURCES) $(libbl_rnumber_u_a_SOURCES)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -235,6 +238,8 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configu
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 rnumber-version.h: $(top_builddir)/config.status rnumber-version.h.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+bl-rnumber.init: $(top_builddir)/config.status bl-rnumber.init.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
 AR = ar
@@ -586,29 +591,34 @@ uninstall-info: uninstall-info-recursive
 	uninstall-recursive
 
 
-both: libbl-rnumber_s.a libbl-rnumber_s.so
+%_u.o:%.scm
+	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@
 
-libbl-rnumber_s.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber.o 
-	ar qvc libbl-rnumber_s.a bl-rnumber.o brnumber.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+all: libbl-rnumber_s.a libbl-rnumber_s.so libbl-rnumber_u.a libbl-rnumber_u.so
+
+libbl-rnumber_s.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
+	ar qvc libbl-rnumber_s.a bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib libbl-rnumber_s.a
 
-libbl-rnumber_s.so: libbl-rnumber.a brnumber.o 
-	ld -G -o libbl-rnumber_s.so bl-rnumber.o brnumber.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+libbl-rnumber_u.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
+	ar qvc libbl-rnumber_u.a bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+	ranlib libbl-rnumber_u.a
 
-bl-rnumber.heap: rnumber.scm 
+libbl-rnumber_s.so: libbl-rnumber_s.a bl-rnumber.o 
+	ld -G -o libbl-rnumber_s.so bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+
+libbl-rnumber_u.so: libbl-rnumber_u.a bl-rnumber.o 
+	ld -G -o libbl-rnumber_u.so bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+
+# the -addheap option is anylogous to the -o option of compiling.
+bl-rnumber.heap: rnumber.scm make-lib.scm
 	bigloo $(BIGLOO_HEAP_OPTIONS) make-lib.scm -addheap bl-rnumber.heap
 
 brnumber_u.o: rnumber.scm 
-	bigloo -O3 -unsafe -mkaddlib -cc gcc -fsharing -q +rm -unsafev rnumber.scm -o brnumber_u.o -c
+	bigloo $(BIGLOO_O_OPTIONS_OPT)  rnumber.scm -o brnumber_u.o
 
-brnumber.o: rnumber.scm
-	bigloo $(BIGLOO_O_OPTIONS) rnumber.scm -o brnumber.o -c
-
-evprim_u.o: evprim.scm
-	bigloo -O3 -mkaddlib -g -cg -cc gcc -fsharing -q -rm +unsafev evprim.scm -o evprim_u.o -c
-
-evprim.o: evprim.scm
-	bigloo -v2 -O3 -mkaddlib -g -cg -cc gcc -fsharing -q -rm -unsafe evprim.scm -o evprim.o -c
+brnumber_s.o: rnumber.scm 
+	bigloo $(BIGLOO_O_OPTIONS_DEBUG) rnumber.scm -o brnumber_s.o 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

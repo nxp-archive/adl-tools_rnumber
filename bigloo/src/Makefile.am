@@ -1,4 +1,4 @@
-pkglib_LIBRARIES = libbl-rnumber_s.a
+pkglib_LIBRARIES = libbl-rnumber_s.a libbl-rnumber_u.a
 # libbl-rnumber.so
 
 SUBDIRS = rnumber
@@ -11,48 +11,52 @@ bigloodir = $(pkglibdir)
 bigloo_DATA = bl-rnumber.init bl-rnumber.heap 
 
 libbl_rnumber_s_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_proxy.c
-#libbl_rnumber_so_SOURCES = bl-rnumber.c rnumber.scm  rnumber_proxy.c
+libbl_rnumber_u_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_proxy.c
 
 noinst_HEADERS = \
 	bl-rnumber.h 
 
 INCLUDES = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
 
-#TESTS = simple_test NumberRegress  RandTest number_test
-
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
-BIGLOO_O_OPTIONS_OPT = -v2 -O3 -mkaddlib -g4 -cg -cc gcc -fsharing -q +rm -unsafe
-BIGLOO_O_OPTIONS_DEBUG = -v2 -mkaddlib -g4 -cg -cc gcc -fsharing -q +rm 
+BIGLOO_O_OPTIONS_OPT   = -c -v2 -O3 -mkaddlib -cc gcc -fsharing -q -unsafe -unsafev -c
+BIGLOO_O_OPTIONS_DEBUG = -c -v2     -mkaddlib -g4 -cg -cc gcc -fsharing -q -rm
 BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS = $(BIGLOO_HEAP_OPTIONS_OPT)
 
-both: libbl-rnumber_s.a libbl-rnumber_s.so
+%_u.o:%.scm
+	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@
 
-libbl-rnumber_s.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber.o 
-	ar qvc libbl-rnumber_s.a bl-rnumber.o brnumber.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+all: libbl-rnumber_s.a libbl-rnumber_s.so libbl-rnumber_u.a libbl-rnumber_u.so
+
+libbl-rnumber_s.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
+	ar qvc libbl-rnumber_s.a bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib libbl-rnumber_s.a
 
-libbl-rnumber_s.so: libbl-rnumber.a brnumber.o 
-	ld -G -o libbl-rnumber_s.so bl-rnumber.o brnumber.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+libbl-rnumber_u.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
+	ar qvc libbl-rnumber_u.a bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+	ranlib libbl-rnumber_u.a
 
-bl-rnumber.heap: rnumber.scm 
+libbl-rnumber_s.so: libbl-rnumber_s.a bl-rnumber.o 
+	ld -G -o libbl-rnumber_s.so bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+
+libbl-rnumber_u.so: libbl-rnumber_u.a bl-rnumber.o 
+	ld -G -o libbl-rnumber_u.so bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+
+# the -addheap option is anylogous to the -o option of compiling.
+bl-rnumber.heap: rnumber.scm make-lib.scm
 	bigloo $(BIGLOO_HEAP_OPTIONS) make-lib.scm -addheap bl-rnumber.heap
 
 brnumber_u.o: rnumber.scm 
-	bigloo -O3 -unsafe -mkaddlib -cc gcc -fsharing -q +rm -unsafev rnumber.scm -o brnumber_u.o -c
+	bigloo $(BIGLOO_O_OPTIONS_OPT)  rnumber.scm -o brnumber_u.o
 
-brnumber.o: rnumber.scm
-	bigloo $(BIGLOO_O_OPTIONS) rnumber.scm -o brnumber.o -c
+brnumber_s.o: rnumber.scm 
+	bigloo $(BIGLOO_O_OPTIONS_DEBUG) rnumber.scm -o brnumber_s.o 
 
-evprim_u.o: evprim.scm
-	bigloo -O3 -mkaddlib -g -cg -cc gcc -fsharing -q -rm +unsafev evprim.scm -o evprim_u.o -c
-
-evprim.o: evprim.scm
-	bigloo -v2 -O3 -mkaddlib -g -cg -cc gcc -fsharing -q -rm -unsafe evprim.scm -o evprim.o -c

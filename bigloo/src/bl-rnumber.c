@@ -15,116 +15,95 @@
 
 #include "rnumber/rnumber_proxy.h"
 
-RNumber_proxy_t bl_rnumber_create() 
-{
+RNumber_proxy_t bl_rnumber_create() {
   return proxy_from_rnumber(rnumber_create());
 }
 
-RNumber_proxy_t bl_rnumber_create_from_unsigned( unsigned int number )
-{
+RNumber_proxy_t bl_rnumber_create_from_unsigned( unsigned int number ){
   return proxy_from_rnumber(rnumber_create_from_unsigned(number));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_unsigned_variable_sizing( unsigned int number )
-{
+RNumber_proxy_t bl_rnumber_create_from_unsigned_variable_sizing( unsigned int number ){
   return proxy_from_rnumber(rnumber_create_from_unsigned_variable_sizing(number));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_unsigned_of_size( unsigned int number, unsigned int size )
-{
+RNumber_proxy_t bl_rnumber_create_from_unsigned_of_size( unsigned int number, unsigned int size ){
   return proxy_from_rnumber(rnumber_create_from_unsigned_of_size(number, size));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number, unsigned int size )
-{
+RNumber_proxy_t bl_rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number, unsigned int size ){
   return proxy_from_rnumber(rnumber_create_from_unsigned_of_size_variable_sizing(number, size));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_string(  char * number  )
-{
+RNumber_proxy_t bl_rnumber_create_from_string(  char * number  ){
   return proxy_from_rnumber(rnumber_create_from_string(number));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_string_variable_sizing( char * number )
-{
+RNumber_proxy_t bl_rnumber_create_from_string_variable_sizing( char * number ){
   return proxy_from_rnumber( rnumber_create_from_string_variable_sizing( number));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_string_of_size( char * number, unsigned int size )
-{
+RNumber_proxy_t bl_rnumber_create_from_string_of_size( char * number, unsigned int size ){
   return proxy_from_rnumber(rnumber_create_from_string_of_size( number, size));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_string_of_size_variable_sizing( char * number, unsigned int size )
-{
+RNumber_proxy_t bl_rnumber_create_from_string_of_size_variable_sizing( char * number, unsigned int size ){
   return proxy_from_rnumber(rnumber_create_from_string_of_size_variable_sizing ( number, size));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_string_of_radix( char * number, int radix )
-{
+RNumber_proxy_t bl_rnumber_create_from_string_of_radix( char * number, int radix ){
   return proxy_from_rnumber(rnumber_create_from_string_of_radix(number, radix));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_string_of_radix_variable_sizing( char * number, int radix )
-{
+RNumber_proxy_t bl_rnumber_create_from_string_of_radix_variable_sizing( char * number, int radix ){
   return proxy_from_rnumber(rnumber_create_from_string_of_radix_variable_sizing
-			    ( number, radix));
+                            ( number, radix));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix)
-{
+RNumber_proxy_t bl_rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix){
   return proxy_from_rnumber(rnumber_create_from_string_of_size_of_radix
-			    ( number, size, radix));
+                            ( number, size, radix));
 }
 
 RNumber_proxy_t bl_rnumber_create_from_string_of_size_of_radix_variable_sizing
-( char * number, unsigned int size, int radix) 
-{
+( char * number, unsigned int size, int radix) {
   return proxy_from_rnumber(rnumber_create_from_string_of_size_of_radix_variable_sizing
-			    ( number, size, radix));
+                            ( number, size, radix));
 }
 
 RNumber_proxy_t bl_rnumber_create_from_numVector
-( unsigned int* numVector, unsigned int wordCount, unsigned int size )
-{
+( unsigned int* numVector, unsigned int wordCount, unsigned int size ){
   return proxy_from_rnumber(rnumber_create_from_numVector( numVector, wordCount, size ));
 }
 
 RNumber_proxy_t bl_rnumber_create_from_numVector_variable_sizing
-(unsigned int* numVector, unsigned int wordCount, unsigned int size )
-{
+(unsigned int* numVector, unsigned int wordCount, unsigned int size ){
   return proxy_from_rnumber(rnumber_create_from_numVector_variable_sizing
-			    ( numVector, wordCount, size));
+                            ( numVector, wordCount, size));
 }
 
-RNumber_proxy_t bl_rnumber_create_from_rnumber( RNumber_proxy_t rnumber )
-{
+RNumber_proxy_t bl_rnumber_create_from_rnumber( RNumber_proxy_t rnumber ){
   return proxy_from_rnumber(rnumber_create_from_rnumber(RNUM_FROM_PROXY(rnumber)));
 }
 
-RNumber_proxy_t bl_rnumber_copy_to_size( RNumber_proxy_t number, unsigned int size)
-{
+RNumber_proxy_t bl_rnumber_copy_to_size( RNumber_proxy_t number, unsigned int size){
   return proxy_from_rnumber(rnumber_copy_to_size(RNUM_FROM_PROXY(number), size));
 }
 
-RNumber_proxy_t bl_rnumber_copy_to_size_variable_sizing( RNumber_proxy_t number, unsigned int size)
-{
+RNumber_proxy_t bl_rnumber_copy_to_size_variable_sizing( RNumber_proxy_t number, unsigned int size){
   return proxy_from_rnumber(rnumber_copy_to_size_variable_sizing(RNUM_FROM_PROXY(number), size));
 }
 
 // Unary arithmetic operators.
-RNumber_proxy_t bl_rnumber_unary_minus( RNumber_proxy_t rnumber)
-{
+RNumber_proxy_t bl_rnumber_unary_minus( RNumber_proxy_t rnumber){
   return proxy_from_rnumber(rnumber_unary_minus(RNUM_FROM_PROXY(rnumber)));
 }
 
-RNumber_proxy_t bl_rnumber_unary_tilde( RNumber_proxy_t rnumber)
-{
+RNumber_proxy_t bl_rnumber_unary_tilde( RNumber_proxy_t rnumber){
   return proxy_from_rnumber(rnumber_unary_tilde(RNUM_FROM_PROXY(rnumber)));
 }
 
-RNumber_proxy_t bl_rnumber_getfield( RNumber_proxy_t rnumber, unsigned int start, unsigned int end )
-{
+RNumber_proxy_t bl_rnumber_getfield( RNumber_proxy_t rnumber, unsigned int start, unsigned int end ){
   return proxy_from_rnumber(rnumber_getfield(RNUM_FROM_PROXY(rnumber),start, end));
 }
 

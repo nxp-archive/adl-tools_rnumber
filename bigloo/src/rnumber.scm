@@ -249,8 +249,12 @@
 	      (let ((radix (if (pair? radix-prefix) (car radix-prefix) radix-prefix))
 		    (prefix (if (and (pair? radix-prefix)
 				     (pair? (cdr radix-prefix)))
-				(cadr radix-prefix) 1)))
-		 (rnumber-cstr-radix rnumber radix prefix)) 
+				(if (boolean? (cadr radix-prefix))
+				    (if (cadr radix-prefix)
+					1
+					0))
+				1)))
+		 (rnumber-cstr-radix rnumber radix prefix))
 	      (rnumber-cstr rnumber)))
 	 (else (error "rnumber->cstr" "'rnumber' is not an rnumber  " rnumber))))
 
