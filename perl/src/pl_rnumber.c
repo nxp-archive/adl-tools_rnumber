@@ -63,7 +63,7 @@ XS(_wrap_numericp) {
     if ((items < 1) || (items > 1)) 
         croak("Usage: stringp(scalar);");
 
-    _result = (SvNOK(ST(0)) != 0);
+    _result = (SvNOK(ST(0)) != 0) || (SvIOK(ST(0)));
     ST(argvi) = sv_newmortal();
     sv_setiv(ST(argvi++),(IV) _result);
     XSRETURN(argvi);

@@ -6,7 +6,10 @@ use strict;
 use lib '../src';
 use rnumber;
 
+print "create a\n";
+predicates ("10", 10);
 my $a = rn_ctor(10,64);
+print "</a>\n";
 my $b = 0xcd340000;
 my $c = "3";
 my $foo = "0xcd340000";
