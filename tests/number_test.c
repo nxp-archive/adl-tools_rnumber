@@ -1866,9 +1866,9 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
 /* 	 rnumber_cstr(a), rnumber_cstr(b), rnumber_cstr(c), op, ext); */
   assert (rnumber_size(a) <= 1024 && rnumber_size(b) <= 1024);
   // dc requires uppercase hex; right now RNumbers print hex in lower case
-  strcpy (astr, rnumber_cstr(a));
+  strcpy (astr, rnumber_cstr_radix(a,16,0));
   uppercase (astr);
-  strcpy (bstr, rnumber_cstr(b));
+  strcpy (bstr, rnumber_cstr_radix(b,16,0));
   uppercase (bstr);
 
   // Sanity checking if we're not allowing for resizing.
@@ -1888,7 +1888,7 @@ unsigned calculator_check_arith_unsigned (struct Calculator * calc, const struct
   char astr[256];
   char bstr[256];
   
-  strcpy (astr, rnumber_cstr(a));
+  strcpy (astr, rnumber_cstr_radix(a,16,0));
 
   uppercase (astr);
   sprintf (bstr, "%X", b);
@@ -1989,9 +1989,9 @@ unsigned calculator_check_comparator (Calculator * calc, const struct RNumber * 
   char buf[1024];
   int  n;
 
-  strcpy (astr, rnumber_cstr(a));
+  strcpy (astr, rnumber_cstr_radix(a,16,0));
   uppercase (astr);
-  strcpy (bstr, rnumber_cstr(b));
+  strcpy (bstr, rnumber_cstr_radix(b,16,0));
   uppercase (bstr);
 
   sprintf (cmd, "%s %s - p c\n", astr, bstr);
@@ -2079,7 +2079,7 @@ unsigned calculator_check_comparator_unsigned (Calculator * calc, const struct R
   char cmd[1024];
   char buf[1024];
   int n;
-  strcpy (astr, rnumber_cstr(a));
+  strcpy (astr, rnumber_cstr_radix(a,16,0));
   uppercase (astr);
   sprintf (bstr, "%X", b);
 

@@ -2,6 +2,8 @@
 #include "c-io.h"
 #include <strstream>
 
+using namespace std;
+
 void * ss_create()
 {
   return new strstream;

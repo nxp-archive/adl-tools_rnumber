@@ -153,7 +153,7 @@
     (rnumber-assignbit::void (RNumber_proxy_t uint uint) "bl_rnumber_assignbit")
     (rnumber-assignbit-lsb::void (RNumber_proxy_t uint uint) "bl_rnumber_assignbit_lsb")
     (rnumber-get-uint::uint (RNumber_proxy_t) "bl_rnumber_get_uint")
-    (bl-rnumber-cstr::string (RNumber_proxy_t) "bl_rnumber_cstr")
+    (rnumber-cstr::string (RNumber_proxy_t) "bl_rnumber_cstr")
     (rnumber-cstr-radix::string (RNumber_proxy_t int int) "bl_rnumber_cstr_radix")
     (rnumber-get-int-field::int (RNumber_proxy_t uint uint) "bl_rnumber_get_int_field")
     (rnumber-get-uint-field::uint (RNumber_proxy_t uint uint) "bl_rnumber_get_uint_field")
@@ -251,7 +251,7 @@
 				     (pair? (cdr radix-prefix)))
 				(cadr radix-prefix) 1)))
 		 (rnumber-cstr-radix rnumber radix prefix)) 
-	      (bl-rnumber-cstr rnumber)))
+	      (rnumber-cstr rnumber)))
 	 (else (error "rnumber->cstr" "'rnumber' is not an rnumber  " rnumber))))
 
 (define (rnumber->int rnumber)

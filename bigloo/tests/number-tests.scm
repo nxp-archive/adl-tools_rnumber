@@ -1,4 +1,7 @@
-#!./driver
+(module number-tests
+   (library bl-rnumber)
+   (main number-tests)
+   (eval (export *the-command-line*)))
 
 (define *max-iter* 100)
 (define *verbose* 0)

@@ -1,16 +1,17 @@
-check_PROGRAMS = simple_test number_test driver
+check_PROGRAMS = driver simple-number-test
 
-number_test_SOURCES = c-io.C number_test.c
-simple_test_SOURCES = simple_test.c c-io.C
-driver_SOURCES = driver.scm
+# Turn off dependency tracking, since Automake doesn't
+# know how to handle Bigloo.
+AUTOMAKE_OPTIONS=no-dependencies
 
-CLEANFILES = driver.c 
-EXTRA_DIST = c-io.h \
-	$(TESTS) 
+driver_SOURCES = driver.c
+simple_number_test_SOURCES=simple-number-test.c
+
+CLEANFILES = driver.c simple-number-test.c
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
-TESTS = simple_test number_test 
+TESTS = simple-number-test
 
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a
@@ -26,6 +27,6 @@ BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber
 
 simple-number-test: simple-number-test.scm
 number-tests: number-tests.scm
-
 driver: driver.scm
-	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
+
+##	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
