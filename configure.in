@@ -110,6 +110,8 @@ if test "x$BIGLOOBINDINGS" != x ; then
 	   else
               BIGLOO_GCC3X=""
            fi
+	   AC_MSG_RESULT([BIGLOO_GCC3X $BIGLOO_GCC3X])
+	   AC_SUBST(BIGLOO_GCC3X)
 	fi
 else
 	echo "The building of Bigloo bindings has been disabled."
