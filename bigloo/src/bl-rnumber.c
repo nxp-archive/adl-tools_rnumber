@@ -376,8 +376,8 @@ RNumber_proxy_t bl_rnumber_clear_all( RNumber_proxy_t rnumber) {
   return proxy_from_rnumber(rnumber_clear_all(RNUM_FROM_PROXY(rnumber)));
 }
 
-RNumber_proxy_t bl_rnumber_sign_extend( RNumber_proxy_t rnumber, unsigned int bit ) {
-  return proxy_from_rnumber(rnumber_sign_extend(RNUM_FROM_PROXY(rnumber),  bit ));
+void bl_rnumber_sign_extend( RNumber_proxy_t rnumber, unsigned int bit ) {
+   rnumber_sign_extend(RNUM_FROM_PROXY(rnumber),  bit );
 }
 
 RNumber_proxy_t bl_rnumber_truncate( RNumber_proxy_t rnumber, unsigned int size ) {

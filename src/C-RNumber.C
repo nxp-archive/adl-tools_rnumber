@@ -325,9 +325,8 @@ RNumber * rnumber_clear_all( RNumber * rnumber)
   return &rnumber->clearAll();
 }
 
-RNumber * rnumber_sign_extend( RNumber * rnumber, unsigned int bit )
-{
-  return &rnumber->signExtend(bit);
+RNumber * rnumber_sign_extend( RNumber * rnumber, unsigned int bit ) {
+   return &rnumber->signExtend(bit);
 }
 
 RNumber * rnumber_truncate( RNumber * rnumber, unsigned int size )

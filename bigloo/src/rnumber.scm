@@ -1,10 +1,14 @@
 (module rnumber
    (export *rnumber-version*
 	   (rnumber? a)
+	   (rn? a)
 	   (rnumber-ctor arg)
+	   (rn-ctor arg)
 	   (rnumber->cstr rnumber . radix-prefix)
+	   (rn->string rnumber . radix-prefix)
 	   (rnumber-parse-string str)
 	   (rnumber->int rnumber)
+	   (rn->integer rnumber)
 	   (rn=? a b)
 	   (rn!=? a b)
 	   (rn<? a b)
@@ -19,7 +23,15 @@
 	   (rn-bitand a b)
 	   (rn-bitnot a)
 	   (rn-bitxor a b)
-	   (rn-bitor a b))
+	   (rn-bitor a b)
+	   (rn-sign-extend! rn bit)
+	   (rn-get-bit rn bit)
+	   (rn-get-bit-lsb rn bit)
+	   (rn-set-bit! rn bit value)
+	   (rn-set-bit-lsb! rn bit value)
+	   (rn-resize! rn new-size)
+	   (rn-size rn)
+	   (rn-word-count rn))
    (include "rnumber-version.h")
    (eval (export-exports))
    (type (subtype RNumber_proxy_t "obj_t" (obj))
@@ -148,7 +160,7 @@
     (rnumber-negate::RNumber_proxy_t (RNumber_proxy_t) "bl_rnumber_negate")
     (rnumber-set-all::RNumber_proxy_t (RNumber_proxy_t) "bl_rnumber_set_all")
     (rnumber-clear-all::RNumber_proxy_t (RNumber_proxy_t) "bl_rnumber_clear_all")
-    (rnumber-sign-extend::RNumber_proxy_t (RNumber_proxy_t uint) "bl_rnumber_sign_extend")
+    (rnumber-sign-extend::void (RNumber_proxy_t uint) "bl_rnumber_sign_extend")
     (rnumber-truncate::RNumber_proxy_t (RNumber_proxy_t uint) "bl_rnumber_truncate")
     (rnumber-getbit::uint (RNumber_proxy_t uint) "bl_rnumber_getbit")
     (rnumber-getbit-lsb::uint (RNumber_proxy_t uint) "bl_rnumber_getbit_lsb")
@@ -272,6 +284,7 @@
 
 (define *rnumber-two-arg-error* "needs two argument one needs to be a rnumber, the other an rnumber or an int ")
 (define *rnumber-one-arg-error* "needs one argument that is either a rnumber on an int.")
+(define *rnumber-only-one-arg-error* "needs one argument that must be an rnumber.")
 
 (define (rn=? a b)
    ;(print "(rn=? " a " " b ")")
@@ -433,6 +446,69 @@
 	    ((and first-rn second-ui) (rnumber-rn-bitxor-ui a b))
 	    ((and first-ui second-rn) (rnumber-ui-bitxor-rn a b))
 	    (else (error "rn-bitxor" *rnumber-two-arg-error* (cons a b))))))
+
+(define (rn-sign-extend! rn bit)
+   (if (and (RNumber_proxy_t? rn)
+	    (integer? bit))
+       (begin
+	  (rnumber-sign-extend rn bit)
+	  #t)
+       (error "rn-sign-extend" "expects an rnumber and an int" (cons rn bit))))
+
+(define (rn-get-bit rn bit)
+   (if (and (RNumber_proxy_t? rn)
+	    (integer? bit))
+       (rnumber-getbit rn bit)
+       (error "rn-get-bit" "expects an rnumber and an int" (cons rn bit))))
+
+(define (rn-get-bit-lsb rn bit)
+   (if (and (RNumber_proxy_t? rn)
+	    (integer? bit))
+       (rnumber-getbit-lsb rn bit)
+       (error "rn-get-bit-lsb" "expects an rnumber and an int" (cons rn bit))))
+
+(define (rn-set-bit! rn bit value)
+   (if (and (RNumber_proxy_t? rn)
+	    (integer? bit)
+	    (integer? value))
+       (begin
+	  (rnumber-setbit rn bit value)
+	  #t)
+       (error "rn-set-bit" "expects  rnumber int int" (list rn bit value))))
+	
+(define (rn-set-bit-lsb! rn bit value)
+   (if (and (RNumber_proxy_t? rn)
+	    (integer? bit)
+	    (integer? value))
+       (begin
+	  (rnumber-setbit-lsb rn bit value)
+	  #t)
+       (error "rn-set-bit-lsb" "expects rnumber int int" (list rn bit value))))
+
+(define (rn-resize! rn new-size)
+   (if (and (RNumber_proxy_t? rn)
+	    (integer? new-size))
+       (begin
+	  (rnumber-resize rn new-size)
+	  new-size)
+       (error "rn-resize" "expects rnumber int" (list rn new-size))))
+
+(define (rn-size rn)
+   (if (RNumber_proxy_t? rn)
+       (rnumber-size rn)
+       (error "rn-size" "expects rnumber" rn)))
+
+(define (rn-word-count rn)
+   (if (RNumber_proxy_t? rn)
+       (rnumber-wordcount rn)
+       (error "rn-wordcount" "expects rnumber" rn)))
+
+(define (rn? a)
+   (rnumber? a))
+
+(define rn-ctor rnumber-ctor)
+(define rn->string rnumber->cstr)
+(define rn->integer rnumber->int)
 
 (define (rnumber-parse-string str)
    ;(print "(rnumber-parse-string " str ")")

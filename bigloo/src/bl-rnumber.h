@@ -134,7 +134,7 @@ RNumber_proxy_t bl_rnumber_invert( RNumber_proxy_t rnumber);
 RNumber_proxy_t bl_rnumber_negate( RNumber_proxy_t rnumber);
 RNumber_proxy_t bl_rnumber_set_all( RNumber_proxy_t rnumber);
 RNumber_proxy_t bl_rnumber_clear_all( RNumber_proxy_t rnumber);
-RNumber_proxy_t bl_rnumber_sign_extend( RNumber_proxy_t rnumber, unsigned int bit );
+void bl_rnumber_sign_extend( RNumber_proxy_t rnumber, unsigned int bit );
 RNumber_proxy_t bl_rnumber_truncate( RNumber_proxy_t rnumber, unsigned int size );
 unsigned int bl_rnumber_getbit( RNumber_proxy_t rnumber, unsigned int pos);
 unsigned int bl_rnumber_getbit_lsb( RNumber_proxy_t rnumber, unsigned int pos );
