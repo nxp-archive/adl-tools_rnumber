@@ -7,8 +7,6 @@ exec_prefix=@exec_prefix@
 
 libdir=@libdir@
 
-profile=@PROFILE@
-
 bindir=${exec_prefix}/bin
 datadir=${exec_prefix}/share/
 
@@ -16,7 +14,7 @@ pkglibdir=${libdir}/@PACKAGE@
 pkgdatadir=${datadir}/@PACKAGE@
 transform=@program_transform_name@
 
-CFLAGS="-I${pkglibdir}/include -I@includedir@ "
+CFLAGS="@CXXFLAGS@ -I${pkglibdir}/include -I@includedir@ "
 LIBDIRS="-L${pkglibdir} -R${pkglibdir} "
 HELPER_PATH="${pkgdatadir}"
 
@@ -124,11 +122,11 @@ if test "x$any" = xno; then
 fi
 
 if $cflags; then
-    all_flags="$the_flags $profile"
+    all_flags="$the_flags"
 fi
 
 if $libs_L || $libs_l; then
-    all_flags="$all_flags $the_libs $profile"
+    all_flags="$all_flags $the_libs"
 fi
 
 if $bl_libs_L; then

@@ -3775,7 +3775,7 @@ RNumber& RNumber::truncate( unsigned int size )
 // Returns true if zero (all bits clear).     
 bool RNumber::iszero() const {
   unsigned z = _valueBuffer[0];       
-  for (int i = 1; i != _wordCount; ++i) {         
+  for (unsigned i = 1; i != _wordCount; ++i) {         
     z |= _valueBuffer[i];
   }       
   return !z;
