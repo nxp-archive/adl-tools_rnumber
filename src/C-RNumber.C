@@ -62,24 +62,23 @@ RNumber * rnumber_create_from_string_of_size_variable_sizing( char * number, uns
   return new RNumber ( string(number), size, RNumber::dynamic);
 }
 
-static RNumber::Radix get_radix(int radix) 
+static RNumber::Format get_radix(int radix) 
 {
-  switch (radix) 
-    {
-    case 10:
-      return RNumber::rdec;
-      break;
-    case 16:
-      return RNumber::rhex;
-      break;
-    case 2:
-      return RNumber::rbin;
-      break;
-    case 0:
-    default:
-      return RNumber::rios;
-      break;
-    }
+  switch (radix) {
+  case 10:
+    return RNumber::rdec;
+    break;
+  case 16:
+    return RNumber::rhex;
+    break;
+  case 2:
+    return RNumber::rbin;
+    break;
+  case 0:
+  default:
+    return RNumber::rios;
+    break;
+  }
   return RNumber::rios;
 }
 
@@ -359,18 +358,18 @@ void rnumber_setbit_lsb( RNumber * rnumber, unsigned int pos, unsigned int value
 
 void rnumber_assignbit( RNumber * rnumber, unsigned int pos, unsigned int value )
 {
-  return rnumber->assignBit(pos, value);
+  return rnumber->setBit(pos, value);
 }
 
 void rnumber_assignbit_lsb( RNumber * rnumber, unsigned int pos, unsigned int value )
 {
-  return rnumber->assignBitLSB(pos, value);
+  return rnumber->setBitLSB(pos, value);
 }
 
   // Value accessors.
 unsigned int rnumber_get_uint( RNumber * rnumber)
 {
-  return rnumber->getUInt();
+  return rnumber->uint32();
 }
 
 char * rnumber_cstr( const RNumber * rnumber) 
@@ -383,7 +382,11 @@ char * rnumber_cstr( const RNumber * rnumber)
 
 char * rnumber_cstr_radix( const RNumber * rnumber, int radix, int bool_prefix)
 {
-  string str = rnumber->strradix(get_radix(radix), bool_prefix);
+  int format = get_radix(radix);
+  if (bool_prefix) {
+    format |= RNumber::rprefix;
+  }
+  string str = rnumber->str(format);
   char * return_value = reinterpret_cast<char *>(malloc( str.size() + 1));
   strcpy(return_value, str.c_str());
   return return_value;
@@ -428,7 +431,7 @@ const unsigned * rnumber_buffer( RNumber * rnumber)
 
 unsigned int rnumber_get_default_size()
 {
-  return RNumber::getDefaultSize();
+  return RNumber::defaultSize();
 }
 
 void rnumber_set_default_size( unsigned int size )
@@ -471,7 +474,10 @@ void rnumber_print_to_os( const RNumber * rnumber, void * os )
 void rnumber_print_with_radix( const RNumber * rnumber, void * os, int radix, int bool_prefix ) 
 {
   ostream * oos = reinterpret_cast<ostream *>(os);
-  rnumber->printWithRadix(*oos, get_radix(radix), bool_prefix);
+  int format = get_radix(radix);
+  if (bool_prefix)
+    format |= RNumber::rprefix;
+  rnumber->printToOS(*oos, format);
 }
 
 //friend istream& operator>>( istream& is, RNumber& number );

@@ -1,0 +1,32 @@
+#!/usr/bin/env perl
+#
+# Simple regression for testing RNumber's ability to
+# read from a stream. 
+#
+
+$test = "./ReadTest";
+$in = "ReadIn.txt";
+$out  = "ReadOut.txt";
+$regress = "ReadOut.regress";
+$diff = "diff -bi ";
+
+# Run the program
+if (system("$test -xf $in > $out")) {
+  print "Error executing test program $test\n";
+  exit 1;
+}
+
+$output = `$diff $out $regress`;
+if ($? > 8) {
+  print "Error!  File '$out' differs from regression file '$regress'.\n";
+  print "Output was:\n",$output;
+  exit 1;
+} else {
+  print "Regex regression test PASSED.\n";
+}
+
+unlink $out;
+exit 0;
+
+
+

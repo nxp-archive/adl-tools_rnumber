@@ -29,20 +29,34 @@ namespace rnumber {
 class RNumber
 {
 public:
-  enum Radix { rdec, rhex, rbin, rios };
+  // Format values used by str().
+  enum Format { 
+    rios    = 0x01,
+    rdec    = 0x02, 
+    rhex    = 0x04, 
+    rbin    = 0x08, 
+    rprefix = 0x10,
+    rlast   = 0x10,
+  };
+
   enum Sizing { fixed, dynamic };
 
   // Constructors and destructor. All numbers are fixed size by default.
+  // Default is 0 of the default size.
   RNumber();
+  // Create from an rnumber.
   RNumber( const RNumber& number );
+  RNumber( const RNumber& number, unsigned int size, Sizing sizing = fixed );
+  // Create from an integer.
   RNumber( unsigned int number, Sizing sizing = fixed );
   RNumber( unsigned int number, unsigned int size, Sizing sizing = fixed );
+  // Create from a string.  Where radix is explicitly set, the input should
+  // contain a prefix, e.g. 0x...
   RNumber( const std::string& number, Sizing sizing = fixed );
-  RNumber( const std::string& number, unsigned int size, Sizing sizing = fixed );
-  RNumber( const std::string& number, Radix radix, Sizing sizing = fixed );
-  RNumber( const std::string& number, unsigned int size, Radix radix, Sizing sizing = fixed );
-  RNumber( const RNumber& number, unsigned int size, Sizing sizing = fixed );
-  RNumber( unsigned int radix, const std::string& str, int size = -1 );  // deprecated
+  RNumber( const std::string& number, unsigned size, Sizing sizing = fixed );
+  RNumber( const std::string& number, unsigned size, Format radix, Sizing sizing = fixed );
+  RNumber( const std::string& number, Format radix, Sizing sizing = fixed );
+  // Create from an integer array.
   RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size, Sizing sizing = fixed );
   ~RNumber();
 
@@ -53,7 +67,6 @@ public:
   RNumber& operator=( const std::string& number );
   RNumber& operator=( const RNumber& number );
   RNumber& assign( const RNumber& number );
-  RNumber& set( const RNumber& number ) { return copy( number ); }  // deprecated
   RNumber& copy( const RNumber& number );
   void resize( unsigned int size );
 
@@ -98,7 +111,6 @@ public:
   RNumber& invert();
   RNumber& negate();
   RNumber& setAll();
-  RNumber& setToAllOnes() { return setAll (); }   // deprecated
   RNumber& clearAll();
   RNumber& signExtend( unsigned int bit );
   // RNumber& signExtendLSB( unsigned int bit );      // implement
@@ -109,20 +121,14 @@ public:
   unsigned int getBitLSB( unsigned int pos ) const;
   void setBit( unsigned int pos, unsigned int value );
   void setBitLSB( unsigned int pos, unsigned int value );
-  void assignBit( unsigned int pos, unsigned int value )
-  { return setBit( pos, value ); } // deprecated
-  void assignBitLSB( unsigned int pos, unsigned int value )
-  { return setBitLSB( pos, value ); } // deprecated
 
   // Value accessors.
-  unsigned int intValue() const  { return getUInt(); }  // deprecated
-  unsigned int getInt() const    { return getUInt(); }  // deprecated
-  unsigned int getUInt() const;
-  std::string str() const;
-  std::string strradix(Radix=RNumber::rdec,bool prefix=false) const;
+  unsigned int intValue() const  { return uint32(); }
+  unsigned int uint32() const;
+  // uint64 uint64() const; // implement
 
   // Value field accessors and manipulators.
-  unsigned int getIntField( unsigned int start, unsigned int end ) const { return getUIntField( start, end ); }  // deprecated
+  unsigned int getIntField( unsigned int start, unsigned int end ) const { return getUIntField( start, end ); }
   unsigned int getUIntField( unsigned int start, unsigned int end ) const;
   // unsigned int getUIntFieldLSB( unsigned int start, unsigned int end ) const;  // implement
   RNumber getField( unsigned int start, unsigned int end ) const;
@@ -136,19 +142,22 @@ public:
 
   const unsigned *buffer() const;
 
-  static unsigned int defaultSize()  { return _defaultSize; }       // deprecated
-  static unsigned int getDefaultSize();
+  static unsigned int defaultSize()  { return _defaultSize; }
   static void setDefaultSize( unsigned int size );
 
   Sizing sizing() const;
   void setDynamic();
   void setFixed();
 
+  // Stringification.  Format specifiers are specified by the Format enum.
+  std::string str(int format = 0) const;
+
   // Streaming I/O methods.
-  void printToOS( std::ostream& os ) const;
-  std::ostream& printWithRadix( std::ostream& os, Radix = rios, bool prefix=false ) const;
-  friend istream& operator>>( istream& is, RNumber& number );
+  std::ostream& printToOS( std::ostream& os ) const;
+  std::ostream& printToOS( std::ostream& os, int format ) const;
   friend ostream& operator<<( std::ostream& os, const RNumber& number );
+  friend istream& operator>>( istream& is, RNumber& number );
+  // Binary read/write.
   void read( std::istream& is );
   void write( std::ostream& os ) const;
 
@@ -184,11 +193,12 @@ private:
   RNumber& truncateInt( unsigned int size );
   RNumber& truncateExtended( unsigned int size );
 
-  unsigned int getSizeWithRadix( const std::string& number, Radix& radix );
-  void printWithStreamRadix(std::ostream &os,bool prefix) const;
-  void printDec( std::ostream& os ) const;
-  void printBin( std::ostream& os,bool prefix) const;
-  void printHex( std::ostream& os,bool prefix ) const;
+  unsigned int getSizeWithRadix( const std::string& number, int& radix );
+
+  void printWithStreamRadix(std::ostream &os,int format) const;
+  void printDec( std::ostream& os,int format) const;
+  void printBin( std::ostream& os,int format) const;
+  void printHex( std::ostream& os,int format) const;
 
   friend  const RNumber add( const RNumber& n1, const RNumber& n2, bool extend );
   friend  const RNumber add( const RNumber& n1, unsigned int n2, bool extend );
@@ -925,7 +935,7 @@ inline unsigned int RNumber::code() const
 // Return the numeric data in an unsigned integer. Loss of data will occur if
 // the size of the number is greater than the size of an unsigned int.
 //
-inline unsigned int RNumber::getUInt() const
+inline unsigned int RNumber::uint32() const
 {
   return _valueBuffer[_wordCount - 1];
 }

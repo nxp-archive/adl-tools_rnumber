@@ -1,3 +1,9 @@
+2003-03-17  Brian Kahne  <bkahne@ibmoto.com>
+
+	* I removed strradix and moved that functionality into str().  The
+	format parameter stored bit flags which represents both the radix
+	and other stuff, such as whether to print a prefix or not.
+
 2003-03-07  Brian Kahne  <bkahne@ibmoto.com>
 
 	* rnumber is now compatible with gcc 3.2.2.

@@ -23,6 +23,9 @@ unsigned maxIter = 100;
 
 const int Verbose = 0;
 
+const int Hex  = RNumber::rhex;
+const int PHex = (RNumber::rhex | RNumber::rprefix);
+
 class Calculator {
 public:
 
@@ -424,7 +427,7 @@ static unsigned checkIntComparator (unsigned size, char *op, Calculator *calc)
     unsigned b = Random::getInteger ();
     unsigned c = Random::getInteger ();
     if (size1 < 32)
-      c = a . getInt ();
+      c = a . uint32 ();
     else
       a = c;
 
@@ -467,7 +470,7 @@ static unsigned checkIntComparator (unsigned size, char *op, Calculator *calc)
     if (size1 < 32)
       a = b;
     else
-      b = a . getInt ();
+      b = a . uint32 ();
     bool res;
     if (strcmp (op, ">") == 0)
       res = a > b;
@@ -522,7 +525,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, Calculator *calc
       }
       if (failed) {
         printf ("Error occurred in comparison signed%s on values %s(%d) and %s(%d)\n", op,
-                a . str () . c_str (), a . size (), b . str () . c_str (), b . size ());
+                a . str (PHex) . c_str (), a . size (), b . str (PHex) . c_str (), b . size ());
         rc = 1;
       }
     }
@@ -552,7 +555,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, Calculator *calc
         assert (0);
       if (failed) {
         printf ("Error occurred in comparison signed%s on values %s(%d) and %s(%d)\n", op,
-                a . str () . c_str (), a . size (), b . str () . c_str (), b . size ());
+                a . str (PHex) . c_str (), a . size (), b . str (PHex) . c_str (), b . size ());
         rc = 1;
       }
     }
@@ -618,22 +621,22 @@ static unsigned checkBitAccessors (unsigned size)
 
     a . setBit (n, 1);
     if (a != b) {
-      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (a . getBit (n) != 1) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
     a = 0;
     a . setBitLSB (n, 1);
     if (a != c) {
-      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in setting bit %d of 0 to produce %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (a . getBitLSB (n) != 1) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
@@ -643,22 +646,22 @@ static unsigned checkBitAccessors (unsigned size)
 
     a . setBit (n, 0);
     if (a != b) {
-      printf ("Error occurred in clearing bit %d of ones to produce %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in clearing bit %d of ones to produce %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (a . getBit (n) != 0) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
     a . setAll ();
     a . setBitLSB (n, 0);
     if (a != c) {
-      printf ("Error occurred in setting bit %d of ones to produce %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in setting bit %d of ones to produce %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (a . getBitLSB (n) != 0) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in getting bit %d of %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
   }
@@ -685,16 +688,16 @@ static unsigned checkFieldAccessors (unsigned size)
 
     a . setField (n1, n2, field);
     if (a != b) {
-      printf ("Error occurred in setting field %d:%d of 0 to produce %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+      printf ("Error occurred in setting field %d:%d of 0 to produce %s(%d)\n", n1, n2, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (a . getField (n1, n2) != field) {
-      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
       if (field != a . getIntField (n1, n2)) {
-        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, a . str (PHex) . c_str (), size1);
         rc = 1;
       }
     }
@@ -704,16 +707,16 @@ static unsigned checkFieldAccessors (unsigned size)
 
     a . setField (n1, n2, 0);
     if (a != b) {
-      printf ("Error occurred in clearing field %d:%d of ones to produce %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+      printf ("Error occurred in clearing field %d:%d of ones to produce %s(%d)\n", n1, n2, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (a . getField (n1, n2) != 0) {
-      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
       if (a . getIntField (n1, n2) != 0) {
-        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, a . str () . c_str (), size1);
+        printf ("Error occurred in getting int field %d:%d of %s(%d)\n", n1, n2, a . str (PHex) . c_str (), size1);
         rc = 1;
       }
     }
@@ -739,7 +742,7 @@ static unsigned checkSignExtends (unsigned size)
     a . setBit (n, 1);
     a . signExtend (n);
     if (a != b) {
-      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
@@ -749,7 +752,7 @@ static unsigned checkSignExtends (unsigned size)
 
     a . signExtend (n);
     if (a != b) {
-      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, a . str () . c_str (), size1);
+      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, a . str (PHex) . c_str (), size1);
       rc = 1;
     }
   }
@@ -757,18 +760,18 @@ static unsigned checkSignExtends (unsigned size)
   return rc;
 }
 
-static unsigned checkReadWrite (const RNumber& numa, RNumber::Radix radix)
+static unsigned checkReadWrite (const RNumber& numa, RNumber::Format radix)
 {
   unsigned rc = 0;
   unsigned size1 = numa . size ();
 
   strstream ss1;
-  numa . printWithRadix (ss1, radix, true);
+  numa . printToOS (ss1, radix | RNumber::rprefix);
   ss1 << ends;
   char *str1 = ss1 . str ();
   RNumber num1 (str1);
   if (numa != num1) {
-    printf ("Error in reading/writing of %s(%d) with implied radix %d\n", numa . str () . c_str (), size1, radix);
+    printf ("Error in reading/writing of %s(%d) with implied radix %d\n", numa . str (PHex) . c_str (), size1, radix);
     rc = 1;
   }
   if (size1 > 1) {
@@ -779,7 +782,7 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Radix radix)
  
     RNumber nums1 (str1, size2);
     if (nums1 != numb || nums1 . size () != size2) {
-      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str () . c_str (), size1, size2, radix);
+      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str (PHex) . c_str (), size1, size2, radix);
       rc = 1;
     }
 
@@ -787,18 +790,18 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Radix radix)
     unsigned size3 = Random::getFromRange (size1 + 1, 100);
     RNumber nums2 (str1, size3);
     if (nums2 != numa || nums2 . size () != size3) {
-      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str () . c_str (), size1, size3, radix);
+      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str (PHex) . c_str (), size1, size3, radix);
       rc = 1;
     }
   }
 
   strstream ss3;
-  numa . printWithRadix (ss3, radix);
+  numa . printToOS (ss3, radix);
   ss3 << ends;
   char *str3 = ss3 . str ();
   RNumber num3 (str3, radix);
   if (numa != num3) {
-    printf ("Error in hex reading/writing of %s(%d) with explicit radix %d\n", numa . str () . c_str (), numa . size (), radix);
+    printf ("Error in hex reading/writing of %s(%d) with explicit radix %d\n", numa . str (PHex) . c_str (), numa . size (), radix);
     rc = 1;
   }
   if (size1 > 1) {
@@ -809,7 +812,7 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Radix radix)
  
     RNumber nums1 (str3, size2, radix);
     if (nums1 != numb || nums1 . size () != size2) {
-      printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", numa . str () . c_str (), size1, size2, radix);
+      printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", numa . str (PHex) . c_str (), size1, size2, radix);
       rc = 1;
     }
 
@@ -817,7 +820,7 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Radix radix)
     unsigned size3 = Random::getFromRange (size1 + 1, 100);
     RNumber nums2 (str3, size3, radix);
     if (nums2 != numa || nums2 . size () != size3) {
-      printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", numa . str () . c_str (), size1, size3, radix);
+      printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", numa . str (PHex) . c_str (), size1, size3, radix);
       rc = 1;
     }
   }
@@ -839,14 +842,14 @@ static unsigned checkConstructors ()
     // basic copy constructor
     RNumber z1 (x0);
     if (z1 != x0 || z1 . size () != size1) {
-      printf ("Error occurred in basic copy constructor of %s(%d)\n", x0 . str () . c_str (), size1);
+      printf ("Error occurred in basic copy constructor of %s(%d)\n", x0 . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
     // construct larger number
     RNumber z2 (x0, size2);
     if (z2 != x0 || z2 . size () != size2) {
-      printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", x0 . str () . c_str (), size1, size2);
+      printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", x0 . str (PHex) . c_str (), size1, size2);
       rc = 1;
     }
 
@@ -856,7 +859,7 @@ static unsigned checkConstructors ()
     tmp <<= (size2 - size1);
     tmp >>= (size2 - size1);
     if (z3 != tmp || z3 . size () != size1) {
-      printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", y0 . str () . c_str (), size2, size1);
+      printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", y0 . str (PHex) . c_str (), size2, size1);
       rc = 1;
     }
 
@@ -887,25 +890,25 @@ static unsigned checkConstructors ()
 
     // basic set
     RNumber z4 = Random::getRNumber (size1);
-    z4 . set (x0);
+    z4 . assign (x0);
     if (z4 != x0 || z4 . size () != x0 . size ()) {
-      printf ("Error occurred in basic set of %s(%d)\n", x0 . str () . c_str (), size1);
+      printf ("Error occurred in basic set of %s(%d)\n", x0 . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
     // set from smaller
     RNumber z5 = Random::getRNumber (size2);
-    z5 . set (x0);
+    z5 . copy (x0);
     if (z5 != x0 || z5 . size () != x0 . size ()) {
-      printf ("Error occurred in sized set of %s(%d) from %d\n", x0 . str () . c_str (), size1, size2);
+      printf ("Error occurred in sized set of %s(%d) from smaller %d\n", x0 . str (PHex) . c_str (), size1, size2);
       rc = 1;
     }
 
     // set from larger
     RNumber z6 = Random::getRNumber (size1);
-    z6 . set (y0);
+    z6 . copy (y0);
     if (z6 != y0 || z6 . size () != y0 . size ()) {
-      printf ("Error occurred in sized set of %s(%d) from %d\n", y0 . str () . c_str (), size2, size1);
+      printf ("Error occurred in sized set of %s(%d) from larger %d\n", y0 . str (PHex) . c_str (), size2, size1);
       rc = 1;
     }
 
@@ -913,7 +916,7 @@ static unsigned checkConstructors ()
     RNumber z7 = Random::getRNumber (size1);
     z7 = x0;
     if (z7 != x0 || z7 . size () != size1) {
-      printf ("Error occurred in basic operator= of %s(%d)\n", x0 . str () . c_str (), size1);
+      printf ("Error occurred in basic operator= of %s(%d)\n", x0 . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
@@ -921,7 +924,7 @@ static unsigned checkConstructors ()
     RNumber z8 = Random::getRNumber (size2);
     z8 = x0;
     if (z8 != x0 || z8 . size () != size2) {
-      printf ("Error occurred in sized operator= of %s(%d) to %d\n", x0 . str () . c_str (), size1, size2);
+      printf ("Error occurred in sized operator= of %s(%d) to %d\n", x0 . str (PHex) . c_str (), size1, size2);
       rc = 1;
     }
 
@@ -930,7 +933,7 @@ static unsigned checkConstructors ()
     z9 = y0;
     if ( (z9.sizing() == RNumber::dynamic && ( z9 != y0 || z9.size() != y0.size())) ||
          (z9.sizing() == RNumber::fixed && z9.size() != size1)) {
-      printf ("Error occurred in sized operator= of %s(%d) to %d\n", y0 . str () . c_str (), size2, size1);
+      printf ("Error occurred in sized operator= of %s(%d) to %d\n", y0 . str (PHex) . c_str (), size2, size1);
       rc = 1;
     }
 
@@ -1015,26 +1018,26 @@ static unsigned checkInversions (unsigned size)
 
     a . negate ();
     if (a + tmp != 0) {
-      printf ("Error occurred in negating %s; produced %s(%d)\n", tmp . str () . c_str (), a . str () . c_str (), size1);
+      printf ("Error occurred in negating %s; produced %s(%d)\n", tmp . str (PHex) . c_str (), a . str () . c_str (), size1);
       rc = 1;
     }
 
     a = -tmp;
     if (a + tmp != 0) {
-      printf ("Error occurred in negating %s; produced %s(%d)\n", tmp . str () . c_str (), a . str () . c_str (), size1);
+      printf ("Error occurred in negating %s; produced %s(%d)\n", tmp . str (PHex) . c_str (), a . str () . c_str (), size1);
       rc = 1;
     }
 
     a = tmp;
     a . invert ();
     if ((a | tmp) != ones) {
-      printf ("Error occurred in inverting %s; produced %s(%d)\n", tmp . str () . c_str (), a . str () . c_str (), size1);
+      printf ("Error occurred in inverting %s; produced %s(%d)\n", tmp . str (PHex) . c_str (), a . str () . c_str (), size1);
       rc = 1;
     }
 
     a = ~tmp;
     if ((a | tmp) != ones) {
-      printf ("Error occurred in inverting %s; produced %s(%d)\n", tmp . str () . c_str (), a . str () . c_str (), size1);
+      printf ("Error occurred in inverting %s; produced %s(%d)\n", tmp . str (PHex) . c_str (), a . str (PHex) . c_str (), size1);
       rc = 1;
     }
   }
@@ -1060,7 +1063,7 @@ static unsigned checkShifts (unsigned size)
     // the result to grow.
     RNumber tmpe = leftShiftExt(a,n) >> n;
     if (tmpe != a) {
-      printf ("Error occurred in extendable shifting %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, n, tmpe . str () . c_str ());
+      printf ("Error occurred in extendable shifting %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, n, tmpe . str () . c_str ());
       printf ("  Expected %s\n", a . str().c_str());
       rc = 1;
     }
@@ -1069,7 +1072,7 @@ static unsigned checkShifts (unsigned size)
     // the result to grow.
     tmpe = leftShiftExt(a,rn) >> rn;
     if (tmpe != a) {
-      printf ("Error occurred in extendable shifting %s(%d) by %s; produced %s\n", a . str () . c_str (), size1, rn.str().c_str(), tmpe . str () . c_str ());
+      printf ("Error occurred in extendable shifting %s(%d) by %s; produced %s\n", a . str (PHex) . c_str (), size1, rn.str().c_str(), tmpe . str () . c_str ());
       printf ("  Expected %s\n", a . str().c_str());
       rc = 1;
     }
@@ -1078,7 +1081,7 @@ static unsigned checkShifts (unsigned size)
     // the value may not grow.
     RNumber tmp = (a << n) >> n;
     if (tmp != b) {
-      printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, n, tmp . str () . c_str ());
+      printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, n, tmp . str () . c_str ());
       rc = 1;
     }
 
@@ -1086,7 +1089,7 @@ static unsigned checkShifts (unsigned size)
     // the value may not grow.
     tmp = (a << rn) >> rn;
     if (tmp != b) {
-      printf ("Error occurred in shifting %s(%d) by %s; produced %s\n", a . str () . c_str (), size1, rn.str().c_str(), tmp . str () . c_str ());
+      printf ("Error occurred in shifting %s(%d) by %s; produced %s\n", a . str (PHex) . c_str (), size1, rn.str().c_str(), tmp . str (PHex) . c_str ());
       rc = 1;
     }
 
@@ -1094,31 +1097,31 @@ static unsigned checkShifts (unsigned size)
     tmp <<= n;
     tmp >>= n;
     if (tmp != b) {
-      printf ("Error occurred in shift/equaling %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, n, tmp . str () . c_str ());
+      printf ("Error occurred in shift/equaling %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, n, tmp . str (PHex) . c_str ());
       rc = 1;
     }
 
     tmp = a << size1;
     if (tmp != 0) {
-      printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, size1, tmp . str () . c_str ());
+      printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, size1, tmp . str (PHex) . c_str ());
       rc = 1;
     }
     tmp = a >> size1;
     if (tmp != 0) {
-      printf ("Error occurred in right shifting %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, size1, tmp . str () . c_str ());
+      printf ("Error occurred in right shifting %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, size1, tmp . str (PHex) . c_str ());
       rc = 1;
     }
 
     tmp = a;
     tmp <<= size1;
     if (tmp != 0) {
-      printf ("Error occurred in left shift/equaling %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, size1, tmp . str () . c_str ());
+      printf ("Error occurred in left shift/equaling %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, size1, tmp . str (PHex) . c_str ());
       rc = 1;
     }
     tmp = a;
     tmp >>= size1;
     if (tmp != 0) {
-      printf ("Error occurred in right shift/equaling %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, size1, tmp . str () . c_str ());
+      printf ("Error occurred in right shift/equaling %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, size1, tmp . str (PHex) . c_str ());
       rc = 1;
     }
 
@@ -1134,7 +1137,7 @@ static unsigned checkShifts (unsigned size)
       c . setAll ();
       tmp = (a << n) >> n;
       if (tmp != c) {
-        printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, n, tmp . str () . c_str ());
+        printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, n, tmp . str (PHex) . c_str ());
         rc = 1;
       }
 
@@ -1142,7 +1145,7 @@ static unsigned checkShifts (unsigned size)
       tmp <<= n;
       tmp >>= n;
       if (tmp != c) {
-        printf ("Error occurred in shift/equaling %s(%d) by %d; produced %s\n", a . str () . c_str (), size1, n, tmp . str () . c_str ());
+        printf ("Error occurred in shift/equaling %s(%d) by %d; produced %s\n", a . str (PHex) . c_str (), size1, n, tmp . str (PHex) . c_str ());
         rc = 1;
       }
     }
@@ -1165,7 +1168,7 @@ static unsigned checkSetAlls (unsigned size)
     b -= 1;
 
     if (a != b ) {
-      printf ("Error occurred in setAll(%d); produced %s\n", size1, a . str () . c_str ());
+      printf ("Error occurred in setAll(%d); produced %s\n", size1, a . str (PHex) . c_str ());
       rc = 1;
     }
   }
@@ -1185,7 +1188,7 @@ static unsigned checkClearAlls (unsigned size)
     a . clearAll ();
 
     if (a != 0) {
-      printf ("Error occurred in clearAll(%d); produced %s\n", size1, a . str () . c_str ());
+      printf ("Error occurred in clearAll(%d); produced %s\n", size1, a . str (PHex) . c_str ());
       rc = 1;
     }
   }
@@ -1201,12 +1204,12 @@ static unsigned checkGetInts (unsigned size)
   for (i = 0; i < maxIter; i++) {
     unsigned size1 = (size > 0) ? size : Random::getFromRange (1, 100);
     RNumber a = Random::getRNumber (size1);
-    unsigned ai = a . getInt ();
+    unsigned ai = a . uint32 ();
     unsigned shift = (size1 > 32) ? size1 - 32 : 0;
     RNumber b = (a << shift) >> shift;
 
     if (b != ai) {
-      printf ("Error occurred in getInt on %s(%d); produced %x\n", a . str () . c_str (), size1, ai);
+      printf ("Error occurred in getInt on %s(%d); produced %x\n", a . str (PHex) . c_str (), size1, ai);
       rc = 1;
     }
   }
@@ -1218,9 +1221,9 @@ static unsigned checkLogicalOp (const RNumber& a, const RNumber& b, const RNumbe
 {
   unsigned rc = (res1 != res2);
   if (rc) {
-    printf ("Error (1) occurred in expression:  %s(%d) %s(%d) %s\n", a . str () . c_str (), a . size (),
+    printf ("Error (1) occurred in expression:  %s(%d) %s(%d) %s\n", a . str (PHex) . c_str (), a . size (),
             b . str () . c_str (), b . size (), op);
-    printf ("  RNumber res = %s, expected res = %s\n", res1 . str () . c_str (), res2 . str () . c_str ());
+    printf ("  RNumber res = %s, expected res = %s\n", res1 . str (PHex) . c_str (), res2 . str (PHex) . c_str ());
   }
   return rc;
 }
@@ -1230,8 +1233,8 @@ static unsigned checkLogicalOp (const RNumber& a, int b, const RNumber& res1, co
 {
   unsigned rc = (res1 != res2);
   if (rc) {
-    printf ("Error (2) occurred in expression:  %s(%d) %x %s\n", a . str () . c_str (), a . size (), b, op);
-    printf ("  RNumber res = %s, expected res = %s\n", res1 . str () . c_str (), res2 . str () . c_str ());
+    printf ("Error (2) occurred in expression:  %s(%d) %x %s\n", a . str (PHex) . c_str (), a . size (), b, op);
+    printf ("  RNumber res = %s, expected res = %s\n", res1 . str (PHex) . c_str (), res2 . str (PHex) . c_str ());
   }
   return rc;
 }
@@ -1291,9 +1294,9 @@ static unsigned checkLogicals ()
     b &= 0;
     rc |= checkLogicalOp (tmpb, 0, b, 0, "&=");
     b = tmpb;
-    rc |= checkLogicalOp (b, -1, b & ((unsigned)-1), b . getInt (), "&");
+    rc |= checkLogicalOp (b, -1, b & ((unsigned)-1), b . uint32 (), "&");
     b &= ((unsigned)-1);
-    rc |= checkLogicalOp (tmpb, -1, b, tmpb . getInt (), "&=");
+    rc |= checkLogicalOp (tmpb, -1, b, tmpb . uint32 (), "&=");
     b = tmpb;
 
     // check | and |= using (x | ones) and (ones | x) with
@@ -1360,7 +1363,7 @@ static unsigned checkLogicals ()
     //   ^ with integer
     RNumber tmp3 = b;
     tmp3 . setField (size2 - 32, size2 - 1,(unsigned) -1);
-    unsigned num3 = ~(b . getInt ());
+    unsigned num3 = ~(b . uint32 ());
     rc |= checkLogicalOp (b, num3, b ^ num3, tmp3, "^");
     b ^= num3;
     rc |= checkLogicalOp (tmpb, num3, b, tmp3, "^=");
@@ -1404,7 +1407,7 @@ int main (int argc, char **argv)
   _argc = argc;
   _argv = argv;
 
-  string path = "/bin";
+  string path = "/usr/bin";
   string prog = "dc";
   string pgm;
   unsigned seed = 0;
@@ -1750,9 +1753,9 @@ unsigned Calculator::checkArith (const RNumber& a, const RNumber& b,
 
   assert (a . size () <= 1024 && b . size () <= 1024);
   // dc requires uppercase hex; right now RNumbers print hex in lower case
-  strcpy (astr, a . str () . c_str ());
+  strcpy (astr, a . str (Hex) . c_str ());
   uppercase (astr);
-  strcpy (bstr, b . str () . c_str ());
+  strcpy (bstr, b . str (Hex) . c_str ());
   uppercase (bstr);
 
   // Sanity checking if we're not allowing for resizing.
@@ -1771,7 +1774,7 @@ unsigned Calculator::checkArith (const RNumber& a, unsigned b, const RNumber& c,
   char astr[256];
   char bstr[256];
   
-  strcpy (astr, a . str () . c_str ());
+  strcpy (astr, a . str (Hex) . c_str ());
 
   uppercase (astr);
   sprintf (bstr, "%X", b);
@@ -1843,7 +1846,7 @@ unsigned Calculator::arithCalc (const char *astr,unsigned asize,
 
   if (res != c) {
     printf ("Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", astr, asize, bstr, bsize, op);
-    printf ("  RNumber res = %s, dc res = %s\n", c . str () . c_str (), res . str () . c_str ());
+    printf ("  RNumber res = %s, dc res = %s\n", c . str (PHex) . c_str (), res . str (PHex) . c_str ());
     rc = 1;
   }
   
@@ -1860,9 +1863,9 @@ unsigned Calculator::checkComparator (const RNumber& a, const RNumber& b, int re
   char bstr[256];
   unsigned rc = 0;
 
-  strcpy (astr, a . str () . c_str ());
+  strcpy (astr, a . str (Hex) . c_str ());
   uppercase (astr);
-  strcpy (bstr, b . str () . c_str ());
+  strcpy (bstr, b . str (Hex) . c_str ());
   uppercase (bstr);
 
   char cmd[1024];
@@ -1949,7 +1952,7 @@ unsigned Calculator::checkComparator (const RNumber& a, unsigned b, int res, cha
   char bstr[256];
   unsigned rc = 0;
 
-  strcpy (astr, a . str () . c_str ());
+  strcpy (astr, a . str (Hex) . c_str ());
   uppercase (astr);
   sprintf (bstr, "%X", b);
 

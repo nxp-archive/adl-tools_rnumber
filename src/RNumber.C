@@ -47,9 +47,12 @@ static inline unsigned int skipLeadingZeroBytes( const unsigned char* n, unsigne
 static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned int nLen );
 static inline void convertToBytes( const unsigned int* wordBuffer, unsigned char* byteBuffer, unsigned int wordCount );
 
-static inline char readHex( istream& is, RNumber& number );
-static inline char readBin( istream& is, RNumber& number );
-static inline char readDec( istream& is, RNumber& number );
+// General read function from strings, with radix specified
+// by the prefix in the input.
+void readstr(RNumber &,const string &);
+// Read from a string, radix specified by caller.  No prefix
+// is allowed.
+void readstr(RNumber &,const string &,int format);
 
 static void multiplyExtended( const unsigned int* vb1, unsigned int wc1, const unsigned int* vb2, unsigned int wc2, 
 			      unsigned int* resValue0,bool extend );
@@ -211,124 +214,6 @@ static inline void convertToBytes( const unsigned int* wordBuffer,
       *(byteBuffer++) = ( wordBuffer[i] >> BYTE_BITS ) & BYTE_MASK;
       *(byteBuffer++) = wordBuffer[i] & BYTE_MASK;
     }
-}
-
-
-//
-// Read in a hexadecimal value into the RNumber.
-//
-static inline char readHex( istream& is, RNumber& number )
-{
-
-  char c;
-  char wrongSyntax = '\0';
-  bool done = false;
-
-  while ( !done )
-    {
-      c = is.get();
-
-      if ( isdigit( c ) )
-	{
-	  number <<= 4;
-	  number |= ( c - '0' );
-	}
-      else if ( ( c = toupper( c ) ) >= 'A' && c <= 'F' )
-	{
-	  number <<= 4;
-	  number |= ( ( c - 'A' ) + 0xa );
-	}
-      else if ( c == '_' )
-	;    // skip
-      else if ( isalpha( c ) )
-	{
-	  wrongSyntax = 'x';
-	  done = true;
-	}
-      else
-	{
-	  is.putback(c);
-	  done = true;
-	}
-    }
-
-  return wrongSyntax;
-}
-
-
-//
-// Read in a binary value into the RNumber.
-//
-static inline char readBin( istream& is, RNumber& number )
-{
-
-  char c;
-  char wrongSyntax = '\0';
-  bool done = false;
-
-  while ( !done )
-    {
-      c = is.get();
-
-      if ( c == '0' )
-	number <<= 1;
-      else if ( c == '1' )
-	{
-	  number <<= 1;
-	  number |= 1;
-	}
-      else if ( c == '_' )
-	;   // skip
-      else if ( isalnum( c ) )
-	{
-	  wrongSyntax = 'b';
-	  done = true;
-	}
-      else
-	{
-	  is.putback(c);
-	  done = true;
-	}
-    }
-
-  return wrongSyntax;
-}
-
-
-//
-// Read in a decimal value into the RNumber.
-//
-static inline char readDec( istream& is, RNumber& number )
-{
-
-  char c;
-  char wrongSyntax = '\0';
-  bool done = false;
-
-  while ( !done )
-    {
-      c = is.get();
-
-      if ( isdigit( c ) )
-	{
-	  number *= 10;
-	  number += ( c - '0' );
-	}
-      else if ( isalpha( c ) )
-	{
-	  wrongSyntax = 'd';
-	  done = true;
-	}
-      else if ( c == '_' )
-	;    // skip
-      else
-	{
-	  is.putback(c);
-	  done = true;
-	}
-    }
-
-  return wrongSyntax;
 }
 
 //
@@ -505,17 +390,15 @@ RNumber::RNumber( const RNumber& number, unsigned int size, Sizing sizing )
 //
 RNumber::RNumber( const string& number, Sizing sizing )
 {
-  Radix radix = rios;
+  int radix = rios;
   
-  int size = getSizeWithRadix (number, radix);
+  unsigned size = getSizeWithRadix (number, radix);
 
-  if (size < 32) size = 32;
+  if (size < _defaultSize) size = _defaultSize;
 
   initNumber( size, sizing );
 
-  strstream ss;
-  ss << number;
-  ss >> *this;
+  readstr(*this,number);
 }
 
 
@@ -525,43 +408,26 @@ RNumber::RNumber( const string& number, Sizing sizing )
 //
 RNumber::RNumber( const string& number, unsigned int size, Sizing sizing )
 {
-  Radix radix = rios;
+  int radix = rios;
 
   // If a non-zero positive size is provided allocate space for it. Otherwise,
   // get the size and radix from the string contents and allocate space.
   initNumber( ( size ) ? size : getSizeWithRadix( number, radix ), sizing );
 
-  strstream ss;
-  ss << number;
-  ss >> *this;
+  readstr(*this,number);
 }
 
 
 //
 // Create a new RNumber with the specified string value using the specified radix.
 //
-RNumber::RNumber( const string& number, Radix radix, Sizing sizing )
+RNumber::RNumber( const string& number, Format radix, Sizing sizing )
 {
-  initNumber( getSizeWithRadix( number, radix ), sizing );
-
-  strstream ss;
-  ss << number;
+  initNumber( getSizeWithRadix( number, (int)radix ), sizing );
 
   // Read in the number based on the determined radix.
-  switch (radix) {
-  case rdec:
-    readDec( ss, *this );
-    break;
-  case rhex:
-    readHex( ss, *this );
-    break;
-  case rbin:
-    readBin( ss, *this );
-    break;
-  default:
-    readDec( ss, *this );
-    break;
-  }
+  readstr(*this,number,radix);
+  
 }
 
 
@@ -571,66 +437,18 @@ RNumber::RNumber( const string& number, Radix radix, Sizing sizing )
 // analyzing the string number for a prefix (such as 0x) or using the
 // specified radix, in that order.
 //
-RNumber::RNumber( const string& number, unsigned int size, Radix radix, Sizing sizing )
+RNumber::RNumber( const string& number, unsigned int size, Format radix, Sizing sizing )
 {
+  int r = radix;
   // If a non-zero positive size is provided allocate space for it. Otherwise,
   // get the size and radix from the string contents and allocate space.
-  initNumber( ( size ) ? size : getSizeWithRadix( number, radix ), sizing );
-
-  strstream ss;
-  ss << number;
+  initNumber( ( size ) ? size : getSizeWithRadix( number, r ), sizing );
 
   // Read in the number based on the determined radix.
-  if ( radix == rdec )
-    readDec( ss, *this );
-  else if ( radix == rhex )
-    readHex( ss, *this );
-  else if ( radix == rbin )
-    readBin( ss, *this );
-  else
-    readDec( ss, *this );
+  readstr(*this,number,r);
 
   truncate( _size );
 }
-
-//
-// DEPRECATED; delete later.
-//
-RNumber::RNumber( unsigned int iradix, const string& str, int size )
-{
-  Radix radix;
-  switch (iradix) {
-  case 2: radix = rbin; break;
-  case 10: radix = rdec; break;
-  case 16: radix = rhex; break;
-  default: radix = rdec; break;
-  }
-  // Allocate space for this number.
-  if (size < 0) {
-    initNumber( getSizeWithRadix( str, radix ), fixed );
-  } else {
-    initNumber( size, dynamic );
-  }
-  strstream ss;
-  ss << str;
-  switch (iradix) {
-  case 2:
-    readBin(ss,*this);
-    break;
-  case 10:
-    readDec(ss,*this);
-    break;
-  case 16:
-    readHex(ss,*this);
-    break;
-  default:
-    ss >> *this;
-    break;
-  }
-
-  truncate(_size);
-}
-
 
 //
 // Construct an RNumber taking an array of unsigned int values as data
@@ -713,14 +531,11 @@ RNumber& RNumber::operator=( unsigned int number )
 RNumber& RNumber::operator=( const string& number )
 {
 
-  Radix radix = rios;
+  int radix = rios;
 
   initNumber( getSizeWithRadix( number, radix ), _sizing );
 
-  strstream ss;
-
-  ss << number;
-  ss >> *this;
+  readstr(*this,number);
 
   return *this;
 }
@@ -3038,9 +2853,9 @@ RNumber& RNumber::operator^=( unsigned int number )
 inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift, bool extend )
 {
   unsigned int ns = n._size;
-  const unsigned int totals = ns + shift.getUInt();
+  const unsigned int totals = ns + shift.uint32();
   unsigned int nwc = n._wordCount;
-  const unsigned int totalwc = nwc + ( shift.getUInt() / WORD_BITS ) + 1;
+  const unsigned int totalwc = nwc + ( shift.uint32() / WORD_BITS ) + 1;
 
   const unsigned int* value = n._valueBuffer + nwc - 1;
   unsigned alloc  = (extend) ? totalwc : nwc;
@@ -3063,7 +2878,7 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
 	}
       else if ( shift < WORD_BITS )
 	{
-	  unsigned int intShift = shift.getUInt();
+	  unsigned int intShift = shift.uint32();
 	  int invShift = WORD_BITS - intShift;
 	  unsigned int mask = ( 0x1 << intShift ) - 1;
 	  unsigned int cin = 0;
@@ -3082,7 +2897,7 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
 	}
       else if ( ( shift % WORD_BITS ) == 0 )
 	{
-	  unsigned int offset = shift.getUInt() / WORD_BITS;
+	  unsigned int offset = shift.uint32() / WORD_BITS;
 
 	  if ( extend )
 	    {
@@ -3204,7 +3019,7 @@ inline const RNumber rnumber::leftShift( unsigned int n, const RNumber& shift, b
   if ( shift == 0 )
     *resValue0 = n;
   else if ( shift < WORD_BITS )
-    *resValue0 = n << shift.getUInt();
+    *resValue0 = n << shift.uint32();
   else
     *resValue0 = 0;
 
@@ -3285,7 +3100,7 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
       if ( shift < WORD_BITS )
 	{
 	  unsigned int* value = _valueBuffer + _wordCount - 1;
-	  unsigned int intShift = shift.getUInt();
+	  unsigned int intShift = shift.uint32();
 	  int invShift = WORD_BITS - intShift;
 	  unsigned int mask = ( 1 << intShift ) - 1;
 	  unsigned int cin = 0;
@@ -3304,7 +3119,7 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
       else if ( ( shift % WORD_BITS ) == 0 )
 	{
 	  unsigned int* value = _valueBuffer;
-	  unsigned int offset = shift.getUInt() / WORD_BITS;
+	  unsigned int offset = shift.uint32() / WORD_BITS;
 
 	  for ( i = offset; i < _wordCount; i++ )
 	    {
@@ -3406,7 +3221,7 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
 
   if (shift < n._size) {
     if (shift < WORD_BITS) {
-      unsigned int intShift = shift.getUInt();
+      unsigned int intShift = shift.uint32();
       int invShift = WORD_BITS - intShift;
       unsigned int mask = ( 1 << intShift ) - 1;
       unsigned int cin = 0;
@@ -3417,7 +3232,7 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
       }
     }
     else if ((shift % WORD_BITS) == 0) {
-      unsigned int offset = shift.getUInt() / WORD_BITS;
+      unsigned int offset = shift.uint32() / WORD_BITS;
 
       for ( i = 0; i < offset; i++ ) {
 	*( resValue++ ) = 0;
@@ -3510,7 +3325,7 @@ inline const RNumber rnumber::rightShift( unsigned int n, const RNumber& shift )
   if ( shift == 0 )
     *resValue0 = n;
   else if ( shift < WORD_BITS )
-    *resValue0 = n >> shift.getUInt();
+    *resValue0 = n >> shift.uint32();
   else
     *resValue0 = 0;
 
@@ -3562,7 +3377,7 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
     {
       if ( shift < WORD_BITS )
 	{
-	  unsigned int intShift = shift.getUInt();
+	  unsigned int intShift = shift.uint32();
 	  int invShift = WORD_BITS - intShift;
 	  unsigned int mask = ( 1 << intShift ) - 1;
 	  unsigned int cin = 0;
@@ -3578,7 +3393,7 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
 	}
       else if ( ( shift % WORD_BITS ) == 0 )
 	{
-	  unsigned int offset = shift.getUInt() / WORD_BITS;
+	  unsigned int offset = shift.uint32() / WORD_BITS;
 
 	  value = _valueBuffer + _wordCount - 1;
 
@@ -3849,27 +3664,14 @@ void RNumber::setBitLSB( unsigned int pos, unsigned int val )
 //
 // Return the contents of the RNumber in a string.
 //
-string RNumber::str() const
+string RNumber::str(int format) const
 {
   strstream ss;
   string str;
-
-  ss << hex << *this;
-  ss >> str;
-
-  return str;
-}
-
-// Return contents in a string, obey an explicit radix.
-string RNumber::strradix(Radix r,bool prefix) const
-{
-  strstream ss;
-  string str;
-  printWithRadix(ss,r,prefix);
+  printToOS(ss,format);
   ss >> str;
   return str;
 }
-
 
 //
 // Return a field of bits from 'start' to 'end', stored in an unsigned int.
@@ -3908,7 +3710,7 @@ unsigned int RNumber::getUIntField( unsigned int start, unsigned int end ) const
 	  return ( _valueBuffer[word] >> shift ) & mask;
 	}
       else
-	return ( ( *this >> end ).getUInt() & mask );
+	return ( ( *this >> end ).uint32() & mask );
     }
 }
 
@@ -3951,17 +3753,6 @@ void RNumber::setField( unsigned int start, unsigned int end, const RNumber& num
 
 
 //
-// Return the default bit-size that is given to number values when the
-// constructor does not include an explicit size value.
-//
-unsigned int RNumber::getDefaultSize()
-{
-
-  return _defaultSize;
-}
-
-
-//
 // Set the default bit-size that is given to number values when the
 // constructor does not include an explicit size value.
 //
@@ -3971,123 +3762,390 @@ void RNumber::setDefaultSize( unsigned int size )
   _defaultSize = size;
 }
 
+//
+// Stream out the contents of the RNumber using the specified format options.
+//
+ostream& rnumber::operator<<( ostream& os, const RNumber& number )
+{
+  number.printWithStreamRadix(os,0);
+  return os;
+}
 
 //
 // Print out the contents of the RNumber to the specified output stream.
 //
-void RNumber::printToOS( ostream& os ) const
+ostream & RNumber::printToOS( ostream& os ) const
 {
-  printWithStreamRadix(os,true);
+  printWithStreamRadix(os,rprefix);
+  return os;
 }
 
 
 //
 // Print with a specific radix.
 //
-ostream& RNumber::printWithRadix( ostream& os, Radix radix,bool prefix ) const
+ostream& RNumber::printToOS( ostream& os, int format ) const
 {
-
-  switch ( radix ) {
-  case rhex:
-    printHex( os, prefix );
-    break;
-      
-  case rdec:
-    printDec( os );
-    break;
-      
-  case rbin:
-    printBin( os, prefix );
-    break;
-      
-  case rios:
-    printWithStreamRadix( os, prefix );
-    break;
+  if (format & rhex) {
+    printHex( os, format );
+  } else if (format & rdec) {
+    printDec (os, format );
+  } else if (format & rbin) {
+    printBin (os, format);
+  } else {
+    printWithStreamRadix(os, format);
   }
-
   return os;
 }
 
+// Prints the number to a given stream using the radix specified by the stream.
+// A prefix for the base is printed if the prefix flag is true.
+inline void RNumber::printWithStreamRadix(ostream &os,int format) const
+{
+  unsigned int fmt = os.flags() & ios::basefield;
+
+  // We cheat here- we use octal to designate binary so that we don't
+  // have to mess with xalloc.
+  switch (fmt) {
+  case ios::oct:
+    printBin( os,format );
+    break;
+  case ios::hex:
+    printHex( os,format );
+    break;
+  default:
+    printDec( os, format );
+    break;
+  }
+}
+
 //
-// Stream input support for hexadecimal, binary and decimal (the default)
-// numbers.  Only decimal numbers may include a unary plus or minus.
+// Stream out a binary representation of the contents of RNumber.
 //
-istream& rnumber::operator>>( istream& is, RNumber& number )
+void RNumber::printBin( ostream& os,int format ) const
 {
 
-  char c           = '\0';
-  char wrongSyntax = '\0';
+  unsigned int width = os.width();
 
+  int diff = width - _size;
+
+  if (format & rprefix)
+    os << "0b";
+
+  // Pad with zeros. If diff is negative, we fall through.
+  for ( int i = 0; i < diff; ++i )
+    os << '0';
+
+  for ( unsigned int i = 0; i < _size; ++i )
+    os << getBit( i );
+}
+
+
+//
+// Stream out a decimal representation of the contents of RNumber.
+//
+void RNumber::printDec( ostream& os,int format ) const
+{
+
+  // Set decimal format and save old flags.
+  ios::fmtflags old_options = os.flags( os.flags() | ios::dec );
+
+  unsigned int len = ( _size + 1 ) / 2;
+  char* str = new char [len + 1];
+  memset( str, ' ', len );
+  *( str + len ) = '\0';
+
+  char* p = str + len - 1;
+
+  RNumber tmp( *this );
+
+  if ( tmp == 0 )
+    *p = '0';
+  else
+    {
+      RNumber div( 0, _size );
+
+      while ( tmp != 0 )
+	{
+	  div = tmp / 10;
+	  *p-- = '0' + ( tmp - div * 10 ).uint32();
+	  tmp = div;
+	}
+
+      p++;
+    }
+
+  os << p;
+
+  delete [] str;
+
+  os.flags( old_options );
+}
+
+
+//
+// Stream out a hexadecimal representation of the contents of RNumber.
+//
+void RNumber::printHex( ostream& os,int format ) const
+{
+
+  // Set hex format and save old flags.
+  ios::fmtflags old_options = os.flags( ( os.flags() & ~ios::basefield ) |
+					ios::hex );
+
+  // Hexadecimal format.
+  unsigned int width = os.width();
+
+  const unsigned int* value = _valueBuffer;
+
+  if (format & rprefix) {
+    os << "0x";
+  }
+
+  if ( width > WORD_BITS / 4 || ( width == 0 && _wordCount > 1 )) {
+    unsigned int n = ( ( _size % WORD_BITS ) + 3 ) / 4;
+    char oldFill = os.fill( '0' );
+
+    if ( n == 0 )
+      n = 8;
+      
+    os << setw( n ) << value[0];
+    os.fill( oldFill );
+  } else {
+    os << value[0];
+  }
+
+  char oldFill = os.fill( '0' );
+  for ( unsigned int i = 1; i < _wordCount; i++ ) {
+    os << setw( WORD_BITS / 4 );
+    os << value[i];
+  }
+
+  os.fill( oldFill );
+  os.flags( old_options );
+}
+
+//
+// Read in a hexadecimal value into the RNumber.
+//
+template <class Getter>
+char readHex( RNumber& number,Getter getter )
+{
+  char c;
+
+  while ( 1 ){
+    c = getter();
+    if ( isdigit( c ) ){
+      number <<= 4;
+      number |= ( c - '0' );
+    }
+    else if ( ( c = toupper( c ) ) >= 'A' && c <= 'F' ) {
+      number <<= 4;
+      number |= ( ( c - 'A' ) + 0xa );
+    }
+    else if ( c == '_' ) {
+      // skip
+    } else {
+      getter.putback(c);
+      return c;
+    }
+  }
+}
+
+//
+// Read in a binary value into the RNumber.
+//
+template <class Getter>
+char readBin( RNumber& number, Getter getter )
+{
+  char c;
+
+  while ( 1 ) {
+    c = getter();
+
+    if ( c == '0' )
+      number <<= 1;
+    else if ( c == '1' ) {
+      number <<= 1;
+      number |= 1;
+    }
+    else if ( c == '_' ) {
+      // skip
+    } else {
+      getter.putback(c);
+      return c;
+    }
+  }
+}
+
+//
+// Read in a decimal value into the RNumber.
+//
+template <class Getter>
+char readDec( RNumber& number, Getter getter )
+{
+  char c;
+
+  while ( 1 ) {
+    c = getter();
+    
+    if ( isdigit( c ) ) {
+      number *= 10;
+      number += ( c - '0' );
+    }
+    else if ( c == '_' ) {
+      // skip
+    } else {
+      getter.putback(c);
+      return c;
+    }
+  }
+}
+
+//
+// Templatized reading function.  This is used by both stream and string
+// input systems.  The Getter template argument is a class which should
+// define the following methods:
+//
+// char operator():     Return a new character on each call.  Return
+//                      a non-numeric character (typically 0) to signify
+//                      end of input.  This should be a "get" operation,
+//                      in that it shouldn't eat leading whitespace.
+//
+// char eatwhite():     This should absorb whitespace and return the first
+//                      non-whitespace character.  This is equivalent to
+//                      a stream ">>" operation.
+// 
+// void putback(char):  Put back last char read.  It's always called with 
+//                      the last character read, so a string implementation 
+//                      can ignore the parameter.
+//
+
+
+// General input support for hexadecimal, binary and decimal (the default)
+// numbers.  Only decimal numbers may include a unary plus or minus.
+// We absorb characters until we see a bad one (non-numeric and not '_'), then
+// we quit.
+//
+template<class Getter>
+void readNumber( RNumber& number, Getter getter )
+{
   bool negate  = false;
   bool decimal = true;
 
-  number = 0;
+  // Zero out the entire number.
+  number.clearAll();
 
   // Absorb any prior white-space and get the first char.
-  is >> c;
+  char c = getter.eatwhite();
  
-  if ( c == '-' )
-    {
-      // A unary minus; thus, we have a decimal, negated number.
-      negate = true;
-    }
-  else if ( c == '+' )
-    {
-      // A unary plus; thus, we have a decimal number.
-    }
-  else if ( c == '0' )
-    {
-      // Octal numbers are *not* supported; thus, the next char is needed to
-      // determine the base of the numeric.
-      c = tolower( is.get() );
+  if ( c == '-' ) {
+    // A unary minus; thus, we have a decimal, negated number.
+    negate = true;
+  }
+  else if ( c == '+' ) {
+    // A unary plus; thus, we have a decimal number.
+  }
+  else if ( c == '0' ) {
+    // Octal numbers are *not* supported; thus, the next char is needed to
+    // determine the base of the numeric.
+    c = tolower( getter() );
 
-      if ( c == 'x' )
-	{
-	  // Hex mode.
-	  decimal = false;
-	  wrongSyntax = readHex(is,number);
-	}
-      else if ( c == 'b' )
-	{
-	  // Binary mode.
-	  decimal = false;
-	  wrongSyntax = readBin(is,number);
-	}
-      else
-	{
-	  // Not a recognized prefix, so put the character back.
-	  is.putback( c );
-	}
+    if ( c == 'x' ) {
+      // Hex mode.
+      decimal = false;
+      readHex(number,getter);
     }
-  else
-    {
-      // Not an indicator character, so put it back.
-      is.putback( c );
+    else if ( c == 'b' ) {
+      // Binary mode.
+      decimal = false;
+      readBin(number,getter);
     }
+    else {
+      // Not a recognized prefix, so put the character back.
+      getter.putback( c );
+      getter.putback( '0' );
+    }
+  }
+  else {
+    // Not an indicator character, so put it back.
+    getter.putback( c );
+  }
 
   // If all else fails, we assume decimal notation.
-  if ( decimal )
-    {
-      wrongSyntax = readDec(is,number);
-
-      // If the decimal number was prepended with a unary minus, negate it.
-      if ( negate )
-	number.negate();
+  if ( decimal ) {
+    readDec(number,getter);
+    // If the decimal number was prepended with a unary minus, negate it.
+    if ( negate ) {
+      number.negate();
     }
+  }
+}
 
-  // Check for errors.
-  if ( wrongSyntax )
-    {
+// Input support w/radix specified by caller.  No prefix is allowed.
+template<class Getter>
+void readNumber(RNumber &number,Getter getter,int radix)
+{
+  if        (radix & RNumber::rdec) {
+    readDec( number,getter );
+  } else if (radix & RNumber::rhex) {
+    readHex( number,getter );
+  } else if (radix & RNumber::rbin) {
+    readBin( number,getter );
+  } else {
+    readDec( number,getter );
+  }
+}
 
-      strstream ss;
-      ss << "Invalid input string to RNumber read, character expected '"
-	 << static_cast < char > ( wrongSyntax ) << "', character received '"
-	 << static_cast < char > ( c ) << "'." << ends;
+// Getter class for stream reading.
+class StreamGet {
+public:
+  StreamGet(istream &is) : _is(is) {};
+  char operator()() { return _is.get(); };
+  char eatwhite() { char c; _is >> c; return c; };
+  void putback(char c) { _is.putback(c); };
+private:
+  istream &_is;
+};
 
-      throw std::runtime_error ( ss . str () );
-    }
-
+// Stream reading.
+istream& rnumber::operator>>( istream& is, RNumber& number )
+{
+  StreamGet getter(is);
+  readNumber(number,getter);
   return is;
+}
+
+// Getter class for string reading.
+class StringGet {
+public:
+  StringGet(const string &s) : _s(s), _i(_s.begin()) {};
+  char operator()() { 
+    return (_i == _s.end()) ? 0 : *(_i++);
+  };
+  char eatwhite() { 
+    char c;
+    while ( (c = operator()()) && isspace(c));
+    return c;
+  };
+  void putback(char c) { --_i; };
+private:
+  const string &_s;
+  string::const_iterator _i;
+};
+
+// String reading.
+void readstr(RNumber &number,const string &s)
+{
+  StringGet getter(s);
+  readNumber(number,getter);
+}
+
+// String reading w/explicit prefix.
+void readstr(RNumber &number,const string &s,int format)
+{
+  StringGet getter(s);
+  readNumber(number,getter,format);
 }
 
 //
@@ -4157,7 +4215,7 @@ inline int count_underscores(const string &s) {
 //
 // The passed in radix will be updated to the determined correct value.
 //
-unsigned int RNumber::getSizeWithRadix( const string& str, Radix& radix )
+unsigned int RNumber::getSizeWithRadix( const string& str, int &radix )
 {
 
   unsigned int n = 0;
@@ -4170,178 +4228,41 @@ unsigned int RNumber::getSizeWithRadix( const string& str, Radix& radix )
 
   // if no explicit radix requested, try to determine the
   // radix by prefix hints.
-  if ( radix == rios )
+  if ( radix & rios )
     {
       if ( c == '+' || c == '-' )
-	radix = rdec;
+        radix = rdec;
       else if ( c == '0' )
-	{
-	  c = str[++n];
+        {
+          c = str[++n];
 
-	  if ( tolower( c ) == 'x' )
-	    {
-	      radix = rhex;
-	      n++;
-	    }
-	  else if ( tolower( c ) == 'b' )
-	    {
-	      radix = rbin;
-	      n++;
-	    }
-	  else
-	    n--;
-	}
+          if ( tolower( c ) == 'x' )
+            {
+              radix = rhex;
+              n++;
+            }
+          else if ( tolower( c ) == 'b' )
+            {
+              radix = rbin;
+              n++;
+            }
+          else
+            n--;
+        }
     }
 
   // For a radix of rdec or rhex, the max number of bits per digit is a nibble;
   // if the radix is rbin, each digit represents a bit; otherwise, default to
   // nibbled digits and set the radix to rdec.
-  if ( radix == rdec || radix == rhex )
+  if ( radix & rdec || radix & rhex )
     size = ( str.length() - n -count_underscores(str)) << 2;
-  else if ( radix == rbin )
+  else if ( radix & rbin )
     size = str.length() - n - count_underscores(str);
-  else
-    {
-      size = ( str.length() - n - count_underscores(str)) << 2;
-      radix = rdec;
-    }
+  else {
+    size = ( str.length() - n - count_underscores(str)) << 2;
+    radix = rdec;
+  }
 
   return size;
-}
-
-//
-// Stream out the contents of the RNumber using the specified format options.
-//
-ostream& rnumber::operator<<( ostream& os, const RNumber& number )
-{
-  number.printWithStreamRadix(os,false);
-  return os;
-}
-
-// Prints the number to a given stream using the radix specified by the stream.
-// A prefix for the base is printed if the prefix flag is true.
-inline void RNumber::printWithStreamRadix(ostream &os,bool prefix) const
-{
-  unsigned int fmt = os.flags() & ios::basefield;
-
-  // We cheat here- we use octal to designate binary so that we don't
-  // have to mess with xalloc.
-  switch (fmt) {
-  case ios::oct:
-    printBin( os,prefix );
-    break;
-  case ios::hex:
-    printHex( os,prefix );
-    break;
-  default:
-    printDec( os );
-    break;
-  }
-}
-
-//
-// Stream out a binary representation of the contents of RNumber.
-//
-void RNumber::printBin( ostream& os,bool prefix ) const
-{
-
-  unsigned int width = os.width();
-
-  int diff = width - _size;
-
-  if (prefix)
-    os << "0b";
-
-  // Pad with zeros. If diff is negative, we fall through.
-  for ( int i = 0; i < diff; ++i )
-    os << '0';
-
-  for ( unsigned int i = 0; i < _size; ++i )
-    os << getBit( i );
-}
-
-
-//
-// Stream out a decimal representation of the contents of RNumber.
-//
-void RNumber::printDec( ostream& os ) const
-{
-
-  // Set decimal format and save old flags.
-  ios::fmtflags old_options = os.flags( os.flags() | ios::dec );
-
-  unsigned int len = ( _size + 1 ) / 2;
-  char* str = new char [len + 1];
-  memset( str, ' ', len );
-  *( str + len ) = '\0';
-
-  char* p = str + len - 1;
-
-  RNumber tmp( *this );
-
-  if ( tmp == 0 )
-    *p = '0';
-  else
-    {
-      RNumber div( 0, _size );
-
-      while ( tmp != 0 )
-	{
-	  div = tmp / 10;
-	  *p-- = '0' + ( tmp - div * 10 ).getUInt();
-	  tmp = div;
-	}
-
-      p++;
-    }
-
-  os << p;
-
-  delete [] str;
-
-  os.flags( old_options );
-}
-
-
-//
-// Stream out a hexadecimal representation of the contents of RNumber.
-//
-void RNumber::printHex( ostream& os,bool prefix ) const
-{
-
-  // Set hex format and save old flags.
-  ios::fmtflags old_options = os.flags( ( os.flags() & ~ios::basefield ) |
-					ios::hex );
-
-  // Hexadecimal format.
-  unsigned int width = os.width();
-
-  const unsigned int* value = _valueBuffer;
-
-  if (prefix) {
-    os << "0x";
-  }
-
-  if ( width > WORD_BITS / 4 || ( width == 0 && _wordCount > 1 )) {
-    unsigned int n = ( ( _size % WORD_BITS ) + 3 ) / 4;
-    char oldFill = os.fill( '0' );
-
-    if ( n == 0 )
-      n = 8;
-      
-    os << setw( n ) << value[0];
-    os.fill( oldFill );
-  } else {
-    os << value[0];
-  }
-
-  char oldFill = os.fill( '0' );
-  for ( unsigned int i = 1; i < _wordCount; i++ ) {
-    os << setw( WORD_BITS / 4 );
-    os << value[i];
-  }
-
-  os.fill( oldFill );
-  os.flags( old_options );
 }
 
