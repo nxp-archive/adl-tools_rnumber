@@ -23,6 +23,14 @@ RNUMBER_STATIC_LIBS = \
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
+BIGLOO_O_OPTIONS_OPT = -v2 -O3 -mkaddlib -g -cg -cc gcc -fsharing -q +rm -unsafe
+BIGLOO_O_OPTIONS_DEBUG = -v2 -mkaddlib -g -cg -cc gcc -fsharing -q +rm 
+BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_DEBUG)
+
+BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
+BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
+BIGLOO_HEAP_OPTIONS = $(BIGLOO_HEAP_OPTIONS_DEBUG)
+
 both: libbl-rnumber.a libbl-rnumber.so
 
 libbl-rnumber.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber.o 
@@ -33,13 +41,13 @@ libbl-rnumber.so: libbl-rnumber.a brnumber.o
 	ld -G -o libbl-rnumber.so bl-rnumber.o brnumber.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
 bl-rnumber.heap: rnumber.scm 
-	bigloo -unsafe -q -mkaddheap -mkaddlib make-lib.scm -addheap bl-rnumber.heap
+	bigloo $(BIGLOO_HEAP_OPTIONS) make-lib.scm -addheap bl-rnumber.heap
 
 brnumber_u.o: rnumber.scm 
 	bigloo -O3 -unsafe -mkaddlib -cc gcc -fsharing -q +rm -unsafev rnumber.scm -o brnumber_u.o -c
 
 brnumber.o: rnumber.scm
-	bigloo -v2 -O3 -mkaddlib -g -cg -cc gcc -fsharing -q -rm -unsafe rnumber.scm -o brnumber.o -c
+	bigloo $(BIGLOO_O_OPTIONS) rnumber.scm -o brnumber.o -c
 
 evprim_u.o: evprim.scm
 	bigloo -O3 -mkaddlib -g -cg -cc gcc -fsharing -q -rm +unsafev evprim.scm -o evprim_u.o -c
