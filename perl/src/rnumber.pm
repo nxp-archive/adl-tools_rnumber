@@ -6,9 +6,9 @@ require Exporter;
 
 pl_rnumber::rnumber_predicate_init();
 
-@EXPORT = qw(stringp integerp rnumberp rn_version rn_ctor rn_cstr rn_parse_string rn_int
-	     rn_eq rn_neq rn_lt rn_le rn_gt rn_ge rn_ls rn_rs rn_plus rn_minus rn_div 
-	     rn_mult rn_bitor rn_bitand rn_mod rn_size);
+@EXPORT = qw(stringp integerp rnumberp numericp rn_version rn_ctor rn_cstr rn_parse_string 
+	     rn_int rn_eq rn_neq rn_lt rn_le rn_gt rn_ge rn_ls rn_rs rn_plus rn_minus 
+	     rn_div rn_mult rn_bitor rn_bitand rn_mod rn_size);
 
 sub rnumberp
 {
@@ -31,7 +31,7 @@ sub rn_ctor
   if ($size = shift) {
     if ( rnumberp ($number)) {
       return pl_rnumber::rnumber_create_from_rnumber($number);
-    } elsif ( integerp ($number)) {
+    } elsif ( numericp ($number)) {
       return pl_rnumber::rnumber_create_from_unsigned_of_size($number,$size);
     } elsif ( stringp ($number)) {
       return pl_rnumber::rnumber_create_from_string_of_size($number,$size);
@@ -39,7 +39,7 @@ sub rn_ctor
   } else {
     if ( rnumberp ($number)) {
       return pl_rnumber::rnumber_create_from_rnumber($number);
-    } elsif ( integerp ($number)) {
+    } elsif ( numericp ($number)) {
       return pl_rnumber::rnumber_create_from_unsigned($number);
     } elsif ( stringp ($number)) {
       return pl_rnumber::rnumber_create_from_string($number);
@@ -79,9 +79,9 @@ sub rn_int
 sub rn_eq
 {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_equal_rn(@_);
@@ -100,9 +100,9 @@ sub rn_neq {
 
 sub rn_lt {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_lessthan_rn(@_);
@@ -117,9 +117,9 @@ sub rn_lt {
 
 sub rn_le {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_lessequal_rn(@_);
@@ -134,9 +134,9 @@ sub rn_le {
 
 sub rn_gt {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_greaterthan_rn(@_);
@@ -151,9 +151,9 @@ sub rn_gt {
 
 sub rn_ge {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_greaterequal_rn(@_);
@@ -168,9 +168,9 @@ sub rn_ge {
 
 sub rn_ls {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_leftshift_rn(@_);
@@ -185,9 +185,9 @@ sub rn_ls {
 
 sub rn_rs {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_rightshift_rn(@_);
@@ -202,13 +202,12 @@ sub rn_rs {
 
 sub rn_plus {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
-  print  "first_rn  $first_rn first_ui  $first_ui second_rn $second_rn second_ui $second_ui\n";
-
-  print "\@_ @_\n";
+  #print  "first_rn  $first_rn first_ui  $first_ui second_rn $second_rn second_ui $second_ui\n";
+  #print "\@_ @_\n";
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_plus_rn(@_);
@@ -223,9 +222,9 @@ sub rn_plus {
 
 sub rn_minus {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_minus_rn(@_);
@@ -240,9 +239,9 @@ sub rn_minus {
 
 sub rn_div {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_divide_rn(@_);
@@ -257,9 +256,9 @@ sub rn_div {
 
 sub rn_mult {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_multiply_rn(@_);
@@ -274,9 +273,9 @@ sub rn_mult {
 
 sub rn_bitor {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_bitor_rn(@_);
@@ -291,9 +290,9 @@ sub rn_bitor {
 
 sub rn_bitand {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_bitand_rn(@_);
@@ -308,9 +307,9 @@ sub rn_bitand {
 
 sub rn_mod {
   my $first_rn = rnumberp($_[0]);
-  my $first_ui = integerp($_[0]);
+  my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
-  my $second_ui = integerp($_[1]);
+  my $second_ui = numericp($_[1]);
 
   if ($first_rn && $second_rn) {
     return pl_rnumber::rnumber_rn_mod_rn(@_);

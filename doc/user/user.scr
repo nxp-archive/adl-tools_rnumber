@@ -830,7 +830,9 @@
   (tr :bg "#cccccc" (th :align 'center :colspan 3 "Exported Functions"))
   (tr :bg "#cccccc" (th "Function name")(th "Parameters")(th "Description"))
   (tr (td [stringp])(td [(scalar)])(td [string predicate, is argument a string]))
-  (tr (td [integerp])(td [(scalar)])(td [integer predicate, is argument an integer]))
+  (tr (td [integerp])(td [(scalar)])(td [integer predicate, is argument an integer. Note: this seems to return
+						 false for integers where the msb is set.]))
+  (tr (td [numericp])(td [(scalar)])(td [numeric predicate, is argument an integer or double.]))
   (tr (td [rnumberp])(td [(scalar)])(td [rnumber predicate, is argument an rnumber]))
   (tr (td [rn_version])(td [none])(td [return library version number]))
   (tr (td [rn_ctor])(td [(<integer, rnumber or string>)])(td [rnumber constructor]))
