@@ -27,6 +27,7 @@
 #endif
 
 #include "RNumber.h"
+#include "IntIO.h"
 #include "trace.h"
 
 using namespace std;
@@ -3718,7 +3719,7 @@ unsigned char * RNumber::bigEndianArrayOfBytes(unsigned char * buffer) const {
    }
    int buffer_cursor = 0;
    // _valueBuffer[_wordCount - 1] is least significant word
-   for (int x = 0; x < _wordCount; ++x) {
+   for (unsigned x = 0; x < _wordCount; ++x) {
       buffer[buffer_cursor++] = _valueBuffer[x] >> 24 & 0xff;
       buffer[buffer_cursor++] = _valueBuffer[x] >> 16 & 0xff;
       buffer[buffer_cursor++] = _valueBuffer[x] >> 8 & 0xff;
@@ -4208,10 +4209,10 @@ void readstr(RNumber &number,const string &s,int format)
 void RNumber::read( istream& is )
 {
 
-  is.read( (char*)&_size, sizeof( _size ) );
+  _size = readInt(is);
 
   if ( is.fail() )
-    throw std::runtime_error ( "io_fail_error" );
+    throw std::runtime_error ( "io_fail_error - reading" );
 
   _wordCount = ( _size + WordBits - 1 ) / WordBits;
 
@@ -4222,10 +4223,12 @@ void RNumber::read( istream& is )
 
   unsigned int* value = _valueBuffer;
 
-  is.read((char*) value, _wordCount * sizeof( unsigned int ) );
+  for (unsigned i = 0; i != _wordCount; ++i) {
+    value[i] = readInt(is);
+    if ( is.fail() )
+      throw runtime_error ( "io_fail_error - reading" );
+  }
 
-  if ( is.fail() ) 
-    throw std::runtime_error ( "io_fail_error");
 }
 
 
@@ -4234,18 +4237,19 @@ void RNumber::read( istream& is )
 //
 void RNumber::write( ostream& os ) const
 {
-
-  os.write((char*) &_size, sizeof( _size ) );
-
-  if ( os.fail() )
-    throw std::runtime_error ( "io_fail_error - writting" );
-
-  const unsigned int* value = _valueBuffer;
-
-  os.write( (char*)value, _wordCount * sizeof( unsigned int ) );
+  writeInt(os,_size);
 
   if ( os.fail() )
-    throw std::runtime_error ( "io_fail_error - writing" );
+    throw runtime_error ( "io_fail_error - writing" );
+
+  const unsigned *value = _valueBuffer;
+
+  for (unsigned i = 0; i != _wordCount; ++i) {
+    writeInt(os,value[i]);
+    if ( os.fail() )
+      throw runtime_error ( "io_fail_error - writing" );
+  }
+
 }
 
 // Return number of underscore characters.     

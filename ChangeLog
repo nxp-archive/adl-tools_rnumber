@@ -1,3 +1,9 @@
+2004-03-02  Brian Kahne  <bkahne@ibmoto.com>
+
+	* src/RNumber.C: Added IntIO.h.  This contains routines for
+	reading and writing integers to a stream in an endian-neutral
+	format.  RNumber now uses that for its reading and writing.
+
          rnumber release 1.22.7 (v1_22_7) on SunOS (wynken.somerset.sps.mot.com) 
 
          rnumber release 1.22.7 (v1_22_7) on SunOS (wynken.somerset.sps.mot.com) 

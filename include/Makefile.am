@@ -4,6 +4,7 @@ pkginclude_HEADERS = \
 	KissRand.h \
 	LcgRand.h \
 	MtRand.h \
+	IntIO.h \
 	RNumber.h \
 	C-RNumber.h \
 	Random.h \
