@@ -226,6 +226,22 @@ if [ $libs_l -o $static_libs ]; then
 fi
 fi
 
-printf "$other_flags $lib_L_flags $ord_libs";
+#printf "other_flags |$other_flags|\n"
+#printf "lib_L_flags |$lib_L_flags|\n"
+#printf "ord_libs    |$ord_libs|\n"
+
+if test "x$other_flags" != "x"; then
+    printf "$other_flags"
+fi
+
+if test "x$lib_L_flags" != "x"; then
+    printf " $lib_L_flags"
+fi
+
+if test "x$ord_libs" != "x"; then
+    printf " $ord_libs"
+fi
+
+#printf "$other_flags $lib_L_flags $ord_libs";
 
 exit 0
