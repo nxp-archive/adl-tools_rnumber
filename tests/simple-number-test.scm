@@ -1,7 +1,6 @@
-
 (module number-test
-	(library bl-rnumber)
-	(main main))
+	(main main)
+	(library bl-rnumber))
 
 
 (define (main argv)

@@ -22,7 +22,7 @@ HELPER_PATH="${pkgdatadir}"
 
 rnumber_libs="$LIBDIRS -lRNumber "
 rnumber_bl_libs="-lRNumber "
-rnumber_bl_lib_path="-L${pkglibdir} "
+rnumber_bl_lib_path="-L ${pkglibdir} "
 rnumber_cflags="$CFLAGS"
 STATIC_LIBS="${pkglibdir}/libRNumber.a "
 
@@ -156,6 +156,9 @@ fi
 other_flags=
 lib_L_flags=
 rev_libs=
+if $bl_libs_l || $bl_libs_L; then
+   lib_L_flags=$all_flags
+else 
 for i in $all_flags; do
     case "$i" in
     # a library, save it for later, in reverse order
@@ -196,6 +199,7 @@ if [ $libs_l -o $static_libs ]; then
 	*) ord_libs="$i $ord_libs" ;;	# add it to output in reverse order
 	esac
     done
+fi
 fi
 
 echo $other_flags $lib_L_flags $ord_libs

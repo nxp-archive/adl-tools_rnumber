@@ -6,7 +6,7 @@ EXTRA_DIST = $(bigloo_DATA)
 BUILT_SOURCES = bl-rnumber.heap
 
 bigloodir = $(pkglibdir)
-bigloo_DATA = bl-rnumber.init bl-rnumber.heap
+bigloo_DATA = bl-rnumber.init bl-rnumber.heap 
 
 libbl_rnumber_a_SOURCES =  bl-rnumber.c rnumber.scm  rnumber_proxy.c
 #libbl_rnumber_so_SOURCES = bl-rnumber.c rnumber.scm  rnumber_proxy.c
