@@ -18,7 +18,7 @@ namespace rnumber {
   uint64 readInt64(istream &is)
   {
     unsigned char t[sizeof(uint64)];
-    is.read(t,sizeof(uint64));
+    is.read((char*)t,sizeof(uint64));
     return ( ((uint64)t[0] << 56) | 
              ((uint64)t[1] << 48) | 
              ((uint64)t[2] << 40) | 
@@ -39,13 +39,13 @@ namespace rnumber {
                                         ((d >> 16)&0xff),
                                         ((d >> 8 )&0xff),
                                         ((d)         &0xff) };
-    os.write(t,sizeof(uint64));
+    os.write((char*)t,sizeof(uint64));
   }
 
   unsigned readInt(istream &is)
   {
     unsigned char t[sizeof(unsigned)];
-    is.read(t,sizeof(unsigned));
+    is.read((char*)t,sizeof(unsigned));
     return ( (t[0] << 24) | (t[1] << 16) | (t[2] << 8) | (t[3]));
   }
 
@@ -55,13 +55,13 @@ namespace rnumber {
                                           ((d >> 16)&0xff),
                                           ((d >> 8)&0xff),
                                           (d & 0xff) };
-    os.write(t,sizeof(unsigned));
+    os.write((char*)t,sizeof(unsigned));
   }
 
   unsigned short readShort(istream &is)
   {
     unsigned char t[sizeof(unsigned short)];
-    is.read(t,sizeof(unsigned short));
+    is.read((char*)t,sizeof(unsigned short));
     return ( (t[0] << 8) | (t[1]));
   }
 
@@ -69,7 +69,7 @@ namespace rnumber {
   {
     unsigned char t[sizeof(unsigned short)] = { ((d >> 8)&0xff),
                                                 (d & 0xff) };
-    os.write(t,sizeof(unsigned short));
+    os.write((char*)t,sizeof(unsigned short));
   }
 
   unsigned char readByte(istream &is)
