@@ -3204,7 +3204,7 @@ inline const RNumber rnumber::leftShift( unsigned int n, const RNumber& shift, b
   else if ( shift < WORD_BITS )
     *resValue0 = n << shift.getUInt();
   else
-    resValue0 = 0;
+    *resValue0 = 0;
 
   return RNumber( resValue0, 1, WORD_BITS );
 }
@@ -3395,53 +3395,47 @@ RNumber& RNumber::operator<<=( unsigned int shift )
 //
 inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift )
 {
-
   const unsigned int nwc = n._wordCount;
-
   const unsigned int* value = n._valueBuffer;
   unsigned int* resValue0 = getTempBuffer( nwc );
   unsigned int* resValue = resValue0;
 
   unsigned int i;
 
-  if ( shift < n._size )
-    {
-      if ( shift < WORD_BITS )
-	{
-	  unsigned int intShift = shift.getUInt();
-	  int invShift = WORD_BITS - intShift;
-	  unsigned int mask = ( 1 << intShift ) - 1;
-	  unsigned int cin = 0;
+  if (shift < n._size) {
+    if (shift < WORD_BITS) {
+      unsigned int intShift = shift.getUInt();
+      int invShift = WORD_BITS - intShift;
+      unsigned int mask = ( 1 << intShift ) - 1;
+      unsigned int cin = 0;
 
-	  for ( i = 0; i < nwc; i++ )
-	    {
-	      *( resValue++ ) = ( *value >> intShift ) | cin;
-	      cin = ( *( value++ ) & mask ) << invShift;
-	    }
-	}
-      else if ( ( shift % WORD_BITS ) == 0 )
-	{
-	  unsigned int offset = shift.getUInt() / WORD_BITS;
-
-	  for ( i = 0; i < offset; i++ )
-	    *( resValue++ ) = 0;
-
-	  for ( i = offset; i < nwc; i++ )
-	    *( resValue++ ) = *( value++ );
-	}
-      else if ( shift == 0 )
-	{
-	  for ( i = 0; i < nwc; i++ )
-	    *( resValue++ ) = *( value++ );
-	}
-      else
-	return ( n >> ( shift % WORD_BITS ) ) >> ( shift - ( shift % WORD_BITS ) );
+      for (i = 0; i < nwc; i++) {
+	*(resValue++) = (*value >> intShift) | cin;
+	cin = (*(value++) & mask) << invShift;
+      }
     }
-  else
-    {
-      for ( i = 0; i < nwc; i++ )
+    else if ((shift % WORD_BITS) == 0) {
+      unsigned int offset = shift.getUInt() / WORD_BITS;
+
+      for ( i = 0; i < offset; i++ ) {
 	*( resValue++ ) = 0;
+      }
+
+      for ( i = offset; i < nwc; i++ ) {
+	*( resValue++ ) = *( value++ );
+      }
+    } else if (shift == 0) {
+      for ( i = 0; i < nwc; i++ ) {
+	*( resValue++ ) = *( value++ );
+      }
+    } else {
+      return ( n >> ( shift % WORD_BITS ) ) >> ( shift - ( shift % WORD_BITS ) );
     }
+  } else {
+    for ( i = 0; i < nwc; i++ ) {
+      *( resValue++ ) = 0;
+    }
+  }
 
   return RNumber( resValue0, nwc, n._size );
 }
@@ -3516,7 +3510,7 @@ inline const RNumber rnumber::rightShift( unsigned int n, const RNumber& shift )
   else if ( shift < WORD_BITS )
     *resValue0 = n >> shift.getUInt();
   else
-    resValue0 = 0;
+    *resValue0 = 0;
 
   return RNumber( resValue0, 1, WORD_BITS );
 }

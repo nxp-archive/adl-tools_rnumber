@@ -180,9 +180,7 @@ sub rn_ls {
   } elsif ($first_rn && $second_ui) {
     return RNumber::rnumber_rn_leftshift_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    #don't do this
-    return 0;
-#    return RNumber::rnumber_ui_leftshift_rn(@_);
+    return RNumber::rnumber_ui_leftshift_rn($_[0], ($_[1] % 32));
   } else {
     return ($a << $b);
   }
@@ -199,7 +197,7 @@ sub rn_rs {
   } elsif ($first_rn && $second_ui) {
     return RNumber::rnumber_rn_rightshift_ui(@_);
   } elsif ($first_ui && $second_rn) {
-    return RNumber::rnumber_ui_rightshift_rn(@_);
+    return RNumber::rnumber_ui_rightshift_rn($_[0], ($_[1] % 32));
   } else {
     return ($a >> $b);
   }

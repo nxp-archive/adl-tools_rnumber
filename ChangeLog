@@ -1,5 +1,8 @@
 2002-12-13  Todd Dukes  <Todd.Dukes@motorola.com>
 
+	*  CDCpp33115 - fixed core dump on left and right shifts of integers
+	   where the shift is an rnumber bigger than word size.
+
 	* add perl operator overloading. There is some problem with shifting
 	  integers by rnumbers that needs to be worked out.
 

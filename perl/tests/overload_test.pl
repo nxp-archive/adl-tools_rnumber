@@ -46,6 +46,7 @@ foreach my $i (@operations) {
   }
 }
 foreach my $i (@operations) {
+  print "operation $i\n";
   printf "0x%x $i 0x%x = ", $an_integer, $another_rnumber;
   my $q = eval ("$an_integer $i rn_ctor($another_rnumber)");
   if (rnumberp($q)) {
