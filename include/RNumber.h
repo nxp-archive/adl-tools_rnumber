@@ -132,7 +132,7 @@ namespace rnumber {
     // Value accessors.
     unsigned int intValue() const  { return uint32(); }
     unsigned int uint32() const;
-    // uint64 uint64() const; // implement
+    rnumber_t::uint64 uint64() const;
 
     // Value field accessors and manipulators.
     unsigned int getIntField( unsigned int start, unsigned int end ) const { return getUIntField( start, end ); }
@@ -937,7 +937,6 @@ namespace rnumber {
     return code;
   }
 
-
   //
   // Return the numeric data in an unsigned integer. Loss of data will occur if
   // the size of the number is greater than the size of an unsigned int.
@@ -945,6 +944,15 @@ namespace rnumber {
   inline unsigned int RNumber::uint32() const
   {
     return _valueBuffer[_wordCount - 1];
+  }
+
+  // 
+  // Return the numberic data in an unsigned long long (64-bit integer).
+  // Loss of data will occur if number is greater than 64-bits in size.
+  //
+  inline rnumber_t::uint64 RNumber::uint64() const
+  {
+    return (((rnumber_t::uint64)_valueBuffer[_wordCount-2]) << 32) | (_valueBuffer[_wordCount-1]);
   }
 
   //

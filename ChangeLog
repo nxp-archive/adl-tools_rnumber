@@ -1,3 +1,8 @@
+2003-07-14  Brian Kahne  <bkahne@ibmoto.com>
+
+	* Added a new method, RNumber::uint64(), which allows the user to
+	get a 64-bit number directly and efficiently from an RNumber.
+
         ============= rnumber release 1.17.12 (v1_17_12) on SunOS =============
 
         ============= rnumber release 1.17.12 (v1_17_12) on Linux =============

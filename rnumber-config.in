@@ -33,6 +33,7 @@ Usage: rnumber-config [OPTION]... [LIBRARY]...
 Generic options
   --version	output library version information
   --help	display this help and exit
+  --prefix display installation root directory
 
 Compilation support options
   --cflags	print pre-processor and compiler flags
@@ -79,6 +80,10 @@ while test $# -gt 0; do
     --help)
         usage 0
         ;;
+    --prefix)
+        echo $prefix
+		  exit 0
+		  ;;
     --helper-path)
         helper_path=true
         ;;
@@ -188,7 +193,7 @@ for i in $all_flags; do
 	if $libs_L; then
 	    case " $lib_L_flags " in
 	    *\ $i\ *) ;;			# already there
-	    *) lib_L_flags="$lib_L_flags -Xlinker $i" ;;	# add it to output
+	    *) lib_L_flags="$lib_L_flags $i" ;;	# add it to output
 	    esac 
 	fi;;
     *)
