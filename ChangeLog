@@ -1,3 +1,13 @@
+
+	================== version 1.6.2 ======================================
+
+2002-09-24  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	* rnumber.scm: return #t or #f instead of 0 and non-zero.
+
+	* rnumber.scm: added support for comparison operators so they will handle two
+		integers as well as a mix of integers and rnumbers.
+
 2002-09-04  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	*  rnumber.scm: added rn<< rn>> rn- rn+ rn-bitand rn-bitor
