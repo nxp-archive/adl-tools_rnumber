@@ -39,7 +39,7 @@ RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int num
 
 RNumber * rnumber_create_from_string(  char * number  )
 {
-  return new RNumber( string(number));
+  return new RNumber (string (number));
 }
 
 RNumber * rnumber_create_from_string_variable_sizing( char * number )
