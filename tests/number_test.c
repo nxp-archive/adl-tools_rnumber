@@ -9,6 +9,10 @@
 #include "C-Random.h"
 #include "c-io.h"
 
+extern unsigned tracing_level;
+inline void set_tracing_level(unsigned int x) { tracing_level = x;}
+inline unsigned int get_tracing_level () { return tracing_level;}
+
 unsigned maxIter = 100;
 
 const int Verbose = 0;
@@ -49,7 +53,7 @@ static unsigned checkOperator (unsigned size, char *op, struct Calculator *calc)
   unsigned i;
   unsigned rc = 0;
 
-  printf("%s:%d %s()\n", __FILE__, __LINE__, __FUNCTION__);
+/*   printf("%s:%d %s() op %s \n", __FILE__, __LINE__, __FUNCTION__, op); */
   for (i = 0; i < maxIter; i++) {
     unsigned size1 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
     unsigned size2 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
@@ -58,9 +62,7 @@ static unsigned checkOperator (unsigned size, char *op, struct Calculator *calc)
     struct RNumber * c = rnumber_create_from_unsigned_of_size_variable_sizing(0, 1);
     int ext = 0;    
 
-    //printf("%s:%d\n", __FILE__, __LINE__);
     a = random_get_rnumber(size1);
-    //printf("%s:%d\n", __FILE__, __LINE__);
     if (op[0] == '/' || op[0] == '%') {
       do {
         b = random_get_rnumber (size2);
@@ -149,9 +151,9 @@ static unsigned checkMutator (unsigned size, char *op, struct Calculator *calc)
   for (i = 0; i < maxIter; i++) {
     unsigned size1 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
     unsigned size2 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
-    struct RNumber * a = rnumber_create_from_unsigned_of_size_variable_sizing(0, size1);
-    struct RNumber * b = rnumber_create_from_unsigned_of_size(0, size2);
-    struct RNumber * tmp = rnumber_create_from_unsigned_of_size(0, size1);
+    struct RNumber * a = 0;
+    struct RNumber * b = 0;
+    struct RNumber * tmp = 0;
 
     a = random_get_rnumber(size1);
     rnumber_assign(tmp, a);
@@ -771,7 +773,6 @@ static unsigned checkReadWrite (const struct RNumber * numa, int radix)
   void * ss1 = ss_create();
   rnumber_print_with_radix( numa, ss1, radix, 1);
   ss_ends(ss1);
-  /*  printf("%s:%d rnumber_cstr_radix(numa, %d) %s\n", __FILE__, __LINE__, radix, rnumber_cstr_radix(numa,radix,0)); */
 
   {
     char *str1;
@@ -818,7 +819,6 @@ static unsigned checkReadWrite (const struct RNumber * numa, int radix)
     rnumber_print_with_radix(numa, ss3, radix,0);
     {
       char * str3 = ss_str(ss3);
-      /* printf("%s:%d str3 %s\n", __FILE__, __LINE__, str3); */
       ss_ends(ss3);
       {
 	struct RNumber * num3 = rnumber_create_from_string_of_radix (str3, radix);
@@ -1050,12 +1050,11 @@ static unsigned checkConstructors ()
     {
       // test various string constructors
       struct RNumber * num1a = random_get_rnumber(size1);
-      rc |= checkReadWrite (num1a, rnumber_rhex());
-      rc |= checkReadWrite (num1a, rnumber_rbin());
-      rc |= checkReadWrite (num1a, rnumber_rdec());
+      rc |= checkReadWrite (num1a, 16);
+      rc |= checkReadWrite (num1a, 2);
+      rc |= checkReadWrite (num1a, 10);
     }
   }
-
   return rc;
 }
 
@@ -1507,22 +1506,25 @@ int main (int argc, char **argv)
       else if (!strcmp (curArg(), "-dc")) {
 	pgm = nextArg();
       }
+      else if (!strcmp (curArg(), "-trace_level")) {
+	set_tracing_level( strtoul(nextArg(),0,0));
+	printf("trace_level_set 0x%x\n", get_tracing_level());
+      }
       else {
 	usage (argv[0]);
       }
     }
 
-    printf("strlenpgm %d\n", strlen(pgm));
     if (strlen(pgm) == 0) {
       pgm = malloc(strlen(path) + strlen("/") + strlen(prog) + 1);
-      printf("path %s prog %s\n", path, prog);
       strcpy(pgm,path);
       strcat(pgm, "/");
       strcat(pgm, prog);
     }
-    seed = random_init(seed);
 
-    printf("calculator pgm %s\n", pgm);
+    random_create();
+    seed = random_init_from_seed(seed);
+    
     {
       struct Calculator * calc = calculator_create(pgm);
 
@@ -1535,7 +1537,6 @@ int main (int argc, char **argv)
       // add
       printf ("Starting adds...");
       fflush (stdout);
-      printf("%s:%d\n", __FILE__, __LINE__);
       for (i = 0; i < n; i++) 
 	rc |= checkOperator (sizes[i], "+.", calc);
       for (i = 0; i < n; i++) 
@@ -1818,7 +1819,8 @@ struct Calculator * calculator_create (const char *pgm)
 
 void calculator_private_destroy ( struct Calculator * calc)
 {
-  printf("%s:%d %s()\n", __FILE__, __LINE__, __FUNCTION__);
+  printf("calculator_private_destroy\n");
+  printf("%s\n", __FUNCTION__);
   calculator_private_terminate ( calc);
   free (calc);
 }
@@ -1848,6 +1850,8 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
   char astr[256];
   char bstr[256];
 
+/*   printf("%s:%d - a %s - b %s - c %s - op %s - ext %d\n", __FILE__, __LINE__,  */
+/* 	 rnumber_cstr(a), rnumber_cstr(b), rnumber_cstr(c), op, ext); */
   assert (rnumber_size(a) <= 1024 && rnumber_size(b) <= 1024);
   // dc requires uppercase hex; right now RNumbers print hex in lower case
   strcpy (astr, rnumber_cstr(a));
@@ -1858,8 +1862,10 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
   // Sanity checking if we're not allowing for resizing.
   if ( !ext && (op[0] != '%' && rnumber_size(c) != max( rnumber_size(a), rnumber_size(b) )) )
   {
-    printf ("Result size error (1)  occurred in expression:  %s(%d) %s(%d) (%d) %s\n",
-            astr, rnumber_size(a), bstr, rnumber_size(b), rnumber_size(c), op);
+    printf ("%s:%d Result size error (1)  occurred in expression:  %s(%d) %s(%d) (%d) %s\n",
+            __FILE__, __LINE__, astr, rnumber_size(a), bstr, rnumber_size(b), rnumber_size(c), op);
+    printf ("%s:%d ext %d op[0] %c a size %d b size %d c size %d\n", __FILE__, __LINE__,
+	    rnumber_size(a), rnumber_size(b), rnumber_size(c));
   }
   return calculator_private_arith_calc(calc,astr,rnumber_size(a),bstr,rnumber_size(b),c,op,ext);
 }
@@ -1902,6 +1908,8 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
 
   char cmd[1024];
   char buf[1024];
+/*   printf("%s:%d - astr %s - bstr %s c %s - op %c - ext %d\n", __FILE__, __LINE__,  */
+/* 	 astr, bstr,  rnumber_cstr(c), *op, ext); */
   sprintf (cmd, "%s %s %c p c\n", astr, bstr, op[0]);
   {
     int n = strlen (cmd);
@@ -1922,32 +1930,33 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
     buf[n] = '\0';
   }
   {
-    struct RNumber * res =  ext ? rnumber_create_from_unsigned_of_size_variable_sizing( 0, rnumber_size(c)) :
-      rnumber_create_from_unsigned_of_size( 0, rnumber_size(c));
+    struct RNumber * res =  0;
+    //ext ? rnumber_create_from_unsigned_of_size_variable_sizing( 0, rnumber_size(c)) :
+    //rnumber_create_from_unsigned_of_size( 0, rnumber_size(c));
 
     if (!ext) {
       // Fixed size case.
       if (buf[0] == '-') {
-	res = rnumber_create_from_string_of_size_of_radix( buf + 1, rnumber_size(c), rnumber_rhex() );
+	res = rnumber_create_from_string_of_size_of_radix( buf + 1, rnumber_size(c), 16 );
 	rnumber_negate(res);
       } else {
-	res = rnumber_create_from_string_of_size_of_radix( buf, rnumber_size(c), rnumber_rhex() );
+	res = rnumber_create_from_string_of_size_of_radix( buf, rnumber_size(c), 16 );
       }
     } else {
       // Dynamically sized case.
       if (buf[0] == '-') {
-	res = rnumber_create_from_string_of_radix_variable_sizing( buf + 1,rnumber_rhex());
+	res = rnumber_create_from_string_of_radix_variable_sizing( buf + 1, 16);
 	rnumber_negate(res);
       } else {
-	res = rnumber_create_from_string_of_radix_variable_sizing( buf, rnumber_rhex());
+	res = rnumber_create_from_string_of_radix_variable_sizing( buf, 16);
       }
     }
 
-    if ( rnumber_rn_notequal_rn(res, c)) {
-      printf ("%s:%d Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", 
-	      __FILE__, __LINE__,astr, asize, bstr, bsize, op);
+    if (rnumber_rn_notequal_rn(res, c)) {
+      printf ("%s:%d Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", __FILE__, __LINE__, astr, asize, bstr, bsize, op);
       printf ("  RNumber res = %s, dc res = %s\n", rnumber_cstr(c), rnumber_cstr(res));
       rc = 1;
+      exit(1);
     }
   
     if (Verbose) {

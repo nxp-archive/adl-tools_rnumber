@@ -7,6 +7,8 @@
 #include "RNumber.h"
 #include "Random.h"
 
+#include "trace.h"
+
 unsigned maxIter = 100;
 
 const int Verbose = 0;
@@ -77,6 +79,7 @@ static unsigned checkOperator (unsigned size, char *op, Calculator *calc)
       c = a % b;
     } else if (!strcmp(op,"+.")) {
       c = addExt(a,b);
+      V1("a " << hex << a << " b " << b << " c " << c);
       ext = true;
     } else if (!strcmp(op,"*.")) {
       c = multiplyExt(a,b);
@@ -1409,6 +1412,10 @@ int main (int argc, char **argv)
 		}
 		else if (!strcmp (curArg(), "-dc")) {
 		  pgm = nextArg();
+		}
+		else if (!strcmp (curArg(), "-trace_level")) {
+		  set_tracing_level( strtoul(nextArg(),0,0));
+		  printf("trace_level_set 0x%x\n", get_tracing_level());
 		}
 		else {
 		  usage (argv[0]);
