@@ -45,7 +45,7 @@ Compilation support options
   --libs	print library linking information
   --libs-only-L	only print the -L/-R part of --libs
   --libs-only-l only print the -l part of --libs
-  --perl-libs
+  --perl-libs   print library path for perl. Cannot be combined with any other flags.
   --static-libs print path to .a file.
   --bl-libs-only-l library for bigloo.
   --bl-libs-only-L library path for bigloo.
@@ -102,7 +102,8 @@ while test $# -gt 0; do
        	cflags=true
        	;;
     --perl-libs)
-        perl_libs=true
+        printf "$rnumber_perl_libs"
+	exit 0;
 	;;
     --libs)
         libs_L=true
