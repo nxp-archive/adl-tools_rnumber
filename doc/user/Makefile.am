@@ -1,4 +1,7 @@
-EXTRA_DIST = $(userwebdata_DATA)
+EXTRA_DIST = user.scr  \
+	bib.scr \
+	user-margin.scr \
+	$(userwebdata_DATA)
 
 userwebdatadir = $(WEB_HOME)/user
 

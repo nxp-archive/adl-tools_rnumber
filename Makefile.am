@@ -31,11 +31,5 @@ cinstall:
 	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
 	fi; test -z "$$fail"
 
-
-# This is run after the distribution directory is created
-# This target is here to remove src/rcparser.yy from the dist
-dist-hook:
-	rm $(distdir)/src/rvparser.yy
-
 cinstall-am:
 	$(MAKE) install-am

@@ -5,6 +5,8 @@ noinst_DATA = example.so
 
 perllib_DATA = RNumber.so RNumber.pm rnumber.pm
 
+EXTRA_DIST = example.i example.c RNumber.i RNumber.c rnumber.pm  rnumber_test2.pl
+
 CLEANFILES = $(EXAMPLE_CLEANFILES) $(PL_RNUMBER_CLEANFILES) 
 
 EXAMPLE_CLEANFILES = example.o example_wrap.o example_wrap.c example_wrap.o example.so example_wrap.doc

@@ -5,7 +5,8 @@ simple_test_SOURCES = simple_test.c c-io.C
 driver_SOURCES = driver.scm
 
 CLEANFILES = driver.c 
-EXTRA_DIST = $(TESTS) 
+EXTRA_DIST = c-io.h \
+	$(TESTS) 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 

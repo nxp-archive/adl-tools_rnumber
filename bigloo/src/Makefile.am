@@ -13,8 +13,8 @@ bigloo_DATA = bl-rnumber.init bl-rnumber.heap
 libbl_rnumber_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_proxy.c
 #libbl_rnumber_so_SOURCES = bl-rnumber.c rnumber.scm  rnumber_proxy.c
 
-#noinst_HEADERS = \
-#	rnumber_exceptions.h 
+noinst_HEADERS = \
+	bl-rnumber.h 
 
 INCLUDES = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
 

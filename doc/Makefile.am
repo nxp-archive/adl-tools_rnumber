@@ -1,5 +1,6 @@
 
-EXTRA_DIST = $(webdata_DATA)
+EXTRA_DIST = index.scr \
+	$(webdata_DATA)
 
 SUBDIRS = user
 
