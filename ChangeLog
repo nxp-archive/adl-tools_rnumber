@@ -1,3 +1,10 @@
+2003-03-30  Todd Dukes  <tdukes@austin.rr.com>
+
+	*  Fixed GCC_VERSION macro
+	*  added commented out perl include path for Redhat 8.0 (swig still doesn't
+	   work for this version of Perl, on Redhat 8.0 you have to build with
+	   --disable-perl-bindings
+
 2003-03-24  Brian Kahne  <bkahne@ibmoto.com>
 
 	* Modified headers so that they should compile w/o the

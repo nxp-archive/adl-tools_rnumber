@@ -15,6 +15,7 @@ PL_RNUMBER_CLEANFILES = pl_rnumber.pm pl_rnumber_wrap.c pl_rnumber_wrap.o pl_rnu
 
 PERL_INC=-I/usr/local/lib/perl5/sun4-solaris/5.00404/CORE
 #PERL_INC=-I/local/tdukes/lib/perl5/5.00503/sun4-solaris/CORE
+#PERL_INC=-I/usr/lib/perl5/5.8.0/i386-linux-thread-multi/CORE/
 
 RNUMBER_LIB = $(top_srcdir)/src/libRNumber.a
 STD_CPP_LIB = -lstdc++

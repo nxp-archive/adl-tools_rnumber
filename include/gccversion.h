@@ -10,7 +10,7 @@
                    + __GNUC_MINOR__ * 100 \
                    + __GNUC_PATCHLEVEL__)
 
-#if GCC_VERSION > 30200
+#if GCC_VERSION >= 30200
 #  define GCC_3_2 1
 #  define STD_CPP
 #else
