@@ -1,3 +1,7 @@
+2003-10-07  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	* added bigEndianArrayOfBytes().
+
         ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
 
         ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============

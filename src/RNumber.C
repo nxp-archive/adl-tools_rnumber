@@ -3712,6 +3712,21 @@ string RNumber::str(int format) const
 #endif
 }
 
+unsigned char * RNumber::bigEndianArrayOfBytes(unsigned char * buffer) const {
+   if (buffer == 0) {
+      buffer = new unsigned char [_size >> 3] + 1;
+   }
+   int buffer_cursor = 0;
+   // _valueBuffer[_wordCount - 1] is least significant word
+   for (int x = 0; x < _wordCount; ++x) {
+      buffer[buffer_cursor++] = _valueBuffer[x] >> 24 & 0xff;
+      buffer[buffer_cursor++] = _valueBuffer[x] >> 16 & 0xff;
+      buffer[buffer_cursor++] = _valueBuffer[x] >> 8 & 0xff;
+      buffer[buffer_cursor++] = _valueBuffer[x] & 0xff;
+   }
+   return buffer;
+}
+
 //
 // Return a field of bits from 'start' to 'end', stored in an unsigned int.
 // Bit 0 is the most significant bit. There are 3 cases to consider:
