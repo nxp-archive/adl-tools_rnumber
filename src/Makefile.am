@@ -4,6 +4,7 @@ libRNumber_a_SOURCES = \
 	KissRand.C \
 	LcgRand.C \
 	RNumber.C \
+	C-RNumber.C \
 	Random.C
 
 pkginclude_HEADERS = \
