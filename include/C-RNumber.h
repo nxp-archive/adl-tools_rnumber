@@ -12,7 +12,13 @@
 #define C_RNumber_h "$Id$"
 
 #ifdef __cplusplus
-class RNumber;
+namespace rnumber 
+{
+  class RNumber;
+}
+
+using namespace rnumber;
+
 extern "C" {
 #else
   struct RNumber;

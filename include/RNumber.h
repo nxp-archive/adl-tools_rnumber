@@ -23,6 +23,8 @@
 
 const unsigned int WORD_THRESHOLD = 2;
 
+namespace rnumber {
+
 class RNumber
 {
 public:
@@ -128,7 +130,7 @@ public:
 
   // Attribute accessors and manipulators.
   unsigned size() const;
-  unsigned wordcount() const;
+  unsigned wordCount() const;
 
   const unsigned *buffer() const;
 
@@ -937,7 +939,7 @@ inline unsigned RNumber::size() const
 // 
 // Return size in words.
 //
-inline unsigned RNumber::wordcount() const
+inline unsigned RNumber::wordCount() const
 {
   return _wordCount;
 }
@@ -983,6 +985,8 @@ inline size_t RNumber::Hash::operator()( const RNumber& num ) const
 inline size_t RNumber::Equal::operator()( const RNumber& num1, const RNumber& num2 ) const 
 { 
   return (num1 == num2); 
+}
+
 }
 
 #endif

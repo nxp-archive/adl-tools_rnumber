@@ -17,7 +17,7 @@
 #include "KissRand.h"
 #include "RNumber.h"
 
-
+namespace rnumber {
 typedef KissState RandState;
 
 // Each of these items represents a random number generator.  
@@ -196,6 +196,6 @@ inline unsigned Random::getCount()
   return _generators[_currentGen].getCount();
 }
 
-
+} // end namespace rnumber 
 
 #endif
