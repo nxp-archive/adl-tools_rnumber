@@ -113,7 +113,7 @@ double RandomObj::getDouble()
 // out if something is a signed or unsigned range.
 inline RNumber RandomObj::fromRange(const RNumber &min,const RNumber &max) 
 {
-  RNumber diff(max - min + 1);
+  RNumber diff(max - min + 1,max.size());
   return (min + (getRNumber(max.size()) % diff));
 }
 

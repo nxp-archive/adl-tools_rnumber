@@ -271,7 +271,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
 ac_unique_file="src/RNumber.C"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS RNUMBER_MAJOR_VERSION RNUMBER_MINOR_VERSION RNUMBER_MICRO_VERSION RNUMBER_INTERFACE_AGE RNUMBER_BINARY_AGE RNUMBER_VERSION INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE EFENCE WEB_STUFF_TRUE WEB_STUFF_FALSE WEB_HOME MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP LEX LEXLIB LEX_OUTPUT_ROOT YACC M4 DCPROG PERLPROG BIGLOOPROG BIGLOO_LIBDIR BIGLOO WITHOUT_BIGLOO_TRUE WITHOUT_BIGLOO_FALSE SWIGPROG PERL_ARCH_INCL PERL_CC_FLAGS PERLBINDINGS WITHOUT_SWIG_TRUE WITHOUT_SWIG_FALSE SCRIBEPROG DOC WITHOUT_DOC_TRUE WITHOUT_DOC_FALSE CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE AIX_TRUE AIX_FALSE PROFILE ACLOCAL_FLAGS EXPLTEMPLATES CXXCPP EGREP LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS RNUMBER_MAJOR_VERSION RNUMBER_MINOR_VERSION RNUMBER_MICRO_VERSION RNUMBER_INTERFACE_AGE RNUMBER_BINARY_AGE RNUMBER_VERSION INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP LEX LEXLIB LEX_OUTPUT_ROOT YACC EFENCE WEB_STUFF_TRUE WEB_STUFF_FALSE WEB_HOME M4 DCPROG PERLPROG BIGLOOPROG BIGLOO_LIBDIR BIGLOO WITHOUT_BIGLOO_TRUE WITHOUT_BIGLOO_FALSE SWIGPROG PERL_ARCH_INCL PERL_CC_FLAGS PERLBINDINGS WITHOUT_SWIG_TRUE WITHOUT_SWIG_FALSE SCRIBEPROG DOC WITHOUT_DOC_TRUE WITHOUT_DOC_FALSE CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE AIX_TRUE AIX_FALSE PROFILE ACLOCAL_FLAGS EXPLTEMPLATES CXXCPP EGREP LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -819,8 +819,11 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-maintainer-mode enable make rules and dependencies not useful
+                          (and sometimes confusing) to the casual installer
+  --disable-dependency-tracking Speeds up one-time builds
+  --enable-dependency-tracking  Do not reject slow dependency extractors
   --enable-opt    Enable optimization flag (-O3), disables debug
-  --enable-dbg    Force debugging to be enabled
   --enable-static    Enable static building
   --enable-profile    Enable profiling
   --enable-efence=<location>    link test programs with electric fence. If no location
@@ -828,10 +831,6 @@ Optional Features:
                                  is used
   --enable-web-home=<prefix>    Prefix directory to install web-stuff. (examples, html documentation, etc...)
                           If not specified, web materials are not installed.
-  --enable-maintainer-mode enable make rules and dependencies not useful
-                          (and sometimes confusing) to the casual installer
-  --disable-dependency-tracking Speeds up one-time builds
-  --enable-dependency-tracking  Do not reject slow dependency extractors
   --disable-bigloo-bindings    Enable the building of Bigloo bindings.
   --disable-perl-bindings    Enable the building of Perl bindings.
 
@@ -1256,7 +1255,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 RNUMBER_MAJOR_VERSION=1
 RNUMBER_MINOR_VERSION=20
-RNUMBER_MICRO_VERSION=2
+RNUMBER_MICRO_VERSION=3
 RNUMBER_INTERFACE_AGE=0
 RNUMBER_BINARY_AGE=0
 RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
@@ -1670,110 +1669,6 @@ OS=`/usr/bin/env uname`
 #########################################################################
 #  Configure arguments
 #########################################################################
-
-# Check whether --enable-opt or --disable-opt was given.
-if test "${enable_opt+set}" = set; then
-  enableval="$enable_opt"
-  CXXFLAGS="$CXXFLAGS -O3"
- echo "$as_me:$LINENO: result: \"Optimizing with -O3\"" >&5
-echo "${ECHO_T}\"Optimizing with -O3\"" >&6
-else
-  CXXFLAGS="$CXXFLAGS -g "
-
-fi;
-
-# Check whether --enable-dbg or --disable-dbg was given.
-if test "${enable_dbg+set}" = set; then
-  enableval="$enable_dbg"
-  CXXFLAGS="$CXXFLAGS -g"
- echo "$as_me:$LINENO: result: \"Debugging with -g\"" >&5
-echo "${ECHO_T}\"Debugging with -g\"" >&6
-fi;
-
-ARCH=`/usr/bin/env uname -m`
-if test x$ARCH = xi686 ; then
-   DYNLINK=
-else
-   DYNLINK="-fPIC"
-fi
-
-# Check whether --enable-static or --disable-static was given.
-if test "${enable_static+set}" = set; then
-  enableval="$enable_static"
-  DYNLINK=""
- echo "$as_me:$LINENO: result: Static build selected." >&5
-echo "${ECHO_T}Static build selected." >&6
-fi;
-
-PROFILE=
-# Check whether --enable-profile or --disable-profile was given.
-if test "${enable_profile+set}" = set; then
-  enableval="$enable_profile"
-  PROFILE="-pg"
- echo "$as_me:$LINENO: result: \"Profiling with -pg\"" >&5
-echo "${ECHO_T}\"Profiling with -pg\"" >&6
- if test x$OS = xSunOS ; then
-   echo "Turning off position-independent code b/c we're on Solaris and we are profiling."
-   DYNLINK=
- fi
-fi;
-
-default_efence="/nfs/ibmoto/tools/tlv4/raptor/lib/obj.SunOS/libefence.a"
-
-# Check whether --enable-efence or --disable-efence was given.
-if test "${enable_efence+set}" = set; then
-  enableval="$enable_efence"
-  if test x$enableval = x; then
-   EFENCE=$default_efence
- else
-   EFENCE=$enableval
- fi
- if test -f $EFENCE; then
-   echo "$as_me:$LINENO: result: using '$EFENCE' for electric fence" >&5
-echo "${ECHO_T}using '$EFENCE' for electric fence" >&6
- else
-   { { echo "$as_me:$LINENO: error: electric fence could not be found as file $EFENCE" >&5
-echo "$as_me: error: electric fence could not be found as file $EFENCE" >&2;}
-   { (exit 1); exit 1; }; }
- fi
-echo "$as_me:$LINENO: result: linking with electric fence - $EFENCE" >&5
-echo "${ECHO_T}linking with electric fence - $EFENCE" >&6
-else
-  EFENCE=""
-echo "$as_me:$LINENO: result: efence will not be used" >&5
-echo "${ECHO_T}efence will not be used" >&6
-
-fi;
-
-
-web_stuff=0
-WEB_HOME=./web-home
-# Check whether --enable-web-home or --disable-web-home was given.
-if test "${enable_web_home+set}" = set; then
-  enableval="$enable_web_home"
-  if test x$enableval = x; then
-    WEB_HOME=""
-    web_stuff=false
- else
-    WEB_HOME=$enableval
-    web_stuff=true;
- fi
- echo "$as_me:$LINENO: result: \"Web home is $WEB_HOME\"" >&5
-echo "${ECHO_T}\"Web home is $WEB_HOME\"" >&6
-
-fi;
-
-
-
-if test x$web_stuff = xtrue; then
-  WEB_STUFF_TRUE=
-  WEB_STUFF_FALSE='#'
-else
-  WEB_STUFF_TRUE='#'
-  WEB_STUFF_FALSE=
-fi
-
-
 
 echo "$as_me:$LINENO: checking whether to enable maintainer-specific portions of Makefiles" >&5
 echo $ECHO_N "checking whether to enable maintainer-specific portions of Makefiles... $ECHO_C" >&6
@@ -3424,6 +3319,100 @@ done
 test -n "$YACC" || YACC="yacc"
 
 
+# Check whether --enable-opt or --disable-opt was given.
+if test "${enable_opt+set}" = set; then
+  enableval="$enable_opt"
+  OPT="$CXXFLAGS -O3"
+ echo "$as_me:$LINENO: result: \"Optimizing with -O3\"" >&5
+echo "${ECHO_T}\"Optimizing with -O3\"" >&6
+fi;
+
+ARCH=`/usr/bin/env uname -m`
+if test x$ARCH = xi686 ; then
+   DYNLINK=
+else
+   DYNLINK="-fPIC"
+fi
+
+# Check whether --enable-static or --disable-static was given.
+if test "${enable_static+set}" = set; then
+  enableval="$enable_static"
+  DYNLINK=""
+ echo "$as_me:$LINENO: result: Static build selected." >&5
+echo "${ECHO_T}Static build selected." >&6
+fi;
+
+PROFILE=
+# Check whether --enable-profile or --disable-profile was given.
+if test "${enable_profile+set}" = set; then
+  enableval="$enable_profile"
+  PROFILE="-pg"
+ echo "$as_me:$LINENO: result: \"Profiling with -pg\"" >&5
+echo "${ECHO_T}\"Profiling with -pg\"" >&6
+ if test x$OS = xSunOS ; then
+   echo "Turning off position-independent code b/c we're on Solaris and we are profiling."
+   DYNLINK=
+ fi
+fi;
+
+default_efence="/nfs/ibmoto/tools/tlv4/raptor/lib/obj.SunOS/libefence.a"
+
+# Check whether --enable-efence or --disable-efence was given.
+if test "${enable_efence+set}" = set; then
+  enableval="$enable_efence"
+  if test x$enableval = x; then
+   EFENCE=$default_efence
+ else
+   EFENCE=$enableval
+ fi
+ if test -f $EFENCE; then
+   echo "$as_me:$LINENO: result: using '$EFENCE' for electric fence" >&5
+echo "${ECHO_T}using '$EFENCE' for electric fence" >&6
+ else
+   { { echo "$as_me:$LINENO: error: electric fence could not be found as file $EFENCE" >&5
+echo "$as_me: error: electric fence could not be found as file $EFENCE" >&2;}
+   { (exit 1); exit 1; }; }
+ fi
+echo "$as_me:$LINENO: result: linking with electric fence - $EFENCE" >&5
+echo "${ECHO_T}linking with electric fence - $EFENCE" >&6
+else
+  EFENCE=""
+echo "$as_me:$LINENO: result: efence will not be used" >&5
+echo "${ECHO_T}efence will not be used" >&6
+
+fi;
+
+
+web_stuff=0
+WEB_HOME=./web-home
+# Check whether --enable-web-home or --disable-web-home was given.
+if test "${enable_web_home+set}" = set; then
+  enableval="$enable_web_home"
+  if test x$enableval = x; then
+    WEB_HOME=""
+    web_stuff=false
+ else
+    WEB_HOME=$enableval
+    web_stuff=true;
+ fi
+ echo "$as_me:$LINENO: result: \"Web home is $WEB_HOME\"" >&5
+echo "${ECHO_T}\"Web home is $WEB_HOME\"" >&6
+
+fi;
+
+
+
+if test x$web_stuff = xtrue; then
+  WEB_STUFF_TRUE=
+  WEB_STUFF_FALSE='#'
+else
+  WEB_STUFF_TRUE='#'
+  WEB_STUFF_FALSE=
+fi
+
+
+
+
 echo "$as_me:$LINENO: checking for flex prefix " >&5
 echo $ECHO_N "checking for flex prefix ... $ECHO_C" >&6
 
@@ -4965,7 +4954,7 @@ fi
 echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
-CXXFLAGS="-Wall $CXXFLAGS $DYNLINK $PROFILE $TEMPLATE_CONTROL"
+CXXFLAGS="-Wall -g $OPT $DYNLINK $PROFILE $TEMPLATE_CONTROL"
 
 
 
@@ -5552,13 +5541,6 @@ LIBOBJS=$ac_libobjs
 LTLIBOBJS=$ac_ltlibobjs
 
 
-if test -z "${WEB_STUFF_TRUE}" && test -z "${WEB_STUFF_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"WEB_STUFF\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"WEB_STUFF\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
 if test -z "${MAINTAINER_MODE_TRUE}" && test -z "${MAINTAINER_MODE_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"MAINTAINER_MODE\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -5577,6 +5559,13 @@ if test -z "${am__fastdepCC_TRUE}" && test -z "${am__fastdepCC_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"am__fastdepCC\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"am__fastdepCC\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${WEB_STUFF_TRUE}" && test -z "${WEB_STUFF_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"WEB_STUFF\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"WEB_STUFF\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -6187,10 +6176,6 @@ s,@ac_ct_STRIP@,$ac_ct_STRIP,;t t
 s,@INSTALL_STRIP_PROGRAM@,$INSTALL_STRIP_PROGRAM,;t t
 s,@AWK@,$AWK,;t t
 s,@SET_MAKE@,$SET_MAKE,;t t
-s,@EFENCE@,$EFENCE,;t t
-s,@WEB_STUFF_TRUE@,$WEB_STUFF_TRUE,;t t
-s,@WEB_STUFF_FALSE@,$WEB_STUFF_FALSE,;t t
-s,@WEB_HOME@,$WEB_HOME,;t t
 s,@MAINTAINER_MODE_TRUE@,$MAINTAINER_MODE_TRUE,;t t
 s,@MAINTAINER_MODE_FALSE@,$MAINTAINER_MODE_FALSE,;t t
 s,@MAINT@,$MAINT,;t t
@@ -6217,6 +6202,10 @@ s,@LEX@,$LEX,;t t
 s,@LEXLIB@,$LEXLIB,;t t
 s,@LEX_OUTPUT_ROOT@,$LEX_OUTPUT_ROOT,;t t
 s,@YACC@,$YACC,;t t
+s,@EFENCE@,$EFENCE,;t t
+s,@WEB_STUFF_TRUE@,$WEB_STUFF_TRUE,;t t
+s,@WEB_STUFF_FALSE@,$WEB_STUFF_FALSE,;t t
+s,@WEB_HOME@,$WEB_HOME,;t t
 s,@M4@,$M4,;t t
 s,@DCPROG@,$DCPROG,;t t
 s,@PERLPROG@,$PERLPROG,;t t
