@@ -906,6 +906,68 @@
    (tr (td [rn_size])(td [(rnumber)])(td [Return the number of bits in the RNumber passed as an argument.])))))
 
 (chapter
+ :title "Bigloo (scheme) Bindings"
+ (paragraph
+  [Only the exported functions can be called by bigloo.])
+
+ (section
+  :title "Variables"
+  (paragraph
+   [There is only one rnumber variable, ,(code [*rnumber-version*]). This is the version number of the library.]))
+ 
+ (section
+  :title "Functions"
+  (table
+   (tr :bg "#cccccc" (th :align 'center :colspan 3 "Exported Functions"))
+   (tr :bg "#cccccc" (th "Function")(th "Description"))
+   (tr (td (code [(rnumber? ,(emph [a]))]))(td "Returns true if ,(code [a]) is an rnumber."))
+   (tr (td (code [(rnumber-ctor ,(emph [arg]))]))(td [Constructs a new rnumber based on the argument. The argument can be
+								 null, an integer, a string, or an rnumber.]))
+   (tr (td (code [(rnumber->cstr ,(emph [rnumber . radix-prefix]))]))
+       (td [This converts an rnumber into its string representation. The ,(code [radix-prefix]) are optional arguments. The
+		 first optional argument is the radix to use, the second optional argument is whether to include a radix
+		 prefix at the begining of the string. For example "0x" for a hex number.]))
+   (tr (td (code [(rnumber-parse-string ,(emph [str]))]))(td [This parses a string representing a legal number in decimal, hex, or binary
+								   into an rnumber. If the string does not represent an rnumber, 
+								   ,(code [rnumber-parse-string]) returns #f]))
+   (tr (td (code [(rnumber->int ,(emph [rnumber]))]))(td [Convert an rnumber to a regular integer. No warning, error, or return code
+								  will indicate loss of data.]))
+   (tr (td (code [(rn=? ,(emph [a b]))])) (td [Compares two variables that represent either rnumbers or integers to see if they
+							hold the same integer value.]))
+   (tr (td (code [(rn!=? ,(emph [a b]))])(td [Returns ,(code [(not (rn=? a b))])])))
+   (tr (td (code [(rn<? ,(emph [a b]))]))(td [Compares two variables that represent either rnumbers or integers to see if the one
+						       represented by ,(code [a]) is less than the one represented by ,(code [b]).]))
+   (tr (td (code [(rn<=? ,(emph [a b]))]))(td [Compares two variables that represent either rnumbers or integers to see if the one
+						       represented by ,(code [a]) is less than or equal to the one represented by ,(code [b]).]))
+   (tr (td (code [(rn>? ,(emph [a b]))]))(td [Compares two variables that represent either rnumbers or integers to see if the one
+						       represented by ,(code [a]) is greater than the one represented by ,(code [b]).]))
+   (tr (td (code [(rn>=? ,(emph [a b]))]))(td [Compares two variables that represent either rnumbers or integers to see if the one
+						       represented by ,(code [a]) is greater than or equal to the one represented by ,(code [b]).]))
+   (tr (td (code [(rn<< ,(emph [a b]))]))(td [Left shift ,(code [a]) by ,(code [b]) bits. ,(code [a]) should be an rnumber. ,(code [b]) can
+						   be either an integer or an rnumber.]))
+   (tr (td (code [(rn>> ,(emph [a b]))]))(td [Right shift ,(code [a]) by ,(code [b]) bits. ,(code [a]) should be an rnumber. ,(code [b]) can
+						   be either an integer or an rnumber.]))
+   (tr (td (code [(rn- ,(emph [a b]))]))(td [Subtract ,(code [b]) from ,(code [a]). ,(code [b]) and ,(code [a]) can be either integers or
+						      rnumbers. The return value is an rnumber unless both ,(code [a]) and ,(code [b]) are
+						      integers.]))
+   (tr (td (code [(rn+ ,(emph [a b]))]))(td [Add ,(code [a]) to ,(code [b]). ,(code [b]) and ,(code [a]) can be either integers or
+						      rnumbers. The return value is an rnumber unless both ,(code [a]) and ,(code [b]) are
+						      integers.]))
+   (tr (td (code [(rn* ,(emph [a b]))]))(td [Mutliply ,(code [a]) by ,(code [b]). ,(code [b]) and ,(code [a]) can be either integers or
+					    rnumbers. The return value is an rnumber unless both ,(code [a]) and ,(code [b]) are
+					    integers.]))
+   (tr (td (code [(rn-bitand ,(emph [a b]))]))(td [Return logical bit and of ,(code [a]) and ,(code [b]). Either ,(code [a]) or
+							  ,(code [b]) must be an rnumber. Both can not be integers.]))
+   (tr (td (code [(rn-bitor ,(emph [a b]))]))(td [Return logical bit or of ,(code [a]) and ,(code [b]). Either ,(code [a]) or
+							  ,(code [b]) must be an rnumber. Both can not be integers.]))))
+
+ (section
+  :title "Memory Management"
+  (paragraph
+   [Bigloo will destroy  rnumbers created by calling the bigloo rnumber construction function (rnumber-str).])))
+
+
+(chapter
   :title "Bibliography"
   :number #f 
   (font :size -1 (print-bibliography :all #t)))

@@ -27,12 +27,14 @@ ps : user.ps
 	latex $<
 
 %.tex : %.scr
+	echo "scribevars $SCRIBEVARS"
 	$(SCRIBE) $(SCRIBEFLAGS) $(SCRIBEVARS) $< -o $@
 
 user.html: user.scr bib.scr user-margin.scr
 
 user.ps: user.scr bib.scr
 
+CLEANFILES = $(userwebdata_DATA)
 PROJECT = rnumber
 PROJECT_VERSION = $(RNUMBER_VERSION)
 USER_TITLE = RNumber
