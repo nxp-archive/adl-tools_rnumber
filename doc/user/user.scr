@@ -908,7 +908,8 @@
 (chapter
  :title "Bigloo (scheme) Bindings"
  (paragraph
-  [Only the exported functions can be called by bigloo.])
+  [Only the exported functions can be called by bigloo. Currently none of the random number generation functions
+	are exported.])
 
  (section
   :title "Variables"
@@ -920,7 +921,7 @@
   (table
    (tr :bg "#cccccc" (th :align 'center :colspan 3 "Exported Functions"))
    (tr :bg "#cccccc" (th "Function")(th "Description"))
-   (tr (td (code [(rnumber? ,(emph [a]))]))(td "Returns true if ,(code [a]) is an rnumber."))
+   (tr (td (code [(rnumber? ,(emph [a]))]))(td [Returns true if ,(code [a]) is an rnumber.]))
    (tr (td (code [(rnumber-ctor ,(emph [arg]))]))(td [Constructs a new rnumber based on the argument. The argument can be
 								 null, an integer, a string, or an rnumber.]))
    (tr (td (code [(rnumber->cstr ,(emph [rnumber . radix-prefix]))]))
@@ -964,7 +965,8 @@
  (section
   :title "Memory Management"
   (paragraph
-   [Bigloo will destroy  rnumbers created by calling the bigloo rnumber construction function (rnumber-str).])))
+   [Bigloo will destroy  rnumbers created by calling the bigloo rnumber construction function 
+,(code [(rnumber-ctor ,(emph [arg]))]).])))
 
 
 (chapter
