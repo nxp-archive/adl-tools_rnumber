@@ -40,12 +40,10 @@ all: libbl-rnumber_s.a  libbl-rnumber_u.a
 libbl-rnumber_s.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
 	ar qvc libbl-rnumber_s.a bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib libbl-rnumber_s.a
-	rm libbl-rnumber_s.so
 
 libbl-rnumber_u.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
 	ar qvc libbl-rnumber_u.a bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib libbl-rnumber_u.a
-	rm libbl-rnumber_u.so
 
 libbl-rnumber_s.so: libbl-rnumber_s.a bl-rnumber.o 
 	ld -G -o libbl-rnumber_s.so bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
