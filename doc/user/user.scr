@@ -1,0 +1,43 @@
+(define *prgm-color* "#ffffcc")
+(define *output-color* "#ccbbcc")
+
+(make-index "concept-index")
+(make-index "variable-index")
+
+(bibliography "bib.scr")
+(style 'web-book 'web 'user-margin
+       'abbrev)
+
+(document
+ :title "RNumber User Manual"
+ :author (author :name "Todd Dukes" 
+		 :affiliation "Motorola High Performance Tools"
+		 :email (mailto :email "Todd.Dukes@motorola.com"
+				"Todd.Dukes@motorola.com")
+		 :phone "512-996-4865")
+
+
+ 
+ (linebreak 1)
+ (paragraph
+  [This is preliminary user documentation for RNumber.])
+ (paragraph
+  [This document desribes
+	version ] *project-version* [ of RNumber.])
+
+ (chapter
+  :title "Bibliography"
+  :number #f 
+  (font :size -1 (print-bibliography :all #t)))
+
+ (chapter
+  :title "Variable Index"
+  :number #f
+  (paragraph
+   [The Variable index contains entries for variables and functions.])
+  (print-index "variable-index"))
+ (chapter
+  :title "Concept Index"
+  :number #f
+  (print-index "concept-index"))
+ )
