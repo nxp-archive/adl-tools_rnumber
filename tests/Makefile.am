@@ -1,4 +1,4 @@
-check_PROGRAMS =  number-tests simple_test NumberTest RandTest number_test 
+check_PROGRAMS =  simple_test NumberTest RandTest number_test  driver number-tests
 
 # randtest
 
@@ -13,7 +13,7 @@ EXTRA_DIST = $(TESTS)
 #INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
-TESTS = number-tests simple_test NumberRegress  RandTest number_test
+TESTS = number-tests.scm simple_test NumberRegress  RandTest number_test
 
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a
