@@ -1,1 +1,2 @@
-(define *rnumber-version* "@@RNUMBER_VERSION@@")
+
+(define *rnumber-version* "@RNUMBER_VERSION@")

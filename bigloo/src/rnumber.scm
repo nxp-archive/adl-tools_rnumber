@@ -18,6 +18,7 @@
 	   (rn* a b)
 	   (rn-bitand a b)
 	   (rn-bitor a b))
+   (include "rnumber-version.h")
    (eval (export-exports))
    (type (subtype RNumber_proxy_t "obj_t" (obj))
 	 (coerce RNumber_proxy_t obj () ())
@@ -233,7 +234,7 @@
     ;; end of C-Random.h
     ))
 
-(define *rnumber-version* "1.6.1")
+;;(define *rnumber-version* "1.6.1")
 
 (define (rnumber-ctor arg)
    (cond ((null? arg) (bl-rnumber-create))
