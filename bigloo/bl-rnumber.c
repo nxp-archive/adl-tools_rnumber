@@ -13,7 +13,7 @@
 #include "bl-rnumber.h"
 #include "C-RNumber.h"
 
-#include "rnumber_proxy.h"
+#include "rnumber/rnumber_proxy.h"
 
 RNumber_proxy_t bl_rnumber_create() 
 {

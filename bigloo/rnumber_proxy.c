@@ -11,7 +11,7 @@
 */
 
 
-#include "rnumber_proxy.h"
+#include "rnumber/rnumber_proxy.h"
 #include "bl-rnumber.h"
 
 extern int GC_finalize_on_demand;

@@ -24,7 +24,7 @@ extern "C" {
   struct RNumber; 
 #endif
 
-#include "rnumber_proxy.h"
+#include "rnumber/rnumber_proxy.h"
 #define WORD_THRESHOLD 2
 
 RNumber_proxy_t bl_rnumber_create(); 

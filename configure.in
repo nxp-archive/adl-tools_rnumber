@@ -501,6 +501,7 @@ AC_OUTPUT([Makefile \
 	src/rnumber_feature.h \
         src/Makefile \
 	bigloo/Makefile \
+	bigloo/rnumber/Makefile \
         tests/Makefile \
 	tests/NumberRegress
         ], [chmod +x \
