@@ -15,7 +15,7 @@ pkgdatadir=${datadir}/@PACKAGE@
 transform=@program_transform_name@
 
 CFLAGS="@PROFILE@ -I@includedir@ "
-LIBDIRS="-L${pkglibdir} -R${pkglibdir} "
+LIBDIRS="-L${pkglibdir}"
 HELPER_PATH="${pkgdatadir}"
 
 rnumber_libs="$LIBDIRS -lRNumber "

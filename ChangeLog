@@ -1,3 +1,10 @@
+2003-10-20  Brian Kahne  <bkahne@ibmoto.com>
+
+	* configure.in: I've consolidated a lot of configure functionality
+	into a macro called AM_CPP_SETUP.  Use this to get the usual
+	behavior or checking for --enable-opt, --enable-profile, whether
+	you need -fPIC, etc.
+
         ====== rnumber release 1.20.3 (v1_20_3) on Linux (cde-tx32-lc002) ======
 
         ====== rnumber release 1.20.3 (v1_20_3) on Linux (cde-tx32-lc002) ======
