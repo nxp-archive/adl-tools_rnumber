@@ -14,7 +14,7 @@ AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 #
 RNUMBER_MAJOR_VERSION=1
 RNUMBER_MINOR_VERSION=13
-RNUMBER_MICRO_VERSION=3
+RNUMBER_MICRO_VERSION=4
 RNUMBER_INTERFACE_AGE=0
 RNUMBER_BINARY_AGE=0
 RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
@@ -114,6 +114,21 @@ AC_MSG_RESULT(efence will not be used)
 )
 AC_SUBST(EFENCE)
 
+web_stuff=0
+AC_ARG_ENABLE(web-home,
+[  --web-home=<prefix>    Prefix directory to install web-stuff. (examples, html documentation, etc...)
+                          If not specified, web materials are not installed.],
+ if test x$enableval = x; then
+    WEB_HOME=""
+    web_stuff=false
+ else
+    WEB_HOME=$enableval
+    web_stuff=true;
+ fi
+ AC_MSG_RESULT("Web home is '$WEB_HOME'")
+)
+
+AM_CONDITIONAL(WEB_STUFF, test x$web_stuff = xtrue)
 
 AM_MAINTAINER_MODE
 AC_PROG_CC
