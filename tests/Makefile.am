@@ -10,7 +10,7 @@ simple_test_SOURCES = simple_test.c c-io.C
 
 EXTRA_DIST = $(TESTS) 
 
-INCLUDES = -I ../src
+INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
 TESTS = simple_test NumberRegress  RandTest number_test
 

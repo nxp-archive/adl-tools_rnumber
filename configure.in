@@ -484,6 +484,7 @@ AC_OUTPUT([Makefile \
         rnumber-config \
         doc/Makefile \
 	macros/Makefile \
+	include/Makefile \
         src/rnumber_exceptions.h \
         src/Makefile \
         tests/Makefile \
