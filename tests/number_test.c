@@ -151,12 +151,12 @@ static unsigned checkMutator (unsigned size, char *op, struct Calculator *calc)
   for (i = 0; i < maxIter; i++) {
     unsigned size1 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
     unsigned size2 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
-    struct RNumber * a = 0;
+    struct RNumber * a = rnumber_create_from_unsigned_of_size_variable_sizing(0,size1);
     struct RNumber * b = 0;
     struct RNumber * tmp = 0;
 
-    a = random_get_rnumber(size1);
-    rnumber_assign(tmp, a);
+    rnumber_assign(a, random_get_rnumber(size1));
+    tmp = rnumber_create_from_rnumber( a);
     if (op[0] == '/' || op[0] == '%') {
       do {
         b = random_get_rnumber (size2);
@@ -190,8 +190,8 @@ static unsigned checkIntMutator (unsigned size, char *op, struct Calculator *cal
     unsigned b;
     struct RNumber *tmp = rnumber_create_from_unsigned_of_size(0, size1);
 
-    a = random_get_rnumber (size1);
-    tmp = a;
+    rnumber_assign(a, random_get_rnumber (size1));
+    rnumber_assign(tmp, a);
     if (op[0] == '/' || op[0] == '%') {
       do {
         b = random_get_integer ();
@@ -437,8 +437,8 @@ static unsigned checkIntComparator (unsigned size, char *op, struct Calculator *
       res2 = rnumber_rn_greaterthan_ui(a, c);
     }
     else if (strcmp (op, ">=") == 0) {
-      res1 = rnumber_rn_lessequal_ui(a, b);
-      res2 = rnumber_rn_lessequal_ui(a, c);
+      res1 = rnumber_rn_greaterequal_ui(a, b);
+      res2 = rnumber_rn_greaterequal_ui(a, c);
     }
     else if (strcmp (op, "<") == 0) {
       res1 = rnumber_rn_lessthan_ui(a, b);
@@ -617,7 +617,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
   for (i = 0; i < 50; i++) {
     unsigned size1 = (size > 0) ? size : random_get_from_range_unsigned (1, 100);
     struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
-    unsigned n = random_get_integer(size1);
+    unsigned n = random_get_integer_n(size1);
     struct RNumber * b = rnumber_create_from_unsigned_of_size(1, size1);
     struct RNumber * c = rnumber_create_from_unsigned_of_size(1, size1);
     unsigned shift = size1 - n - 1;
@@ -630,7 +630,8 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
       rc = 1;
     }
     if (rnumber_getbit(a, n) != 1) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, rnumber_cstr(a), size1);
+      printf ("%s:%d Error occurred in getting bit %d of %s(%d)\n", __FILE__, __LINE__, 
+	      n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
@@ -641,7 +642,8 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
       rc = 1;
     }
     if (rnumber_getbit_lsb(a, n) != 1) {
-      printf ("Error occurred in getting bit %d of %s(%d)\n", n, rnumber_cstr(a), size1);
+      printf ("%s:%d Error occurred in getting bit %d of %s(%d)\n", __FILE__, __LINE__,
+	      n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
@@ -681,14 +683,15 @@ static unsigned checkFieldAccessors (unsigned size)
   for (i = 0; i < 50; i++) {
     unsigned size1 = (size > 0) ? size : random_get_from_range_unsigned (1, 100);
     struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
-    unsigned n1 = random_get_integer (size1);
+    unsigned n1 = random_get_integer_n (size1);
     unsigned n2 = random_get_from_range_unsigned(n1, size1 - 1);
     unsigned len = n2 - n1 + 1;
     struct RNumber *  field = rnumber_create_from_unsigned_of_size(0, len);
-    struct RNumber * b = rnumber_copy_to_size(field, size1);
+    struct RNumber * b = 0;
     unsigned shift = size1 - n2 - 1;
 
     rnumber_set_all(field);
+    b = rnumber_copy_to_size(field, size1);
     rnumber_leftshift_assign(b, rnumber_create_from_unsigned(shift));
 
     rnumber_set_field(a, n1, n2, field);
@@ -696,8 +699,9 @@ static unsigned checkFieldAccessors (unsigned size)
       printf ("Error occurred in setting field %d:%d of 0 to produce %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
-    if (rnumber_getfield(a, n1, n2) != field) {
-      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
+    if (rnumber_rn_notequal_rn(rnumber_getfield(a, n1, n2), field)) {
+      printf ("%s:%d Error occurred in getting field %d:%d of %s(%d)\n", __FILE__, __LINE__,
+	      n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
@@ -710,14 +714,15 @@ static unsigned checkFieldAccessors (unsigned size)
     rnumber_set_all(a);
     rnumber_invert(b);
 
-    rnumber_set_field(a,n1, n2, 0);
+    rnumber_set_field(a,n1, n2, rnumber_create_from_unsigned(0));
     if (rnumber_rn_notequal_rn(a, b)) {
       printf ("Error occurred in clearing field %d:%d of ones to produce %s(%d)\n", n1, n2, 
 	      rnumber_cstr(a), size1);
       rc = 1;
     }
-    if (rnumber_get_uint_field(a, n1, n2) != 0) {
-      printf ("Error occurred in getting field %d:%d of %s(%d)\n", n1, n2, rnumber_cstr(a), size1);
+    if (rnumber_rn_notequal_ui(rnumber_getfield(a, n1, n2), 0)) {
+      printf ("%s:%d Error occurred in getting field %d:%d of %s(%d)\n", __FILE__, __LINE__,
+	      n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
@@ -738,7 +743,7 @@ static unsigned checkSignExtends (unsigned size)
   for (i = 0; i < 50; i++) {
     unsigned size1 = (size > 0) ? size : random_get_from_range_unsigned (1, 100);
     struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
-    unsigned n = random_get_integer(size1);
+    unsigned n = random_get_integer_n(size1);
     struct RNumber * b = rnumber_create_from_unsigned_of_size (0, size1);
     unsigned shift = size1 - n - 1;
     rnumber_set_all(b);
@@ -747,7 +752,8 @@ static unsigned checkSignExtends (unsigned size)
     rnumber_setbit(a,n, 1);
     rnumber_sign_extend(a,n);
     if (rnumber_rn_notequal_rn(a, b)) {
-      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, rnumber_cstr(a), size1);
+      printf ("%s:%d Error occurred in extending bit %d; produced %s(%d)\n", __FILE__, __LINE__,
+	      n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
@@ -756,8 +762,9 @@ static unsigned checkSignExtends (unsigned size)
     rnumber_invert(b);
 
     rnumber_sign_extend(a,n);
-    if (a != b) {
-      printf ("Error occurred in extending bit %d; produced %s(%d)\n", n, rnumber_cstr(a), size1);
+    if (rnumber_rn_notequal_rn(a, b)) {
+      printf ("%s:%d Error occurred in extending bit %d; produced %s(%d)\n", __FILE__, __LINE__,
+	      n, rnumber_cstr(a), size1);
       rc = 1;
     }
   }
@@ -1105,7 +1112,7 @@ static unsigned checkShifts (unsigned size)
 
   for (i = 0; i < maxIter; i++) {
     unsigned size1 = (size > 0) ? size : random_get_from_range_unsigned(1, 100);
-    unsigned n = random_get_integer (size1);
+    unsigned n = random_get_integer_n(size1);
     struct RNumber * rn = rnumber_create_from_unsigned(n);
     struct RNumber * a = rnumber_create_from_unsigned_of_size (0, size1);
     struct RNumber * b = rnumber_create_from_unsigned_of_size (0, size1 - n);
@@ -1116,8 +1123,8 @@ static unsigned checkShifts (unsigned size)
     {
       struct RNumber * tmpe = rnumber_rn_rightshift_ui(rnumber_rn_leftshift_ext_ui(a,n), n);
       if (rnumber_rn_notequal_rn(tmpe, a)) {
-	printf ("Error occurred in extendable shifting %s(%d) by %d; produced %s\n", 
-		rnumber_cstr(a), size1, n, rnumber_cstr(tmpe));
+	printf ("%s:%d Error occurred in extendable shifting %s(%d) by %d; produced %s\n", 
+		__FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmpe));
 	printf ("  Expected %s\n", rnumber_cstr(a));
 	rc = 1;
       }
@@ -1488,7 +1495,7 @@ int main (int argc, char **argv)
   _argv = argv;
 
   {
-    char * path = "/bin";
+    char * path = "/usr/bin";
     char * prog = "dc";
     char * pgm = "";
     unsigned seed = 0;
@@ -1883,8 +1890,8 @@ unsigned calculator_check_arith_unsigned (struct Calculator * calc, const struct
 
   if ( !ext && (op[0] != '%' && rnumber_size(c) != max( rnumber_size(a), (unsigned int) 32 ) ))
   {
-    printf ("Result size error (2) occurred in expression:  %s(%d) %s(%d) (%d) %s\n",
-            astr, rnumber_size(a), bstr, 32, rnumber_size(c), op);
+    printf ("%s:%d Result size error (2) occurred in expression:  %s(%d) %s(%d) (%d) %s\n",
+            __FILE__, __LINE__, astr, rnumber_size(a), bstr, 32, rnumber_size(c), op);
     return 1;
   }
 
@@ -1908,9 +1915,10 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
 
   char cmd[1024];
   char buf[1024];
-/*   printf("%s:%d - astr %s - bstr %s c %s - op %c - ext %d\n", __FILE__, __LINE__,  */
-/* 	 astr, bstr,  rnumber_cstr(c), *op, ext); */
+/*   printf("%s:%d - astr %s - bstr %s c %s - op %c - ext %d\n", __FILE__, __LINE__,   */
+/*  	 astr, bstr,  rnumber_cstr(c), *op, ext);   */
   sprintf (cmd, "%s %s %c p c\n", astr, bstr, op[0]);
+  /*  printf("%s:%d - cmd %s\n", __FILE__, __LINE__, cmd);*/
   {
     int n = strlen (cmd);
     if (write (calc->_fd1[1], cmd, strlen (cmd)) != n) {
@@ -1953,7 +1961,8 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
     }
 
     if (rnumber_rn_notequal_rn(res, c)) {
-      printf ("%s:%d Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", __FILE__, __LINE__, astr, asize, bstr, bsize, op);
+      printf ("%s:%d Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", 
+	      __FILE__, __LINE__, astr, asize, bstr, bsize, op);
       printf ("  RNumber res = %s, dc res = %s\n", rnumber_cstr(c), rnumber_cstr(res));
       rc = 1;
       exit(1);
@@ -2127,7 +2136,8 @@ unsigned calculator_check_comparator_unsigned (Calculator * calc, const struct R
     assert (0);
 
   if (! rc) {
-    printf ("Error (5) occurred in expression:  %s(%d) %s %s\n", astr, rnumber_cstr(a) , bstr, op);
+    printf ("%s:%d Error (5) occurred in expression:  %s(%d) %s %s\n", 
+	    __FILE__, __LINE__, astr, rnumber_cstr(a) , bstr, op);
     printf ("  RNumber res = %d, subtract output = %s", res, buf);
     rc = 1;
   }

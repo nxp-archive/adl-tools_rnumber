@@ -85,11 +85,7 @@ RNumber * rnumber_create_from_string_of_radix( char * number, int radix )
 
 RNumber * rnumber_create_from_string_of_radix_variable_sizing( char * number, int radix )
 {
-  string s(number);
-  V1("number " << number << " s " << s << " radix " << radix);
-  RNumber rn( s, get_radix(radix), RNumber::dynamic);
-  V1 ("rn " << ::hex << rn);
-  return new RNumber( s, get_radix(radix), RNumber::dynamic);
+  return new RNumber( string(number), get_radix(radix), RNumber::dynamic);
 }
 
 RNumber * rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix)
