@@ -1,5 +1,6 @@
-#!/usr/local/bin/perl -w
-##!/usr/local/bin/perl -w
+: # -*- perl -*-
+eval 'exec perl -w -S $0 ${1+"$@"}'
+    if 0;
 
 use strict;
 #use lib '/local1/work/lib/rnumber';
@@ -8,8 +9,10 @@ use lib '../src';
 use rnumber;
 
 sub predicates {
+  my $x = $_[0];
+  my $y = rnumberp($_[1]);
   print 
-      "rnumberp(". $_[0] . ")=" . rnumberp($_[1]) . 
+      "rnumberp(". $_[0] . ")=" . rnumberp($_[1]) .
       " integerp(". $_[0]. ")=" . integerp($_[1]) . 
       " numbericp(".$_[0]. ")=" . numericp($_[1]) . 
       " stringp(". $_[0]. ")="  . stringp($_[1]) . 
@@ -17,7 +20,8 @@ sub predicates {
 }
 
 #see what happens with floats.
-predicates ("integer 10", 10);
-predicates ("float 10.5", 10.5);
+predicates ("integer 10 ", 10);
+predicates ("float 10.5 ", 10.5);
+predicates ("rn 10      ", rn_ctor("10"));
 
 print rn_cstr(rn_plus ( rn_ctor ("10"), 10.54),10) . "\n";

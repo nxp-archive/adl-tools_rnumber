@@ -4,7 +4,7 @@
 ** $Revision$
 ** $Date$
 ** $Author$
-**
+nn**
 ** Handwritten functions for perl wrapper.
 ** ===========================================================================
 */
@@ -73,8 +73,7 @@ XS(_wrap_numericp) {
 #ifdef __cplusplus
 extern "C"
 #endif
-int rnumber_predicate_init()
-{
+int rnumber_predicate_init() {
   char *file = __FILE__;
   newXS("rnumber::stringp", _wrap_stringp, file);
   newXS("rnumber::integerp", _wrap_integerp, file);

@@ -96,6 +96,8 @@ PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERLBINDINGS = @PERLBINDINGS@
 PERLPROG = @PERLPROG@
+PERL_ARCH_INCL = @PERL_ARCH_INCL@
+PERL_CC_FLAGS = @PERL_CC_FLAGS@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
 RNUMBER_BINARY_AGE = @RNUMBER_BINARY_AGE@
@@ -408,7 +410,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/. $(distdir)/bigloo/src $(distdir)/src $(distdir)/tests
+	$(mkinstalldirs) $(distdir)/. $(distdir)/bigloo/src $(distdir)/src
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
 	  case $$file in \

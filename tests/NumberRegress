@@ -1,10 +1,13 @@
-#!@PERLPROG@ -- -*-perl-*-a
+: # -*- perl -*-
+eval 'exec perl -w -S $0 ${1+"$@"}'
+    if 0;
+
 #
 # Simple regression test for RValue iteration
 #
 
 $test = "./NumberTest";
-$prog = "@DCPROG@";
+$prog = "/bin/dc";
 
 # Run the program
 if (system("$test -dc $prog")) {

@@ -271,7 +271,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
 ac_unique_file="src/RNumber.C"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS RNUMBER_MAJOR_VERSION RNUMBER_MINOR_VERSION RNUMBER_MICRO_VERSION RNUMBER_INTERFACE_AGE RNUMBER_BINARY_AGE RNUMBER_VERSION INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE EFENCE WEB_STUFF_TRUE WEB_STUFF_FALSE WEB_HOME MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP LEX LEXLIB LEX_OUTPUT_ROOT YACC M4 DCPROG PERLPROG BIGLOOPROG BIGLOO_LIBDIR BIGLOO WITHOUT_BIGLOO_TRUE WITHOUT_BIGLOO_FALSE SWIGPROG PERLBINDINGS WITHOUT_SWIG_TRUE WITHOUT_SWIG_FALSE SCRIBEPROG DOC WITHOUT_DOC_TRUE WITHOUT_DOC_FALSE CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE AIX_TRUE AIX_FALSE PROFILE ACLOCAL_FLAGS EXPLTEMPLATES CXXCPP EGREP LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS RNUMBER_MAJOR_VERSION RNUMBER_MINOR_VERSION RNUMBER_MICRO_VERSION RNUMBER_INTERFACE_AGE RNUMBER_BINARY_AGE RNUMBER_VERSION INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE EFENCE WEB_STUFF_TRUE WEB_STUFF_FALSE WEB_HOME MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP LEX LEXLIB LEX_OUTPUT_ROOT YACC M4 DCPROG PERLPROG BIGLOOPROG BIGLOO_LIBDIR BIGLOO WITHOUT_BIGLOO_TRUE WITHOUT_BIGLOO_FALSE SWIGPROG PERL_ARCH_INCL PERL_CC_FLAGS PERLBINDINGS WITHOUT_SWIG_TRUE WITHOUT_SWIG_FALSE SCRIBEPROG DOC WITHOUT_DOC_TRUE WITHOUT_DOC_FALSE CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE AIX_TRUE AIX_FALSE PROFILE ACLOCAL_FLAGS EXPLTEMPLATES CXXCPP EGREP LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3421,37 +3421,41 @@ test -n "$YACC" || YACC="yacc"
 echo "$as_me:$LINENO: checking for flex prefix " >&5
 echo $ECHO_N "checking for flex prefix ... $ECHO_C" >&6
 
-# Extract the first word of "flex", so it can be a program name with args.
-set dummy flex; ac_word=$2
-case "$FLEX" in
-/*)
-ac_cv_path_FLEX="$FLEX" # Let the user override the test with a path.
-;;
-?:/*)
-ac_cv_path_FLEX="$FLEX" # Let the user override the test with a dos path.
-;;
-*)
-IFS="${IFS=     }"; ac_save_ifs="$IFS"; IFS=":"
-ac_dummy="$PATH"
-for ac_dir in $ac_dummy; do
-  test -z "$ac_dir" && ac_dir=.
-  if test -f $ac_dir/$ac_word; then
-    ac_cv_path_FLEX="$ac_dir/$ac_word"
+ set dummy flex; ac_word=$2
+ case "$FLEX" in
+ /*)
+ ac_cv_path_FLEX="$FLEX" # Let the user override the test with a path.
+ ;;
+ ?:/*)
+ ac_cv_path_FLEX="$FLEX" # Let the user override the test with a dos path.
+ ;;
+ *)
+ IFS="${IFS=     }"; ac_save_ifs="$IFS"; IFS=":"
+ ac_dummy="$PATH"
+ for ac_dir in $ac_dummy; do
+   test -z "$ac_dir" && ac_dir=.
+   if test -f $ac_dir/$ac_word; then
+     ac_cv_path_FLEX="$ac_dir/$ac_word"
     ac_flex_prefix=`echo $ac_dir|sed 's/\/bin$//'`
-    break
-  fi
-done
-IFS="$ac_save_ifs"
-;;
-esac
-FLEX="$ac_cv_path_FLEX"
-if test -n "$FLEX"; then
-  echo "$ac_t""$FLEX" 1>&6
-else
-  echo "$ac_t""no" 1>&6
-fi
+     break
+   fi
+ done
+ IFS="$ac_save_ifs"
+ ;;
+ esac
+ FLEX="$ac_cv_path_FLEX"
+ if test -n "$FLEX"; then
+   echo "$ac_t""$FLEX" 1>&6
+ else
+   echo "$ac_t""no" 1>&6
+ fi
 
+ if test -n "$ac_cv_path_FLEX"; then
+      ac_flex_prefix=`echo $ac_cv_path_FLEX|sed 's%/^/^/*//*^/^/*$%%'`
+      ac_flex_prefix=$ac_dir
+ fi
 
+ac_flex_prefix=${FLEX%flex}/..
 echo "$as_me:$LINENO: checking for FlexLexer.h in $ac_flex_prefix/include" >&5
 echo $ECHO_N "checking for FlexLexer.h in $ac_flex_prefix/include... $ECHO_C" >&6
 if test -f $ac_flex_prefix/include/FlexLexer.h
@@ -3599,7 +3603,7 @@ fi
 # Check whether --enable-bigloo-bindings or --disable-bigloo-bindings was given.
 if test "${enable_bigloo_bindings+set}" = set; then
   enableval="$enable_bigloo_bindings"
-  BIGLOOBINDINGS=
+  BIGLOOBINDINGS=0
 else
   BIGLOOBINDINGS=1
 
@@ -3653,12 +3657,33 @@ echo "$as_me: WARNING: \"Bigloo is available from http://www-sop.inria.fr/mimosa
 echo "$as_me: WARNING: \"Bigloo bindings will *not* be built.\"" >&2;}
 	   BIGLOO=
 	else
-   	BIGLOO=bigloo
+   	   BIGLOO=bigloo
 	   echo "$as_me:$LINENO: result: Bigloo Program:  $BIGLOOPROG" >&5
 echo "${ECHO_T}Bigloo Program:  $BIGLOOPROG" >&6
-   	BIGLOO_BINDIR=`dirname $BIGLOOPROG`
-	   BIGLOO_REVISION=`bigloo -revision`
-   	BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
+   	   BIGLOO_BINDIR=`dirname $BIGLOOPROG`
+           BIGLOO_REVISION=`bigloo -revision`
+	   BIGLOO_MAJOR=`echo $BIGLOO_REVISION | \
+	              sed 's/\([0-9]*\).\([0-9]*\)\([a-zA-Z]*\)/\1/'`
+	   BIGLOO_MINOR=`echo $BIGLOO_REVISION | \
+	              sed 's/\([0-9]*\).\([0-9]*\)\([a-zA-Z]*\)/\2/'`
+	   BIGLOO_MICRO=`echo $BIGLOO_REVISION | \
+	              sed 's/\([0-9]*\).\([0-9]*\)\([a-zA-Z]*\)/\3/'`
+           echo "$as_me:$LINENO: result: \"bigloo major $BIGLOO_MAJOR minor $BIGLOO_MINOR micro $BIGLOO_MICRO\"" >&5
+echo "${ECHO_T}\"bigloo major $BIGLOO_MAJOR minor $BIGLOO_MINOR micro $BIGLOO_MICRO\"" >&6
+	   if test $BIGLOO_MAJOR -ge 2 ;then
+	     if test $BIGLOO_MINOR -ge 6; then
+	     	   BIGLOO_NEW_ENOUGH=yes;
+             else
+		   BIGLOO=
+                   BIGLOO_NEW_ENOUGH=no;
+             fi
+           else
+   		   BIGLOO=;
+		   BIGLOO_NEW_ENOUGH=no;
+           fi
+           echo "$as_me:$LINENO: result: \"bigloo new enough (need 2.6a or newer): $BIGLOO_NEW_ENOUGH\"" >&5
+echo "${ECHO_T}\"bigloo new enough (need 2.6a or newer): $BIGLOO_NEW_ENOUGH\"" >&6
+   	   BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
 	   echo "$as_me:$LINENO: result: Bigloo bin dir:  $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR" >&5
 echo "${ECHO_T}Bigloo bin dir:  $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR" >&6
 
@@ -3670,7 +3695,7 @@ fi
 
 
 
-if test x$BIGLOO = x; then
+if test x$BIGLOO == x; then
   WITHOUT_BIGLOO_TRUE=
   WITHOUT_BIGLOO_FALSE='#'
 else
@@ -3678,6 +3703,11 @@ else
   WITHOUT_BIGLOO_FALSE=
 fi
 
+
+if test x$BIGLOO == x; then
+   { echo "$as_me:$LINENO: WARNING: Bigloo bindings will not be built." >&5
+echo "$as_me: WARNING: Bigloo bindings will not be built." >&2;}
+fi
 
 # Check whether --enable-perl-bindings or --disable-perl-bindings was given.
 if test "${enable_perl_bindings+set}" = set; then
@@ -3736,13 +3766,21 @@ echo "$as_me: WARNING: \"Swig is available from http://www.swig.org/.\"" >&2;}
 echo "$as_me: WARNING: \"Since swig is needed for the perl bindings\" >&2;}
 	   PERLBINDINGS=
 	else
-   	PERLBINDINGS=perl
-	   echo "$as_me:$LINENO: result: SWIG: $SWIGPROG" >&5
+           PERLBINDINGS=perl
+	   PERL_ARCH_INCL="-I `perl -e 'use Config;print $Config{archlib};'`/CORE"
+	   PERL_CC_FLAGS="-fPIC `perl -e 'use Config; print $Config{ccflags}'`"
+           echo "$as_me:$LINENO: result: SWIG: $SWIGPROG" >&5
 echo "${ECHO_T}SWIG: $SWIGPROG" >&6
+           echo "$as_me:$LINENO: result: SWIG: $PERL_ARCH_INCL" >&5
+echo "${ECHO_T}SWIG: $PERL_ARCH_INCL" >&6
+           echo "$as_me:$LINENO: result: SWIG: $PERL_CC_FLAGS" >&5
+echo "${ECHO_T}SWIG: $PERL_CC_FLAGS" >&6
 	fi
 else
 	echo "The building of Perl bindings has been disabled."
 fi
+
+
 
 
 
@@ -5414,9 +5452,6 @@ fi
                                                                                                                                                                 ac_config_files="$ac_config_files Makefile doc/Makefile doc/user/Makefile macros/Makefile include/Makefile src/rnumber_feature.h src/Makefile bigloo/Makefile bigloo/src/Makefile bigloo/src/rnumber-version.h bigloo/src/rnumber/Makefile bigloo/tests/Makefile perl/Makefile perl/src/Makefile perl/tests/Makefile tests/Makefile"
 
 
-          ac_config_files="$ac_config_files tests/NumberRegress"
-
-
           ac_config_files="$ac_config_files rnumber-config"
 
 
@@ -6033,7 +6068,6 @@ do
   "perl/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES perl/src/Makefile" ;;
   "perl/tests/Makefile" ) CONFIG_FILES="$CONFIG_FILES perl/tests/Makefile" ;;
   "tests/Makefile" ) CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
-  "tests/NumberRegress" ) CONFIG_FILES="$CONFIG_FILES tests/NumberRegress" ;;
   "rnumber-config" ) CONFIG_FILES="$CONFIG_FILES rnumber-config" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
@@ -6185,6 +6219,8 @@ s,@BIGLOO@,$BIGLOO,;t t
 s,@WITHOUT_BIGLOO_TRUE@,$WITHOUT_BIGLOO_TRUE,;t t
 s,@WITHOUT_BIGLOO_FALSE@,$WITHOUT_BIGLOO_FALSE,;t t
 s,@SWIGPROG@,$SWIGPROG,;t t
+s,@PERL_ARCH_INCL@,$PERL_ARCH_INCL,;t t
+s,@PERL_CC_FLAGS@,$PERL_CC_FLAGS,;t t
 s,@PERLBINDINGS@,$PERLBINDINGS,;t t
 s,@WITHOUT_SWIG_TRUE@,$WITHOUT_SWIG_TRUE,;t t
 s,@WITHOUT_SWIG_FALSE@,$WITHOUT_SWIG_FALSE,;t t
@@ -6412,7 +6448,6 @@ s,@INSTALL@,$ac_INSTALL,;t t
 
   # Run the commands associated with the file.
   case $ac_file in
-    tests/NumberRegress ) chmod +x tests/NumberRegress ;;
     rnumber-config ) chmod +x rnumber-config ;;
   esac
 done

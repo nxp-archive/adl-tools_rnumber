@@ -96,6 +96,8 @@ PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERLBINDINGS = @PERLBINDINGS@
 PERLPROG = @PERLPROG@
+PERL_ARCH_INCL = @PERL_ARCH_INCL@
+PERL_CC_FLAGS = @PERL_CC_FLAGS@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
 RNUMBER_BINARY_AGE = @RNUMBER_BINARY_AGE@
@@ -473,7 +475,7 @@ uninstall-am: uninstall-info-am
 
 
 % : %.scm
-	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
+	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH)  -o $@ $< $(BIGLOO_LIB_OPTIONS)
 
 simple-number-test: simple-number-test.scm
 number-tests: number-tests.scm

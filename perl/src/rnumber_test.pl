@@ -1,5 +1,10 @@
-#!/usr/local/bin/perl -w
-###!/usr/bin/env perl -w
+: # -*- perl -*-
+eval 'exec perl -w -S $0 ${1+"$@"}'
+    if 0;
+
+use strict;
+
+print "This is perl.\n";
 
 use lib '.';
 use pl_rnumber;

@@ -1,8 +1,7 @@
-#!/usr/local/bin/perl -w
+: # -*- perl -*-
+eval 'exec perl -w -S $0 ${1+"$@"}'
+    if 0;
 
-use strict;
-#use lib '/local1/work/lib/rnumber';
-#use lib '/cad/tools/rnumber/1.11.2/lib/rnumber';
 use lib '../src';
 use rnumber;
 
@@ -29,9 +28,17 @@ predicates("b", $b);
 predicates("c", $c);
 predicates("foo", $foo);
 
+print "31:\n";
 $c = rn_plus($a,$b);
+print "33:\n";
+print "b:  ", $b, "\n";
+print "35:\n";
 
 print "a:  ", rn_cstr($a,10), " ", rn_cstr($a,16), "\n";
+print "38:\n";
 printf "b:  $b 0x%x\n", $b;
+print "40:\n";
 predicates("c",$c);
+print "42:\n";
 print "c:  ", rn_cstr($c,16), "\n";
+print "44:\n";

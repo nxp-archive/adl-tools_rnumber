@@ -36,7 +36,7 @@
 	 (section "Options")
 	 ((("-I" "--include")
 	   ?dir
-	   (synopsis "Add  to load file search path"))
+	   (help "Add  to load file search path"))
 	  (push! *load-path* dir))
 	 (else (push! in else)))
       (if (null? in)

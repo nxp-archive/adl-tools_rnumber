@@ -1,3 +1,8 @@
+2003-08-01  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  changes for bigloo 2.6a and swig. bigloo 2.6a is
+	   now required for scheme bindings.
+
 2003-04-21  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	*  Made some radix and prefix related changes.
@@ -22,6 +27,14 @@
         ============== rnumber release 1.17.9 (v1_17_9) on SunOS ==============
 
         ============== rnumber release 1.17.9 (v1_17_9) on SunOS ==============
+
+2003-05-19  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	* bigloo/tests/driver.scm: fixed bug in argument parsing.
+
+2003-04-21  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  Made some radix and prefix related changes.
 
 2003-05-13  Brian Kahne  <bkahne@ibmoto.com>
 

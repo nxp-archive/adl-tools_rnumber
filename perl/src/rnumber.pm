@@ -15,20 +15,19 @@ sub rnumberp {
   unless (ref $a) {
     return 0;
   };
-  if ($a->isa("RNumber")) {
+  # for some reason, perl 5 and 5.[68] use a different string for the name of the structure.
+  # if this can be calculated instead of hardcoded, the code below should change.
+  if ($a->isa("_p_RNumber") || $a->isa("RNumber")) {
     return 1;
   }
   return 0;
 }
 
-
-sub rn_version
-{
+sub rn_version {
   print "rnumber_version is currently unimplemented\n";
 }
 
-sub rn_ctor 
-{
+sub rn_ctor {
   my $number = shift;
   my $size;
   if ($size = shift) {
@@ -53,8 +52,7 @@ sub rn_ctor
   return 0;
 }
 
-sub rn_cstr
-{
+sub rn_cstr {
   my $number = shift @_;
   my $radix;
   if ( $radix = shift @_) {
@@ -69,18 +67,15 @@ sub rn_cstr
   return RNumber::rnumber_cstr($number);
 }
 
-sub rn_parse_string 
-{
+sub rn_parse_string {
   print "rnumber_parse_string is currently unimplemented\n";
 }
 
-sub rn_int
-{
+sub rn_int {
   return rnumber_get_uint($_[0]);
 }
 
-sub rn_eq
-{
+sub rn_eq {
   my $first_rn = rnumberp($_[0]);
   my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
@@ -93,7 +88,7 @@ sub rn_eq
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_equal_rn(@_);
   } else {
-    return ($a = $b);
+    return ($_[0] = $_[1]);
   }
 }
 
@@ -114,7 +109,7 @@ sub rn_lt {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_lessthan_rn(@_);
   } else {
-    return ($a < $b);
+    return ($_[0] < $_[1]);
   }
 }
 
@@ -131,7 +126,7 @@ sub rn_le {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_lessequal_rn(@_);
   } else {
-    return ($a <= $b);
+    return ($_[0] <= $_[1]);
   }
 }
 
@@ -148,7 +143,7 @@ sub rn_gt {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_greaterthan_rn(@_);
   } else {
-    return ($a > $b);
+    return ($_[0] > $_[1]);
   }
 }
 
@@ -165,7 +160,7 @@ sub rn_ge {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_greaterequal_rn(@_);
   } else {
-    return ($a <= $b);
+    return ($_[0] <= $_[1]);
   }
 }
 
@@ -182,7 +177,7 @@ sub rn_ls {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_leftshift_rn($_[0], ($_[1] % 32));
   } else {
-    return ($a << $b);
+    return ($_[0] << $_[1]);
   }
 }
 
@@ -199,7 +194,7 @@ sub rn_rs {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_rightshift_rn($_[0], ($_[1] % 32));
   } else {
-    return ($a >> $b);
+    return ($_[0] >> $_[1]);
   }
 }
 
@@ -209,9 +204,6 @@ sub rn_plus {
   my $second_rn = rnumberp($_[1]);
   my $second_ui = numericp($_[1]);
 
-#  print  "first_rn  '$first_rn' first_ui  '$first_ui' second_rn '$second_rn' second_ui '$second_ui'\n";
-#  print "\@_ @_\n";
-
   if ($first_rn && $second_rn) {
     return RNumber::rnumber_rn_plus_rn(@_);
   } elsif ($first_rn && $second_ui) {
@@ -219,7 +211,7 @@ sub rn_plus {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_plus_rn(@_);
   } else {
-    return ($a + $b);
+    return ($_[0] + $_[1]);
   }
 }
 
@@ -239,7 +231,7 @@ sub rn_minus {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_minus_rn(@_);
   } else {
-    return ($a - $b);
+    return ($_[0] - $_[1]);
   }
 }
 
@@ -256,7 +248,7 @@ sub rn_div {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_divide_rn(@_);
   } else {
-    return ($a / $b);
+    return ($_[0] / $_[1]);
   }
 }
 
@@ -273,7 +265,7 @@ sub rn_mult {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_multiply_rn(@_);
   } else {
-    return ($a * $b);
+    return ($_[0] * $_[1]);
   }
 }
 
@@ -290,7 +282,7 @@ sub rn_bitor {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_bitor_rn(@_);
   } else {
-    return ($a | $b);
+    return ($_[0] | $_[1]);
   }
 }
 
@@ -307,7 +299,7 @@ sub rn_bitand {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_bitand_rn(@_);
   } else {
-    return ($a & $b);
+    return ($_[0] & $_[1]);
   }
 }
 
@@ -324,7 +316,7 @@ sub rn_mod {
   } elsif ($first_ui && $second_rn) {
     return RNumber::rnumber_ui_mod_rn(@_);
   } else {
-    return ($a % $b);
+    return ($_[0] % $_[1]);
   }
 }
 

@@ -84,9 +84,9 @@ int rnumber_proxy_is_equal( obj_t lhs, obj_t rhs)
   
   if ( lhs_rnumber ) {
       if ( rhs_rnumber )
-	return rnumber_rn_equal_rn(RNUM_FROM_PROXY(lhs), RNUM_FROM_PROXY(rhs));
+        return rnumber_rn_equal_rn(RNUM_FROM_PROXY(lhs), RNUM_FROM_PROXY(rhs));
       else
-	return rnumber_rn_equal_ui(RNUM_FROM_PROXY(lhs), rhs->integer);
+        return rnumber_rn_equal_ui(RNUM_FROM_PROXY(lhs), rhs->integer);
   } 
   if ( rhs_rnumber )
     return rnumber_rn_equal_rn(lhs->integer, RNUM_FROM_PROXY(rhs));
