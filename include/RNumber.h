@@ -17,6 +17,7 @@
 #define RNUMBER_H "$Id$"
 
 #include <algo.h>
+#include <iostream>
 #include <string>
 
 #include "types.h"
@@ -36,12 +37,12 @@ public:
   RNumber( const RNumber& number );
   RNumber( unsigned int number, Sizing sizing = fixed );
   RNumber( unsigned int number, unsigned int size, Sizing sizing = fixed );
-  RNumber( const string& number, Sizing sizing = fixed );
-  RNumber( const string& number, unsigned int size, Sizing sizing = fixed );
-  RNumber( const string& number, Radix radix, Sizing sizing = fixed );
-  RNumber( const string& number, unsigned int size, Radix radix, Sizing sizing = fixed );
+  RNumber( const std::string& number, Sizing sizing = fixed );
+  RNumber( const std::string& number, unsigned int size, Sizing sizing = fixed );
+  RNumber( const std::string& number, Radix radix, Sizing sizing = fixed );
+  RNumber( const std::string& number, unsigned int size, Radix radix, Sizing sizing = fixed );
   RNumber( const RNumber& number, unsigned int size, Sizing sizing = fixed );
-  RNumber( unsigned int radix, const string& str, int size = -1 );  // deprecated
+  RNumber( unsigned int radix, const std::string& str, int size = -1 );  // deprecated
   RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size, Sizing sizing = fixed );
   ~RNumber();
 
@@ -49,7 +50,7 @@ public:
   // assign() assigns the value with dynamic sizing; clone() assigns all
   // attributes; resize() truncates/expands the value and sets fixed sizing.
   RNumber& operator=( unsigned int number );
-  RNumber& operator=( const string& number );
+  RNumber& operator=( const std::string& number );
   RNumber& operator=( const RNumber& number );
   RNumber& assign( const RNumber& number );
   RNumber& set( const RNumber& number ) { return copy( number ); }  // deprecated
@@ -117,8 +118,8 @@ public:
   unsigned int intValue() const  { return getUInt(); }  // deprecated
   unsigned int getInt() const    { return getUInt(); }  // deprecated
   unsigned int getUInt() const;
-  string str() const;
-  string strradix(Radix=RNumber::rdec,bool prefix=false) const;
+  std::string str() const;
+  std::string strradix(Radix=RNumber::rdec,bool prefix=false) const;
 
   // Value field accessors and manipulators.
   unsigned int getIntField( unsigned int start, unsigned int end ) const { return getUIntField( start, end ); }  // deprecated
@@ -144,12 +145,12 @@ public:
   void setFixed();
 
   // Streaming I/O methods.
-  void printToOS( ostream& os ) const;
-  ostream& printWithRadix( ostream& os, Radix = rios, bool prefix=false ) const;
+  void printToOS( std::ostream& os ) const;
+  std::ostream& printWithRadix( std::ostream& os, Radix = rios, bool prefix=false ) const;
   friend istream& operator>>( istream& is, RNumber& number );
-  friend ostream& operator<<( ostream& os, const RNumber& number );
-  void read( istream& is );
-  void write( ostream& os ) const;
+  friend ostream& operator<<( std::ostream& os, const RNumber& number );
+  void read( std::istream& is );
+  void write( std::ostream& os ) const;
 
   friend struct Hash {
     size_t operator()( const RNumber& num ) const;
@@ -183,11 +184,11 @@ private:
   RNumber& truncateInt( unsigned int size );
   RNumber& truncateExtended( unsigned int size );
 
-  unsigned int getSizeWithRadix( const string& number, Radix& radix );
-  void printWithStreamRadix(ostream &os,bool prefix) const;
-  void printDec( ostream& os ) const;
-  void printBin( ostream& os,bool prefix) const;
-  void printHex( ostream& os,bool prefix ) const;
+  unsigned int getSizeWithRadix( const std::string& number, Radix& radix );
+  void printWithStreamRadix(std::ostream &os,bool prefix) const;
+  void printDec( std::ostream& os ) const;
+  void printBin( std::ostream& os,bool prefix) const;
+  void printHex( std::ostream& os,bool prefix ) const;
 
   friend  const RNumber add( const RNumber& n1, const RNumber& n2, bool extend );
   friend  const RNumber add( const RNumber& n1, unsigned int n2, bool extend );

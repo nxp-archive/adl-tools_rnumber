@@ -20,8 +20,7 @@
 #ifndef _LCGRAND_H_
 #define _LCGRAND_H_
 
-class ostream;
-class istream;
+#include <iostream>
 
 namespace rnumber {
 
@@ -38,8 +37,8 @@ public:
   // Access the state element.
   unsigned long state() const { return _x; };
   // Save/load state from a binary stream.
-  void save(ostream &) const;
-  void load(istream &);
+  void save(std::ostream &) const;
+  void load(std::istream &);
 private:   
   // This is the state element of the generator.
   unsigned _x;

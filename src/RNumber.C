@@ -22,6 +22,8 @@
 #include "RNumber.h"
 #include "trace.h"
 
+using namespace std;
+
 static char* pc_rcs_h = RNUMBER_H;
 static char* p2_rcs_h = pc_rcs_h;
 static char* pc_rcs   = "$Id$";
@@ -4094,7 +4096,7 @@ istream& rnumber::operator>>( istream& is, RNumber& number )
 void RNumber::read( istream& is )
 {
 
-  is.read( &_size, sizeof( _size ) );
+  is.read( (char*)&_size, sizeof( _size ) );
 
   if ( is.fail() )
     throw std::runtime_error ( "io_fail_error" );
@@ -4108,7 +4110,7 @@ void RNumber::read( istream& is )
 
   unsigned int* value = _valueBuffer;
 
-  is.read( value, _wordCount * sizeof( unsigned int ) );
+  is.read((char*) value, _wordCount * sizeof( unsigned int ) );
 
   if ( is.fail() ) 
     throw std::runtime_error ( "io_fail_error");
@@ -4121,14 +4123,14 @@ void RNumber::read( istream& is )
 void RNumber::write( ostream& os ) const
 {
 
-  os.write( &_size, sizeof( _size ) );
+  os.write((char*) &_size, sizeof( _size ) );
 
   if ( os.fail() )
     throw std::runtime_error ( "io_fail_error - writting" );
 
   const unsigned int* value = _valueBuffer;
 
-  os.write( value, _wordCount * sizeof( unsigned int ) );
+  os.write( (char*)value, _wordCount * sizeof( unsigned int ) );
 
   if ( os.fail() )
     throw std::runtime_error ( "io_fail_error - writing" );

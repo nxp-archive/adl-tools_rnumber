@@ -1,4 +1,5 @@
-#!/usr/bin/env perl -w
+#!/usr/local/bin/perl -w
+###!/usr/bin/env perl -w
 
 use lib '.';
 use pl_rnumber;

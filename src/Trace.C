@@ -11,6 +11,7 @@
 #include <strstream.h>
 #include <unistd.h>
 
+using namespace std;
 
 bool tracing_blocked = true;
 unsigned tracing_level = 0;

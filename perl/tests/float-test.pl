@@ -1,4 +1,5 @@
 #!/usr/local/bin/perl -w
+##!/usr/local/bin/perl -w
 
 use strict;
 #use lib '/local1/work/lib/rnumber';

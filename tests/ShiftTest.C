@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <strstream.h>
-#include <stl_algobase.h>
+
+#include "gccversion.h"
+
+#if GCC_3_2
+#  include <algorithm>
+#else
+#  include <stl_algobase.h>
+#endif
 
 #include "rnumber_exceptions.h"
 #include "RNumber.h"

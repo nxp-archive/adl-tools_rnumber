@@ -28,6 +28,8 @@
 #include "rnumber_exceptions.h"
 #include "MtRand.h"
 
+using namespace std;
+
 namespace rnumber {
 
   /* Period parameters */  
@@ -111,12 +113,12 @@ namespace rnumber {
     // We compute a simple checksum by xoring the elements together.
     unsigned cs = 0xa5a5a5a5;
     for (int i = 0; i != N; ++i) {
-      os.write(&_mt[i],sizeof(_mt[i]));
+      os.write((char*)&_mt[i],sizeof(_mt[i]));
       cs ^= _mt[i];
     }
-    os.write(&_mti,sizeof(_mti));
+    os.write((char*)&_mti,sizeof(_mti));
     cs ^= _mti;
-    os.write(&cs,sizeof(cs));
+    os.write((char*)&cs,sizeof(cs));
   }
 
   // Load state from a binary stream.
@@ -125,12 +127,12 @@ namespace rnumber {
     unsigned ics;
     unsigned cs = 0xa5a5a5a5;
     for (int i = 0; i != N; ++i) {
-      is.read(&_mt[i],sizeof(_mt[i]));
+      is.read((char*)&_mt[i],sizeof(_mt[i]));
       cs ^= _mt[i];
     }
-    is.read(&_mti,sizeof(_mti));
+    is.read((char*)&_mti,sizeof(_mti));
     cs ^= _mti;
-    is.read(&ics,sizeof(ics));
+    is.read((char*)&ics,sizeof(ics));
     if (ics != cs) {
       throw runtime_error ("Bad checksum when reading Mersenne Twist info.");
     }

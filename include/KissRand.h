@@ -11,8 +11,7 @@
 #ifndef _KISSRAND_H_
 #define _KISSRAND_H_
 
-class ostream;
-class istream;
+#include <iostream>
 
 namespace rnumber {
 // Momento object for storing state of the random number generator.
@@ -21,8 +20,8 @@ class KissState {
   enum { Size = 6 };
   int _d[Size];
 public:
-  void save(ostream &) const;
-  void load(istream &);
+  void save(std::ostream &) const;
+  void load(std::istream &);
 };
 
 // KISS random number generator.
@@ -34,8 +33,8 @@ public:
   // Generate the next value.
   unsigned long genrand ();
   // Save/load state from a binary stream.
-  void save(ostream &) const;
-  void load(istream &);
+  void save(std::ostream &) const;
+  void load(std::istream &);
   unsigned count() const { return _count; };
   // Get/set state of generator.
   KissState getState() const;

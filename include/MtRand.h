@@ -13,6 +13,8 @@
 #ifndef MTRANDOM_H
 #define MTRANDOM_H
 
+#include <iostream>
+
 namespace rnumber {
 
   // Mersenne Twister random number generator class.
@@ -26,8 +28,8 @@ namespace rnumber {
     // Generate the next value.
 	 unsigned long genrand ();
     // Save/load state from a binary stream.
-    void save(ostream &) const;
-    void load(istream &);
+    void save(std::ostream &) const;
+    void load(std::istream &);
   private:
     enum { N=624 };
 	 unsigned long _mt[N]; /* the array for the state vector  */

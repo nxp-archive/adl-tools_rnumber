@@ -8,7 +8,10 @@ EXTRA_DIST = $(MACROS) $(m4data_DATA)
 m4datadir = $(datadir)/aclocal
 m4data_DATA = $(MACROS)
 
-SUBDIRS = macros include src tests $(PERLBINDINGS) $(BIGLOO) $(DOC)
+SUBDIRS = macros include src tests $(PERLBINDINGS) $(BIGLOO) 
+
+# Add in this directory to SUBDIRS when scribe works correctly.
+##$(DOC)
 
 bin_SCRIPTS = rnumber-config
 

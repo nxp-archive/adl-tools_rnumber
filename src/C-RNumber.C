@@ -14,6 +14,8 @@
 #include "trace.h"
 
 using namespace rnumber;
+using namespace std;
+
 extern "C" {
 RNumber * rnumber_create() 
 {

@@ -19,6 +19,7 @@
 # define V1(x)
 #endif
 
+using namespace std;
 using namespace rnumber;
 
 // We always install a default random object.
@@ -180,7 +181,7 @@ Random::Random()
 {
 }
 
-void Random::set_gate	( bool state_in,bool apply_to_all = true )
+void Random::set_gate	( bool state_in,bool apply_to_all )
 {
   if (apply_to_all) {
     for (vector<RandomObj>::iterator i = _generators.begin(); i != _generators.end(); ++i) {

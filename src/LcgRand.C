@@ -9,6 +9,8 @@
 
 #include "LcgRand.h"
 
+using namespace std;
+
 // This LCG uses 64-bit arithmetic to ensure no loss
 // of bits.  Otherwise, we can't reverse the generator.
 // There should be a way to do a*x mod m using just
@@ -43,11 +45,11 @@ unsigned long LcgRand::rgenrand ()
 
 void LcgRand::save(ostream &os) const
 {
-  os.write(&_x,sizeof(_x));
+  os.write((char *)&_x,sizeof(_x));
 }
 
 void LcgRand::load(istream &is)
 {
-  is.read(&_x,sizeof(_x));
+  is.read((char *)&_x,sizeof(_x));
 }
 

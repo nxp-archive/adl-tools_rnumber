@@ -12,6 +12,8 @@
 #include "rnumber_exceptions.h"
 #include "KissRand.h"
 
+using namespace std;
+
 //#define VERBOSE1
 //#define VERBOSE2
 
@@ -35,7 +37,7 @@ namespace rnumber {
     V1("Kiss state:");
     for (int i = 0; i != Size; ++i) {
       V1("  " << dec << i << ":  " << hex << _d[i]);
-      os.write(&_d[i],sizeof(_d[i]));
+      os.write((char *)&_d[i],sizeof(_d[i]));
     }
   }
 
@@ -43,7 +45,7 @@ namespace rnumber {
   {
     V1("Kiss state:");
     for (int i = 0; i != Size; ++i) {
-      is.read(&_d[i],sizeof(_d[i]));
+      is.read((char *)&_d[i],sizeof(_d[i]));
       V1("  " << dec << i << ":  " << hex << _d[i]);
     }
   }
@@ -69,12 +71,12 @@ namespace rnumber {
   // Save/load state from a binary stream.
   void KissRand::save(ostream &os) const
   {
-    os.write(&_x,sizeof(_x));
-    os.write(&_y,sizeof(_y));
-    os.write(&_z,sizeof(_z));
-    os.write(&_w,sizeof(_w));
-    os.write(&_carry,sizeof(_carry));
-    os.write(&_count,sizeof(_count));
+    os.write((char *)&_x,sizeof(_x));
+    os.write((char *)&_y,sizeof(_y));
+    os.write((char *)&_z,sizeof(_z));
+    os.write((char *)&_w,sizeof(_w));
+    os.write((char *)&_carry,sizeof(_carry));
+    os.write((char *)&_count,sizeof(_count));
     V1("Kiss save:  \n" << hex << endl << 
        "x:      " << _x << endl << 
        "y:      " << _y << endl << 
@@ -86,12 +88,12 @@ namespace rnumber {
 
   void KissRand::load(istream &is)
   {
-    is.read(&_x,sizeof(_x));
-    is.read(&_y,sizeof(_y));
-    is.read(&_z,sizeof(_z));
-    is.read(&_w,sizeof(_w));
-    is.read(&_carry,sizeof(_carry));
-    is.read(&_count,sizeof(_count));
+    is.read((char *)&_x,sizeof(_x));
+    is.read((char *)&_y,sizeof(_y));
+    is.read((char *)&_z,sizeof(_z));
+    is.read((char *)&_w,sizeof(_w));
+    is.read((char *)&_carry,sizeof(_carry));
+    is.read((char *)&_count,sizeof(_count));
     V1("Kiss load:  \n" << hex << endl <<  
        "x:      " << _x << endl << 
        "y:      " << _y << endl << 

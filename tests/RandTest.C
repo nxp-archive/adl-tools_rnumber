@@ -12,6 +12,7 @@
 #include "KissRand.h"
 #include "Random.h"
 
+using namespace std;
 using namespace rnumber;
 
 void revtest(unsigned);

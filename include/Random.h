@@ -77,7 +77,7 @@ class Random
 {
 private:
   // Stores the various generators.
-  static vector<RandomObj> _generators;
+  static std::vector<RandomObj> _generators;
   // Stores the current generator that we're using.
   static unsigned _currentGen;
 public:

@@ -93,21 +93,21 @@
  
 extern bool tracing_blocked;
 extern unsigned tracing_level;
-extern ostream * trace_stream;
+extern std::ostream * trace_stream;
 
 inline void unblock_tracing() { tracing_blocked = false;}
 inline void block_tracing() { tracing_blocked = true;}
 inline void set_tracing_level(unsigned int x) { tracing_level = x;}
 inline unsigned int get_tracing_level () { return tracing_level;}
-inline void set_tracing_stream ( ostream & os ) { trace_stream = &os;}
+inline void set_tracing_stream ( std::ostream & os ) { trace_stream = &os;}
 
-void set_tracing_file ( const string & filename );
+void set_tracing_file ( const std::string & filename );
 inline bool trace_level_set ( unsigned level ) 
 { 
   return ( ( ( level & tracing_level ) != 0 ) || level == 0 );
 }
 
-string get_process_status ();
+std::string get_process_status ();
 
 #undef VERBOSE
 #ifdef VERBOSE_WAS_DEFINED

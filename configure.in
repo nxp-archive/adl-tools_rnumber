@@ -182,12 +182,11 @@ if test "x$BIGLOOPROG" = x ; then
    BIGLOO=
 else
    BIGLOO=bigloo
-   AC_MSG_RESULT("BIGLOOPROG $BIGLOOPROG")
+   AC_MSG_RESULT([Bigloo Program:  $BIGLOOPROG])
    BIGLOO_BINDIR=`dirname $BIGLOOPROG`
-   AC_MSG_RESULT("DIR_NAME $DIR_NAME")
    BIGLOO_REVISION=`bigloo -revision`
    BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
-   AC_MSG_RESULT("BIGLOO_BINDIR $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR")
+   AC_MSG_RESULT([Bigloo bin dir:  $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR])
    AC_SUBST(BIGLOO_LIBDIR)
 fi
 AC_SUBST([BIGLOO])
@@ -484,6 +483,8 @@ dnl GCC_STD_EXCEPTIONS
  [
    #include <stdexcept>
    #include <iostream>
+
+	using namespace std;
  ],[
    std::runtime_error ( "runtime error" );
    cout << "test" << endl;
@@ -495,7 +496,6 @@ dnl GCC_STD_EXCEPTIONS
    AC_MSG_RESULT(c++ library does not have standard exceptions local_exceptions.h will be used)
    EXCEPTION_FILE="\"local_exceptions.h\""
  ]) dnl end of AC_TRY_COMPILE
-
 
 AC_SUBST(EXCEPTION_FILE)
 

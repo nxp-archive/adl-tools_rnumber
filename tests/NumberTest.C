@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <strstream.h>
-#include <stl_algobase.h>
+
+#include "gccversion.h"
+
+#if GCC_3_2
+#  include <algorithm>
+#else
+#  include <stl_algobase.h>
+#endif
 
 #include "rnumber_exceptions.h"
 #include "RNumber.h"
@@ -9,10 +16,13 @@
 
 #include "trace.h"
 
+using namespace std;
+using namespace rnumber;
+
 unsigned maxIter = 100;
 
 const int Verbose = 0;
-using namespace rnumber;
+
 class Calculator {
 public:
 
@@ -1281,8 +1291,8 @@ static unsigned checkLogicals ()
     b &= 0;
     rc |= checkLogicalOp (tmpb, 0, b, 0, "&=");
     b = tmpb;
-    rc |= checkLogicalOp (b, -1, b & (-1), b . getInt (), "&");
-    b &= (-1);
+    rc |= checkLogicalOp (b, -1, b & ((unsigned)-1), b . getInt (), "&");
+    b &= ((unsigned)-1);
     rc |= checkLogicalOp (tmpb, -1, b, tmpb . getInt (), "&=");
     b = tmpb;
 
@@ -1305,9 +1315,9 @@ static unsigned checkLogicals ()
     c1 = tmpc1;
     //   | with integer
     RNumber tmp1 = b;
-    tmp1 . setField (size2 - 32, size2 - 1, -1);
-    rc |= checkLogicalOp (b, -1, b | (-1), tmp1, "|");
-    b |= (-1);
+    tmp1 . setField (size2 - 32, size2 - 1, (unsigned)-1);
+    rc |= checkLogicalOp (b, -1, b | ((unsigned)-1), tmp1, "|");
+    b |= ((unsigned)-1);
     rc |= checkLogicalOp (tmpb, -1, b, tmp1, "|=");
     b = tmpb;
 
@@ -1349,7 +1359,7 @@ static unsigned checkLogicals ()
     c1 = tmpc1;
     //   ^ with integer
     RNumber tmp3 = b;
-    tmp3 . setField (size2 - 32, size2 - 1, -1);
+    tmp3 . setField (size2 - 32, size2 - 1,(unsigned) -1);
     unsigned num3 = ~(b . getInt ());
     rc |= checkLogicalOp (b, num3, b ^ num3, tmp3, "^");
     b ^= num3;

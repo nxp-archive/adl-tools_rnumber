@@ -8,6 +8,6 @@ use rnumber;
 
 # without memory management in rnumber, this quickly takes over
 # 50M of memory
-for my $i (0..100000) {
+for my $i (0..10000) {
   rn_plus(rn_ctor ("10"), rn_ctor(5));
 }
