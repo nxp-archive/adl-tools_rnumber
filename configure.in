@@ -522,6 +522,7 @@ AC_OUTPUT([Makefile \
         src/Makefile \
 	bigloo/Makefile \
 	bigloo/src/Makefile \
+	bigloo/src/rnumber-version.h \
 	bigloo/src/rnumber/Makefile \
 	bigloo/tests/Makefile \
 	perl/Makefile \
