@@ -579,7 +579,7 @@ struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNu
   return new RNumber((*n)<<(*shift));
 }
  struct RNumber * rnumber_rn_leftshift_ui( const struct RNumber * n, unsigned int shift ){
-  return new RNumber((*n)<<shift);
+   return new RNumber((*n)<<shift);
 }
  struct RNumber * rnumber_ui_leftshift_rn( unsigned int n, const struct RNumber * shift ){
   return new RNumber(n<<(*shift));

@@ -503,8 +503,12 @@ RNumber::RNumber( const RNumber& number, unsigned int size, Sizing sizing )
 RNumber::RNumber( const string& number, Sizing sizing )
 {
   Radix radix = rios;
+  
+  int size = getSizeWithRadix (number, radix);
 
-  initNumber( getSizeWithRadix( number, radix ), sizing );
+  if (size < 32) size = 32;
+
+  initNumber( size, sizing );
 
   strstream ss;
   ss << number;
@@ -3030,7 +3034,6 @@ RNumber& RNumber::operator^=( unsigned int number )
 //
 inline const RNumber leftShift( const RNumber& n, const RNumber& shift, bool extend )
 {
-
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift.getUInt();
   unsigned int nwc = n._wordCount;
@@ -3110,7 +3113,6 @@ inline const RNumber leftShift( const RNumber& n, const RNumber& shift, bool ext
 //
 inline const RNumber leftShift( const RNumber& n, unsigned int shift, bool extend )
 {
-
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift;
   unsigned int nwc = n._wordCount;
@@ -3170,9 +3172,13 @@ inline const RNumber leftShift( const RNumber& n, unsigned int shift, bool exten
 	    *( resValue-- ) = *( value-- );
 	}
       else if ( extend )
-	return leftShiftExt( leftShiftExt( n, shift % WORD_BITS ), shift - ( shift % WORD_BITS ) );
+	{
+	  return leftShiftExt( leftShiftExt( n, shift % WORD_BITS ), shift - ( shift % WORD_BITS ) );
+	}
       else
-	return ( n << ( shift % WORD_BITS ) ) << ( shift - ( shift % WORD_BITS ) );
+	{
+	  return ( n << ( shift % WORD_BITS ) ) << ( shift - ( shift % WORD_BITS ) );
+	}
     }
   else
     {
@@ -3218,7 +3224,6 @@ const RNumber operator<<( const RNumber& n1, const RNumber& n2 )
 //
 const RNumber operator<<( const RNumber& n1, unsigned int n2 )
 {
-
   return leftShift( n1, n2, false );
 }
 
