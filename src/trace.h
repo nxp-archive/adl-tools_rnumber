@@ -9,6 +9,8 @@
 
 #define VERBOSE
 
+#include <iostream>
+#include <string>
 // This define is inserted automatically when any of the
 // -O compiler options are used.
 #ifdef __OPTIMIZE__
@@ -17,8 +19,6 @@
 
 #ifdef __cplusplus
 #ifdef VERBOSE
-#include <iostream>
-#include <string>
 #define TRACE_LINE (*trace_stream) << __FILE__ << ":" << ::dec << __LINE__ << ":" << __FUNCTION__ << "()" << endl;
 #define TRACE_MSG(x) (*trace_stream) << __FILE__ << ":" << ::dec << __LINE__ << ":" << __FUNCTION__ << "() " << x << endl;
 #define TRACE_START(x) (*trace_stream) << __FILE__ << ":" << ::dec << __LINE__ << ":" << __FUNCTION__ << "() " << x << flush;

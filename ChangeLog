@@ -1,10 +1,11 @@
-	================== v1-8-3 ==============================
+2002-11-01  Brian Kahne  <bkahne@ibmoto.com>
+
+	* Moved includes in Trace.C outside of ifdef so that an optimized
+	build would work.
 
 2002-11-01 Brian changed the version but didn't leave a note. I think all that
 	was changed was the version number in configure.in
 	
-	================== rnumber-release-1-8-2 ==============================
-
 2002-10-31  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	*  added missing RNumber features to C++ version.
