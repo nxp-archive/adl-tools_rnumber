@@ -8,10 +8,13 @@
 ** This is a C wrapper for the C++ RNumber class.
 ** ===========================================================================
 */
+
 #include "C-RNumber.h"
 #include "RNumber.h"
 #include "trace.h"
 
+using namespace rnumber;
+extern "C" {
 RNumber * rnumber_create() 
 {
   return new RNumber();
@@ -413,7 +416,7 @@ unsigned rnumber_size( const struct RNumber * rnumber)
 
 unsigned rnumber_wordcount( const RNumber * rnumber)
 {
-  return rnumber->wordcount();
+  return rnumber->wordCount();
 }
 
 const unsigned * rnumber_buffer( RNumber * rnumber) 
@@ -663,3 +666,4 @@ int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNumber * n2 ){
 int rnumber_rhex() { return RNumber::rhex;}
 int rnumber_rbin() { return RNumber::rbin;}
 int rnumber_rdec() { return RNumber::rdec;}
+}

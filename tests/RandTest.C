@@ -12,6 +12,8 @@
 #include "KissRand.h"
 #include "Random.h"
 
+using namespace rnumber;
+
 void revtest(unsigned);
 void statetest(unsigned);
 void rangetest(unsigned);

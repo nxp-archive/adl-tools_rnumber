@@ -12,7 +12,7 @@
 unsigned maxIter = 100;
 
 const int Verbose = 0;
-
+using namespace rnumber;
 class Calculator {
 public:
 

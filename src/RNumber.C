@@ -27,6 +27,7 @@ static char* p2_rcs_h = pc_rcs_h;
 static char* pc_rcs   = "$Id$";
 static char* p2_rcs   = pc_rcs;
 
+using namespace rnumber;
 
 unsigned int RNumber::_defaultSize = 32;
 
@@ -909,7 +910,7 @@ const RNumber RNumber::operator~() const
 //
 // Non-member function for adding two RNumbers.
 //
-inline const RNumber add( const RNumber& n1, const RNumber& n2, bool extend )
+inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool extend )
 {
 
   unsigned int maxs = max( n1._size, n2._size );
@@ -980,7 +981,7 @@ inline const RNumber add( const RNumber& n1, const RNumber& n2, bool extend )
 //
 // Non-member function for adding an RNumber and unsigned.
 //
-inline const RNumber add( const RNumber& n1, unsigned int n2, bool extend )
+inline const RNumber rnumber::add( const RNumber& n1, unsigned int n2, bool extend )
 {
 
   unsigned int maxs = max( n1._size, WORD_BITS );
@@ -1035,7 +1036,7 @@ inline const RNumber add( const RNumber& n1, unsigned int n2, bool extend )
 //
 // Non-member function for the addition of two RNumbers.
 //
-const RNumber operator+( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator+( const RNumber& n1, const RNumber& n2 )
 {
 
   return add( n1, n2, false );
@@ -1045,7 +1046,7 @@ const RNumber operator+( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the addition of an RNumber to an unsigned.
 //
-const RNumber operator+( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator+( const RNumber& n1, unsigned int n2 )
 {
 
   return add( n1, n2, false );
@@ -1055,7 +1056,7 @@ const RNumber operator+( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the addition of an unsigned to an RNumber.
 //
-const RNumber operator+( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator+( unsigned int n1, const RNumber& n2 )
 {
 
   return add( n2, n1, false );
@@ -1066,7 +1067,7 @@ const RNumber operator+( unsigned int n1, const RNumber& n2 )
 // Non-member function for the addition of two RNumbers. This add function
 // will return a result that includes the carry.
 //
-const RNumber addExt( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::addExt( const RNumber& n1, const RNumber& n2 )
 {
   return add( n1, n2, true );
 }
@@ -1076,7 +1077,7 @@ const RNumber addExt( const RNumber& n1, const RNumber& n2 )
 // Non-member function for the addition of an RNumber to an unsigned. This add
 // function will return a result that includes the carry.
 //
-const RNumber addExt( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::addExt( const RNumber& n1, unsigned int n2 )
 {
   return add( n1, n2, true );
 }
@@ -1086,7 +1087,7 @@ const RNumber addExt( const RNumber& n1, unsigned int n2 )
 // Non-member function for the addition of an unsigned to an RNumber. This add
 // function will return a result that includes the carry.
 //
-const RNumber addExt( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::addExt( unsigned int n1, const RNumber& n2 )
 {
   return add( n2, n1, true );
 }
@@ -1176,7 +1177,7 @@ RNumber& RNumber::operator+=( unsigned int number )
 //
 // Non-member function for subtracting two RNumbers.
 //
-inline const RNumber subtract( const RNumber& n1, const RNumber& n2 )
+inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -1233,7 +1234,7 @@ inline const RNumber subtract( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for subtracting an unsigned from an RNumber.
 //
-inline const RNumber subtract( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::subtract( const RNumber& n1, unsigned int n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -1264,7 +1265,7 @@ inline const RNumber subtract( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for subtracting an RNumber from an unsigned.
 //
-inline const RNumber subtract( unsigned int n1, const RNumber& n2 )
+inline const RNumber rnumber::subtract( unsigned int n1, const RNumber& n2 )
 {
 
   const unsigned int n2wc = n2._wordCount;
@@ -1296,7 +1297,7 @@ inline const RNumber subtract( unsigned int n1, const RNumber& n2 )
 //
 // Non-member function for the subtraction of two RNumbers.
 //
-const RNumber operator-( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator-( const RNumber& n1, const RNumber& n2 )
 {
 
   return subtract( n1, n2 );
@@ -1307,7 +1308,7 @@ const RNumber operator-( const RNumber& n1, const RNumber& n2 )
 // Non-member function for the subtraction of an unsigned from
 // an RNumber.
 //
-const RNumber operator-( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator-( const RNumber& n1, unsigned int n2 )
 {
 
   return subtract( n1, n2 );
@@ -1318,7 +1319,7 @@ const RNumber operator-( const RNumber& n1, unsigned int n2 )
 // Non-member function for the subtraction of an RNumber from
 // an unsigned.
 //
-const RNumber operator-( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator-( unsigned int n1, const RNumber& n2 )
 {
 
   return subtract( n1, n2 );
@@ -1417,7 +1418,7 @@ RNumber& RNumber::operator-=( unsigned int number )
 // 3. if u or v is = 1, result is other operand.
 // 4. extended multiply is necessary.
 //
-inline const RNumber multiply( const RNumber& n1, const RNumber& n2, bool extend )
+inline const RNumber rnumber::multiply( const RNumber& n1, const RNumber& n2, bool extend )
 {
 
   unsigned int maxs = max( n1._size, n2._size );
@@ -1467,7 +1468,7 @@ inline const RNumber multiply( const RNumber& n1, const RNumber& n2, bool extend
 // 3. if u or v is = 1, result is other operand.
 // 4. extended multiply is necessary.
 //
-inline const RNumber multiply( const RNumber& n1, unsigned int n2, bool extend )
+inline const RNumber rnumber::multiply( const RNumber& n1, unsigned int n2, bool extend )
 {
 
   unsigned int maxs = max( n1._size, WORD_BITS );
@@ -1502,7 +1503,7 @@ inline const RNumber multiply( const RNumber& n1, unsigned int n2, bool extend )
 //
 // Non-member function for the multiplication of two RNumbers.
 //
-const RNumber operator*( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator*( const RNumber& n1, const RNumber& n2 )
 {
 
   return multiply( n1, n2, false );
@@ -1512,7 +1513,7 @@ const RNumber operator*( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the multiplication of an RNumber and unsigned.
 //
-const RNumber operator*( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator*( const RNumber& n1, unsigned int n2 )
 {
 
   return multiply( n1, n2, false );
@@ -1522,7 +1523,7 @@ const RNumber operator*( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the multiplication of an unsigned and RNumber.
 //
-const RNumber operator*( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator*( unsigned int n1, const RNumber& n2 )
 {
 
   return multiply( n1, n2, false );
@@ -1533,7 +1534,7 @@ const RNumber operator*( unsigned int n1, const RNumber& n2 )
 // Non-member function for the multiplication of two RNumbers. This multiply
 // function will return the complete result.
 //
-const RNumber multiplyExt( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::multiplyExt( const RNumber& n1, const RNumber& n2 )
 {
 
   return multiply( n1, n2, true );
@@ -1544,7 +1545,7 @@ const RNumber multiplyExt( const RNumber& n1, const RNumber& n2 )
 // Non-member function for the multiplication of an RNumber and unsigned.
 // This multiply function will return the complete result.
 //
-const RNumber multiplyExt( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::multiplyExt( const RNumber& n1, unsigned int n2 )
 {
 
   return multiply( n1, n2, true );
@@ -1555,7 +1556,7 @@ const RNumber multiplyExt( const RNumber& n1, unsigned int n2 )
 // Non-member function for the multiplication of an unsigned and RNumber.
 // This multiply function will return the complete result.
 //
-const RNumber multiplyExt( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::multiplyExt( unsigned int n1, const RNumber& n2 )
 {
 
   return multiply( n1, n2, true );
@@ -1824,7 +1825,7 @@ static void multiplyExtended( const unsigned int* vb1, unsigned int wc1,
 //    use native divide on low words.
 // 6. extended divide is necessary.
 //
-inline const RNumber divide( const RNumber& n1, const RNumber& n2 )
+inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
 {
 
   const unsigned int maxs = max( n1._size, n2._size );
@@ -1951,7 +1952,7 @@ inline const RNumber divide( const RNumber& n1, const RNumber& n2 )
 //    use native divide on low words.
 // 6. extended divide is necessary.
 //
-inline const RNumber divide( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
 {
 
   const unsigned int maxs = max( n1._size, WORD_BITS );
@@ -2073,7 +2074,7 @@ inline const RNumber divide( const RNumber& n1, unsigned int n2 )
 //    use native divide on low words.
 // 6. extended divide is necessary.
 //
-inline const RNumber divide( unsigned int n1, const RNumber& n2 )
+inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
 {
 
   const unsigned int maxs = max( WORD_BITS, n2._size );
@@ -2185,7 +2186,7 @@ inline const RNumber divide( unsigned int n1, const RNumber& n2 )
 //
 // Non-member function for the division of two RNumbers.
 //
-const RNumber operator/( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator/( const RNumber& n1, const RNumber& n2 )
 {
 
   return divide( n1, n2 );
@@ -2195,7 +2196,7 @@ const RNumber operator/( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the division of an RNumber and unsigned.
 //
-const RNumber operator/( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator/( const RNumber& n1, unsigned int n2 )
 {
 
   return divide( n1, n2 );
@@ -2205,7 +2206,7 @@ const RNumber operator/( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the division of an unsigned and RNumber.
 //
-const RNumber operator/( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator/( unsigned int n1, const RNumber& n2 )
 {
 
   return divide( n1, n2 );
@@ -2542,7 +2543,7 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
 //
 // Non-member function for the modulus of two RNumbers.
 //
-inline const RNumber mod( const RNumber& n1, const RNumber& n2 )
+inline const RNumber rnumber::mod( const RNumber& n1, const RNumber& n2 )
 {
 
   RNumber result( 0, n2._size );
@@ -2556,7 +2557,7 @@ inline const RNumber mod( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the modulus of an RNumber using an unsigned.
 //
-inline const RNumber mod( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::mod( const RNumber& n1, unsigned int n2 )
 {
 
   RNumber result( 0, WORD_BITS );
@@ -2570,7 +2571,7 @@ inline const RNumber mod( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the modulus of an unsigned using an RNumber.
 //
-inline const RNumber mod( unsigned int n1, const RNumber& n2 )
+inline const RNumber rnumber::mod( unsigned int n1, const RNumber& n2 )
 {
 
   RNumber result( 0, n2._size );
@@ -2584,7 +2585,7 @@ inline const RNumber mod( unsigned int n1, const RNumber& n2 )
 //
 // Non-member function for the modulus of two RNumbers.
 //
-const RNumber operator%( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator%( const RNumber& n1, const RNumber& n2 )
 {
 
   return mod( n1, n2 );
@@ -2594,7 +2595,7 @@ const RNumber operator%( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the modulus of an RNumber and unsigned.
 //
-const RNumber operator%( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator%( const RNumber& n1, unsigned int n2 )
 {
 
   return mod( n1, n2 );
@@ -2604,7 +2605,7 @@ const RNumber operator%( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the modulus of an unsigned and RNumber.
 //
-const RNumber operator%( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator%( unsigned int n1, const RNumber& n2 )
 {
 
   return mod( n1, n2 );
@@ -2640,7 +2641,7 @@ RNumber& RNumber::operator%=( unsigned int number )
 //
 // Non-member function for bit-wise ANDing two RNumbers.
 //
-inline const RNumber bitWiseAnd( const RNumber& n1, const RNumber& n2 )
+inline const RNumber rnumber::bitWiseAnd( const RNumber& n1, const RNumber& n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -2668,7 +2669,7 @@ inline const RNumber bitWiseAnd( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ANDing an RNumber and unsigned.
 //
-inline const RNumber bitWiseAnd( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::bitWiseAnd( const RNumber& n1, unsigned int n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -2689,7 +2690,7 @@ inline const RNumber bitWiseAnd( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise ANDing two RNumbers.
 //
-const RNumber operator&( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator&( const RNumber& n1, const RNumber& n2 )
 {
 
   return bitWiseAnd( n1, n2 );
@@ -2699,7 +2700,7 @@ const RNumber operator&( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ANDing an RNumber and unsigned.
 //
-const RNumber operator&( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator&( const RNumber& n1, unsigned int n2 )
 {
 
   return bitWiseAnd( n1, n2 );
@@ -2709,7 +2710,7 @@ const RNumber operator&( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise ANDing an unsigned and RNumber.
 //
-const RNumber operator&( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator&( unsigned int n1, const RNumber& n2 )
 {
 
   return bitWiseAnd( n2, n1 );
@@ -2770,7 +2771,7 @@ RNumber& RNumber::operator&=( unsigned int number )
 //
 // Non-member function for bit-wise ORing two RNumbers.
 //
-inline const RNumber bitWiseOr( const RNumber& n1, const RNumber& n2 )
+inline const RNumber rnumber::bitWiseOr( const RNumber& n1, const RNumber& n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -2802,7 +2803,7 @@ inline const RNumber bitWiseOr( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ORing two RNumbers.
 //
-inline const RNumber bitWiseOr( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::bitWiseOr( const RNumber& n1, unsigned int n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -2823,7 +2824,7 @@ inline const RNumber bitWiseOr( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise ORing two RNumbers.
 //
-const RNumber operator|( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator|( const RNumber& n1, const RNumber& n2 )
 {
 
   return bitWiseOr( n1, n2 );
@@ -2833,7 +2834,7 @@ const RNumber operator|( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ORing an RNumber and unsigned.
 //
-const RNumber operator|( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator|( const RNumber& n1, unsigned int n2 )
 {
 
   return bitWiseOr( n1, n2 );
@@ -2843,7 +2844,7 @@ const RNumber operator|( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise ORing an unsigned and RNumber.
 //
-const RNumber operator|( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator|( unsigned int n1, const RNumber& n2 )
 {
 
   return bitWiseOr( n2, n1 );
@@ -2901,7 +2902,7 @@ RNumber& RNumber::operator|=( unsigned int number )
 //
 // Non-member function for bit-wise XORing two RNumbers.
 //
-inline const RNumber bitWiseXor( const RNumber& n1, const RNumber& n2 )
+inline const RNumber rnumber::bitWiseXor( const RNumber& n1, const RNumber& n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -2933,7 +2934,7 @@ inline const RNumber bitWiseXor( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise XORing an RNumber and an unsigned.
 //
-inline const RNumber bitWiseXor( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::bitWiseXor( const RNumber& n1, unsigned int n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
@@ -2954,7 +2955,7 @@ inline const RNumber bitWiseXor( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise XORing two RNumbers.
 //
-const RNumber operator^( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator^( const RNumber& n1, const RNumber& n2 )
 {
 
   return bitWiseXor( n1, n2 );
@@ -2964,7 +2965,7 @@ const RNumber operator^( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise XORing an RNumber and unsigned.
 //
-const RNumber operator^( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator^( const RNumber& n1, unsigned int n2 )
 {
 
   return bitWiseXor( n1, n2 );
@@ -2974,7 +2975,7 @@ const RNumber operator^( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise XORing an unsigned and RNumber.
 //
-const RNumber operator^( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator^( unsigned int n1, const RNumber& n2 )
 {
 
   return bitWiseXor( n2, n1 );
@@ -3032,7 +3033,7 @@ RNumber& RNumber::operator^=( unsigned int number )
 //
 // Non-member function for left shifting an RNumber using an RNumber.
 //
-inline const RNumber leftShift( const RNumber& n, const RNumber& shift, bool extend )
+inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift, bool extend )
 {
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift.getUInt();
@@ -3111,7 +3112,7 @@ inline const RNumber leftShift( const RNumber& n, const RNumber& shift, bool ext
 //
 // Non-member function for left shifting an RNumber using an unsigned.
 //
-inline const RNumber leftShift( const RNumber& n, unsigned int shift, bool extend )
+inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, bool extend )
 {
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift;
@@ -3193,7 +3194,7 @@ inline const RNumber leftShift( const RNumber& n, unsigned int shift, bool exten
 //
 // Non-member function for left shifting an unsigned using an RNumber.
 //
-inline const RNumber leftShift( unsigned int n, const RNumber& shift, bool extend )
+inline const RNumber rnumber::leftShift( unsigned int n, const RNumber& shift, bool extend )
 {
 
   unsigned int* resValue0 = getTempBuffer( 1 );
@@ -3212,7 +3213,7 @@ inline const RNumber leftShift( unsigned int n, const RNumber& shift, bool exten
 //
 // Non-member function for left shifting an RNumber with an RNumber.
 //
-const RNumber operator<<( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator<<( const RNumber& n1, const RNumber& n2 )
 {
 
   return leftShift( n1, n2, false );
@@ -3222,7 +3223,7 @@ const RNumber operator<<( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for left shifting an RNumber with an unsigned.
 //
-const RNumber operator<<( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator<<( const RNumber& n1, unsigned int n2 )
 {
   return leftShift( n1, n2, false );
 }
@@ -3231,7 +3232,7 @@ const RNumber operator<<( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for left shifting an unsigned with an RNumber.
 //
-const RNumber operator<<( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator<<( unsigned int n1, const RNumber& n2 )
 {
 
   return leftShift( n1, n2, false );
@@ -3241,7 +3242,7 @@ const RNumber operator<<( unsigned int n1, const RNumber& n2 )
 //
 // Non-member function for left shifting an RNumber with an RNumber.
 //
-const RNumber leftShiftExt( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::leftShiftExt( const RNumber& n1, const RNumber& n2 )
 {
 
   return leftShift( n1, n2, true );
@@ -3251,7 +3252,7 @@ const RNumber leftShiftExt( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for left shifting an RNumber with an unsigned.
 //
-const RNumber leftShiftExt( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::leftShiftExt( const RNumber& n1, unsigned int n2 )
 {
 
   return leftShift( n1, n2, true );
@@ -3261,7 +3262,7 @@ const RNumber leftShiftExt( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for left shifting an unsigned with an RNumber.
 //
-const RNumber leftShiftExt( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::leftShiftExt( unsigned int n1, const RNumber& n2 )
 {
 
   return leftShift( n1, n2, true );
@@ -3392,7 +3393,7 @@ RNumber& RNumber::operator<<=( unsigned int shift )
 //
 // Non-member function for right shifting an RNumber using an RNumber.
 //
-inline const RNumber rightShift( const RNumber& n, const RNumber& shift )
+inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift )
 {
 
   const unsigned int nwc = n._wordCount;
@@ -3449,7 +3450,7 @@ inline const RNumber rightShift( const RNumber& n, const RNumber& shift )
 //
 // Non-member function for right shifting an RNumber using an unsigned.
 //
-inline const RNumber rightShift( const RNumber& n, unsigned int shift )
+inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
 {
 
   const unsigned int nwc = n._wordCount;
@@ -3505,7 +3506,7 @@ inline const RNumber rightShift( const RNumber& n, unsigned int shift )
 //
 // Non-member function for right shifting an RNumber using an RNumber.
 //
-inline const RNumber rightShift( unsigned int n, const RNumber& shift )
+inline const RNumber rnumber::rightShift( unsigned int n, const RNumber& shift )
 {
 
   unsigned int* resValue0 = getTempBuffer( 1 );
@@ -3524,7 +3525,7 @@ inline const RNumber rightShift( unsigned int n, const RNumber& shift )
 //
 // Non-member function for right shifting an RNumber with an RNumber.
 //
-const RNumber operator>>( const RNumber& n1, const RNumber& n2 )
+const RNumber rnumber::operator>>( const RNumber& n1, const RNumber& n2 )
 {
 
   return rightShift( n1, n2 );
@@ -3534,7 +3535,7 @@ const RNumber operator>>( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for right shifting an RNumber with an unsigned.
 //
-const RNumber operator>>( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator>>( const RNumber& n1, unsigned int n2 )
 {
 
   return rightShift( n1, n2 );
@@ -3544,7 +3545,7 @@ const RNumber operator>>( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for right shifting an unsigned with an RNumber.
 //
-const RNumber operator>>( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator>>( unsigned int n1, const RNumber& n2 )
 {
 
   return rightShift( n1, n2 );
@@ -4007,7 +4008,7 @@ ostream& RNumber::printWithRadix( ostream& os, Radix radix,bool prefix ) const
 // Stream input support for hexadecimal, binary and decimal (the default)
 // numbers.  Only decimal numbers may include a unary plus or minus.
 //
-istream& operator>>( istream& is, RNumber& number )
+istream& rnumber::operator>>( istream& is, RNumber& number )
 {
 
   char c           = '\0';
@@ -4198,7 +4199,7 @@ unsigned int RNumber::getSizeWithRadix( const string& str, Radix& radix )
 //
 // Stream out the contents of the RNumber using the specified format options.
 //
-ostream& operator<<( ostream& os, const RNumber& number )
+ostream& rnumber::operator<<( ostream& os, const RNumber& number )
 {
   number.printWithStreamRadix(os,false);
   return os;

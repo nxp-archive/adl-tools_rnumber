@@ -19,6 +19,7 @@
 # define V1(x)
 #endif
 
+using namespace rnumber;
 
 // We always install a default random object.
 unsigned Random::_currentGen = 0;
