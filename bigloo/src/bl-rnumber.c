@@ -200,6 +200,9 @@ RNumber_proxy_t bl_rnumber_rn_bitxor_ui( RNumber_proxy_t n1, unsigned int n2 ){
 RNumber_proxy_t bl_rnumber_ui_bitxor_rn( unsigned int n1, RNumber_proxy_t n2 ){
   return proxy_from_rnumber(rnumber_ui_bitxor_rn(n1,RNUM_FROM_PROXY(n2)));
 }
+RNumber_proxy_t bl_rnumber_bitnot( RNumber_proxy_t n1 ){
+  return proxy_from_rnumber(rnumber_bitnot(RNUM_FROM_PROXY(n1)));
+}
 RNumber_proxy_t bl_rnumber_rn_leftshift_rn( RNumber_proxy_t n, RNumber_proxy_t shift ){
   return proxy_from_rnumber(rnumber_rn_leftshift_rn(RNUM_FROM_PROXY(n),RNUM_FROM_PROXY(shift)));
 }

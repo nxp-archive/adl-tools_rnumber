@@ -2749,7 +2749,6 @@ RNumber& RNumber::operator|=( unsigned int number )
   return *this;
 }
 
-
 //
 // Non-member function for bit-wise XORing two RNumbers.
 //

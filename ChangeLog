@@ -1,3 +1,7 @@
+2004-09-23  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  Fixed bug in bigloo rn-bitnot function.
+
          rnumber release 1.23.2 (v1_23_2) on SunOS (tomato.somerset.sps.mot.com) 
 
         ====== rnumber release 1.23.2 (v1_23_2) on Linux (cde-tx32-lc209) ======

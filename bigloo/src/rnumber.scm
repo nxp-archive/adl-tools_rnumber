@@ -90,6 +90,7 @@
     (rnumber-rn-bitxor-rn::RNumber_proxy_t (RNumber_proxy_t RNumber_proxy_t) "bl_rnumber_rn_bitxor_rn")
     (rnumber-rn-bitxor-ui::RNumber_proxy_t (RNumber_proxy_t uint) "bl_rnumber_rn_bitxor_ui")
     (rnumber-ui-bitxor-rn::RNumber_proxy_t (uint RNumber_proxy_t) "bl_rnumber_ui_bitxor_rn")
+    (rnumber-bitnot::RNumber_proxy_t (RNumber_proxy_t) "bl_rnumber_bitnot")
     (rnumber-rn-leftshift-rn::RNumber_proxy_t (RNumber_proxy_t RNumber_proxy_t) "bl_rnumber_rn_leftshift_rn")
     (rnumber-rn-leftshift-ui::RNumber_proxy_t (RNumber_proxy_t uint) "bl_rnumber_rn_leftshift_ui")
     (rnumber-ui-leftshift-rn::RNumber_proxy_t (uint RNumber_proxy_t) "bl_rnumber_ui_leftshift_rn")
@@ -419,7 +420,7 @@
 (define (rn-bitnot a)
    (let ((first-rn (RNumber_proxy_t? a))
 	 (first-ui (integer? a)))
-      (cond ((and first-rn) (rnumber-negate a))
+      (cond ((and first-rn) (rnumber-bitnot a))
 	    ((and first-ui) (bit-not a))
 	    (else (error "rn-bitnot" *rnumber-one-arg-error* a)))))
 

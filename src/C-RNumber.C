@@ -586,7 +586,10 @@ struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNu
  struct RNumber * rnumber_ui_bitxor_rn( unsigned int n1, const struct RNumber * n2 ){
   return new RNumber(n1^(*n2));
 }
- struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct RNumber * shift ){
+struct RNumber * rnumber_bitnot( const struct RNumber * n1 ){
+  return new RNumber(~(*n1));
+}
+struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct RNumber * shift ){
   return new RNumber((*n)<<(*shift));
 }
  struct RNumber * rnumber_rn_leftshift_ui( const struct RNumber * n, unsigned int shift ){

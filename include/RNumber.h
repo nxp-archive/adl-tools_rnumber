@@ -238,6 +238,7 @@ namespace rnumber {
          friend  const RNumber bitWiseOr( const RNumber& n1, unsigned int n2 );
          friend  const RNumber bitWiseXor( const RNumber& n1, const RNumber& n2 );
          friend  const RNumber bitWiseXor( const RNumber& n1, unsigned int n2 );
+         friend  const RNumber bitWiseNot( const RNumber& n1);
          friend const  RNumber leftShift( const RNumber& num, const RNumber& shift, bool extend );
          friend const  RNumber leftShift( const RNumber& num, unsigned int shift, bool extend );
          friend const  RNumber leftShift( unsigned int num, const RNumber& shift, bool extend );
