@@ -23,13 +23,13 @@ RNUMBER_STATIC_LIBS = \
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
-BIGLOO_O_OPTIONS_OPT = -v2 -O3 -mkaddlib -g -cg -cc gcc -fsharing -q +rm -unsafe
-BIGLOO_O_OPTIONS_DEBUG = -v2 -mkaddlib -g -cg -cc gcc -fsharing -q +rm 
-BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_DEBUG)
+BIGLOO_O_OPTIONS_OPT = -v2 -O3 -mkaddlib -g4 -cg -cc gcc -fsharing -q +rm -unsafe
+BIGLOO_O_OPTIONS_DEBUG = -v2 -mkaddlib -g4 -cg -cc gcc -fsharing -q +rm 
+BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
-BIGLOO_HEAP_OPTIONS = $(BIGLOO_HEAP_OPTIONS_DEBUG)
+BIGLOO_HEAP_OPTIONS = $(BIGLOO_HEAP_OPTIONS_OPT)
 
 both: libbl-rnumber.a libbl-rnumber.so
 

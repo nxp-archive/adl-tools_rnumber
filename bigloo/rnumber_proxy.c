@@ -10,7 +10,7 @@
 ** ===========================================================================
 */
 
-
+#include <stdio.h>
 #include "rnumber/rnumber_proxy.h"
 #include "bl-rnumber.h"
 
@@ -27,14 +27,13 @@ static char * rnumber_to_string( RNumber_proxy_t array, char *c, int len ) {
 }
 
 static RNumber_proxy_t rnumber_output( RNumber_proxy_t array, FILE *fout ) {
-  char * str = bl_rnumber_cstr(array);
-  fprintf( fout, "0x%s", str);
-  free (str);
-  return array;
+    char * str = bl_rnumber_cstr(array);
+    fprintf( fout, "0x%s", str);
+    free (str);
+    return array;
 }
 
 void rnumber_finalize( RNumber_proxy_t array ) {
-  printf("%s:%d %s()", __FILE__, __LINE__, __FUNCTION__);
   rnumber_destroy(array->a_t.rnumber);
   array->a_t.rnumber = 0;
 }

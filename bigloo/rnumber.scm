@@ -23,6 +23,7 @@
 	 (coerce RNumber_proxy_t bool () ((lambda (x) #t))))
    (extern
     (macro RNumber_proxy_t?::bool (::obj) "rnumber_proxyp")
+    (macro bgl_rnumber_proxy_t?::bool (::obj) "rnumber_proxyp")
     ;; beginning of cl-bl-rnumber.h
     (bl-rnumber-create::RNumber_proxy_t () "bl_rnumber_create")
     (bl-rnumber-create-from-unsigned::RNumber_proxy_t (uint) "bl_rnumber_create_from_unsigned")
