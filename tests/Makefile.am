@@ -33,3 +33,6 @@ LDADD = $(RNUMBER_STATIC_LIBS)
 
 #driver: driver.scm
 #	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)
+
+cinstall:
+	$(MAKE) install

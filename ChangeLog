@@ -1,3 +1,7 @@
+2002-12-09  Brian Kahne  <bkahne@ibmoto.com>
+
+	* Got conditional install (cinstall) working.
+
         ============== rnumber release 1.11.2 (v1_11_2) on SunOS ==============
 
 2002-12-05  Todd Dukes  <Todd.Dukes@motorola.com>

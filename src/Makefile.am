@@ -18,8 +18,6 @@ noinst_HEADERS = \
 pkginclude_HEADERS = \
 	trace.h
 
-
-
-
-
+cinstall:
+	$(MAKE) install
 
