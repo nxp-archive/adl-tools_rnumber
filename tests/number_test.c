@@ -1491,7 +1491,7 @@ int main (int argc, char **argv)
   {
     char * path = "/bin";
     char * prog = "dc";
-    char * pgm;
+    char * pgm = "";
     unsigned seed = 0;
 
     for ( ; _cur < _argc; ++_cur) {
@@ -1512,14 +1512,17 @@ int main (int argc, char **argv)
       }
     }
 
+    printf("strlenpgm %d\n", strlen(pgm));
     if (strlen(pgm) == 0) {
       pgm = malloc(strlen(path) + strlen("/") + strlen(prog) + 1);
+      printf("path %s prog %s\n", path, prog);
       strcpy(pgm,path);
       strcat(pgm, "/");
       strcat(pgm, prog);
     }
     seed = random_init(seed);
 
+    printf("calculator pgm %s\n", pgm);
     {
       struct Calculator * calc = calculator_create(pgm);
 
@@ -1788,19 +1791,15 @@ struct Calculator * calculator_create (const char *pgm)
 	 calc,  calc->_fd1[0], calc->_fd1[1], calc->_fd2[0], calc->_fd2[1]);
   {
     pid_t pid;
-    printf("%s:%d %s() %s\n",__FILE__, __LINE__,  __FUNCTION__, "forking");
     if ((pid = fork ()) < 0) {
       printf ("Fork error\n");
       exit (1);
     }
     else if (pid > 0) {    // parent
-      printf("%s:%d %s() parent pid %d getpid %d\n",__FILE__, __LINE__,  __FUNCTION__, pid, getpid());
       close (calc->_fd1[0]);
       close (calc->_fd2[1]);
-      printf("%s:%d %s()\n",__FILE__, __LINE__,  __FUNCTION__);
     }
     else {                 // child
-      printf("%s:%d %s() child pid %d getpid %d\n",__FILE__, __LINE__,  __FUNCTION__, pid, getpid());
       close (calc->_fd1[1]);
       close (calc->_fd2[0]);
       if (calc->_fd1[0] != 0)
@@ -1811,19 +1810,15 @@ struct Calculator * calculator_create (const char *pgm)
 	printf ("Exec error\n");
 	exit (1);
       }
-      printf("%s:%d %s()\n",__FILE__, __LINE__,  __FUNCTION__);
     }
   }
-  printf("%s:%d %s()\n",__FILE__, __LINE__,  __FUNCTION__);
   calculator_private_init (calc);
-  printf("%s:%d %s()\n",__FILE__, __LINE__,  __FUNCTION__);
   return calc;
 }
 
 void calculator_private_destroy ( struct Calculator * calc)
 {
-  printf("calculator_private_destroy\n");
-  printf("%s\n", __FUNCTION__);
+  printf("%s:%d %s()\n", __FILE__, __LINE__, __FUNCTION__);
   calculator_private_terminate ( calc);
   free (calc);
 }
@@ -1853,8 +1848,6 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
   char astr[256];
   char bstr[256];
 
-  printf("%s:%d\n", __FILE__, __LINE__);
-
   assert (rnumber_size(a) <= 1024 && rnumber_size(b) <= 1024);
   // dc requires uppercase hex; right now RNumbers print hex in lower case
   strcpy (astr, rnumber_cstr(a));
@@ -1862,15 +1855,12 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
   strcpy (bstr, rnumber_cstr(b));
   uppercase (bstr);
 
-  printf("%s:%d\n", __FILE__, __LINE__);
-
   // Sanity checking if we're not allowing for resizing.
   if ( !ext && (op[0] != '%' && rnumber_size(c) != max( rnumber_size(a), rnumber_size(b) )) )
   {
     printf ("Result size error (1)  occurred in expression:  %s(%d) %s(%d) (%d) %s\n",
             astr, rnumber_size(a), bstr, rnumber_size(b), rnumber_size(c), op);
   }
-  printf("%s:%d\n", __FILE__, __LINE__);
   return calculator_private_arith_calc(calc,astr,rnumber_size(a),bstr,rnumber_size(b),c,op,ext);
 }
 
@@ -1912,23 +1902,17 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
 
   char cmd[1024];
   char buf[1024];
-  printf("%s:%d\n", __FILE__, __LINE__);
   sprintf (cmd, "%s %s %c p c\n", astr, bstr, op[0]);
-  printf("%s:%d %d\n", __FILE__, __LINE__, getpid());
   {
     int n = strlen (cmd);
-    printf("%s:%d calc pid %d %p calc->_fd1[1] %d\n", __FILE__, __LINE__, getpid(), calc, calc->_fd1[1]);
     if (write (calc->_fd1[1], cmd, strlen (cmd)) != n) {
       printf ("Write error\n");
       exit (1);
     }
-    printf("%s:%d\n", __FILE__, __LINE__);
     n = 0;
     buf[0] = '\0';
-    printf("%s:%d\n", __FILE__, __LINE__);
     do {
       int len = read (calc->_fd2[0], buf + n, 1024);
-      printf("%s:%d\n", __FILE__, __LINE__);
       if (len < 0) {
 	printf ("Read error\n");
 	exit (1);
@@ -1941,7 +1925,6 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
     struct RNumber * res =  ext ? rnumber_create_from_unsigned_of_size_variable_sizing( 0, rnumber_size(c)) :
       rnumber_create_from_unsigned_of_size( 0, rnumber_size(c));
 
-  printf("%s:%d\n", __FILE__, __LINE__);
     if (!ext) {
       // Fixed size case.
       if (buf[0] == '-') {
@@ -1952,7 +1935,6 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
       }
     } else {
       // Dynamically sized case.
-  printf("%s:%d\n", __FILE__, __LINE__);
       if (buf[0] == '-') {
 	res = rnumber_create_from_string_of_radix_variable_sizing( buf + 1,rnumber_rhex());
 	rnumber_negate(res);
@@ -1961,19 +1943,17 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
       }
     }
 
-  printf("%s:%d\n", __FILE__, __LINE__);
-    if (res != c) {
-      printf ("Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", astr, asize, bstr, bsize, op);
+    if ( rnumber_rn_notequal_rn(res, c)) {
+      printf ("%s:%d Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", 
+	      __FILE__, __LINE__,astr, asize, bstr, bsize, op);
       printf ("  RNumber res = %s, dc res = %s\n", rnumber_cstr(c), rnumber_cstr(res));
       rc = 1;
     }
   
-  printf("%s:%d\n", __FILE__, __LINE__);
     if (Verbose) {
       printf("Calc Result: %s\n",  rnumber_cstr(res));
     }
   }
-  printf("%s:%d\n", __FILE__, __LINE__);
   return rc;
 }
 
