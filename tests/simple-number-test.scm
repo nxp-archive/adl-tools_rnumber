@@ -29,7 +29,11 @@
       (print "a " a)
       (print "a " (rnumber-cstr a))
       (print "b " (rnumber-cstr b))
-      (print "c " (rnumber-cstr c))))
+      (print "c " (rnumber-cstr c))
+      (print "a = b " (equal? a b))
+      (print "b = c " (equal? b c))
+      (print "a = 10 " (equal? a 10))
+      (print "10 = a "  (equal? 10 a))))
     
 (define (simple-number-test . args)
    (real-main args))
