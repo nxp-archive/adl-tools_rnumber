@@ -1,4 +1,9 @@
-        ============= rnumber release 1.18.2 (v1_18_1) on SunOS =============
+        ============= rnumber release 1.18.3 (v1_18_3) on SunOS =============
+
+2003-08-12  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  changes to makefiles for bigloo bindings.
+
 2003-08-05  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	*  added #include <cassert> to files that  use the assert macro to 
