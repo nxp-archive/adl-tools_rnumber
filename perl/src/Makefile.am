@@ -3,15 +3,13 @@ perllibdir=$(pkglibdir)
 
 noinst_DATA = example.so 
 
-perllib_DATA = pl_rnumber.so pl_rnumber.pm pl_random.so pl_random.pm
+perllib_DATA = pl_rnumber.so pl_rnumber.pm 
 
-CLEANFILES = $(EXAMPLE_CLEANFILES) $(PL_RNUMBER_CLEANFILES) $(PL_RANDOM_CLEANFILES)
+CLEANFILES = $(EXAMPLE_CLEANFILES) $(PL_RNUMBER_CLEANFILES) 
 
 EXAMPLE_CLEANFILES = example.o example_wrap.o example_wrap.c example_wrap.o example.so example_wrap.doc
 
 PL_RNUMBER_CLEANFILES = pl_rnumber.pm pl_rnumber_wrap.c pl_rnumber_wrap.o pl_rnumber.so
-
-PL_RANDOM_CLEANFILES = pl_random.pm pl_random_wrap.c pl_random_wrap.o pl_random.so
 
 PERL_INC=-I/local/tdukes/lib/perl5/5.00503/sun4-solaris/CORE
 
@@ -31,10 +29,4 @@ pl_rnumber.pm pl_rnumber_wrap.c: pl_rnumber.i
 	swig -perl5 pl_rnumber.i
 
 pl_rnumber.so : pl_rnumber_wrap.o $(RNUMBER_LIB)	
-	g++ -shared $^ -o $@ 
-
-pl_random.pm pl_random_wrap.c: pl_random.i 
-	swig -perl5 pl_random.i
-
-pl_random.so : pl_random_wrap.o $(RNUMBER_LIB)	
 	g++ -shared $^ -o $@ 
