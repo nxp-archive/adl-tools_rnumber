@@ -14,7 +14,7 @@ pkglibdir=${libdir}/@PACKAGE@
 pkgdatadir=${datadir}/@PACKAGE@
 transform=@program_transform_name@
 
-CFLAGS="@CXXFLAGS@ -I${pkglibdir}/include -I@includedir@ "
+CFLAGS="@PROFILE@ -I@includedir@ "
 LIBDIRS="-L${pkglibdir} -R${pkglibdir} "
 HELPER_PATH="${pkgdatadir}"
 
@@ -22,6 +22,7 @@ rnumber_libs="$LIBDIRS -lRNumber "
 rnumber_bl_libs="-lRNumber "
 rnumber_bl_lib_path="-L ${pkglibdir} "
 rnumber_cflags="$CFLAGS"
+STATIC_LIBS_DEPEND="${pkglibdir}/libRUtil.a "
 STATIC_LIBS="${pkglibdir}/libRNumber.a "
 
 usage()
@@ -35,6 +36,7 @@ Generic options
 
 Compilation support options
   --cflags	print pre-processor and compiler flags
+  --depend give list of libraries that target could depend on.
   --libs	print library linking information
   --libs-only-L	only print the -L/-R part of --libs
   --libs-only-l only print the -l part of --libs
@@ -53,6 +55,7 @@ if test $# -eq 0; then
 fi
 
 cflags=false
+depend=false
 libs_L=false
 bl_libs_l=false
 bl_libs_L=false
@@ -70,12 +73,12 @@ while test $# -gt 0; do
 
     case $1 in
     --version)
-	echo @VERSION@
-	exit 0
-	;;
+        echo @VERSION@
+        exit 0
+        ;;
     --help)
-	usage 0
-	;;
+        usage 0
+        ;;
     --helper-path)
         helper_path=true
         ;;
@@ -83,31 +86,34 @@ while test $# -gt 0; do
         libs_L=true
         static_libs=true
         ;;
+    --depend)
+        depend=true
+        ;;
     --cflags)
        	cflags=true
        	;;
     --libs)
-       	libs_L=true
-	libs_l=true
-       	;;
+        libs_L=true
+        libs_l=true
+        ;;
     --libs-only-L)
-	libs_L=true
-	;;
+        libs_L=true
+        ;;
     --libs-only-l)
-	libs_l=true
-	;;
+        libs_l=true
+        ;;
     --bl-libs-only-l)
-	bl_libs_l=true
-	;;
+        bl_libs_l=true
+        ;;
     --bl-libs-only-L)
-	bl_libs_L=true
-	;;
+        bl_libs_L=true
+        ;;
     rnumber)
         # defined above to avoid double definiton with default values below
-	the_libs="$the_libs $rnumber_libs"
-	the_flags="$the_flags $rnumber_cflags"
+        the_libs="$the_libs $rnumber_libs"
+        the_flags="$the_flags $rnumber_cflags"
         any=yes
-	;;
+        ;;
     *)
 	usage 1
 	;;
@@ -123,6 +129,10 @@ fi
 
 if $cflags; then
     all_flags="$the_flags"
+fi
+
+if $depend; then
+    all_flags=$STATIC_LIBS_DEPEND
 fi
 
 if $libs_L || $libs_l; then
