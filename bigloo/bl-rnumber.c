@@ -164,8 +164,8 @@ RNumber_proxy_t bl_rnumber_rn_multiply_rn( RNumber_proxy_t n1, RNumber_proxy_t n
 RNumber_proxy_t bl_rnumber_rn_multiply_ui( RNumber_proxy_t n1, unsigned int n2 ) {
   return proxy_from_rnumber(rnumber_rn_multiply_ui(RNUM_FROM_PROXY(n1),n2));
 }
-RNumber_proxy_t bl_rnumber_ui_multiply_ui( unsigned int n1, RNumber_proxy_t n2 ) {
-  return proxy_from_rnumber(rnumber_ui_multiply_ui(n1,RNUM_FROM_PROXY(n2)));
+RNumber_proxy_t bl_rnumber_ui_multiply_rn( unsigned int n1, RNumber_proxy_t n2 ) {
+  return proxy_from_rnumber(rnumber_ui_multiply_rn(n1,RNUM_FROM_PROXY(n2)));
 }
 RNumber_proxy_t bl_rnumber_rn_multiply_ext_rn( RNumber_proxy_t n1, RNumber_proxy_t n2 ){
   return proxy_from_rnumber(rnumber_rn_multiply_ext_rn(RNUM_FROM_PROXY(n1),RNUM_FROM_PROXY(n2)));
