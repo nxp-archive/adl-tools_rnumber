@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include <string>
-#include <gccversion.h>
 // This define is inserted automatically when any of the
 // -O compiler options are used.
 //#ifdef __OPTIMIZE__
