@@ -36,11 +36,11 @@ struct RNumber * rnumber_create_from_string_of_radix_variable_sizing( char * num
 struct RNumber * rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix);
 struct RNumber * rnumber_create_from_string_of_size_of_radix_variable_sizing( char * number, unsigned int size, int radix);
 struct RNumber * rnumber_create_from_numVector( unsigned int* numVector, unsigned int wordCount, unsigned int size );
-struct RNumber * rnumber_create_from_numVector_variable_size( unsigned int* numVector, unsigned int wordCount, unsigned int size );
+struct RNumber * rnumber_create_from_numVector_variable_sizing( unsigned int* numVector, unsigned int wordCount, unsigned int size );
 
 struct RNumber * rnumber_create_from_rnumber( const struct RNumber * rnumber );
 struct RNumber * rnumber_copy_to_size( const struct RNumber * number, unsigned int size);
-struct RNumber * rnumber_copy_to_size_variable_size( const struct RNumber * number, unsigned int size);
+struct RNumber * rnumber_copy_to_size_variable_sizing( const struct RNumber * number, unsigned int size);
 void rnumber_destroy( struct RNumber * rnumber );
 
   // Assignment methods. operator=() assigns the value constrained by sizing;

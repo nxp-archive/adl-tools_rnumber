@@ -102,7 +102,7 @@ RNumber * rnumber_create_from_numVector( unsigned int* numVector, unsigned int w
   return new RNumber( numVector, wordCount, size );
 }
 
-RNumber * rnumber_create_from_numVector_variable_size(unsigned int* numVector, unsigned int wordCount, unsigned int size )
+RNumber * rnumber_create_from_numVector_variable_sizing(unsigned int* numVector, unsigned int wordCount, unsigned int size )
 {
   return new RNumber( numVector, wordCount, size, RNumber::dynamic);
 }
@@ -117,7 +117,7 @@ RNumber * rnumber_copy_to_size( const RNumber * number, unsigned int size)
   return new RNumber(*number, size);
 }
 
-RNumber * rnumber_copy_to_size_variable_size( const RNumber * number, unsigned int size)
+RNumber * rnumber_copy_to_size_variable_sizing( const RNumber * number, unsigned int size)
 {
   return new RNumber(*number, size, RNumber::dynamic);
 }
