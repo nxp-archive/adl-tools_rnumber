@@ -1,4 +1,4 @@
-check_PROGRAMS =  simple_test NumberTest RandTest number_test 
+check_PROGRAMS =  number-tests simple_test NumberTest RandTest number_test 
 
 # randtest
 
@@ -13,7 +13,7 @@ EXTRA_DIST = $(TESTS)
 #INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
-TESTS = simple_test NumberRegress  RandTest number_test
+TESTS = number-tests simple_test NumberRegress  RandTest number_test
 
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a
@@ -21,4 +21,7 @@ RNUMBER_STATIC_LIBS = \
 LDADD = $(RNUMBER_STATIC_LIBS)
 
 number-tests: number-tests.scm
-	bigloo -v2 -copt "-I ../include" -L ../src -L ../bigloo/ -rm -o number-tests number-tests.scm -lstdc++ -lRNumber
+	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ -rm -o number-tests number-tests.scm -lstdc++ -lRNumber
+
+driver: driver.scm
+	bigloo -g -cg -v2 -copt "-I ../include" -L ../src -L ../bigloo/ -rm -o driver driver.scm -lstdc++ -lRNumber

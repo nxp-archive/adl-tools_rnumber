@@ -36,6 +36,7 @@ typedef union rnumber_proxy
 #define RNUMBER_IDENTIFIER "rnumber.rnumber"
 typedef obj_t hol_t;
 #  define HOL_REF( v ) ((RNumber_proxy_t)(BREF( v )))
+#define RNUM_FROM_PROXY(v) (((RNumber_proxy_t)(v))->a_t.rnumber)
 #  define RNUMBER_PROXY_ERROR( msg ) printf( msg )
 
 /*---------------------------------------------------------------------*/

@@ -1,3 +1,3 @@
 (set! *additional-include-foreign*
-	(cons "C-RNumber_decl.h" *additional-include-foreign*))
+	(cons "rnumber_proxy.h" *additional-include-foreign*))
 
