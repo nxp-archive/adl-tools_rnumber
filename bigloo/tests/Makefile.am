@@ -17,7 +17,7 @@ RNUMBER_STATIC_LIBS = \
 LDADD = $(RNUMBER_STATIC_LIBS)
 
 BIGLOO_C_OPT = -copt "-I ../include"  
-BIGLOO_LIB_PATH = -L $(top_srcdir)/src -L $(top_srcdir)/bigloo
+BIGLOO_LIB_PATH = -L $(top_srcdir)/src -L $(top_srcdir)/bigloo/src
 BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber
 
 % : %.scm

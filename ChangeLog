@@ -1,3 +1,17 @@
+2002-11-04  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  moved directories around so that 
+
+	         make distclean
+	         ./autogen.sh 
+	         make check
+
+	   will work for those that can't be troubled with 
+	
+	         make distclean
+	         ./autogen.sh 
+		 make && make check
+
         ==================== rnumber release 1.8.4 (v1_8_4) ====================
 
 2002-11-04  Todd Dukes  <Todd.Dukes@motorola.com>
