@@ -1,0 +1,16 @@
+2002-09-04  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  rnumber.scm: added rn<< rn>> rn- rn+ rn-bitand rn-bitor
+
+	*  changed default minimum size of RNumbers constructed from strings to 
+	   be 32 bits. Previously only enough bits to hold the original value was
+	   used as the minimum.
+
+2002-09-03  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	* removed number-test.scm test.
+
+	* bigloo/rnumber.scm: added following functions
+	(rn<< a b)	  (rn>> a b)	  (rn- a b)	  (rn+ a b)
+
+
