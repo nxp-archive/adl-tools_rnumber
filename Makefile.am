@@ -42,3 +42,11 @@ cinstall-am:
 # captures the state of the variable and substitutes it into the
 # final Makefile.
 ACLOCAL_AMFLAGS = @ACLOCAL_FLAGS@
+
+# Tags
+TAGS_EXE	= btags
+TAGS		= .etags
+SOURCE_FILES    = $(shell list-sourcefiles.scm)
+
+$(TAGS) : $(SOURCE_FILES)
+	./make-tagfile
