@@ -448,27 +448,27 @@ void rnumber_set_fixed( RNumber * rnumber)
   // Streaming I/O methods.
 void rnumber_print_to_os( RNumber * rnumber, void * os )
 {
-  ostream & oos = reinterpret_cast<ostream &>(*os);
-  rnumber->printToOS(oos);
+  ostream * oos = reinterpret_cast<ostream *>(os);
+  rnumber->printToOS(*oos);
 }
 
 void rnumber_print_with_radix( RNumber * rnumber, void * os, int radix, int prefix ) 
 {
-  ostream & oos = reinterpret_cast<ostream &>(*os);
-  rnumber->printWithRadix(oos, get_radix(radix), prefix);
+  ostream * oos = reinterpret_cast<ostream *>(os);
+  rnumber->printWithRadix(*oos, get_radix(radix), prefix);
 }
 
 //friend istream& operator>>( istream& is, RNumber& number );
 //friend ostream& operator<<( ostream& os, const RNumber& number );
 void rnumber_read_from_is( RNumber * rnumber, void * is )
 {
-  istream & iis = reinterpret_cast<istream&>(*is);
-  iis >> (*rnumber);
+  istream * iis = reinterpret_cast<istream *>(is);
+  (*iis) >> (*rnumber);
 }
 
 void rnumber_write_to_os( RNumber * rnumber, void * os )
 {
-  ostream & oos = reinterpret_cast<ostream &>(*os);
-  oos << (*rnumber);
+  ostream * oos = reinterpret_cast<ostream *>(os);
+  (*oos) << (*rnumber);
 }
 
