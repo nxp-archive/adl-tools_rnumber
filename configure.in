@@ -118,9 +118,9 @@ else
 fi
 
 AC_SUBST([BIGLOO])
-AM_CONDITIONAL(WITHOUT_BIGLOO,test x$BIGLOO == x)
+AM_CONDITIONAL(WITHOUT_BIGLOO,test x$BIGLOO = x)
 
-if test x$BIGLOO == x; then
+if test x$BIGLOO = x; then
    AC_MSG_WARN([Bigloo bindings will not be built.])
 fi
 
