@@ -1381,6 +1381,7 @@ const char *nextArg()
 
 int main (int argc, char **argv)
 {
+  cout << "NumberTest" << endl;
   const unsigned sizes[] = { 32, 64, 128, 0 };
   const unsigned n = 4;
   unsigned i;

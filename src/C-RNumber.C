@@ -107,7 +107,7 @@ RNumber * rnumber_create_from_numVector_variable_sizing(unsigned int* numVector,
   return new RNumber( numVector, wordCount, size, RNumber::dynamic);
 }
 
-RNumber * rnumber_copy_from_rnumber( const RNumber * rnumber )
+RNumber * rnumber_create_from_rnumber( const RNumber * rnumber )
 {
   return new RNumber(*rnumber);
 }
@@ -367,7 +367,7 @@ unsigned int rnumber_get_uint( RNumber * rnumber)
   return rnumber->getUInt();
 }
 
-char * rnumber_cstr( RNumber * rnumber) 
+char * rnumber_cstr( const RNumber * rnumber) 
 {
   string str = rnumber->str();
   char * return_value = reinterpret_cast<char*>(malloc( str.size() + 1));
@@ -375,7 +375,7 @@ char * rnumber_cstr( RNumber * rnumber)
   return return_value;
 }
 
-char * rnumber_cstr_radix( RNumber * rnumber, int radix, int bool_prefix)
+char * rnumber_cstr_radix( const RNumber * rnumber, int radix, int bool_prefix)
 {
   string str = rnumber->strradix(get_radix(radix), bool_prefix);
   char * return_value = reinterpret_cast<char *>(malloc( str.size() + 1));
@@ -405,12 +405,12 @@ void rnumber_set_field( RNumber * rnumber, unsigned int start, unsigned int end,
 }
 
   // Attribute accessors and manipulators.
-unsigned rnumber_size( RNumber * rnumber)
+unsigned rnumber_size( const struct RNumber * rnumber)
 {
   return rnumber->size();
 }
 
-unsigned rnumber_wordcount( RNumber * rnumber)
+unsigned rnumber_wordcount( const RNumber * rnumber)
 {
   return rnumber->wordcount();
 }
@@ -433,6 +433,16 @@ void rnumber_set_default_size( unsigned int size )
 int rnumber_sizing( RNumber * rnumber)
 {
   return rnumber->sizing();
+}
+
+int rnumber_dynamic()
+{
+  return RNumber::dynamic;
+}
+
+int rnumber_fixed()
+{
+  return RNumber::fixed;
 }
 
 void rnumber_set_dynamic( RNumber * rnumber)
@@ -648,3 +658,7 @@ int rnumber_rn_greaterequal_ui( const struct RNumber * n1, unsigned int n2 ){
 int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNumber * n2 ){
   return n1>=(*n2);
 }
+
+int rnumber_rhex() { return RNumber::rhex;}
+int rnumber_rbin() { return RNumber::rbin;}
+int rnumber_rdec() { return RNumber::rdec;}

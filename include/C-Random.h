@@ -14,6 +14,10 @@
 
 #include "C-RNumber.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // This class is never instantiated- it's purely static.  It contains
 // multiple RandomObj generators which may be swapped in and out- the
 // current generator is then used by the various get functions.
@@ -58,5 +62,9 @@ void * random_get_state();
 void random_set_state( void * state);
 // Return the offset that the current generator is at.
 unsigned random_get_count();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

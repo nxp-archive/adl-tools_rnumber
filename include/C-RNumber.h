@@ -11,11 +11,9 @@
 #ifndef C_RNumber_h
 #define C_RNumber_h "$Id$"
 
-/*#include "types.h"*/
-
-#ifdef _cplusplus
-#extern "C" {
-  class RNumber;
+#ifdef __cplusplus
+class RNumber;
+extern "C" {
 #else
   struct RNumber; 
 #endif
@@ -28,7 +26,7 @@ struct RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned int numb
 struct RNumber * rnumber_create_from_unsigned_of_size( unsigned int number, unsigned int size );
 struct RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number, unsigned int size );
 struct RNumber * rnumber_create_from_string( char * number  );
-struct RNumber * rnumber_create_from_string_variable_sizing( char * number, int sizing );
+struct RNumber * rnumber_create_from_string_variable_sizing( char * number );
 struct RNumber * rnumber_create_from_string_of_size( char * number, unsigned int size );
 struct RNumber * rnumber_create_from_string_of_size_variable_sizing(  char * number, unsigned int size );
 struct RNumber * rnumber_create_from_string_of_radix( char * number, int radix );
@@ -79,7 +77,7 @@ struct RNumber * rnumber_rightshift_assign( struct RNumber * rnumber,  struct RN
 struct RNumber * rnumber_rightshift_assign_from_unsigned( struct RNumber * rnumber, unsigned int shift );
 
   // Unary conditional expression operators.
-int rnumber_not();
+int rnumber_not( struct RNumber * rnumber);
 
   // Signed conditional expression operators.
 int rnumber_signed_lessthan( struct RNumber * rnumber, struct RNumber * number );
@@ -102,12 +100,12 @@ unsigned int rnumber_getbit_lsb( struct RNumber * rnumber, unsigned int pos );
 void rnumber_setbit( struct RNumber * rnumber, unsigned int pos, unsigned int value );
 void rnumber_setbit_lsb( struct RNumber * rnumber,unsigned int pos, unsigned int value );
 void rnumber_assignbit( struct RNumber * rnumber, unsigned int pos, unsigned int value );
-void rnumber_assignbit_lsb( unsigned int pos, unsigned int value );
+void rnumber_assignbit_lsb( struct RNumber * rnumber, unsigned int pos, unsigned int value );
 
   // Value accessors.
 unsigned int rnumber_get_uint( struct RNumber * rnumber);
-char * rnumber_cstr( struct RNumber * rnumber);
-char * rnumber_cstr_radix( struct RNumber * rnumber, int radix,int bool_prefix);
+char * rnumber_cstr( const struct RNumber * rnumber);
+char * rnumber_cstr_radix( const struct RNumber * rnumber, int radix,int bool_prefix);
 
   // Value field accessors and manipulators.
 int rnumber_get_int_field( struct RNumber * rnumber, unsigned int start, unsigned int end );
@@ -125,6 +123,8 @@ unsigned int rnumber_get_default_size();
 void rnumber_set_default_size( unsigned int size );
 
 int rnumber_sizing( struct RNumber * rnumber);
+int rnumber_dynamic();
+int rnumber_fixed(); 
 void rnumber_set_dynamic( struct RNumber * rnumber);
 void rnumber_set_fixed( struct RNumber * rnumber);
 
@@ -208,7 +208,11 @@ int rnumber_rn_greaterequal_rn( const struct RNumber * n1, const struct RNumber 
 int rnumber_rn_greaterequal_ui( const struct RNumber * n1, unsigned int n2 );
 int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNumber * n2 );
 
-#ifdef _cplusplus
+int rnumber_rhex();
+int rnumber_rbin();
+int rnumber_rdec();
+
+#ifdef __cplusplus
 }
 #endif
 
