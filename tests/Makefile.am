@@ -32,4 +32,6 @@ BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber
 
 simple-number-test: simple-number-test.scm
 number-tests: number-tests.scm
+
 driver: driver.scm
+	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH) +rm -o $@ $< $(BIGLOO_LIB_OPTIONS)

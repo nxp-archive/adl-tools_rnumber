@@ -2,7 +2,7 @@
    (export *rnumber-version*
 	   (rnumber? a)
 	   (rnumber-ctor arg)
-	   (rnumber-cstr arg)
+	   (rnumber->cstr rnumber . radix-prefix)
 	   (rnumber-parse-string str)
 	   (rn=? a b)
 	   (rn!=? a b)
@@ -240,9 +240,16 @@
 	 ((RNumber_proxy_t? arg) (bl-rnumber-create-from-rnumber arg))
          (else (error "rnumber-ctor" "unknown arg type " arg))))
 
-(define (rnumber-cstr args)
-   (cond ((RNumber_proxy_t? args) (bl-rnumber-cstr args))
-	 (else (error "rnumber-cstr" "unknown args type " args))))
+(define (rnumber->cstr rnumber . radix-prefix)
+   (cond ((RNumber_proxy_t? rnumber)
+	  (if (not (null? radix-prefix))
+	      (let ((radix (if (pair? radix-prefix) (car radix-prefix) radix-prefix))
+		    (prefix (if (and (pair? radix-prefix)
+				     (pair? (cdr radix-prefix)))
+				(cadr radix-prefix) 1)))
+		 (rnumber-cstr-radix rnumber radix prefix)) 
+	      (bl-rnumber-cstr rnumber)))
+	 (else (error "rnumber->cstr" "'rnumber' is not an rnumber  " rnumber))))
 
 (define (rnumber? a)
    (RNumber_proxy_t? a))
