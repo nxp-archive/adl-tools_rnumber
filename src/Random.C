@@ -62,7 +62,8 @@ unsigned RandomObj::init( unsigned seed )
 // Get a random number of a specified number of bits.
 RNumber RandomObj::getRNumber( unsigned int size = 32 )
 {
-  if ( _gated ) throw runtime_error ( "Random number was generated while generator was gated." );
+  if ( _gated ) 
+    throw runtime_error ( "RandomObj::getRNumber - Random number was generated while generator was gated." );
 
   unsigned i;
   unsigned count = (size + 31) / 32;
@@ -85,21 +86,24 @@ RNumber RandomObj::getRNumber( unsigned int size = 32 )
 // Get a random unsigned integer
 unsigned RandomObj::getInteger()
 {
-  if ( _gated ) throw runtime_error ( "Random number was generated while generator was gated." );
+  if ( _gated ) 
+    throw runtime_error ( " RandomObj::getInteger - Random number was generated while generator was gated." );
   return _rand.genrand();
 }
 
 // Get a random unsigned integer from 0 to n
 unsigned RandomObj::getInteger( unsigned n )
 {
-  if ( _gated ) throw runtime_error ( "Random number was generated while generator was gated." );
+  if ( _gated ) 
+    throw runtime_error ( "RandomObj::getInteger( unsigned n ) - Random number was generated while generator was gated." );
   return (!n) ? getInteger() : _rand.genrand() % n;
 }
 
 // Get a double between 0 and 1
 double RandomObj::getDouble()
 {
-  if ( _gated ) throw runtime_error ( "Random number was generated while generator was gated." );
+  if ( _gated ) 
+    throw runtime_error ( "RandomObj::getDouble() - Random number was generated while generator was gated." );
   unsigned v = _rand.genrand() & 0x7fffffff;
   return ((double) v) / ((double) 0x7fffffff);
 }
@@ -181,7 +185,7 @@ Random::Random()
 {
 }
 
-void Random::set_gate	( bool state_in,bool apply_to_all )
+void Random::set_gate   ( bool state_in,bool apply_to_all )
 {
   if (apply_to_all) {
     for (vector<RandomObj>::iterator i = _generators.begin(); i != _generators.end(); ++i) {
