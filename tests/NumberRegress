@@ -7,7 +7,7 @@ eval 'exec perl -w -S $0 ${1+"$@"}'
 #
 
 $test = "./NumberTest";
-$prog = "/bin/dc";
+$prog = "/usr/bin/dc";
 
 # Run the program
 if (system("$test -dc $prog")) {
