@@ -22,6 +22,8 @@ rnumber_libs="$LIBDIRS -lRNumber "
 rnumber_bl_libs="-lbl-rnumber_s "
 rnumber_bl_lib_path="-L ${pkglibdir} "
 rnumber_cflags="$CFLAGS"
+rnumber_perl_libs="${pkglibdir}"
+
 STATIC_LIBS_DEPEND="${pkglibdir}/libRUtil.a "
 STATIC_LIBS="${pkglibdir}/libRNumber.a "
 
@@ -38,11 +40,12 @@ Generic options
 Compilation support options
   --cflags	print pre-processor and compiler flags
   --depend give list of libraries that target could depend on.
+  --helper-path print path to installed scripts and binaries
+                that support RNUMBER.
   --libs	print library linking information
   --libs-only-L	only print the -L/-R part of --libs
   --libs-only-l only print the -l part of --libs
-  --helper-path print path to installed scripts and binaries
-                that support RNUMBER.
+  --perl-libs
   --static-libs print path to .a file.
   --bl-libs-only-l library for bigloo.
   --bl-libs-only-L library path for bigloo.
@@ -61,6 +64,7 @@ libs_L=false
 bl_libs_l=false
 bl_libs_L=false
 libs_l=false
+perl_libs=false
 helper_path=false
 static_libs=false
 
@@ -97,6 +101,9 @@ while test $# -gt 0; do
     --cflags)
        	cflags=true
        	;;
+    --perl-libs)
+        perl_libs=true
+	;;
     --libs)
         libs_L=true
         libs_l=true
@@ -142,6 +149,10 @@ fi
 
 if $libs_L || $libs_l; then
     all_flags="$all_flags $the_libs"
+fi
+
+if $perl_libs; then
+    all_flags="$all_flags $rnumber_perl_libs"
 fi
 
 if $bl_libs_L; then
@@ -215,6 +226,6 @@ if [ $libs_l -o $static_libs ]; then
 fi
 fi
 
-echo $other_flags $lib_L_flags $ord_libs
+printf "$other_flags $lib_L_flags $ord_libs";
 
 exit 0
