@@ -155,7 +155,7 @@ if test -f $ac_flex_prefix/include/FlexLexer.h
 then
   AC_MSG_RESULT(found)
 else
-  AC_MSG_ERROR(FlexLexer.h could not be found, it is required)
+  AC_MSG_ERROR([FlexLexer.h could not be found, it is required])
 fi
 
 dnl On FreeBSD 3.0 (and perhaps some other systems) GNU m4 is
