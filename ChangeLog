@@ -1,3 +1,10 @@
+	================== version 1.7.0 ======================================
+	
+2002-10-09  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	* exposed rn* to bigloo.
+	* rnumber_ui_multiply_rn was misnamed as rnumber_ui_multiply_ui. This was fixed.
+
 2002-09-30  Todd Dukes  <Todd.Dukes@motorola.com>
 
 	* removed print from rnumber_finalize.
