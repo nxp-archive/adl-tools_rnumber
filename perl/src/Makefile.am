@@ -16,6 +16,8 @@ PERL_INC=-I/local/tdukes/lib/perl5/5.00503/sun4-solaris/CORE
 RNUMBER_LIB = $(top_srcdir)/src/libRNumber.a
 STD_CPP_LIB = -lstdc++
 
+TESTS = rnumber_test2.pl
+
 %.o:%.c
 	gcc -c $^ -o $@ $(PERL_INC)
 
@@ -28,5 +30,5 @@ example.so : example.o example_wrap.o
 pl_rnumber.pm pl_rnumber_wrap.c: pl_rnumber.i 
 	swig -perl5 pl_rnumber.i
 
-pl_rnumber.so : pl_rnumber_wrap.o $(RNUMBER_LIB)	
+pl_rnumber.so : pl_rnumber_wrap.o pl_rnumber.o $(RNUMBER_LIB)	
 	g++ -shared $^ -o $@ 

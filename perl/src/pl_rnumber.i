@@ -13,8 +13,9 @@
  
   %}
 
-extern struct RNumber;
+extern int rnumber_predicate_init();
 
+extern struct RNumber;
 extern struct RNumber * rnumber_create();
 extern struct RNumber * rnumber_create_from_unsigned( unsigned int number );
 extern struct RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned int number );
