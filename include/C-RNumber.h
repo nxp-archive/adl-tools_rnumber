@@ -158,7 +158,7 @@ void rnumber_write_to_os( struct RNumber * rnumber, void * os );
  struct RNumber * rnumber_ui_minus_rn( unsigned int n1, const struct RNumber * n2 );
  struct RNumber * rnumber_rn_multiply_rn( const struct RNumber * n1, const struct RNumber * n2 );
  struct RNumber * rnumber_rn_multiply_ui( const struct RNumber * n1, unsigned int n2 );
- struct RNumber * rnumber_ui_multiply_ui( unsigned int n1, const struct RNumber * n2 );
+ struct RNumber * rnumber_ui_multiply_rn( unsigned int n1, const struct RNumber * n2 );
  struct RNumber * rnumber_rn_multiply_ext_rn( const struct RNumber * n1, const struct RNumber * n2 );
  struct RNumber * rnumber_rn_multiply_ext_ui( const struct RNumber * n1, unsigned int n2 );
  struct RNumber * rnumber_ui_multiply_ext_rn( unsigned int n1, const struct RNumber * n2 );
