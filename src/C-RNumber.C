@@ -36,7 +36,7 @@ RNumber * rnumber_create_of_size_variable_sizing( unsigned int number, unsigned 
   return new RNumber(number, size, RNumber::dynamic);
 }
 
-RNumber * rnumber_create_from_string( const char * number  )
+RNumber * rnumber_create_from_string(  char * number  )
 {
   return new RNumber( string(number));
 }
@@ -56,7 +56,7 @@ RNumber * rnumber_create_from_string_of_size_variable_sizing( char * number, uns
   return new RNumber ( string(number), size, RNumber::dynamic);
 }
 
-static Radix get_radix(int radix) 
+static RNumber::Radix get_radix(int radix) 
 {
   switch (radix) 
     {
@@ -82,12 +82,12 @@ RNumber * rnumber_create_from_string_of_radix( char * number, int radix )
   return new RNumber( string(number), get_radix(radix));
 }
 
-RNumber * rnumber_create_from_string_of_radix_variable_sizing( char * number, Radix radix )
+RNumber * rnumber_create_from_string_of_radix_variable_sizing( char * number, int radix )
 {
   return new RNumber( string(number), get_radix(radix), RNumber::dynamic);
 }
 
-RNumber * rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, Radix radix)
+RNumber * rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix)
 {
   return new RNumber( string(number), size, get_radix(radix));
 }
@@ -132,7 +132,7 @@ void rnumber_destroy( RNumber * rnumber )
 // attributes; resize() truncates/expands the value and sets fixed sizing.
 RNumber * rnumber_assign_from_int ( RNumber * rnumber, int number )
 {
-  return ((*rnumber) = number);
+  return &((*rnumber) = number);
 }
 
 RNumber * rnumber_assign_from_string ( RNumber * rnumber, char * number_string )
@@ -158,12 +158,12 @@ void rnumber_resize( RNumber * rnumber, unsigned int size )
   // Unary arithmetic operators.
 RNumber * rnumber_unary_minus( RNumber * rnumber)
 {
-  return &(-(*rnumber));
+  return new RNumber(-(*rnumber));
 }
 
 RNumber * rnumber_unary_tilde( RNumber * rnumber)
 {
-  return &(~(*rnumber));
+  return new RNumber(~(*rnumber));
 }
 
 // Arithmetic assignment operators; assignment size depends on sizing state.
@@ -268,28 +268,28 @@ RNumber * rnumber_rightshift_assign_from_int( RNumber * rnumber, unsigned int sh
 }
 
 // Unary conditional expression operators.
-bool rnumber_not( RNumber * rnumber)
+int rnumber_not( RNumber * rnumber)
 {
   return !(*rnumber);
 }
 
   // Signed conditional expression operators.
-bool rnumber_signed_lessthan( RNumber * rnumber, RNumber * number )
+int rnumber_signed_lessthan( RNumber * rnumber, RNumber * number )
 {
   return rnumber->signedLT(*number);
 }
 
-bool rnumber_signed_lessequal( RNumber * rnumber, RNumber * number )
+int rnumber_signed_lessequal( RNumber * rnumber, RNumber * number )
 {
   return rnumber->signedLE(*number);
 }
 
-bool rnumber_signed_greaterthan( RNumber * rnumber, RNumber * number )
+int rnumber_signed_greaterthan( RNumber * rnumber, RNumber * number )
 {
   return rnumber->signedGT(*number);
 }
 
-bool rnumber_signed_greaterequal( RNumber * rnumber, RNumber * number )
+int rnumber_signed_greaterequal( RNumber * rnumber, RNumber * number )
 {
   return rnumber->signedGE(*number);
 }
@@ -302,32 +302,32 @@ int  rnumber_compare( RNumber * rnumber, RNumber * number )
   // Miscellaneous bit manipulation methods.
 RNumber * rnumber_invert( RNumber * rnumber)
 {
-  return rnumber->rnumberInvert();
+  return &rnumber->invert();
 }
 
 RNumber * rnumber_negate( RNumber * rnumber)
 {
-  return renumber->negate();
+  return &rnumber->negate();
 }
 
 RNumber * rnumber_set_all( RNumber * rnumber)
 {
-  return rnumber->setAll();
+  return &rnumber->setAll();
 }
 
 RNumber * rnumber_clear_all( RNumber * rnumber)
 {
-  return rnumber->clearAll();
+  return &rnumber->clearAll();
 }
 
 RNumber * rnumber_sign_extend( RNumber * rnumber, unsigned int bit )
 {
-  return rnumber->signExtend(bit);
+  return &rnumber->signExtend(bit);
 }
 
 RNumber * rnumber_truncate( RNumber * rnumber, unsigned int size )
 {
-  return rnumber->truncate(size);
+  return &rnumber->truncate(size);
 }
 
   // Bit value accessors and manipulators.
@@ -338,7 +338,7 @@ unsigned int rnumber_getbit( RNumber * rnumber, unsigned int pos)
 
 unsigned int rnumber_getbit_lsb( RNumber * rnumber, unsigned int pos )
 {
-  return rnumber->getBitLST(pos);
+  return rnumber->getBitLSB(pos);
 }
 
 void rnumber_setbit( RNumber * rnumber, unsigned int pos, unsigned int value )
@@ -356,7 +356,7 @@ void rnumber_assignbit( RNumber * rnumber, unsigned int pos, unsigned int value 
   return rnumber->assignBit(pos, value);
 }
 
-void rnumber_assignbit_lsb( unsigned int pos, unsigned int value )
+void rnumber_assignbit_lsb( RNumber * rnumber, unsigned int pos, unsigned int value )
 {
   return rnumber->assignBitLSB(pos, value);
 }
@@ -367,18 +367,18 @@ unsigned int rnumber_get_uint( RNumber * rnumber)
   return rnumber->getUInt();
 }
 
-char * rnumber_cstr( RNumber * rnumber) const
+char * rnumber_cstr( RNumber * rnumber) 
 {
   string str = rnumber->str();
-  char * return_value = malloc( str.size() + 1);
+  char * return_value = reinterpret_cast<char*>(malloc( str.size() + 1));
   strcpy(return_value, str.c_str());
   return return_value;
 }
 
-char * rnumber_cstr_radix( RNumber * rnumber, int radix,int bool_prefix)
+char * rnumber_cstr_radix( RNumber * rnumber, int radix, int bool_prefix)
 {
-  string str = rnumber->strradix(get_radix(radix), prefix);
-  char * return_value = malloc( str.size() + 1);
+  string str = rnumber->strradix(get_radix(radix), bool_prefix);
+  char * return_value = reinterpret_cast<char *>(malloc( str.size() + 1));
   strcpy(return_value, str.c_str());
   return return_value;
 }
@@ -396,7 +396,7 @@ unsigned int rnumber_get_uint_field( RNumber * rnumber,unsigned int start, unsig
 
 RNumber * rnumber_getfield( RNumber * rnumber, unsigned int start, unsigned int end )
 {
-  return rnumber->getField(start, end);
+  return new RNumber(rnumber->getField(start, end));
 }
 
 void rnumber_set_field( RNumber * rnumber, unsigned int start, unsigned int end, RNumber * num )
@@ -412,10 +412,10 @@ unsigned rnumber_size( RNumber * rnumber)
 
 unsigned rnumber_wordcount( RNumber * rnumber)
 {
-  return rnumber->wordcound();
+  return rnumber->wordcount();
 }
 
-unsigned * rnumber_buffer( RNumber * rnumber) 
+const unsigned * rnumber_buffer( RNumber * rnumber) 
 {
   return rnumber->buffer();
 }
@@ -462,7 +462,7 @@ void rnumber_print_with_radix( RNumber * rnumber, void * os, int radix, int pref
 //friend ostream& operator<<( ostream& os, const RNumber& number );
 void rnumber_read_from_is( RNumber * rnumber, void * is )
 {
-  istream & is = dynamic_cast<istream&>(*is);
+  istream & iis = reinterpret_cast<istream&>(*is);
   iis >> (*rnumber);
 }
 
@@ -472,13 +472,3 @@ void rnumber_write_to_os( RNumber * rnumber, void * os )
   oos << (*rnumber);
 }
 
-
-//   friend struct Hash {
-//     size_t operator()( const RNumber& num ) const;
-//   };
-
-//   friend struct Equal {
-//     size_t operator()( const RNumber& num1, const RNumber& num2 ) const;
-//   };
-
-#endif

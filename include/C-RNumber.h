@@ -8,17 +8,19 @@
 ** This is a C wrapper for the C++ RNumber class.
 ** ===========================================================================
 */
-#ifndef C-RNumber_h
-#define C-RNumber_h "$Id$"
+#ifndef C_RNumber_h
+#define C_RNumber_h "$Id$"
 
 #include "types.h"
 
 #ifdef _cplusplus
 #extern "C" {
+  class RNumber;
+#else
+  struct RNumber; 
 #endif
  
-const unsigned int WORD_THRESHOLD = 2;
-class RNumber;
+#define WORD_THRESHOLD 2
 
 RNumber * rnumber_create();
 RNumber * rnumber_create_from_int( unsigned int number );
@@ -26,7 +28,7 @@ RNumber * rnumber_create_from_int_variable_sizing( unsigned int number );
 RNumber * rnumber_create_of_size( unsigned int number, unsigned int size );
 RNumber * rnumber_create_of_size_variable_sizing( unsigned int number, unsigned int size );
 RNumber * rnumber_create_from_string( char * number  );
-RNumber * rnumber_create_from_string_variable_sizing( char * number, Sizing sizing = fixed );
+RNumber * rnumber_create_from_string_variable_sizing( char * number, int sizing );
 RNumber * rnumber_create_from_string_of_size( char * number, unsigned int size );
 RNumber * rnumber_create_from_string_of_size_variable_sizing(  char * number, unsigned int size );
 RNumber * rnumber_create_from_string_of_radix( char * number, int radix );
@@ -77,13 +79,13 @@ RNumber * rnumber_rightshift_assign( RNumber * rnumber,  RNumber * shift );
 RNumber * rnumber_rightshift_assign_from_int( RNumber * rnumber, unsigned int shift );
 
   // Unary conditional expression operators.
-bool rnumber_not();
+int rnumber_not();
 
   // Signed conditional expression operators.
-bool rnumber_signed_lessthan( RNumber * rnumber, RNumber * number );
-bool rnumber_signed_lessequal( RNumber * rnumber, RNumber * number );
-bool rnumber_signed_greaterthan( RNumber * rnumber, RNumber * number );
-bool rnumber_signed_greaterequal( RNumber * rnumber, RNumber * number );
+int rnumber_signed_lessthan( RNumber * rnumber, RNumber * number );
+int rnumber_signed_lessequal( RNumber * rnumber, RNumber * number );
+int rnumber_signed_greaterthan( RNumber * rnumber, RNumber * number );
+int rnumber_signed_greaterequal( RNumber * rnumber, RNumber * number );
 int  rnumber_compare( RNumber * rnumber, RNumber * number );
 
   // Miscellaneous bit manipulation methods.
@@ -98,14 +100,14 @@ RNumber * rnumber_truncate( RNumber * rnumber, unsigned int size );
 unsigned int rnumber_getbit( RNumber * rnumber, unsigned int pos);
 unsigned int rnumber_getbit_lsb( RNumber * rnumber, unsigned int pos );
 void rnumber_setbit( RNumber * rnumber, unsigned int pos, unsigned int value );
-void rnumber_setbit_lsb( RNumber * rnumberunsigned int pos, unsigned int value );
+void rnumber_setbit_lsb( RNumber * rnumber,unsigned int pos, unsigned int value );
 void rnumber_assignbit( RNumber * rnumber, unsigned int pos, unsigned int value );
 void rnumber_assignbit_lsb( unsigned int pos, unsigned int value );
 
   // Value accessors.
 unsigned int rnumber_get_uint( RNumber * rnumber);
-char * rnumber_cstr( RNumber * rnumber) const;
-char * rnumber_cstr_radix( RNumber * rnumber, int radix,int bool_prefix) const;
+char * rnumber_cstr( RNumber * rnumber);
+char * rnumber_cstr_radix( RNumber * rnumber, int radix,int bool_prefix);
 
   // Value field accessors and manipulators.
 int rnumber_get_int_field( RNumber * rnumber, unsigned int start, unsigned int end );
@@ -117,7 +119,7 @@ void rnumber_set_field( RNumber * rnumber, unsigned int start, unsigned int end,
 unsigned rnumber_size( RNumber * rnumber);
 unsigned rnumber_wordcount( RNumber * rnumber);
 
-unsigned * rnumber_buffer( RNumber * rnumber) const;
+const unsigned * rnumber_buffer( RNumber * rnumber);
 
 unsigned int rnumber_get_default_size();
 void rnumber_set_default_size( unsigned int size );
@@ -128,7 +130,7 @@ void rnumber_set_fixed( RNumber * rnumber);
 
   // Streaming I/O methods.
 void rnumber_print_to_os( RNumber * rnumber, void * os );
-void rnumber_print_with_radix( Rnumber, * rnumber, void * os, int radix, bool prefix=false ) const;
+void rnumber_print_with_radix( RNumber * rnumber, void * os, int radix, bool prefix );
 
 //friend istream& operator>>( istream& is, RNumber& number );
 //friend ostream& operator<<( ostream& os, const RNumber& number );
@@ -146,5 +148,7 @@ void rnumber_write_to_os( RNumber * rnumber, void * os );
 #ifdef _cplusplus
 }
 #endif
+
+#undef WORD_THRESHOLD
 
 #endif
