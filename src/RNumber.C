@@ -30,7 +30,7 @@
 
 using namespace std;
 using namespace rnumber;
-using namespace rnumber_types;
+using namespace rnumber_t;
 
 unsigned int RNumber::_defaultSize = 32;
 
