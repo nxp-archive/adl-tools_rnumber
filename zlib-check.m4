@@ -62,18 +62,16 @@ AC_MSG_CHECKING(looking for zlib)
 AC_TRY_RUN([
 
 #include <stdio.h>
-#include <zlib.h>
+#include <strings.h>
+#include "zlib.h"
 
-int
-main ()
-{
+int main () {
   const char * version;
   int n;
 
   version = zlibVersion();
   n = strcmp ( version, ZLIB_VERSION );
-  if ( n != 0 )
-    {
+  if ( n != 0 ) {
      printf ( "Error: library and header do no match.\n", n);
      printf ( "zlib library version from header '%s'\n", ZLIB_VERSION );
      printf ( "zlib library version from lib '%s'\n", version );
@@ -81,6 +79,7 @@ main ()
     }
   return 0;
 }
+
 
 ],dnl action if true
   AC_MSG_RESULT([found])
