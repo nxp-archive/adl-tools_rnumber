@@ -13,9 +13,9 @@
 #include <string>
 // This define is inserted automatically when any of the
 // -O compiler options are used.
-#ifdef __OPTIMIZE__
-#undef VERBOSE
-#endif
+//#ifdef __OPTIMIZE__
+//#undef VERBOSE
+//#endif
 
 #ifdef __cplusplus
 #ifdef VERBOSE
