@@ -42,7 +42,7 @@ RNumber * rnumber_create_from_string(  char * number  )
   return new RNumber( string(number));
 }
 
-RNumber * rnumber_create_from_string_variable_sizing( const char * number )
+RNumber * rnumber_create_from_string_variable_sizing( char * number )
 {
   return new RNumber( string(number), RNumber::dynamic);
 }

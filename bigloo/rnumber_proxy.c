@@ -1,3 +1,15 @@
+/*
+** ===========================================================================
+** $RCSfile$
+** $Revision$
+** $Date$
+** $Author$
+**
+** This file has the code taht allows us to attach rnumber objects to
+** bigloos garbage collector.
+** ===========================================================================
+*/
+
 
 #include "rnumber_proxy.h"
 
@@ -17,7 +29,7 @@ void rnumber_finalize( RNumber_proxy_t array ) {
 /* from bigloo2.5a/runtime/Clib/ccustom.c */
 obj_t create_custom( long len );
 
-rnumber_proxy_t proxy_from_rnumber( struct RNumber * rnumber);
+RNumber_proxy_t proxy_from_rnumber( struct RNumber * rnumber)
 {
   RNumber_proxy_t array;
 

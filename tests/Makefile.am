@@ -10,6 +10,7 @@ simple_test_SOURCES = simple_test.c c-io.C
 
 EXTRA_DIST = $(TESTS) 
 
+#INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
 TESTS = simple_test NumberRegress  RandTest number_test
@@ -19,3 +20,5 @@ RNUMBER_STATIC_LIBS = \
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
+number-tests: number-tests.scm
+	bigloo -v2 -copt "-I ../include" -L ../src -L ../bigloo/ -rm -o number-tests number-tests.scm -lstdc++ -lRNumber

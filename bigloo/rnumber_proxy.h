@@ -1,8 +1,21 @@
+/*
+** ===========================================================================
+** $RCSfile$
+** $Revision$
+** $Date$
+** $Author$
+**
+** This file has the code taht allows us to attach rnumber objects to
+** bigloos garbage collector.
+** ===========================================================================
+*/
+
+
 #ifndef rnumber_proxy_h
 #define rnumber_proxy_h
 
 #include <bigloo.h>
-#include "bl-rnumber.h"
+/*#include "bl-rnumber.h"*/
 
 #define CUSTOM_T struct custom
 
@@ -22,8 +35,8 @@ typedef union rnumber_proxy
 /*---------------------------------------------------------------------*/
 #define RNUMBER_IDENTIFIER "rnumber.rnumber"
 typedef obj_t hol_t;
-#  define HOL_REF( v ) ((simple_proxy_t)(BREF( v )))
-#  define SIMPLE_PROXY_ERROR( msg ) printf( msg )
+#  define HOL_REF( v ) ((RNumber_proxy_t)(BREF( v )))
+#  define RNUMBER_PROXY_ERROR( msg ) printf( msg )
 
 /*---------------------------------------------------------------------*/
 /*    void                                                             */

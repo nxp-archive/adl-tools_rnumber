@@ -11,11 +11,11 @@
 #ifndef C_RNumber_h
 #define C_RNumber_h "$Id$"
 
+#include "C-RNumber_decl.h"
+
 #ifdef __cplusplus
-class RNumber;
 extern "C" {
 #else
-  struct RNumber; 
 #endif
  
 #define WORD_THRESHOLD 2
