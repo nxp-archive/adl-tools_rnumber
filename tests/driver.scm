@@ -1,7 +1,6 @@
 (module  test
  (library bl-rnumber)
  (main main))
-
 (define-macro(push! stack o)
   `(let((_obj ,o))
      (set! ,stack(cons _obj ,stack))
@@ -13,13 +12,14 @@
     (set! ,stack(cdr ,stack))))
  
 (define (main argv)
-  (let ((a (rnumber-create-from-unsigned 5)))
+  (let ((a (rnumber-ctor 5)))
     (print "created rnumber " (rnumber-cstr a)))
   (let ((in '()))
        (args-parse
          (cdr argv)
          (section #"Help")
          ((#"--version"
+	   (print "version " *rnumber-version*)
            (help #"Print version info and exit"))
           (exit 0))
          (((#"-h" #"--help")
@@ -33,10 +33,10 @@
           (push! *load-path* dir))
          (else (push! in else)))
        (if (null? in)
-	   (let (a (rnumber-create-from-unsigned 5))
+	   (let (a (rnumber-ctor 5))
 	     (repl))
            (let ((args (reverse in))
-		 (a (rnumber-create-from-unsigned 5)))
+		 (a (rnumber-ctor 5)))
 	      (set! *the-command-line* args)
 	      (print "the command line " *the-command-line*)
 	      (print "loading " (car args))
