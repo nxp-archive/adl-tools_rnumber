@@ -93,7 +93,7 @@ static unsigned checkIntOperator (unsigned size, char *op, struct Calculator *ca
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? random_get_from_range(1, 100) : size;
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
     struct RNumber * a = rnumber_create_from_unsigned_of_size(0, size1);
     unsigned b = 0;
     struct RNumber * c = rnumber_create_from_unsigned_of_size_variable_sizing(0, 1);
@@ -103,7 +103,7 @@ static unsigned checkIntOperator (unsigned size, char *op, struct Calculator *ca
     if (op[0] == '/' || op[0] == '%') {
       do {
         b = random_get_integer ();
-      } while (b == 0);
+      } while ( b == 0);
     } else {
       b = random_get_interger ();
     }
@@ -141,8 +141,8 @@ static unsigned checkMutator (unsigned size, char *op, struct Calculator *calc)
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? random_get_from_range (1, 100) : size;
-    unsigned size2 = (size == 0) ? random_get_from_range (1, 100) : size;
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
+    unsigned size2 = (size == 0) ? random_get_from_range_unsigned (1, 100) : size;
     struct RNumber * a = rnumber_create_from_unsigned_of_size_variable_sizing(0, size1);
     struct RNumber * b = rnumber_create_from_unsigned_of_size(0, size2);
     struct RNumber * tmp = rnumber_create_from_unsigned_of_size(0, size1);
@@ -177,7 +177,7 @@ static unsigned checkIntMutator (unsigned size, char *op, struct Calculator *cal
   unsigned rc = 0;
 
   for (i = 0; i < maxIter; i++) {
-    unsigned size1 = (size == 0) ? random_get_from_range(1, 100) : size;
+    unsigned size1 = (size == 0) ? random_get_from_range_unsigned(1, 100) : size;
     struct RNumber * a = rnumber_create_from_unsigned_of_size_variable_sizing(0, size1);
     unsigned b;
     struct RNumber *tmp = rnumber_create_from_unsigned_of_size(0, size1);
@@ -212,42 +212,42 @@ static unsigned checkMultSpecialCases (struct Calculator *calc)
 
   // first op is 0:
   for (i = 0; i < maxIter; i++) {
-    struct RNumber * x = rnumber_create_from_unsigned_of_size(0, random_get_from_range (33, 100));
-    struct RNumber * y = random_get_rnumber (random_get_from_range (1, 100));
-    rc |= calculator_check_arith( calc,x, y, rnumber_rn_multiply_rn(x, y), "*");
-    struct RNumber * tmp = rnumber_copy_to_size_variable_size(x, x.size());
-    tmp *= y;
-    rc |= calc -> checkArith (x, y, tmp, "*=");
+    struct RNumber * x = rnumber_create_from_unsigned_of_size(0, random_get_from_range_rnumber (33, 100));
+    struct RNumber * y = random_get_rnumber (random_get_from_range_rnumber (1, 100));
+    struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+    rc |= calculator_check_arith( calc,x, y, rnumber_rn_multiply_rn(x, y), "*", 0);
+    rnumber_rn_multiply_assign(tmp, y);
+    rc |= calculator_check_arith( calc,x, y, tmp, "*=", 0);
   }
 
   // second op is 0
   for (i = 0; i < maxIter; i++) {
-    RNumber x = Random::getRNumber (Random::getFromRange (1, 100));
-    RNumber y (0, Random::getFromRange (33, 100));
-    rc |= calc -> checkArith (x, y, x * y, "*");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp *= y;
-    rc |= calc -> checkArith (x, y, tmp, "*=");
+    struct RNumber * x = random_get_rnumber ( random_get_from_range_rnumber (1, 100));
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(0, random_get_from_range_rnumber (33, 100));
+    struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+    rc |= calculator_check_arith(calc, x, y, rnumber_rn_multiply_rn(x, y), "*", 0);
+    rnumber_multiply_assign(tmp, y);
+    rc |= calculator_check_arith(calc,x, y, tmp, "*=",0);
   }
 
   // first op is 1:
   for (i = 0; i < maxIter; i++) {
-    RNumber x (1, Random::getFromRange (33, 100));
-    RNumber y = Random::getRNumber (Random::getFromRange (1, 100));
-    rc |= calc -> checkArith (x, y, x * y, "*");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp *= y;
-    rc |= calc -> checkArith (x, y, tmp, "*=");
+    struct RNumber * x = rnumber_create_from_unsigned_of_size (1, random_get_from_range_rnumber (33, 100));
+    struct RNumber * y = random_get_rnumber(random_get_from_range (1, 100));
+    struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+    rc |= calculator_check_arith(calc, x, y, rnumber_rn_multiply_rn(x, y), "*", 0);
+    rnumber_multiply_assign(tmp, y);
+    rc |= calculate_check_arith(calc, x, y, tmp, "*=",0);
   }
 
   // second op is 1
   for (i = 0; i < maxIter; i++) {
-    RNumber x = Random::getRNumber (Random::getFromRange (1, 100));
-    RNumber y (1, Random::getFromRange (33, 100));
-    rc |= calc -> checkArith (x, y, x * y, "*");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp *= y;
-    rc |= calc -> checkArith (x, y, tmp, "*=");
+    struct RNumber * x = random_get_rnumber(random_get_from_range (1, 100));
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(1, random_get_from_range (33, 100));
+    struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+    rc |= calculator_check_arith(calc, x, y, rnumber_rn_multiply_rn(x, y), "*",0);
+    rnumber_multiply_assign(tmp, y);
+    rc |= calculator_check_arith(calc, x, y, tmp, "*=",0);
   }
 
   return rc;
@@ -261,65 +261,71 @@ static unsigned checkDivideSpecialCases (struct Calculator *calc)
 
   // first op is 0:
   for (i = 0; i < maxIter; i++) {
-    RNumber x (0, Random::getFromRange (33, 100));
-    unsigned size2 = Random::getFromRange (1, 100);
-    RNumber y (0, size2);
+    struct RNumber * x = rnumber_create_from_unsigned_of_size (0, random_get_from_range (33, 100));
+    unsigned size2 = random_get_from_range (1, 100);
+    struct RNumber * y = rnumber_create_from_unsigned_of_size (0, size2);
+    struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
     do {
-      y = Random::getRNumber (size2);
-    } while (y == 0);
-    rc |= calc -> checkArith (x, y, x / y, "/");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp /= y;
-    rc |= calc -> checkArith (x, y, tmp, "/=");
+      y = random_get_rnumber (size2);
+    } while (rnumber_rn_equal_ui(y, 0));
+    rc |= calculator_check_arith(calc,x, y, rnumber_rn_divide_rn(x, y), "/",0);
+    rnumber_divide_equal(tmp, y);
+    rc |= calculator_check_arith(calc, x, y, tmp, "/=",0);
   }
 
   // second op is 1
   for (i = 0; i < maxIter; i++) {
-    RNumber x = Random::getRNumber (Random::getFromRange (1, 100));
-    RNumber y (1, Random::getFromRange (33, 100));
-    rc |= calc -> checkArith (x, y, x / y, "/");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp /= y;
-    rc |= calc -> checkArith (x, y, tmp, "/=");
+    struct RNumber * x = random_get_rnumber(random_get_from_range (1, 100));
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(1, random_get_from_range (33, 100));
+    struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+    rc |= calculator_check_arith(calc, x, y, rnumber_rn_divide_rn(x, y), "/",0);
+    rnumber_divide_assign(tmp, y);
+    rc |= calculator_check_arith(calc, x, y, tmp, "/=",0);
   }
 
   // first op has size > 32 bits, but can be represented in 32 bits
   for (i = 0; i < maxIter; i++) {
-    RNumber x = Random::getRNumber (Random::getFromRange (33, 100));
-    unsigned size2 = Random::getFromRange (33, 100);
-    RNumber y (0, size2);
+    struct RNumber * x = random_get_rnumber (random_get_from_range (33, 100));
+    unsigned size2 = random_get_from_range_unsigned (33, 100);
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(0, size2);
     do {
-      y = Random::getRNumber (size2);
-    } while (y == 0);
-    unsigned s = x . size ();
-    unsigned n = Random::getFromRange (s - 32, s - 1);
-    x >>= n;
-    rc |= calc -> checkArith (x, y, x / y, "/");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
-    tmp /= y;
-    rc |= calc -> checkArith (x, y, tmp, "/=");
+      y = random_get_rnumber(size2);
+    } while ( rnumber_rn_equal_ui(y, 0));
+    {
+      unsigned s = rnumber_size(x);
+      unsigned n = random_get_from_range_unsigned (s - 32, s - 1);
+      rnumber_rightshift_assign_from_unsigned(x, n);
+    }
+    rc |= calculator_check_arith(calc, x, y, rnumber_rn_divide_rn(x, y), "/",0);
+    {
+      struct RNumber * tmp = rnumber_copy_to_size_variable_sizing(x, rnumber_size(x));
+      rnumber_divide_assign(tmp, y);
+      rc |= calculator_check_arith(calc, x, y, tmp, "/=",0);
+    }
   }
 
   // both ops have size > 32 bits, but can be represented in 32 bits
   // first op has size > 32 bits, but can be represented in 32 bits
   for (i = 0; i < maxIter; i++) {
-    RNumber x = Random::getRNumber (Random::getFromRange (33, 100));
-    unsigned size2 = Random::getFromRange (33, 100);
+    struct RNumber * x = random_get_rnumber (random_get_from_range_rnumber (33, 100));
+    unsigned size2 = random_get_from_range (33, 100);
     unsigned s, n;
-    RNumber y (0, size2);
+    struct RNumber * y = rnumber_create_from_unsigned_of_size(0, size2);
     do {
-      y = Random::getRNumber (size2);
+      y = random_get_rnumber (size2);
       s = y . size ();
-      n = Random::getFromRange (s - 32, s - 1);
+      n = random_get_from_range (s - 32, s - 1);
       y >>= n;
-    } while (y == 0);
+    } while ( rnumber_rn_equal_ui(y, 0));
     s = x . size ();
     n = Random::getFromRange (s - 32, s - 1);
     x >>= n;
     rc |= calc -> checkArith (x, y, x / y, "/");
-    RNumber tmp(x, x.size(), RNumber::dynamic);
+    {
+      RNumber tmp(x, x.size(), RNumber::dynamic);
     tmp /= y;
     rc |= calc -> checkArith (x, y, tmp, "/=");
+    }
   }
 
   // ops have leading bytes that are 0
@@ -333,7 +339,7 @@ static unsigned checkDivideSpecialCases (struct Calculator *calc)
       s = y . size ();
       n = Random::getFromRange (8, s - 32);
       y >>= n;
-    } while (y == 0);
+    } while(rnumber_rn_equal_ui(y, 0));
     s = x . size ();
     n = Random::getFromRange (8, s - 32);
     x >>= n;
