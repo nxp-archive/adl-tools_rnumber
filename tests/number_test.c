@@ -1116,6 +1116,7 @@ static unsigned checkShifts (unsigned size)
     struct RNumber * rn = rnumber_create_from_unsigned(n);
     struct RNumber * a = rnumber_create_from_unsigned_of_size (0, size1);
     struct RNumber * b = rnumber_create_from_unsigned_of_size (0, size1 - n);
+    rnumber_set_all(a);
     rnumber_set_all(b);
 
     // This group of shifts should not be destructive, since we're allowing
@@ -1144,7 +1145,7 @@ static unsigned checkShifts (unsigned size)
     {
       struct RNumber * tmp = rnumber_rn_rightshift_ui(rnumber_rn_leftshift_ui(a, n), n);
       if (rnumber_rn_notequal_rn(tmp, b)) {
-	printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", 
+	printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
 		rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
 	rc = 1;
       }
@@ -1153,7 +1154,7 @@ static unsigned checkShifts (unsigned size)
       // the value may not grow.
       rnumber_assign(tmp, rnumber_rn_rightshift_rn (rnumber_rn_leftshift_rn(a, rn), rn));
       if (rnumber_rn_notequal_rn(tmp, b)) {
-	printf ("Error occurred in shifting %s(%d) by %s; produced %s\n", 
+	printf ("%s:%d Error occurred in shifting %s(%d) by %s; produced %s\n", __FILE__, __LINE__,
 		rnumber_cstr(a), size1, rnumber_cstr(rn), rnumber_cstr(tmp));
 	rc = 1;
       }
@@ -1162,20 +1163,20 @@ static unsigned checkShifts (unsigned size)
       rnumber_leftshift_assign(tmp, rnumber_create_from_unsigned(n));
       rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(n));
       if (rnumber_rn_notequal_rn(tmp, b)) {
-	printf ("Error occurred in shift/equaling %s(%d) by %d; produced %s\n", 
+	printf ("%s:%d Error occurred in shift/equaling %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
 		rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
 	rc = 1;
       }
 
       rnumber_assign(tmp, rnumber_rn_leftshift_ui(a, size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", 
+	printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__, 
 		rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
 	rc = 1;
       }
       rnumber_assign(tmp, rnumber_rn_rightshift_ui(a, size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("Error occurred in right shifting %s(%d) by %d; produced %s\n", 
+	printf ("%s:%d Error occurred in right shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
 		rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
 	rc = 1;
       }
@@ -1183,15 +1184,15 @@ static unsigned checkShifts (unsigned size)
       rnumber_assign(tmp, a);
       rnumber_leftshift_assign(tmp, rnumber_create_from_unsigned(size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("Error occurred in left shift/equaling %s(%d) by %d; produced %s\n", 
-		rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
+	printf ("%s:%d Error occurred in left shift/equaling %s(%d) by %d; produced %s\n", 
+		__FILE__, __LINE__,rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
 	rc = 1;
       }
       rnumber_assign(tmp, a);
       rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("Error occurred in right shift/equaling %s(%d) by %d; produced %s\n", 
-		rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
+	printf ("%s:%d Error occurred in right shift/equaling %s(%d) by %d; produced %s\n", 
+		__FILE__, __LINE__, rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
 	rc = 1;
       }
 
@@ -1208,17 +1209,17 @@ static unsigned checkShifts (unsigned size)
 	  rnumber_set_all(c);
 	  rnumber_assign(tmp, rnumber_rn_rightshift_ui( rnumber_rn_leftshift_ui(a, n), n));
 	  if (rnumber_rn_notequal_rn(tmp, c)) {
-	    printf ("Error occurred in shifting %s(%d) by %d; produced %s\n", 
-		    rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
+	    printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", 
+		    __FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
 	    rc = 1;
 	  }
 
 	  rnumber_assign(tmp, a);
 	  rnumber_leftshift_assign(tmp, rnumber_create_from_unsigned(n));
 	  rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(n));
-	  if (tmp != c) {
-	    printf ("Error occurred in shift/equaling %s(%d) by %d; produced %s\n", 
-		    rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
+	  if (rnumber_rn_notequal_rn(tmp, c)) {
+	    printf ("%s:%d Error occurred in shift/equaling %s(%d) by %d; produced %s\n", 
+		    __FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
 	    rc = 1;
 	  }
 	}
@@ -1294,10 +1295,10 @@ static unsigned check_logical_op_rn_rn (const struct RNumber * a, const struct R
 				const struct  RNumber * res1, const struct RNumber * res2, 
 				char *op)
 {
-  unsigned rc = (res1 != res2);
+  unsigned rc = (rnumber_rn_notequal_rn(res1, res2));
   if (rc) {
-    printf ("Error (1) occurred in expression:  %s(%d) %s(%d) %s\n", rnumber_cstr(a), rnumber_size(a),
-            rnumber_cstr(b), rnumber_size(b), op);
+    printf ("%s:%d Error (1) occurred in expression:  %s(%d) %s(%d) %s\n", __FILE__, __LINE__, 
+	    rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b), op);
     printf ("  RNumber res = %s, expected res = %s\n", rnumber_cstr(res1), rnumber_cstr(res2));
   }
   return rc;
@@ -1308,7 +1309,8 @@ static unsigned check_logical_op_rn_ui (const struct RNumber * a, unsigned b, co
 {
   unsigned rc = (rnumber_rn_notequal_rn(res1, res2));
   if (rc) {
-    printf ("Error (2) occurred in expression:  %s(%d) %x %s\n", rnumber_cstr(a), rnumber_size(a), b, op);
+    printf ("%s:%d Error (2) occurred in expression:  %s(%d) %x %s\n", __FILE__, __LINE__, 
+	    rnumber_cstr(a), rnumber_size(a), b, op);
     printf ("  RNumber res = %s, expected res = %s\n", rnumber_cstr(res1), rnumber_cstr(res2));
   }
   return rc;
@@ -1337,43 +1339,46 @@ static unsigned checkLogicals ()
 	struct RNumber * tmpb = rnumber_create_from_rnumber(b);
 	struct RNumber * tmpc0 = rnumber_create_from_rnumber(c0);
 	struct RNumber * tmpc1 = rnumber_create_from_rnumber(c1);
-
+	struct RNumber * rn_zero = rnumber_create_from_unsigned(0);
 	// check & and &= using (x & zero), (x & ones), (zero & x), and (ones & x) with
 	// different sizes of x, zero, and ones:
 	//   & operands have same size
-	rc |= check_logical_op_rn_rn (a, b0, rnumber_rn_bitand_rn(a, b0), 0, "&");
+
+	rc |= check_logical_op_rn_rn (a, b0, rnumber_rn_bitand_rn(a, b0), rn_zero, "&");
 	rnumber_bitand_assign(a,b0);
-	rc |= check_logical_op_rn_rn (tmpa, b0, a, 0, "&=");
+	rc |= check_logical_op_rn_rn (tmpa, b0, a, rn_zero, "&=");
 	rnumber_assign(a, tmpa);
 	rc |= check_logical_op_rn_rn (a, b1, rnumber_rn_bitand_rn(a, b1), a, "&");
 	rnumber_bitand_assign(a, b1);
 	rc |= check_logical_op_rn_rn (tmpa, b1, a, tmpa, "&=");
 	//   smaller & larger
-	rc |= check_logical_op_rn_rn (a, c0, rnumber_rn_bitand_rn(a, c0), 0, "&");
+	rc |= check_logical_op_rn_rn (a, c0, rnumber_rn_bitand_rn(a, c0), rn_zero, "&");
 	rnumber_bitand_assign(a, c0);
-	rc |= check_logical_op_rn_rn (tmpa, c0, a, 0, "&=");
+	rc |= check_logical_op_rn_rn (tmpa, c0, a, rn_zero, "&=");
 	rnumber_assign(a, tmpa);
 	rc |= check_logical_op_rn_rn (a, c1, rnumber_rn_bitand_rn(a, c1), a, "&");
 	rnumber_bitand_assign(a, c1);
 	rc |= check_logical_op_rn_rn (tmpa, c1, a, tmpa, "&=");
 	rnumber_assign(a, tmpa);
 	//   larger & smaller
-	rc |= check_logical_op_rn_rn (c0, a, rnumber_rn_bitand_rn(c0, a), 0, "&");
+	rc |= check_logical_op_rn_rn (c0, a, rnumber_rn_bitand_rn(c0, a), rn_zero, "&");
 	rnumber_bitand_assign(c0, a);
-	rc |= check_logical_op_rn_rn (tmpc0, a, c0, 0, "&=");
+	rc |= check_logical_op_rn_rn (tmpc0, a, c0, rn_zero, "&=");
 	rnumber_assign(c0, tmpc0);
 	rc |= check_logical_op_rn_rn (c1, a, rnumber_rn_bitand_rn(c1, a), a, "&");
 	rnumber_bitand_assign(c1, a);
 	rc |= check_logical_op_rn_rn (tmpc1, a, c1, a, "&=");
 	rnumber_assign(c1, tmpc1);
 	//   & with integer
-	rc |= check_logical_op_rn_rn (b, 0, rnumber_rn_bitand_ui(b, 0), 0, "&");
+	rc |= check_logical_op_rn_ui (b, 0, rnumber_rn_bitand_ui(b, 0), rn_zero, "&");
 	rnumber_bitand_assign(b, rnumber_create_from_unsigned(0));
-	rc |= check_logical_op_rn_rn (tmpb, 0, b, 0, "&=");
+	rc |= check_logical_op_rn_ui (tmpb, 0, b, rn_zero, "&=");
 	rnumber_assign(b, tmpb);
-	rc |= check_logical_op_rn_ui (b, (-1), rnumber_rn_bitand_ui(b, (-1)), b, "&");
+	rc |= check_logical_op_rn_ui (b, (-1), rnumber_rn_bitand_ui(b, (-1)), 
+				      rnumber_create_from_unsigned(rnumber_get_uint(b)), "&");
 	rnumber_bitand_assign(b, rnumber_create_from_unsigned(-1));
-	rc |= check_logical_op_rn_ui (tmpb, (-1), b, tmpb, "&=");
+	rc |= check_logical_op_rn_ui (tmpb, (-1), b, 
+				      rnumber_create_from_unsigned(rnumber_get_uint(tmpb)), "&=");
 	rnumber_assign(b, tmpb);
 
 	// check | and |= using (x | ones) and (ones | x) with
@@ -1405,9 +1410,9 @@ static unsigned checkLogicals ()
 	// check ^ and ^= using (x ^ x), (x ^ zero), (x ^ ones), (zero ^ x), and (ones ^ x) with
 	// different sizes of x, zero, and ones:
 	//   ^ operands have same size
-	rc |= check_logical_op_rn_rn (a, a, rnumber_rn_bitxor_rn(a, a), 0, "^");
+	rc |= check_logical_op_rn_rn (a, a, rnumber_rn_bitxor_rn(a, a), rn_zero, "^");
 	rnumber_bitxor_assign(a, a);
-	rc |= check_logical_op_rn_rn (tmpa, tmpa, a, 0, "^=");
+	rc |= check_logical_op_rn_rn (tmpa, tmpa, a, rn_zero, "^=");
 	rnumber_assign(a, tmpa);
 	rc |= check_logical_op_rn_rn (a, b0, rnumber_rn_bitxor_rn(a, b0), a, "^");
 	rnumber_bitxor_assign(a, b0);
@@ -1450,9 +1455,9 @@ static unsigned checkLogicals ()
 		rnumber_bitxor_assign(b, rnumber_create_from_unsigned(num3));
 		rc |= check_logical_op_rn_ui (tmpb, num3, b, tmp3, "^=");
 		rnumber_assign(b, tmpb);
-		rc |= check_logical_op_rn_rn (b, 0, rnumber_rn_bitxor_ui(b, 0), b, "^");
+		rc |= check_logical_op_rn_ui (b, 0, rnumber_rn_bitxor_ui(b, 0), b, "^");
 		rnumber_bitxor_assign(b, rnumber_create_from_unsigned(0));
-		rc |= check_logical_op_rn_rn (tmpb, 0, b, tmpb, "^=");
+		rc |= check_logical_op_rn_ui (tmpb, 0, b, tmpb, "^=");
 		rnumber_assign(b, tmpb);
 	      }
 	    }
