@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <strstream.h>
-#include <stl_algobase.h>
 
-#include "bitnum_exceptions.h"
-#include "RNumber.h"
-#include "Random.h"
+#include "C-RNumber.h"
+#include "C-Random.h"
 
 unsigned maxIter = 100;
 

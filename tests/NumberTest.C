@@ -3,7 +3,7 @@
 #include <strstream.h>
 #include <stl_algobase.h>
 
-#include "bitnum_exceptions.h"
+#include "rnumber_exceptions.h"
 #include "RNumber.h"
 #include "Random.h"
 

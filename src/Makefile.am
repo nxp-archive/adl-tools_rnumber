@@ -5,13 +5,16 @@ libRNumber_a_SOURCES = \
 	LcgRand.C \
 	RNumber.C \
 	C-RNumber.C \
-	Random.C
+	Random.C \
+	C-Random.C
 
 pkginclude_HEADERS = \
 	KissRand.h \
 	LcgRand.h \
 	RNumber.h \
-	Random.h
+	C-RNumber.h \
+	Random.h \
+	C-Random.h
 
 noinst_HEADERS = \
 	rnumber_exceptions.h 

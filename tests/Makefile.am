@@ -1,6 +1,9 @@
-check_PROGRAMS =  NumberTest
+check_PROGRAMS =  NumberTest RandTest number_test randtest
 
 NumberTest_SOURCES = NumberTest.C
+RandTest_SOURCES = RandTest.C
+number_test_SOURCES = number_test.c
+randtest_SOURCES = randtest.c
 
 EXTRA_DIST = $(TESTS) 
 

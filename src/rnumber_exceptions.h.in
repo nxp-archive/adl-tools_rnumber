@@ -1,4 +1,3 @@
-#line 1 "rutil_exceptions.h.in"
 /*
 ** ===========================================================================
 ** $RCSfile$
@@ -8,8 +7,8 @@
 ** ===========================================================================
 */
 
-#ifndef rutil_exceptions_h
-#define rutil_exceptions_h
+#ifndef rnumber_exceptions_h
+#define rnumber_exceptions_h
 
 #include @EXCEPTION_FILE@
 
