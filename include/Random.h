@@ -18,6 +18,7 @@
 
 #include "KissRand.h"
 #include "RNumber.h"
+#include "types.h"
 
 namespace rnumber {
 typedef KissState RandState;
@@ -52,10 +53,12 @@ public:
   // If the seed is zero, we generate a new seed.
   unsigned init( unsigned seed );
   // Various functions for getting random data.
-  RNumber  getRNumber( unsigned int size );
-  unsigned getInteger();
-  unsigned getInteger( unsigned n );
-  double   getDouble();
+  RNumber           getRNumber( unsigned int size );
+  unsigned          getInteger();
+  rnumber_t::uint64 getUint64();
+  unsigned          getInteger( unsigned n );
+  rnumber_t::uint64 getUint64( rnumber_t::uint64 n );
+  double            getDouble();
   // Range-based gets.  Handles those awful signed ranges that are still
   // in Raptor.
   RNumber  getFromRange( const RNumber& minimum, const RNumber& maximum );
