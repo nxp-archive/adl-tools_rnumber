@@ -18,6 +18,7 @@ SUBDIRS = \
 	doc   \
 	include \
 	src   \
+	bigloo \
 	tests 
 
 bin_SCRIPTS = rnumber-config

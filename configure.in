@@ -189,8 +189,20 @@ AC_PATH_PROG(PERLPROG,perl)
 if test "x$PERLPROG" = x ; then
         AC_ERROR("Could not find perl.  Check your path to make sure that it is present.")
 fi
-dnl Now we make a link to the new test.
-#ln -s $PERL tests/perl
+
+dnl find bigloo
+AC_PATH_PROG(BIGLOOPROG,bigloo)
+if test "x$BIGLOOPROG" = x ; then
+   AC_ERROR("Could not find bigloo. Check your path to make sure it is present. Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/")
+fi
+
+AC_MSG_RESULT("BIGLOOPROG $BIGLOOPROG")
+BIGLOO_BINDIR=`dirname $BIGLOOPROG`
+AC_MSG_RESULT("DIR_NAME $DIR_NAME")
+BIGLOO_REVISION=`bigloo -revision`
+BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
+AC_MSG_RESULT("BIGLOO_BINDIR $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR")
+AC_SUBST(BIGLOO_LIBDIR)
 
 dnl C++ compiler feature check start here
 dnl moved the c++ compiler alittle to make the basename check work right..
@@ -487,6 +499,7 @@ AC_OUTPUT([Makefile \
 	include/Makefile \
         src/rnumber_exceptions.h \
         src/Makefile \
+	bigloo/Makefile \
         tests/Makefile \
 	tests/NumberRegress
         ], [chmod +x \
