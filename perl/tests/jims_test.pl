@@ -2,7 +2,15 @@
 eval 'exec perl -w -S $0 ${1+"$@"}'
     if 0;
 
-use lib '../src';
+# you can use this code to find rnumber in client programs
+# BEGIN {
+#   $lib_dir = `rnumber-config --perl-libs`; 
+#   $lib_dir =~ s/\s+//g;
+#   unshift @INC, $lib_dir;
+# }
+# use rnumber;
+
+use lib '../src/';
 use rnumber;
 
 print "create a\n";
