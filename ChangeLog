@@ -1,3 +1,7 @@
+2002-10-17  Todd Dukes  <Todd.Dukes@motorola.com>
+
+	*  added rnumber to the SUBDIRS of bigloo/Makefile.am
+
 	================== version 1.7.0 ======================================
 	
 2002-10-09  Todd Dukes  <Todd.Dukes@motorola.com>
