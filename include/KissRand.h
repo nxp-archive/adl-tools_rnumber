@@ -11,7 +11,7 @@
 #ifndef _KISSRAND_H_
 #define _KISSRAND_H_
 
-#include <iostream>
+#include <iosfwd>
 
 namespace rnumber {
 // Momento object for storing state of the random number generator.

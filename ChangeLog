@@ -1,3 +1,8 @@
+2003-03-24  Brian Kahne  <bkahne@ibmoto.com>
+
+	* Modified headers so that they should compile w/o the
+	backward-compatibility warning under gcc 3.2.2.
+
 2003-03-18  Brian Kahne  <bkahne@ibmoto.com>
 
 	* The tests of the C bindings have been moved to rnumber/tests so

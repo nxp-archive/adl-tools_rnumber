@@ -13,7 +13,7 @@
 #ifndef MTRANDOM_H
 #define MTRANDOM_H
 
-#include <iostream>
+#include <iosfwd>
 
 namespace rnumber {
 

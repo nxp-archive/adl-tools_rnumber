@@ -20,7 +20,7 @@
 #ifndef _LCGRAND_H_
 #define _LCGRAND_H_
 
-#include <iostream>
+#include <iosfwd>
 
 namespace rnumber {
 

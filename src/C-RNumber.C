@@ -42,22 +42,22 @@ RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int num
   return new RNumber(number, size, RNumber::dynamic);
 }
 
-RNumber * rnumber_create_from_string(  char * number  )
+RNumber * rnumber_create_from_string(  const char * number  )
 {
   return new RNumber (string (number));
 }
 
-RNumber * rnumber_create_from_string_variable_sizing( char * number )
+RNumber * rnumber_create_from_string_variable_sizing( const char * number )
 {
   return new RNumber( string(number), RNumber::dynamic);
 }
 
-RNumber * rnumber_create_from_string_of_size( char * number, unsigned int size )
+RNumber * rnumber_create_from_string_of_size( const char * number, unsigned int size )
 {
   return new RNumber( string(number), size);
 }
 
-RNumber * rnumber_create_from_string_of_size_variable_sizing( char * number, unsigned int size )
+RNumber * rnumber_create_from_string_of_size_variable_sizing( const char * number, unsigned int size )
 {
   return new RNumber ( string(number), size, RNumber::dynamic);
 }
@@ -82,22 +82,22 @@ static RNumber::Format get_radix(int radix)
   return RNumber::rios;
 }
 
-RNumber * rnumber_create_from_string_of_radix( char * number, int radix )
+RNumber * rnumber_create_from_string_of_radix( const char * number, int radix )
 {
   return new RNumber( string(number), get_radix(radix));
 }
 
-RNumber * rnumber_create_from_string_of_radix_variable_sizing( char * number, int radix )
+RNumber * rnumber_create_from_string_of_radix_variable_sizing( const char * number, int radix )
 {
   return new RNumber( string(number), get_radix(radix), RNumber::dynamic);
 }
 
-RNumber * rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix)
+RNumber * rnumber_create_from_string_of_size_of_radix( const char * number, unsigned int size, int radix)
 {
   return new RNumber( string(number), size, get_radix(radix));
 }
 
-RNumber * rnumber_create_from_string_of_size_of_radix_variable_sizing( char * number, unsigned int size, int radix) 
+RNumber * rnumber_create_from_string_of_size_of_radix_variable_sizing( const char * number, unsigned int size, int radix) 
 {
   return new RNumber( string(number), size, get_radix(radix), RNumber::dynamic);
 }

@@ -13,6 +13,8 @@
 #include "C-Random.h"
 #include "Random.h"
 
+using namespace std;
+
 // By default, we set the seed based upon the time.
 void random_create()
 {

@@ -5,6 +5,7 @@
 
 #include <unistd.h>
 #include <fstream>
+#include <iostream>
 #include <string>
 
 #include "RNumber.h"

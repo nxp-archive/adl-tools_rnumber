@@ -16,8 +16,15 @@
 #ifndef RNUMBER_H
 #define RNUMBER_H "$Id$"
 
-#include <algo.h>
-#include <iostream>
+#include "gccversion.h"
+
+#ifdef STD_CPP
+# include <algorithm>
+#else
+# include <algo.h>
+#endif
+
+#include <iosfwd>
 #include <string>
 
 #include "types.h"
@@ -155,8 +162,8 @@ public:
   // Streaming I/O methods.
   std::ostream& printToOS( std::ostream& os ) const;
   std::ostream& printToOS( std::ostream& os, int format ) const;
-  friend ostream& operator<<( std::ostream& os, const RNumber& number );
-  friend istream& operator>>( istream& is, RNumber& number );
+  friend std::ostream& operator<<( std::ostream& os, const RNumber& number );
+  friend std::istream& operator>>( std::istream& is, RNumber& number );
   // Binary read/write.
   void read( std::istream& is );
   void write( std::ostream& os ) const;
@@ -470,7 +477,7 @@ inline bool equal( const RNumber& n1, const RNumber& n2 )
 {
   const unsigned int n1wc = n1._wordCount;
   const unsigned int n2wc = n2._wordCount;
-  unsigned int minwc = min( n1wc, n2wc );
+  unsigned int minwc = std::min( n1wc, n2wc );
 
   const unsigned int* value = n1._valueBuffer;
   const unsigned int* numValue = n2._valueBuffer;
@@ -557,7 +564,7 @@ inline bool lessThan( const RNumber& n1, const RNumber& n2, bool orEqual )
 {
   const unsigned int n1wc = n1._wordCount;
   const unsigned int n2wc = n2._wordCount;
-  const unsigned int minwc = min( n1wc, n2wc );
+  const unsigned int minwc = std::min( n1wc, n2wc );
 
   const unsigned int* value = n1._valueBuffer;
   const unsigned int* numValue = n2._valueBuffer;
@@ -706,7 +713,7 @@ inline bool greaterThan( const RNumber& n1, const RNumber& n2, bool orEqual )
 {
   const unsigned int n1wc = n1._wordCount;
   const unsigned int n2wc = n2._wordCount;
-  const unsigned int minwc = min( n1wc, n2wc );
+  const unsigned int minwc = std::min( n1wc, n2wc );
 
   const unsigned int* value = n1._valueBuffer;
   const unsigned int* numValue = n2._valueBuffer;

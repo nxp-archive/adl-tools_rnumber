@@ -26,6 +26,7 @@
 /* with an appropriate reference to your work.                     */
 
 #include <stdexcept>
+#include <iostream>
 
 #include "MtRand.h"
 

@@ -12,6 +12,7 @@
 
 #if GCC_VERSION > 30200
 #  define GCC_3_2 1
+#  define STD_CPP
 #else
 #  define GCC_2_95 1
 #endif

@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <strstream.h>
 #include <stdexcept>
 
 #include "gccversion.h"
 
 #if GCC_3_2
-#  include <algorithm>
+# include <algorithm>
+# include <sstream> 
 #else
-#  include <stl_algobase.h>
+# include <algo.h>
+# include <strstream.h>
 #endif
 
 #include "RNumber.h"
@@ -765,10 +766,17 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Format radix)
   unsigned rc = 0;
   unsigned size1 = numa . size ();
 
+# ifdef STD_CPP
+  ostringstream ss1;
+  numa . printToOS(ss1, radix | RNumber::rprefix);
+  const char *str1 = ss1.str().c_str();
+# else
   strstream ss1;
   numa . printToOS (ss1, radix | RNumber::rprefix);
   ss1 << ends;
-  char *str1 = ss1 . str ();
+  const char *str1 = ss1 . str ();
+# endif
+
   RNumber num1 (str1);
   if (numa != num1) {
     printf ("Error in reading/writing of %s(%d) with implied radix %d\n", numa . str (PHex) . c_str (), size1, radix);
@@ -795,10 +803,16 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Format radix)
     }
   }
 
+# ifdef STD_CPP
+  ostringstream ss3;
+  numa.printToOS(ss3,radix);
+  const char *str3 = ss3.str().c_str();
+# else
   strstream ss3;
   numa . printToOS (ss3, radix);
   ss3 << ends;
-  char *str3 = ss3 . str ();
+  const char *str3 = ss3 . str ();
+# endif
   RNumber num3 (str3, radix);
   if (numa != num3) {
     printf ("Error in hex reading/writing of %s(%d) with explicit radix %d\n", numa . str (PHex) . c_str (), numa . size (), radix);

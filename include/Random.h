@@ -14,6 +14,8 @@
 #define RANDOM_H "$Id$"
 
 #include <vector>
+#include <iosfwd>
+
 #include "KissRand.h"
 #include "RNumber.h"
 
@@ -60,8 +62,8 @@ public:
   // Simple unsigned range- min must be less than max.
   unsigned getFromRange( unsigned minimum, unsigned maximum );
   // Load/save the state of the random number generator.
-  void save (ostream &os);
-  void load (istream &is);
+  void save (std::ostream &os);
+  void load (std::istream &is);
   // Get/set info about the random number generator.
   RandState getState() const;
   void setState(const RandState &);
@@ -113,8 +115,8 @@ public:
   static unsigned getFromRange( unsigned minimum, unsigned maximum );
 
   // Load/save the state of the random number generator.
-  static void save (ostream &os);
-  static void load (istream &is);
+  static void save (std::ostream &os);
+  static void load (std::istream &is);
   // Get/set info about the random number generator.
   static RandState getState();
   static void setState(const RandState &);
@@ -171,12 +173,12 @@ inline unsigned Random::getFromRange( unsigned minimum, unsigned maximum )
   return _generators[_currentGen].getFromRange(minimum,maximum);
 }
 
-inline void Random::save(ostream &os)
+inline void Random::save(std::ostream &os)
 {
   _generators[_currentGen].save(os);
 }
 
-inline void Random::load(istream &is)
+inline void Random::load(std::istream &is)
 {
   _generators[_currentGen].load(is);
 }

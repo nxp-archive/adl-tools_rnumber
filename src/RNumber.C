@@ -14,21 +14,21 @@
 ** ===========================================================================
 */
 #include <stdexcept>
-#include <memory.h>
-#include <iostream.h>
-#include <iomanip.h>
-#include <strstream.h>
+#include <iostream>
+#include <iomanip>
+
+#include "gccversion.h"
+#ifdef STD_CPP
+# include <sstream>
+#else
+# include <strstream.h>
+# include <iomanip.h>
+#endif
 
 #include "RNumber.h"
 #include "trace.h"
 
 using namespace std;
-
-static char* pc_rcs_h = RNUMBER_H;
-static char* p2_rcs_h = pc_rcs_h;
-static char* pc_rcs   = "$Id$";
-static char* p2_rcs   = pc_rcs;
-
 using namespace rnumber;
 
 unsigned int RNumber::_defaultSize = 32;
@@ -3666,11 +3666,17 @@ void RNumber::setBitLSB( unsigned int pos, unsigned int val )
 //
 string RNumber::str(int format) const
 {
+# ifdef STD_CPP
+  ostringstream ss;
+  printToOS(ss,format);
+  return ss.str();
+# else
   strstream ss;
   string str;
   printToOS(ss,format);
   ss >> str;
   return str;
+#endif
 }
 
 //

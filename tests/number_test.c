@@ -782,7 +782,7 @@ static unsigned checkReadWrite (const struct RNumber * numa, int radix)
   ss_ends(ss1);
 
   {
-    char *str1;
+    const char *str1;
     str1 = ss_str(ss1);
     {
       struct RNumber * num1 = rnumber_create_from_string(str1);
@@ -825,7 +825,7 @@ static unsigned checkReadWrite (const struct RNumber * numa, int radix)
     void * ss3 = ss_create();
     rnumber_print_with_radix(numa, ss3, radix,0);
     {
-      char * str3 = ss_str(ss3);
+      const char * str3 = ss_str(ss3);
       ss_ends(ss3);
       {
 	struct RNumber * num3 = rnumber_create_from_string_of_radix (str3, radix);
