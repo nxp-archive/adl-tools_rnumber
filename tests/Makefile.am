@@ -1,4 +1,4 @@
-check_PROGRAMS = NumberTest ReadTest RandTest ShiftTest simple_test number_test
+check_PROGRAMS = NumberTest ReadTest RandTest ShiftTest simple_test number_test print_test
 
 EXTRA_DIST = $(TESTS) 
 
@@ -8,6 +8,7 @@ ShiftTest_SOURCES = ShiftTest.C
 ReadTest_SOURCES = ReadTest.C
 number_test_SOURCES = c-io.C number_test.c
 simple_test_SOURCES = simple_test.c c-io.C
+print_test_SOURCES = print_test.C
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
