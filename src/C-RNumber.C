@@ -130,7 +130,7 @@ void rnumber_destroy( RNumber * rnumber )
 // Assignment methods. operator=() assigns the value constrained by sizing;
 // assign() assigns the value with dynamic sizing; clone() assigns all
 // attributes; resize() truncates/expands the value and sets fixed sizing.
-RNumber * rnumber_assign_from_int ( RNumber * rnumber, int number )
+RNumber * rnumber_assign_from_uint ( RNumber * rnumber, unsigned int number )
 {
   return &((*rnumber) = number);
 }
@@ -446,13 +446,13 @@ void rnumber_set_fixed( RNumber * rnumber)
 }
 
   // Streaming I/O methods.
-void rnumber_print_to_os( RNumber * rnumber, void * os )
+void rnumber_print_to_os( const RNumber * rnumber, void * os )
 {
   ostream * oos = reinterpret_cast<ostream *>(os);
   rnumber->printToOS(*oos);
 }
 
-void rnumber_print_with_radix( RNumber * rnumber, void * os, int radix, int bool_prefix ) 
+void rnumber_print_with_radix( const RNumber * rnumber, void * os, int radix, int bool_prefix ) 
 {
   ostream * oos = reinterpret_cast<ostream *>(os);
   rnumber->printWithRadix(*oos, get_radix(radix), bool_prefix);

@@ -46,7 +46,7 @@ void rnumber_destroy( struct RNumber * rnumber );
   // Assignment methods. operator=() assigns the value constrained by sizing;
   // assign() assigns the value with dynamic sizing; clone() assigns all
   // attributes; resize() truncates/expands the value and sets fixed sizing.
-struct RNumber * rnumber_assign_from_int ( struct RNumber * rnumber, int number );
+struct RNumber * rnumber_assign_from_uint ( struct RNumber * rnumber, unsigned int number );
 struct RNumber * rnumber_assign_from_string ( struct RNumber * rnumber, char * number_string );
 struct RNumber * rnumber_assign( struct RNumber * rnumber, struct RNumber * number );
 struct RNumber * rnumber_copy( struct RNumber * rnumber, struct RNumber * number );
@@ -116,8 +116,8 @@ struct RNumber * rnumber_getfield( struct RNumber * rnumber, unsigned int start,
 void rnumber_set_field( struct RNumber * rnumber, unsigned int start, unsigned int end, struct RNumber * num );
 
   // Attribute accessors and manipulators.
-unsigned rnumber_size( struct RNumber * rnumber);
-unsigned rnumber_wordcount( struct RNumber * rnumber);
+unsigned rnumber_size( const struct RNumber * rnumber);
+unsigned rnumber_wordcount( const struct RNumber * rnumber);
 
 const unsigned * rnumber_buffer( struct RNumber * rnumber);
 
@@ -129,8 +129,8 @@ void rnumber_set_dynamic( struct RNumber * rnumber);
 void rnumber_set_fixed( struct RNumber * rnumber);
 
   // Streaming I/O methods.
-void rnumber_print_to_os( struct RNumber * rnumber, void * os );
-void rnumber_print_with_radix( struct RNumber * rnumber, void * os, int radix, int bool_prefix );
+void rnumber_print_to_os( const struct RNumber * rnumber, void * os );
+void rnumber_print_with_radix( const struct RNumber * rnumber, void * os, int radix, int bool_prefix );
 
 //friend istream& operator>>( istream& is, RNumber& number );
 //friend ostream& operator<<( ostream& os, const RNumber& number );
