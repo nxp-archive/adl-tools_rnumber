@@ -283,13 +283,12 @@
 			;(print "false")
 			0))))
 	 ;(print "rv " rv )
-	 (if (= rv 0)
-	     (begin
-		;(print "returning false")
-		#f)
-	     (begin
-		;(print "returning true")
-		#t)))))
+	 
+	 (if (number? rv)
+	     (if (= rv 0)
+		 #f
+		 #t)
+	     rv))))
 
 (define (rn!=? a b)
    (not (rn=? a b)))
