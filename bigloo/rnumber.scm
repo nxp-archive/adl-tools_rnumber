@@ -4,6 +4,7 @@
 	   (rnumber-ctor arg)
 	   (rnumber->cstr rnumber . radix-prefix)
 	   (rnumber-parse-string str)
+	   (rnumber->int rnumber)
 	   (rn=? a b)
 	   (rn!=? a b)
 	   (rn<? a b)
@@ -150,7 +151,7 @@
     (rnumber-setbit-lsb::void (RNumber_proxy_t uint uint) "bl_rnumber_setbit_lsb")
     (rnumber-assignbit::void (RNumber_proxy_t uint uint) "bl_rnumber_assignbit")
     (rnumber-assignbit-lsb::void (RNumber_proxy_t uint uint) "bl_rnumber_assignbit_lsb")
-    (rnumber-get_uint::uint (RNumber_proxy_t) "bl_rnumber_get_uint")
+    (rnumber-get-uint::uint (RNumber_proxy_t) "bl_rnumber_get_uint")
     (bl-rnumber-cstr::string (RNumber_proxy_t) "bl_rnumber_cstr")
     (rnumber-cstr-radix::string (RNumber_proxy_t int int) "bl_rnumber_cstr_radix")
     (rnumber-get-int-field::int (RNumber_proxy_t uint uint) "bl_rnumber_get_int_field")
@@ -250,6 +251,11 @@
 				(cadr radix-prefix) 1)))
 		 (rnumber-cstr-radix rnumber radix prefix)) 
 	      (bl-rnumber-cstr rnumber)))
+	 (else (error "rnumber->cstr" "'rnumber' is not an rnumber  " rnumber))))
+
+(define (rnumber->int rnumber)
+   (cond ((RNumber_proxy_t? rnumber)
+	  (rnumber-get-uint rnumber))
 	 (else (error "rnumber->cstr" "'rnumber' is not an rnumber  " rnumber))))
 
 (define (rnumber? a)
