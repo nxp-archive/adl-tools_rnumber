@@ -2385,7 +2385,7 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
                 }
             }
         }
-
+]
       q[k] = (unsigned char) qk;
     }
 }
