@@ -4,7 +4,7 @@ check_PROGRAMS = driver simple-number-test
 # know how to handle Bigloo.
 AUTOMAKE_OPTIONS=no-dependencies
 
-driver_SOURCES = driver.c
+driver_SOURCES = driver.scm
 simple_number_test_SOURCES=simple-number-test.c
 
 CLEANFILES = driver.c simple-number-test.c

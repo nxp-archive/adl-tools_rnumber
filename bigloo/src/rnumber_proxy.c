@@ -26,9 +26,20 @@ static char * rnumber_to_string( RNumber_proxy_t array, char *c, int len ) {
    return "<rnumber>";
 }
 
-static RNumber_proxy_t rnumber_output( RNumber_proxy_t array, FILE *fout ) {
+/* static RNumber_proxy_t rnumber_output (RNumber_proxy_t array, obj_t * port) { */
+/*   char * str = bl_rnumber_cstr_radix (array, 16, 1); */
+/*   fprintf (port->output_port_t, "%s", str); */
+/*   free (str); */
+/*   return array; */
+/* } */
+
+static RNumber_proxy_t rnumber_output( RNumber_proxy_t array, obj_t port) {
     char * str = bl_rnumber_cstr_radix(array, 16, 1);
-    fprintf( fout, "%s", str);
+    char * cursor = str;
+    while (*cursor) {
+      port->output_port_t.sysputc (*cursor, port->output_port_t.ostream);
+      cursor++;
+    }
     free (str);
     return array;
 }

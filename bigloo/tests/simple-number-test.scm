@@ -4,6 +4,7 @@
 
 (define (do-tests a b)
    (print "a " a " b " b)
+   (pp a)
    (print "a=0x" (rnumber->cstr a) " b=0x" (rnumber->cstr b) " rn=?"  (rn=? a b))
    (print "a=0x" (rnumber->cstr a) " b=0x" (rnumber->cstr b) " rn!=?" (rn!=? a b))
    (print "a=0x" (rnumber->cstr a) " b=0x" (rnumber->cstr b) " rn<?"  (rn<? a b))
@@ -70,6 +71,3 @@
 (define (simple-number-test args)
   (let ((rnumber-version *rnumber-version*))
 		  (real-main args)))
-
-
-

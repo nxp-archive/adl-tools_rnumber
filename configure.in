@@ -183,8 +183,6 @@ AC_STDC_HEADERS
 
 AC_CONFIG_FILES([\
    Makefile \
-   doc/Makefile \
-   doc/user/Makefile \
    macros/Makefile \
    include/Makefile \
    src/rnumber_feature.h \
@@ -199,6 +197,9 @@ AC_CONFIG_FILES([\
    perl/src/Makefile \
    perl/tests/Makefile \
    tests/Makefile])
+
+#   doc/Makefile \
+#   doc/user/Makefile \
 
 AC_CONFIG_FILES([rnumber-config],[chmod +x rnumber-config])
 
