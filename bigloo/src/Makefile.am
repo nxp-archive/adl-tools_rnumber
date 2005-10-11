@@ -29,7 +29,7 @@ BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
-BIGLOO_HEAP_OPTIONS = $(BIGLOO_HEAP_OPTIONS_OPT)
+BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT)
 
 %_u.o:%.scm
 	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@
