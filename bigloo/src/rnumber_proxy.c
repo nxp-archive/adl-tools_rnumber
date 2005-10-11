@@ -15,15 +15,23 @@
 #include "bl-rnumber.h"
 
 extern int GC_finalize_on_demand;
-int rnumber_proxy_is_equal( obj_t lhs, obj_t rhs);
+int rnumber_proxy_is_equal (obj_t lhs, obj_t rhs);
 
-void set_GC_call_finalizers_to_zero()
-{
+void set_GC_call_finalizers_to_zero () {
   GC_finalize_on_demand = 0;
 }
 
+// (char *)GC_malloc_atomic(sizeof(char) * BgL_limitz00_102 + 1); 
+
 static char * rnumber_to_string( RNumber_proxy_t array, char *c, int len ) {
-   return "<rnumber>";
+  //  char * rnumber_to_string_storage = (char *)(GC_malloc_atomic(sizeof(
+  char * src = bl_rnumber_cstr_radix(array, 16, 1);
+  if (strlen(src) < len) {
+    strcpy (c, src);
+    free (src);
+    return c;
+  }
+  return "<rnumber>";
 }
 
 /* static RNumber_proxy_t rnumber_output (RNumber_proxy_t array, obj_t * port) { */
