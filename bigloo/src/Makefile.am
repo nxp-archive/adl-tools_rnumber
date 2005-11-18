@@ -1,4 +1,4 @@
-pkglib_LIBRARIES = libbl-rnumber_s.a libbl-rnumber_u.a
+pkglib_LIBRARIES = libbl-rnumber_s-@BIGLOO_REVISION@.a libbl-rnumber_u-@BIGLOO_REVISION@.a
 # libbl-rnumber.so
 
 SUBDIRS = rnumber
@@ -10,8 +10,8 @@ BUILT_SOURCES = bl-rnumber.heap
 bigloodir = $(pkglibdir)
 bigloo_DATA = bl-rnumber.init bl-rnumber.heap 
 
-libbl_rnumber_s_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_proxy.c
-libbl_rnumber_u_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_proxy.c
+libbl_rnumber_s_@BIGLOO_REVISION@_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_proxy.c
+libbl_rnumber_u_@BIGLOO_REVISION@_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_proxy.c
 
 noinst_HEADERS = \
 	bl-rnumber.h 
@@ -34,22 +34,22 @@ BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT)
 %_u.o:%.scm
 	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@
 
-all: libbl-rnumber_s.a  libbl-rnumber_u.a 
+all: libbl-rnumber_s-$(BIGLOO_REVISION).a  libbl-rnumber_u-$(BIGLOO_REVISION).a 
 # libbl-rnumber_s.so libbl-rnumber_u.so
 
-libbl-rnumber_s.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
-	ar qvc libbl-rnumber_s.a bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
-	ranlib libbl-rnumber_s.a
+libbl-rnumber_s-$(BIGLOO_REVISION).a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
+	ar qvc $@ bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+	ranlib $@
 
-libbl-rnumber_u.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
-	ar qvc libbl-rnumber_u.a bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
-	ranlib libbl-rnumber_u.a
+libbl-rnumber_u-$(BIGLOO_REVISION).a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
+	ar qvc $@ bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+	ranlib $@
 
-libbl-rnumber_s.so: libbl-rnumber_s.a bl-rnumber.o 
-	ld -G -o libbl-rnumber_s.so bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+libbl-rnumber_s-$(BIGLOO_REVISION).so: libbl-rnumber_s-$(BIGLOO_REVISION).a bl-rnumber.o 
+	ld -G -o $@ bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
-libbl-rnumber_u.so: libbl-rnumber_u.a bl-rnumber.o 
-	ld -G -o libbl-rnumber_u.so bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
+libbl-rnumber_u-$(BIGLOO_REVISION).so: libbl-rnumber_u-$(BIGLOO_REVISION).a bl-rnumber.o 
+	ld -G -o $@ bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
 # the -addheap option is anylogous to the -o option of compiling.
 bl-rnumber.heap: rnumber.scm make-lib.scm

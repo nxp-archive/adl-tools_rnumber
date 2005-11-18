@@ -250,8 +250,6 @@
     ;; end of C-Random.h
     ))
 
-;;(define *rnumber-version* "1.6.1")
-
 (define (rnumber-ctor arg)
    (cond ((null? arg) (bl-rnumber-create))
          ((integer? arg) (bl-rnumber-create-from-unsigned arg))
