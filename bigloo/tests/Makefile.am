@@ -4,7 +4,7 @@ check_PROGRAMS = driver simple-number-test
 # know how to handle Bigloo.
 AUTOMAKE_OPTIONS=no-dependencies
 
-driver_SOURCES = driver.c
+driver_SOURCES = driver.scm
 simple_number_test_SOURCES=simple-number-test.c
 
 CLEANFILES = driver.c simple-number-test.c
@@ -23,7 +23,7 @@ BIGLOO_LIB_PATH = -L $(top_srcdir)/src -L $(top_srcdir)/bigloo/src
 BIGLOO_LIB_OPTIONS = -lstdc++ -lRNumber $(BIGLOO_GCC3X) -ldopt "-Wl,-R$(BIGLOO_LIBDIR)"
 
 % : %.scm
-	bigloo -g -cg -v2 $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH)  -o $@ $< $(BIGLOO_LIB_OPTIONS)
+	bigloo -g -cg -v2 -library bl-rnumber $(BIGLOO_C_OPT) $(BIGLOO_LIB_PATH)  -o $@ $< $(BIGLOO_LIB_OPTIONS)
 
 simple-number-test: simple-number-test.scm
 number-tests: number-tests.scm

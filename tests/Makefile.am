@@ -1,6 +1,6 @@
 check_PROGRAMS = NumberTest ReadTest RandTest ShiftTest simple_test number_test 
 
-EXTRA_DIST = $(TESTS) 
+EXTRA_DIST = $(TEST_SCRIPTS) 
 
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
@@ -11,7 +11,8 @@ simple_test_SOURCES = simple_test.c c-io.C
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
-TESTS = NumberRegress ReadRegress RandTest ShiftTest simple_test number_test 
+TEST_SCRIPTS = NumberRegress ReadRegress 
+TESTS = $(TEST_SCRIPTS) RandTest ShiftTest simple_test number_test 
 
 RNUMBER_STATIC_LIBS = \
 	$(top_srcdir)/src/libRNumber.a
