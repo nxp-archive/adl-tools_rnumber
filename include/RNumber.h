@@ -181,11 +181,11 @@ namespace rnumber {
          void read( std::istream& is );
          void write( std::ostream& os ) const;
 
-         friend struct Hash {
+         struct Hash {
                size_t operator()( const RNumber& num ) const;
          };
 
-         friend struct Equal {
+         struct Equal {
                size_t operator()( const RNumber& num1, const RNumber& num2 ) const;
          };
     
@@ -212,7 +212,8 @@ namespace rnumber {
          RNumber& truncateInt( unsigned int size );
          RNumber& truncateExtended( unsigned int size );
 
-         unsigned int getSizeWithRadix( const std::string& number, int& radix );
+//         unsigned int getSizeWithRadix( const std::string& number, int& radix );
+         unsigned int getSizeWithRadix( const std::string& number, Format radix );
 
          void printWithStreamRadix(std::ostream &os,int format) const;
          void printDec( std::ostream& os,int format) const;
