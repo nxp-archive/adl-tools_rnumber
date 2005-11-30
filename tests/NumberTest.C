@@ -18,6 +18,8 @@
 
 #include "trace.h"
 
+#define CALL_COUNT static int call_count = 0; call_count++;
+
 using namespace std;
 using namespace rnumber;
 
@@ -764,23 +766,29 @@ static unsigned checkSignExtends (unsigned size)
 
 static unsigned checkReadWrite (const RNumber& numa, RNumber::Format radix)
 {
+   CALL_COUNT;
   unsigned rc = 0;
   unsigned size1 = numa . size ();
 
 # ifdef STD_CPP
   ostringstream ss1;
   numa . printToOS(ss1, radix | RNumber::rprefix);
-  const char *str1 = ss1.str().c_str();
+  //const char *str1 = ss1.str().c_str();
+  string str1 = ss1.str();
+  cout << "STD_CPP" << endl;
 # else
   strstream ss1;
   numa . printToOS (ss1, radix | RNumber::rprefix);
   ss1 << ends;
   const char *str1 = ss1 . str ();
+  cout << "not STD_CPP" << endl;
 # endif
 
   RNumber num1 (str1);
   if (numa != num1) {
-    printf ("Error in reading/writing of %s(%d) with implied radix %d\n", numa . str (PHex) . c_str (), size1, radix);
+    printf ("%s:%d Error in reading/writing of %s(%d) with implied radix %d\n",
+            __FILE__, __LINE__,
+            numa . str (PHex) . c_str (), size1, radix);
     rc = 1;
   }
   if (size1 > 1) {
@@ -791,15 +799,20 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Format radix)
  
     RNumber nums1 (str1, size2);
     if (nums1 != numb || nums1 . size () != size2) {
-      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str (PHex) . c_str (), size1, size2, radix);
+      printf ("%s:%d:%d Error in reading/writing of %s(%d) to %d with implied radix %d str1 %s\n", 
+              __FILE__, __LINE__, call_count,
+              numa . str (PHex) . c_str (), size1, size2, radix, str1);
       rc = 1;
+      exit(1);
     }
 
     // construct a larger number with the string
     unsigned size3 = Random::getFromRange (size1 + 1, 100);
     RNumber nums2 (str1, size3);
     if (nums2 != numa || nums2 . size () != size3) {
-      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", numa . str (PHex) . c_str (), size1, size3, radix);
+      printf ("%s:%d Error in reading/writing of %s(%d) to %d with implied radix %d\n", 
+              __FILE__, __LINE__, 
+              numa . str (PHex) . c_str (), size1, size3, radix);
       rc = 1;
     }
   }
@@ -807,35 +820,67 @@ static unsigned checkReadWrite (const RNumber& numa, RNumber::Format radix)
 # ifdef STD_CPP
   ostringstream ss3;
   numa.printToOS(ss3,radix);
-  const char *str3 = ss3.str().c_str();
+//  const char *str_tmp = ss3.str().c_str();
+//  const char *str3 = malloc (strlen(str_tmp) + 1);
+//  strcpy(str3, str_tmp);
+  string str3 = ss3.str ();
 # else
   strstream ss3;
   numa . printToOS (ss3, radix);
   ss3 << ends;
   const char *str3 = ss3 . str ();
 # endif
+  cout << " str3-1  " << str3 << endl;
   RNumber num3 (str3, radix);
+  cout << " str3-2  " << str3 << endl;
   if (numa != num3) {
-    printf ("Error in hex reading/writing of %s(%d) with explicit radix %d\n", numa . str (PHex) . c_str (), numa . size (), radix);
+    printf ("%s:%d Error in hex reading/writing of %s(%d) with explicit radix %d\n", 
+            __FILE__, __LINE__, 
+            numa . str (PHex) . c_str (), numa . size (), radix);
     rc = 1;
   }
+  cout << " str3-2a " << str3 << endl;
   if (size1 > 1) {
     // construct a smaller number with the string
+  cout << " str3-2b " << str3 << endl;
     unsigned size2 = Random::getFromRange (1, size1 - 1);
+  cout << " str3-2c " << str3 << endl;
     RNumber numb = numa;
+  cout << " str3-2d " << str3 << endl;
     numb = (numb << (size1 - size2)) >> (size1 - size2);
  
+    cout << " str3-3  " << str3 << endl;
+    cout << "size1 " << dec << size1 << " size2 " << size2 << endl;
+    
     RNumber nums1 (str3, size2, radix);
-    if (nums1 != numb || nums1 . size () != size2) {
-      printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", numa . str (PHex) . c_str (), size1, size2, radix);
-      rc = 1;
+    cout << " str3-4  " << str3 << endl;
+    cout << "nums1 " << hex << nums1 << endl;
+    cout << "numb  " << hex << numb << endl; 
+    if (nums1 != numb) {
+       cout << __FILE__ <<":" << __LINE__ << ":" << dec << call_count
+            << " nums1 != numb -- " << hex << nums1 << " != " << numb << endl;
+       rc = 1;
+    }
+    if (nums1 . size () != size2) {
+       cout << __FILE__ <<":" << __LINE__ << ":" << dec << call_count
+            << " nums1.size () != size2 -- " << dec
+            << nums1.size () << " != " << size2 << endl;
+//      printf ("%s:%d:%d Error in reading/writing of %s(%d) to %d with explicit radix %d\n", 
+//              __FILE__, __LINE__, call_count,
+//              numa . str (PHex) . c_str (), size1, size2, radix);
+       rc = 1;
+    }
+    if (rc == 1) {
+       exit (1);
     }
 
     // construct a larger number with the string
     unsigned size3 = Random::getFromRange (size1 + 1, 100);
     RNumber nums2 (str3, size3, radix);
     if (nums2 != numa || nums2 . size () != size3) {
-      printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", numa . str (PHex) . c_str (), size1, size3, radix);
+      printf ("%s:%d Error in reading/writing of %s(%d) to %d with explicit radix %d\n", 
+              __FILE__, __LINE__,
+              numa . str (PHex) . c_str (), size1, size3, radix);
       rc = 1;
     }
   }
@@ -861,14 +906,18 @@ static unsigned checkConstructors ()
     // basic copy constructor
     RNumber z1 (x0);
     if (z1 != x0 || z1 . size () != size1) {
-      printf ("Error occurred in basic copy constructor of %s(%d)\n", x0 . str (PHex) . c_str (), size1);
+      printf ("%s:%d Error occurred in basic copy constructor of %s(%d)\n",
+              __FILE__, __LINE__,
+              x0 . str (PHex) . c_str (), size1);
       rc = 1;
     }
 
     // construct larger number
     RNumber z2 (x0, size2);
     if (z2 != x0 || z2 . size () != size2) {
-      printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", x0 . str (PHex) . c_str (), size1, size2);
+      printf ("%s:%d Error occurred in sized copy constructor of %s(%d) to %d\n",
+              __FILE__, __LINE__,
+              x0 . str (PHex) . c_str (), size1, size2);
       rc = 1;
     }
 
@@ -1417,6 +1466,7 @@ const char *nextArg()
 int main (int argc, char **argv)
 {
   cout << "NumberTest" << endl;
+  cout << "gcc version " << GCC_VERSION << endl;
   const unsigned sizes[] = { 32, 64, 128, 0 };
   const unsigned n = 4;
   unsigned i;
@@ -1461,6 +1511,7 @@ int main (int argc, char **argv)
   if (pgm.empty())
          pgm = path + "/" + prog;
 
+  printf("seed %x\n", seed);
   seed = Random::init(seed);
 
   Calculator calc(pgm.c_str());
