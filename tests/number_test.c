@@ -28,19 +28,19 @@ struct Calculator * calculator_create (const char *pgm);
 void destroy_calculator ( struct Calculator * calculator);
 
 unsigned calculator_check_arith ( struct Calculator * calculator, const struct RNumber * a, 
-				  const struct RNumber * b, const struct RNumber * c, char *op, int bool_ext);
+                                  const struct RNumber * b, const struct RNumber * c, char *op, int bool_ext);
 unsigned calculator_check_arith_unsigned (struct Calculator * calculator, const struct RNumber * a, 
-					  unsigned b, const struct RNumber * c, char *op, int bool_ext);
+                                          unsigned b, const struct RNumber * c, char *op, int bool_ext);
 unsigned calculator_check_comparator ( struct Calculator * calculator, const struct RNumber * a, 
-				       const struct RNumber * b, int res, char *op);
+                                       const struct RNumber * b, int res, char *op);
 unsigned calculator_check_comparator_unsigned ( struct Calculator * calculator, const struct RNumber * a, 
-						unsigned b, int res, char *op);
+                                                unsigned b, int res, char *op);
 
 void calculator_private_init ( struct Calculator * calculator);
 void calculator_private_terminate ( struct Calculator * calculator);
 unsigned calculator_private_arith_calc ( struct Calculator * calc,const char *astr,unsigned asize, 
-					 const char *bstr,unsigned bsize, const struct RNumber * c,
-					 const char *op, int bool_ext);
+                                         const char *bstr,unsigned bsize, const struct RNumber * c,
+                                         const char *op, int bool_ext);
 
 static void usage (char *pgm)
 {
@@ -527,7 +527,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
       }
       if (failed) {
         printf ("Error occurred in comparison signed%s on values %s(%d) and %s(%d)\n", op,
-		rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b));
+                rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b));
         rc = 1;
       }
     }
@@ -557,7 +557,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
         assert (0);
       if (failed) {
         printf ("Error occurred in comparison signed%s on values %s(%d) and %s(%d)\n", op,
-		rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b));
+                rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b));
         rc = 1;
       }
     }
@@ -581,27 +581,27 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
       int res1, res2;
       char *newop;
       if (strcmp (op, "GT") == 0) {
-	res1 = rnumber_signed_greaterthan(a, b);
-	res2 = rnumber_signed_greaterthan(a, c);
-	newop = ">";
+        res1 = rnumber_signed_greaterthan(a, b);
+        res2 = rnumber_signed_greaterthan(a, c);
+        newop = ">";
       }
       else if (strcmp (op, "GE") == 0) {
-	res1 = rnumber_signed_greaterequal(a, b);
-	res2 = rnumber_signed_greaterequal(a, c);
-	newop = ">=";
+        res1 = rnumber_signed_greaterequal(a, b);
+        res2 = rnumber_signed_greaterequal(a, c);
+        newop = ">=";
       }
       else if (strcmp (op, "LT") == 0) {
-	res1 = rnumber_signed_lessthan(a, b);
-	res2 = rnumber_signed_lessthan(a, c);
-	newop = "<";
+        res1 = rnumber_signed_lessthan(a, b);
+        res2 = rnumber_signed_lessthan(a, c);
+        newop = "<";
       }
       else if (strcmp (op, "LE") == 0) {
-	res1 = rnumber_signed_lessequal(a, b);
-	res2 = rnumber_signed_lessequal(a, c);
-	newop = "<=";
+        res1 = rnumber_signed_lessequal(a, b);
+        res2 = rnumber_signed_lessequal(a, c);
+        newop = "<=";
       }
       else
-	assert (0);
+        assert (0);
       rc |= calculator_check_comparator(calc, a, b, res1, newop);
       rc |= calculator_check_comparator(calc, a, c, res2, newop);
     }
@@ -631,7 +631,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
     }
     if (rnumber_getbit(a, n) != 1) {
       printf ("%s:%d Error occurred in getting bit %d of %s(%d)\n", __FILE__, __LINE__, 
-	      n, rnumber_cstr(a), size1);
+              n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
@@ -643,7 +643,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, struct Calculato
     }
     if (rnumber_getbit_lsb(a, n) != 1) {
       printf ("%s:%d Error occurred in getting bit %d of %s(%d)\n", __FILE__, __LINE__,
-	      n, rnumber_cstr(a), size1);
+              n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
@@ -701,7 +701,7 @@ static unsigned checkFieldAccessors (unsigned size)
     }
     if (rnumber_rn_notequal_rn(rnumber_getfield(a, n1, n2), field)) {
       printf ("%s:%d Error occurred in getting field %d:%d of %s(%d)\n", __FILE__, __LINE__,
-	      n1, n2, rnumber_cstr(a), size1);
+              n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
@@ -717,12 +717,12 @@ static unsigned checkFieldAccessors (unsigned size)
     rnumber_set_field(a,n1, n2, rnumber_create_from_unsigned(0));
     if (rnumber_rn_notequal_rn(a, b)) {
       printf ("Error occurred in clearing field %d:%d of ones to produce %s(%d)\n", n1, n2, 
-	      rnumber_cstr(a), size1);
+              rnumber_cstr(a), size1);
       rc = 1;
     }
     if (rnumber_rn_notequal_ui(rnumber_getfield(a, n1, n2), 0)) {
       printf ("%s:%d Error occurred in getting field %d:%d of %s(%d)\n", __FILE__, __LINE__,
-	      n1, n2, rnumber_cstr(a), size1);
+              n1, n2, rnumber_cstr(a), size1);
       rc = 1;
     }
     if (n2 - n1 < 32) {
@@ -753,7 +753,7 @@ static unsigned checkSignExtends (unsigned size)
     rnumber_sign_extend(a,n);
     if (rnumber_rn_notequal_rn(a, b)) {
       printf ("%s:%d Error occurred in extending bit %d; produced %s(%d)\n", __FILE__, __LINE__,
-	      n, rnumber_cstr(a), size1);
+              n, rnumber_cstr(a), size1);
       rc = 1;
     }
 
@@ -764,7 +764,7 @@ static unsigned checkSignExtends (unsigned size)
     rnumber_sign_extend(a,n);
     if (rnumber_rn_notequal_rn(a, b)) {
       printf ("%s:%d Error occurred in extending bit %d; produced %s(%d)\n", __FILE__, __LINE__,
-	      n, rnumber_cstr(a), size1);
+              n, rnumber_cstr(a), size1);
       rc = 1;
     }
   }
@@ -782,84 +782,96 @@ static unsigned checkReadWrite (const struct RNumber * numa, int radix)
   ss_ends(ss1);
 
   {
-    const char *str1;
-    str1 = ss_str(ss1);
+    const char * tmp = ss_str(ss1);
+    char * str1 = malloc (strlen (tmp) + 1);
+    strcpy (str1, tmp);
     {
-      struct RNumber * num1 = rnumber_create_from_string(str1);
-      
+      struct RNumber * num1 = rnumber_create_from_string (str1);
       if (rnumber_rn_notequal_rn(numa, num1)) {
-	printf ("Error in reading/writing of %s(%d) with implied radix %d. num1 is %s\n", 
-		rnumber_cstr_radix(numa,radix,1), size1, radix, rnumber_cstr_radix(num1,radix,1));
-	rc = 1;
-	exit(1);
+        printf ("%s:%d Error: rnuma != num1 -- %s != %s \n",
+                __FILE__, __LINE__,
+                rnumber_cstr_radix(numa,radix,1), 
+                rnumber_cstr_radix(num1,radix,1));
+        printf ("%s:%d str is %s\n", __FILE__, __LINE__, str1);
+        rc = 1;
+        exit(1);
       }
       if (size1 > 1) {
-	// construct a smaller number with the string
-	unsigned size2 = random_get_from_range_unsigned(1, size1 - 1);
-	struct RNumber * numb = rnumber_create_from_rnumber(numa);
-	rnumber_assign (numb, rnumber_rn_rightshift_ui( rnumber_rn_leftshift_ui(numb, (size1 - size2)), (size1 - size2)));
+        // construct a smaller number with the string
+        unsigned size2 = random_get_from_range_unsigned(1, size1 - 1);
+        struct RNumber * numb = rnumber_create_from_rnumber(numa);
+        rnumber_assign (numb, rnumber_rn_rightshift_ui( rnumber_rn_leftshift_ui(numb, (size1 - size2)), (size1 - size2)));
  
-	{
-	  struct RNumber * nums1 = rnumber_create_from_string_of_size(str1, size2);
-	  if ( rnumber_rn_notequal_rn(nums1, numb) || rnumber_size(nums1) != size2) {
-	    printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", 
-		    rnumber_cstr(numa), size1, size2, radix);
-	    rc = 1;
-	  }
+        {
+          struct RNumber * nums1 = rnumber_create_from_string_of_size(str1, size2);
+          if ( rnumber_rn_notequal_rn(nums1, numb) || rnumber_size(nums1) != size2) {
+            printf ("%s:%d Error in reading/writing of %s(%d) to %d with implied radix %d\n",
+                    __FILE__, __LINE__, 
+                    rnumber_cstr(numa), size1, size2, radix);
+            rc = 1;
+          }
 
-	  {
-	    // construct a larger number with the string
-	    unsigned size3 = random_get_from_range_unsigned(size1 + 1, 100);
-	    struct RNumber * nums2 = rnumber_create_from_string_of_size(str1, size3);
-	    if ( rnumber_rn_notequal_rn(nums2, numa) || rnumber_size(nums2) != size3) {
-	      printf ("Error in reading/writing of %s(%d) to %d with implied radix %d\n", 
-		      rnumber_cstr(numa), size1, size3, radix);
-	      rc = 1;
-	    }
-	  }
-	}
+          {
+            // construct a larger number with the string
+            unsigned size3 = random_get_from_range_unsigned(size1 + 1, 100);
+            struct RNumber * nums2 = rnumber_create_from_string_of_size(str1, size3);
+            if ( rnumber_rn_notequal_rn(nums2, numa) || rnumber_size(nums2) != size3) {
+              printf ("%s:%d Error in reading/writing of %s(%d) to %d with implied radix %d\n",
+                      __FILE__, __LINE__, 
+                      rnumber_cstr(numa), size1, size3, radix);
+              rc = 1;
+            }
+          }
+        }
       }
     }
+    free (str1);
   }
   {
     void * ss3 = ss_create();
     rnumber_print_with_radix(numa, ss3, radix,0);
     {
-      const char * str3 = ss_str(ss3);
       ss_ends(ss3);
+      const char * tmp = ss_str(ss3);
+      char * str3 = malloc (strlen (tmp) + 1);
+      strcpy (str3, tmp);
       {
-	struct RNumber * num3 = rnumber_create_from_string_of_radix (str3, radix);
-	if (rnumber_rn_notequal_rn(numa, num3)) {
-	  printf ("%s:%d Error in hex reading/writing of %s(%d) with explicit radix %d\n", 
-		  __FILE__, __LINE__, rnumber_cstr(numa), rnumber_size(numa), radix);
-	  rc = 1;
-	  exit (1);
-	}
+        struct RNumber * num3 = rnumber_create_from_string_of_radix (str3, radix);
+        if (rnumber_rn_notequal_rn(numa, num3)) {
+          printf ("%s:%d Error in hex reading/writing of %s(%d) with explicit radix %d\n", 
+                  __FILE__, __LINE__, rnumber_cstr(numa), rnumber_size(numa), radix);
+          rc = 1;
+          exit (1);
+        }
       }
       if (size1 > 1) {
-	// construct a smaller number with the string
-	unsigned size2 = random_get_from_range_unsigned(1, size1 - 1);
-	struct RNumber * numb = rnumber_create_from_rnumber(numa);
-	rnumber_assign(numb, rnumber_rn_rightshift_ui(rnumber_rn_leftshift_ui(numb, (size1 - size2)), (size1 - size2)));
+        // construct a smaller number with the string
+        unsigned size2 = random_get_from_range_unsigned(1, size1 - 1);
+        struct RNumber * numb = rnumber_create_from_rnumber(numa);
+        rnumber_assign(numb, rnumber_rn_rightshift_ui(rnumber_rn_leftshift_ui(numb, (size1 - size2)), (size1 - size2)));
  
-	{
-	  struct RNumber * nums1 = rnumber_create_from_string_of_size_of_radix(str3, size2, radix);
-	  if ( rnumber_rn_notequal_rn(nums1, numb) || 
-	       rnumber_size(nums1) != size2) {
-	    printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", rnumber_cstr(numa), size1, size2, radix);
-	    rc = 1;
-	  }
-	}
-	{
-	  // construct a larger number with the string
-	  unsigned size3 = random_get_from_range_unsigned(size1 + 1, 100);
-	  struct RNumber * nums2 = rnumber_create_from_string_of_size_of_radix(str3, size3, radix);
-	  if (rnumber_rn_notequal_rn(nums2, numa) || rnumber_size(nums2) != size3) {
-	    printf ("Error in reading/writing of %s(%d) to %d with explicit radix %d\n", rnumber_cstr(numa), size1, size3, radix);
-	    rc = 1;
-	  }
-	}
+        {
+          struct RNumber * nums1 = rnumber_create_from_string_of_size_of_radix(str3, size2, radix);
+          if ( rnumber_rn_notequal_rn(nums1, numb) || 
+               rnumber_size(nums1) != size2) {
+            printf ("%s:%d Error in reading/writing of %s(%d) to %d with explicit radix %d\n",
+                    __FILE__, __LINE__, 
+                    rnumber_cstr(numa), size1, size2, radix);
+            rc = 1;
+          }
+        }
+        {
+          // construct a larger number with the string
+          unsigned size3 = random_get_from_range_unsigned(size1 + 1, 100);
+          struct RNumber * nums2 = rnumber_create_from_string_of_size_of_radix(str3, size3, radix);
+          if (rnumber_rn_notequal_rn(nums2, numa) || rnumber_size(nums2) != size3) {
+            printf ("%s:%d Error in reading/writing of %s(%d) to %d with explicit radix %d\n",
+                    __FILE__, __LINE__, rnumber_cstr(numa), size1, size3, radix);
+            rc = 1;
+          }
+        }
       }
+      free (str3);
     }
   }
   return rc;
@@ -881,16 +893,16 @@ static unsigned checkConstructors ()
       // basic copy constructor
       struct RNumber * z1 = rnumber_create_from_rnumber(x0);
       if (rnumber_rn_notequal_rn(z1, x0) || rnumber_size(z1) != size1) {
-	printf ("Error occurred in basic copy constructor of %s(%d)\n", rnumber_cstr(x0), size1);
-	rc = 1;
+        printf ("Error occurred in basic copy constructor of %s(%d)\n", rnumber_cstr(x0), size1);
+        rc = 1;
       }
     }
     {
       // construct larger number
       struct RNumber * z2 = rnumber_copy_to_size (x0, size2);
       if (rnumber_rn_notequal_rn(z2, x0) || rnumber_size(z2) != size2) {
-	printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", rnumber_cstr(x0), size1, size2);
-	rc = 1;
+        printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", rnumber_cstr(x0), size1, size2);
+        rc = 1;
       }
     }
     {
@@ -900,49 +912,49 @@ static unsigned checkConstructors ()
       rnumber_leftshift_assign(tmp,rnumber_create_from_unsigned(size2 - size1));
       rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(size2 - size1));
       if (rnumber_rn_notequal_rn(z3, tmp) || rnumber_size(z3) != size1) {
-	printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", rnumber_cstr(y0), size2, size1);
-	rc = 1;
+        printf ("Error occurred in sized copy constructor of %s(%d) to %d\n", rnumber_cstr(y0), size2, size1);
+        rc = 1;
       }
     }
     {
       // construct from integer
       unsigned num = random_get_integer ();
       {
-	struct RNumber * z31 = rnumber_create_from_unsigned(num);
-	if (rnumber_rn_notequal_ui(z31, num) || rnumber_size(z31) != 32) {
-	  printf ("Error occurred in constructing from integer %x\n", num);
-	  rc = 1;
-	}
+        struct RNumber * z31 = rnumber_create_from_unsigned(num);
+        if (rnumber_rn_notequal_ui(z31, num) || rnumber_size(z31) != 32) {
+          printf ("Error occurred in constructing from integer %x\n", num);
+          rc = 1;
+        }
       }
       {
-	// construct to larger from integer
-	struct RNumber * z32 = rnumber_create_from_unsigned_of_size (num, size2);
-	if (rnumber_rn_notequal_ui(z32, num) || rnumber_size(z32) != size2) {
-	  printf ("Error occurred in constructing larger number (%d) from integer %x\n", size2, num);
-	  rc = 1;
-	}
+        // construct to larger from integer
+        struct RNumber * z32 = rnumber_create_from_unsigned_of_size (num, size2);
+        if (rnumber_rn_notequal_ui(z32, num) || rnumber_size(z32) != size2) {
+          printf ("Error occurred in constructing larger number (%d) from integer %x\n", size2, num);
+          rc = 1;
+        }
       }
       {
-	// construct to smaller from integer
-	unsigned size3 = random_get_from_range_unsigned (1, 31);
-	struct RNumber * z33 = rnumber_create_from_unsigned_of_size(num, size3);
-	unsigned diff = 32 - size3;
-	unsigned num2 = (num << diff) >> diff;
-	if (rnumber_rn_notequal_ui(z33, num2) || rnumber_size(z33) != size3) {
-	  printf ("Error occurred in constructing smaller number (%d) from integer %x\n", size3, num);
-	  rc = 1;
-	}
+        // construct to smaller from integer
+        unsigned size3 = random_get_from_range_unsigned (1, 31);
+        struct RNumber * z33 = rnumber_create_from_unsigned_of_size(num, size3);
+        unsigned diff = 32 - size3;
+        unsigned num2 = (num << diff) >> diff;
+        if (rnumber_rn_notequal_ui(z33, num2) || rnumber_size(z33) != size3) {
+          printf ("Error occurred in constructing smaller number (%d) from integer %x\n", size3, num);
+          rc = 1;
+        }
       }
     }
 #if 0
       // depricated
-	// basic set, 
-	struct RNumber * z4 = random_get_rnumber(size1);
-	rnumber_set(z4,x0);
-	if (rnumber_rn_ z4 != x0 || z4 . size () != x0 . size ()) {
-	  printf ("Error occurred in basic set of %s(%d)\n", x0 . str () . c_str (), size1);
-	  rc = 1;
-	}
+        // basic set, 
+        struct RNumber * z4 = random_get_rnumber(size1);
+        rnumber_set(z4,x0);
+        if (rnumber_rn_ z4 != x0 || z4 . size () != x0 . size ()) {
+          printf ("Error occurred in basic set of %s(%d)\n", x0 . str () . c_str (), size1);
+          rc = 1;
+        }
 
     // set from smaller
     RNumber z5 = Random::getRNumber (size2);
@@ -965,8 +977,8 @@ static unsigned checkConstructors ()
       struct RNumber * z7 = random_get_rnumber (size1);
       rnumber_assign(z7, x0);
       if (rnumber_rn_notequal_rn(z7, x0) || rnumber_size(z7) != size1) {
-	printf ("Error occurred in basic operator= of %s(%d)\n", rnumber_cstr(x0), size1);
-	rc = 1;
+        printf ("Error occurred in basic operator= of %s(%d)\n", rnumber_cstr(x0), size1);
+        rc = 1;
       }
     }
     {
@@ -974,8 +986,8 @@ static unsigned checkConstructors ()
       struct RNumber * z8 = random_get_rnumber (size2);
       rnumber_assign(z8, x0);
       if (rnumber_rn_notequal_rn(z8, x0) || rnumber_size(z8) != size2) {
-	printf ("Error occurred in sized operator= of %s(%d) to %d\n", rnumber_cstr(x0), size1, size2);
-	rc = 1;
+        printf ("Error occurred in sized operator= of %s(%d) to %d\n", rnumber_cstr(x0), size1, size2);
+        rc = 1;
       }
     }
     {
@@ -983,9 +995,9 @@ static unsigned checkConstructors ()
       struct RNumber * z9 = random_get_rnumber (size1);
       rnumber_assign(z9, y0);
       if ((rnumber_sizing(z9) == rnumber_dynamic() && ( rnumber_rn_notequal_rn(z9, y0) || (rnumber_size(z9) != rnumber_size(y0)))) ||
-	  (rnumber_sizing(z9) == rnumber_fixed() && rnumber_size(z9) != size1)) {
-	printf ("Error occurred in sized operator= of %s(%d) to %d\n", rnumber_cstr(y0), size2, size1);
-	rc = 1;
+          (rnumber_sizing(z9) == rnumber_fixed() && rnumber_size(z9) != size1)) {
+        printf ("Error occurred in sized operator= of %s(%d) to %d\n", rnumber_cstr(y0), size2, size1);
+        rc = 1;
       }
     }
     {
@@ -994,8 +1006,8 @@ static unsigned checkConstructors ()
       unsigned num91 = random_get_integer ();
       rnumber_assign_from_uint(z91, num91);
       if (rnumber_rn_notequal_ui(z91, num91) || rnumber_size(z91) != 32) {
-	printf ("Error occurred in operator= of %x\n", num91);
-	rc = 1;
+        printf ("Error occurred in operator= of %x\n", num91);
+        rc = 1;
       }
     }
     {
@@ -1004,8 +1016,8 @@ static unsigned checkConstructors ()
       unsigned num92 = random_get_integer ();
       rnumber_assign_from_uint(z92, num92);
       if (rnumber_rn_notequal_ui(z92, num92) || rnumber_size(z92) != size2) {
-	printf ("Error occurred in operator= of %x to size %d\n", num92, size2);
-	rc = 1;
+        printf ("Error occurred in operator= of %x to size %d\n", num92, size2);
+        rc = 1;
       }
     }
     {
@@ -1014,20 +1026,20 @@ static unsigned checkConstructors ()
       struct RNumber * z93 = random_get_rnumber (size93);
       rnumber_set_dynamic(z93);
       {
-	unsigned num93 = random_get_integer ();
-	rnumber_assign_from_uint(z93, num93);
-	{
-	  unsigned mask = 0x1;
-	  unsigned count = 0;
-	  while (mask <= num93 && mask != 0) {
-	    mask <<= 1;
-	    count++;
-	  }
-	  if (rnumber_rn_notequal_ui(z93, num93) || rnumber_size(z93) < count) {
-	    printf ("Error occurred in operator= of %x to size %d\n", num93, size93);
-	    rc = 1;
-	  }
-	}
+        unsigned num93 = random_get_integer ();
+        rnumber_assign_from_uint(z93, num93);
+        {
+          unsigned mask = 0x1;
+          unsigned count = 0;
+          while (mask <= num93 && mask != 0) {
+            mask <<= 1;
+            count++;
+          }
+          if (rnumber_rn_notequal_ui(z93, num93) || rnumber_size(z93) < count) {
+            printf ("Error occurred in operator= of %x to size %d\n", num93, size93);
+            rc = 1;
+          }
+        }
       }
     }
     {
@@ -1038,8 +1050,8 @@ static unsigned checkConstructors ()
       rnumber_resize(z10, size2);
 
       if (rnumber_rn_notequal_rn(z10, largerValue) || rnumber_size(z10) != size2) {
-	printf ("Error occurred in resize from %d to %d\n", size1, size2);
-	rc = 1;
+        printf ("Error occurred in resize from %d to %d\n", size1, size2);
+        rc = 1;
       }
     }
     {
@@ -1050,8 +1062,8 @@ static unsigned checkConstructors ()
       rnumber_resize(z11,size1);
 
       if (rnumber_rn_notequal_rn(z11, smallerValue) || rnumber_size(z11) != size1) {
-	printf ("Error occurred in resize from %d to %d\n", size2, size1);
-	rc = 1;
+        printf ("Error occurred in resize from %d to %d\n", size2, size1);
+        rc = 1;
       }
     }
     {
@@ -1124,20 +1136,20 @@ static unsigned checkShifts (unsigned size)
     {
       struct RNumber * tmpe = rnumber_rn_rightshift_ui(rnumber_rn_leftshift_ext_ui(a,n), n);
       if (rnumber_rn_notequal_rn(tmpe, a)) {
-	printf ("%s:%d Error occurred in extendable shifting %s(%d) by %d; produced %s\n", 
-		__FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmpe));
-	printf ("  Expected %s\n", rnumber_cstr(a));
-	rc = 1;
+        printf ("%s:%d Error occurred in extendable shifting %s(%d) by %d; produced %s\n", 
+                __FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmpe));
+        printf ("  Expected %s\n", rnumber_cstr(a));
+        rc = 1;
       }
 
       // This group of shifts should not be destructive, since we're allowing
       // the result to grow.
       rnumber_assign(tmpe, rnumber_rn_rightshift_rn(rnumber_rn_leftshift_ext_rn(a,rn),rn));
       if (rnumber_rn_notequal_rn(tmpe, a)) {
-	printf ("Error occurred in extendable shifting %s(%d) by %s; produced %s\n", 
-		rnumber_cstr(a), size1, rnumber_cstr(rn), rnumber_cstr(tmpe));
-	printf ("  Expected %s\n", rnumber_cstr(a));
-	rc = 1;
+        printf ("Error occurred in extendable shifting %s(%d) by %s; produced %s\n", 
+                rnumber_cstr(a), size1, rnumber_cstr(rn), rnumber_cstr(tmpe));
+        printf ("  Expected %s\n", rnumber_cstr(a));
+        rc = 1;
       }
     }
     // The rest of these shifts will be destructive, since the size of
@@ -1145,84 +1157,84 @@ static unsigned checkShifts (unsigned size)
     {
       struct RNumber * tmp = rnumber_rn_rightshift_ui(rnumber_rn_leftshift_ui(a, n), n);
       if (rnumber_rn_notequal_rn(tmp, b)) {
-	printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
-		rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
-	rc = 1;
+        printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
+                rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
+        rc = 1;
       }
 
       // The rest of these shifts will be destructive, since the size of
       // the value may not grow.
       rnumber_assign(tmp, rnumber_rn_rightshift_rn (rnumber_rn_leftshift_rn(a, rn), rn));
       if (rnumber_rn_notequal_rn(tmp, b)) {
-	printf ("%s:%d Error occurred in shifting %s(%d) by %s; produced %s\n", __FILE__, __LINE__,
-		rnumber_cstr(a), size1, rnumber_cstr(rn), rnumber_cstr(tmp));
-	rc = 1;
+        printf ("%s:%d Error occurred in shifting %s(%d) by %s; produced %s\n", __FILE__, __LINE__,
+                rnumber_cstr(a), size1, rnumber_cstr(rn), rnumber_cstr(tmp));
+        rc = 1;
       }
 
       rnumber_assign(tmp, a);
       rnumber_leftshift_assign(tmp, rnumber_create_from_unsigned(n));
       rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(n));
       if (rnumber_rn_notequal_rn(tmp, b)) {
-	printf ("%s:%d Error occurred in shift/equaling %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
-		rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
-	rc = 1;
+        printf ("%s:%d Error occurred in shift/equaling %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
+                rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
+        rc = 1;
       }
 
       rnumber_assign(tmp, rnumber_rn_leftshift_ui(a, size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__, 
-		rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
-	rc = 1;
+        printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__, 
+                rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
+        rc = 1;
       }
       rnumber_assign(tmp, rnumber_rn_rightshift_ui(a, size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("%s:%d Error occurred in right shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
-		rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
-	rc = 1;
+        printf ("%s:%d Error occurred in right shifting %s(%d) by %d; produced %s\n", __FILE__, __LINE__,
+                rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
+        rc = 1;
       }
 
       rnumber_assign(tmp, a);
       rnumber_leftshift_assign(tmp, rnumber_create_from_unsigned(size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("%s:%d Error occurred in left shift/equaling %s(%d) by %d; produced %s\n", 
-		__FILE__, __LINE__,rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
-	rc = 1;
+        printf ("%s:%d Error occurred in left shift/equaling %s(%d) by %d; produced %s\n", 
+                __FILE__, __LINE__,rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
+        rc = 1;
       }
       rnumber_assign(tmp, a);
       rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(size1));
       if (rnumber_rn_notequal_ui(tmp, 0)) {
-	printf ("%s:%d Error occurred in right shift/equaling %s(%d) by %d; produced %s\n", 
-		__FILE__, __LINE__, rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
-	rc = 1;
+        printf ("%s:%d Error occurred in right shift/equaling %s(%d) by %d; produced %s\n", 
+                __FILE__, __LINE__, rnumber_cstr(a), size1, size1, rnumber_cstr(tmp));
+        rc = 1;
       }
 
       if (size1 > 32) {
-	n = ((n + 31) / 32) * 32;
-	if (n == 0)
-	  n = 32;
-	if (n > size1)
-	  n -= 32;
-	if (n == size1)
-	  n--;
-	{
-	  struct RNumber * c = rnumber_create_from_unsigned_of_size(0, size1 - n);
-	  rnumber_set_all(c);
-	  rnumber_assign(tmp, rnumber_rn_rightshift_ui( rnumber_rn_leftshift_ui(a, n), n));
-	  if (rnumber_rn_notequal_rn(tmp, c)) {
-	    printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", 
-		    __FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
-	    rc = 1;
-	  }
+        n = ((n + 31) / 32) * 32;
+        if (n == 0)
+          n = 32;
+        if (n > size1)
+          n -= 32;
+        if (n == size1)
+          n--;
+        {
+          struct RNumber * c = rnumber_create_from_unsigned_of_size(0, size1 - n);
+          rnumber_set_all(c);
+          rnumber_assign(tmp, rnumber_rn_rightshift_ui( rnumber_rn_leftshift_ui(a, n), n));
+          if (rnumber_rn_notequal_rn(tmp, c)) {
+            printf ("%s:%d Error occurred in shifting %s(%d) by %d; produced %s\n", 
+                    __FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
+            rc = 1;
+          }
 
-	  rnumber_assign(tmp, a);
-	  rnumber_leftshift_assign(tmp, rnumber_create_from_unsigned(n));
-	  rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(n));
-	  if (rnumber_rn_notequal_rn(tmp, c)) {
-	    printf ("%s:%d Error occurred in shift/equaling %s(%d) by %d; produced %s\n", 
-		    __FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
-	    rc = 1;
-	  }
-	}
+          rnumber_assign(tmp, a);
+          rnumber_leftshift_assign(tmp, rnumber_create_from_unsigned(n));
+          rnumber_rightshift_assign(tmp, rnumber_create_from_unsigned(n));
+          if (rnumber_rn_notequal_rn(tmp, c)) {
+            printf ("%s:%d Error occurred in shift/equaling %s(%d) by %d; produced %s\n", 
+                    __FILE__, __LINE__, rnumber_cstr(a), size1, n, rnumber_cstr(tmp));
+            rc = 1;
+          }
+        }
       }
     }
   }
@@ -1292,25 +1304,25 @@ static unsigned checkGetInts (unsigned size)
 }
 
 static unsigned check_logical_op_rn_rn (const struct RNumber * a, const struct RNumber * b, 
-				const struct  RNumber * res1, const struct RNumber * res2, 
-				char *op)
+                                const struct  RNumber * res1, const struct RNumber * res2, 
+                                char *op)
 {
   unsigned rc = (rnumber_rn_notequal_rn(res1, res2));
   if (rc) {
     printf ("%s:%d Error (1) occurred in expression:  %s(%d) %s(%d) %s\n", __FILE__, __LINE__, 
-	    rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b), op);
+            rnumber_cstr(a), rnumber_size(a), rnumber_cstr(b), rnumber_size(b), op);
     printf ("  RNumber res = %s, expected res = %s\n", rnumber_cstr(res1), rnumber_cstr(res2));
   }
   return rc;
 }
 
 static unsigned check_logical_op_rn_ui (const struct RNumber * a, unsigned b, const struct RNumber * res1, 
-				const struct RNumber * res2, char *op)
+                                const struct RNumber * res2, char *op)
 {
   unsigned rc = (rnumber_rn_notequal_rn(res1, res2));
   if (rc) {
     printf ("%s:%d Error (2) occurred in expression:  %s(%d) %x %s\n", __FILE__, __LINE__, 
-	    rnumber_cstr(a), rnumber_size(a), b, op);
+            rnumber_cstr(a), rnumber_size(a), b, op);
     printf ("  RNumber res = %s, expected res = %s\n", rnumber_cstr(res1), rnumber_cstr(res2));
   }
   return rc;
@@ -1335,134 +1347,134 @@ static unsigned checkLogicals ()
       struct RNumber * c1 = rnumber_create_from_unsigned_of_size (0, size2);
       rnumber_set_all(c1);
       {
-	struct RNumber * tmpa = rnumber_create_from_rnumber(a);
-	struct RNumber * tmpb = rnumber_create_from_rnumber(b);
-	struct RNumber * tmpc0 = rnumber_create_from_rnumber(c0);
-	struct RNumber * tmpc1 = rnumber_create_from_rnumber(c1);
-	struct RNumber * rn_zero = rnumber_create_from_unsigned(0);
-	// check & and &= using (x & zero), (x & ones), (zero & x), and (ones & x) with
-	// different sizes of x, zero, and ones:
-	//   & operands have same size
+        struct RNumber * tmpa = rnumber_create_from_rnumber(a);
+        struct RNumber * tmpb = rnumber_create_from_rnumber(b);
+        struct RNumber * tmpc0 = rnumber_create_from_rnumber(c0);
+        struct RNumber * tmpc1 = rnumber_create_from_rnumber(c1);
+        struct RNumber * rn_zero = rnumber_create_from_unsigned(0);
+        // check & and &= using (x & zero), (x & ones), (zero & x), and (ones & x) with
+        // different sizes of x, zero, and ones:
+        //   & operands have same size
 
-	rc |= check_logical_op_rn_rn (a, b0, rnumber_rn_bitand_rn(a, b0), rn_zero, "&");
-	rnumber_bitand_assign(a,b0);
-	rc |= check_logical_op_rn_rn (tmpa, b0, a, rn_zero, "&=");
-	rnumber_assign(a, tmpa);
-	rc |= check_logical_op_rn_rn (a, b1, rnumber_rn_bitand_rn(a, b1), a, "&");
-	rnumber_bitand_assign(a, b1);
-	rc |= check_logical_op_rn_rn (tmpa, b1, a, tmpa, "&=");
-	//   smaller & larger
-	rc |= check_logical_op_rn_rn (a, c0, rnumber_rn_bitand_rn(a, c0), rn_zero, "&");
-	rnumber_bitand_assign(a, c0);
-	rc |= check_logical_op_rn_rn (tmpa, c0, a, rn_zero, "&=");
-	rnumber_assign(a, tmpa);
-	rc |= check_logical_op_rn_rn (a, c1, rnumber_rn_bitand_rn(a, c1), a, "&");
-	rnumber_bitand_assign(a, c1);
-	rc |= check_logical_op_rn_rn (tmpa, c1, a, tmpa, "&=");
-	rnumber_assign(a, tmpa);
-	//   larger & smaller
-	rc |= check_logical_op_rn_rn (c0, a, rnumber_rn_bitand_rn(c0, a), rn_zero, "&");
-	rnumber_bitand_assign(c0, a);
-	rc |= check_logical_op_rn_rn (tmpc0, a, c0, rn_zero, "&=");
-	rnumber_assign(c0, tmpc0);
-	rc |= check_logical_op_rn_rn (c1, a, rnumber_rn_bitand_rn(c1, a), a, "&");
-	rnumber_bitand_assign(c1, a);
-	rc |= check_logical_op_rn_rn (tmpc1, a, c1, a, "&=");
-	rnumber_assign(c1, tmpc1);
-	//   & with integer
-	rc |= check_logical_op_rn_ui (b, 0, rnumber_rn_bitand_ui(b, 0), rn_zero, "&");
-	rnumber_bitand_assign(b, rnumber_create_from_unsigned(0));
-	rc |= check_logical_op_rn_ui (tmpb, 0, b, rn_zero, "&=");
-	rnumber_assign(b, tmpb);
-	rc |= check_logical_op_rn_ui (b, (-1), rnumber_rn_bitand_ui(b, (-1)), 
-				      rnumber_create_from_unsigned(rnumber_get_uint(b)), "&");
-	rnumber_bitand_assign(b, rnumber_create_from_unsigned(-1));
-	rc |= check_logical_op_rn_ui (tmpb, (-1), b, 
-				      rnumber_create_from_unsigned(rnumber_get_uint(tmpb)), "&=");
-	rnumber_assign(b, tmpb);
+        rc |= check_logical_op_rn_rn (a, b0, rnumber_rn_bitand_rn(a, b0), rn_zero, "&");
+        rnumber_bitand_assign(a,b0);
+        rc |= check_logical_op_rn_rn (tmpa, b0, a, rn_zero, "&=");
+        rnumber_assign(a, tmpa);
+        rc |= check_logical_op_rn_rn (a, b1, rnumber_rn_bitand_rn(a, b1), a, "&");
+        rnumber_bitand_assign(a, b1);
+        rc |= check_logical_op_rn_rn (tmpa, b1, a, tmpa, "&=");
+        //   smaller & larger
+        rc |= check_logical_op_rn_rn (a, c0, rnumber_rn_bitand_rn(a, c0), rn_zero, "&");
+        rnumber_bitand_assign(a, c0);
+        rc |= check_logical_op_rn_rn (tmpa, c0, a, rn_zero, "&=");
+        rnumber_assign(a, tmpa);
+        rc |= check_logical_op_rn_rn (a, c1, rnumber_rn_bitand_rn(a, c1), a, "&");
+        rnumber_bitand_assign(a, c1);
+        rc |= check_logical_op_rn_rn (tmpa, c1, a, tmpa, "&=");
+        rnumber_assign(a, tmpa);
+        //   larger & smaller
+        rc |= check_logical_op_rn_rn (c0, a, rnumber_rn_bitand_rn(c0, a), rn_zero, "&");
+        rnumber_bitand_assign(c0, a);
+        rc |= check_logical_op_rn_rn (tmpc0, a, c0, rn_zero, "&=");
+        rnumber_assign(c0, tmpc0);
+        rc |= check_logical_op_rn_rn (c1, a, rnumber_rn_bitand_rn(c1, a), a, "&");
+        rnumber_bitand_assign(c1, a);
+        rc |= check_logical_op_rn_rn (tmpc1, a, c1, a, "&=");
+        rnumber_assign(c1, tmpc1);
+        //   & with integer
+        rc |= check_logical_op_rn_ui (b, 0, rnumber_rn_bitand_ui(b, 0), rn_zero, "&");
+        rnumber_bitand_assign(b, rnumber_create_from_unsigned(0));
+        rc |= check_logical_op_rn_ui (tmpb, 0, b, rn_zero, "&=");
+        rnumber_assign(b, tmpb);
+        rc |= check_logical_op_rn_ui (b, (-1), rnumber_rn_bitand_ui(b, (-1)), 
+                                      rnumber_create_from_unsigned(rnumber_get_uint(b)), "&");
+        rnumber_bitand_assign(b, rnumber_create_from_unsigned(-1));
+        rc |= check_logical_op_rn_ui (tmpb, (-1), b, 
+                                      rnumber_create_from_unsigned(rnumber_get_uint(tmpb)), "&=");
+        rnumber_assign(b, tmpb);
 
-	// check | and |= using (x | ones) and (ones | x) with
-	// different sizes of x and ones:
-	//   | operands have same size
-	rc |= check_logical_op_rn_rn (a, b1, rnumber_rn_bitor_rn(a, b1), b1, "|");
-	rnumber_bitor_assign(a, b1);
-	rc |= check_logical_op_rn_rn (tmpa, b1, a, b1, "|=");
-	rnumber_assign(a, tmpa);
-	//   smaller | larger
-	rc |= check_logical_op_rn_rn (a, c1, rnumber_rn_bitor_rn(a, c1), c1, "|");
-	rnumber_bitor_assign(a, c1);
-	rc |= check_logical_op_rn_rn (tmpa, c1, a, b1, "|=");
-	rnumber_assign(a, tmpa);
-	//   larger | smaller
-	rc |= check_logical_op_rn_rn (c1, a, rnumber_rn_bitor_rn(c1, a), c1, "|");
-	rnumber_bitor_assign(c1, a);
-	rc |= check_logical_op_rn_rn (tmpc1, a, c1, tmpc1, "|=");
-	rnumber_assign(c1, tmpc1);
-	//   | with integer
-	{
-	  struct RNumber * tmp1 = rnumber_create_from_rnumber(b);
-	  rnumber_set_field(tmp1, size2 - 32, size2 - 1, rnumber_create_from_unsigned(-1));
-	  rc |= check_logical_op_rn_ui (b, -1, rnumber_rn_bitor_ui(b,-1), tmp1, "|");
-	  rnumber_bitor_assign(b,rnumber_create_from_unsigned(-1));
-	  rc |= check_logical_op_rn_ui (tmpb, -1, b, tmp1, "|=");
-	  rnumber_assign(b, tmpb);
-	}
-	// check ^ and ^= using (x ^ x), (x ^ zero), (x ^ ones), (zero ^ x), and (ones ^ x) with
-	// different sizes of x, zero, and ones:
-	//   ^ operands have same size
-	rc |= check_logical_op_rn_rn (a, a, rnumber_rn_bitxor_rn(a, a), rn_zero, "^");
-	rnumber_bitxor_assign(a, a);
-	rc |= check_logical_op_rn_rn (tmpa, tmpa, a, rn_zero, "^=");
-	rnumber_assign(a, tmpa);
-	rc |= check_logical_op_rn_rn (a, b0, rnumber_rn_bitxor_rn(a, b0), a, "^");
-	rnumber_bitxor_assign(a, b0);
-	rc |= check_logical_op_rn_rn (tmpa, b0, a, tmpa, "^=");
-	rnumber_assign(a, tmpa);
-	rc |= check_logical_op_rn_rn (a, b1, rnumber_rn_bitxor_rn(a, b1), rnumber_unary_tilde(a), "^");
-	rnumber_bitxor_assign(a, b1);
-	rc |= check_logical_op_rn_rn (tmpa, b1, a, rnumber_unary_tilde(tmpa), "^=");
-	rnumber_assign(a, tmpa);
-	//   smaller ^ larger
-	rc |= check_logical_op_rn_rn (a, c0, rnumber_rn_bitxor_rn(a, c0), a, "^");
-	rnumber_bitxor_assign(a, c0);
-	rc |= check_logical_op_rn_rn (tmpa, c0, a, tmpa, "^=");
-	rnumber_assign(a, tmpa);
-	{
-	  struct RNumber * aa = rnumber_copy_to_size( a, rnumber_size(c1));
-	  rc |= check_logical_op_rn_rn (a, c1, rnumber_rn_bitxor_rn(a, c1), rnumber_unary_tilde(aa), "^");
-	  rnumber_bitxor_assign(a, c1);
-	  rc |= check_logical_op_rn_rn (tmpa, c1, a, rnumber_unary_tilde(tmpa), "^=");
-	  rnumber_assign(a, tmpa);
-	  //   larger ^ smaller
-	  rc |= check_logical_op_rn_rn (c0, a, rnumber_rn_bitxor_rn(c0, a), a, "^");
-	  rnumber_bitxor_assign(c0, a);
-	  rc |= check_logical_op_rn_rn (tmpc0, a, c0, a, "^=");
-	  rnumber_assign(c0, tmpc0);
-	  {
-	    struct RNumber * tmp2 = rnumber_create_from_rnumber(c1);
-	    rnumber_set_field(tmp2,size2 - size1, size2 - 1, rnumber_unary_tilde(a));
-	    rc |= check_logical_op_rn_rn (c1, a, rnumber_rn_bitxor_rn(c1, a), tmp2, "^");
-	    rnumber_bitxor_assign(c1, a);
-	    rc |= check_logical_op_rn_rn (tmpc1, a, c1, tmp2, "^=");
-	    rnumber_assign(c1, tmpc1);
-	    //   ^ with integer
-	    {
-	      struct RNumber * tmp3 = rnumber_create_from_rnumber(b);
-	      rnumber_set_field(tmp3, size2 - 32, size2 - 1, rnumber_create_from_unsigned(-1));
-	      {
-		unsigned num3 = ~(rnumber_get_uint(b));
-		rc |= check_logical_op_rn_ui (b, num3, rnumber_rn_bitxor_ui(b, num3), tmp3, "^");
-		rnumber_bitxor_assign(b, rnumber_create_from_unsigned(num3));
-		rc |= check_logical_op_rn_ui (tmpb, num3, b, tmp3, "^=");
-		rnumber_assign(b, tmpb);
-		rc |= check_logical_op_rn_ui (b, 0, rnumber_rn_bitxor_ui(b, 0), b, "^");
-		rnumber_bitxor_assign(b, rnumber_create_from_unsigned(0));
-		rc |= check_logical_op_rn_ui (tmpb, 0, b, tmpb, "^=");
-		rnumber_assign(b, tmpb);
-	      }
-	    }
-	  }
-	}
+        // check | and |= using (x | ones) and (ones | x) with
+        // different sizes of x and ones:
+        //   | operands have same size
+        rc |= check_logical_op_rn_rn (a, b1, rnumber_rn_bitor_rn(a, b1), b1, "|");
+        rnumber_bitor_assign(a, b1);
+        rc |= check_logical_op_rn_rn (tmpa, b1, a, b1, "|=");
+        rnumber_assign(a, tmpa);
+        //   smaller | larger
+        rc |= check_logical_op_rn_rn (a, c1, rnumber_rn_bitor_rn(a, c1), c1, "|");
+        rnumber_bitor_assign(a, c1);
+        rc |= check_logical_op_rn_rn (tmpa, c1, a, b1, "|=");
+        rnumber_assign(a, tmpa);
+        //   larger | smaller
+        rc |= check_logical_op_rn_rn (c1, a, rnumber_rn_bitor_rn(c1, a), c1, "|");
+        rnumber_bitor_assign(c1, a);
+        rc |= check_logical_op_rn_rn (tmpc1, a, c1, tmpc1, "|=");
+        rnumber_assign(c1, tmpc1);
+        //   | with integer
+        {
+          struct RNumber * tmp1 = rnumber_create_from_rnumber(b);
+          rnumber_set_field(tmp1, size2 - 32, size2 - 1, rnumber_create_from_unsigned(-1));
+          rc |= check_logical_op_rn_ui (b, -1, rnumber_rn_bitor_ui(b,-1), tmp1, "|");
+          rnumber_bitor_assign(b,rnumber_create_from_unsigned(-1));
+          rc |= check_logical_op_rn_ui (tmpb, -1, b, tmp1, "|=");
+          rnumber_assign(b, tmpb);
+        }
+        // check ^ and ^= using (x ^ x), (x ^ zero), (x ^ ones), (zero ^ x), and (ones ^ x) with
+        // different sizes of x, zero, and ones:
+        //   ^ operands have same size
+        rc |= check_logical_op_rn_rn (a, a, rnumber_rn_bitxor_rn(a, a), rn_zero, "^");
+        rnumber_bitxor_assign(a, a);
+        rc |= check_logical_op_rn_rn (tmpa, tmpa, a, rn_zero, "^=");
+        rnumber_assign(a, tmpa);
+        rc |= check_logical_op_rn_rn (a, b0, rnumber_rn_bitxor_rn(a, b0), a, "^");
+        rnumber_bitxor_assign(a, b0);
+        rc |= check_logical_op_rn_rn (tmpa, b0, a, tmpa, "^=");
+        rnumber_assign(a, tmpa);
+        rc |= check_logical_op_rn_rn (a, b1, rnumber_rn_bitxor_rn(a, b1), rnumber_unary_tilde(a), "^");
+        rnumber_bitxor_assign(a, b1);
+        rc |= check_logical_op_rn_rn (tmpa, b1, a, rnumber_unary_tilde(tmpa), "^=");
+        rnumber_assign(a, tmpa);
+        //   smaller ^ larger
+        rc |= check_logical_op_rn_rn (a, c0, rnumber_rn_bitxor_rn(a, c0), a, "^");
+        rnumber_bitxor_assign(a, c0);
+        rc |= check_logical_op_rn_rn (tmpa, c0, a, tmpa, "^=");
+        rnumber_assign(a, tmpa);
+        {
+          struct RNumber * aa = rnumber_copy_to_size( a, rnumber_size(c1));
+          rc |= check_logical_op_rn_rn (a, c1, rnumber_rn_bitxor_rn(a, c1), rnumber_unary_tilde(aa), "^");
+          rnumber_bitxor_assign(a, c1);
+          rc |= check_logical_op_rn_rn (tmpa, c1, a, rnumber_unary_tilde(tmpa), "^=");
+          rnumber_assign(a, tmpa);
+          //   larger ^ smaller
+          rc |= check_logical_op_rn_rn (c0, a, rnumber_rn_bitxor_rn(c0, a), a, "^");
+          rnumber_bitxor_assign(c0, a);
+          rc |= check_logical_op_rn_rn (tmpc0, a, c0, a, "^=");
+          rnumber_assign(c0, tmpc0);
+          {
+            struct RNumber * tmp2 = rnumber_create_from_rnumber(c1);
+            rnumber_set_field(tmp2,size2 - size1, size2 - 1, rnumber_unary_tilde(a));
+            rc |= check_logical_op_rn_rn (c1, a, rnumber_rn_bitxor_rn(c1, a), tmp2, "^");
+            rnumber_bitxor_assign(c1, a);
+            rc |= check_logical_op_rn_rn (tmpc1, a, c1, tmp2, "^=");
+            rnumber_assign(c1, tmpc1);
+            //   ^ with integer
+            {
+              struct RNumber * tmp3 = rnumber_create_from_rnumber(b);
+              rnumber_set_field(tmp3, size2 - 32, size2 - 1, rnumber_create_from_unsigned(-1));
+              {
+                unsigned num3 = ~(rnumber_get_uint(b));
+                rc |= check_logical_op_rn_ui (b, num3, rnumber_rn_bitxor_ui(b, num3), tmp3, "^");
+                rnumber_bitxor_assign(b, rnumber_create_from_unsigned(num3));
+                rc |= check_logical_op_rn_ui (tmpb, num3, b, tmp3, "^=");
+                rnumber_assign(b, tmpb);
+                rc |= check_logical_op_rn_ui (b, 0, rnumber_rn_bitxor_ui(b, 0), b, "^");
+                rnumber_bitxor_assign(b, rnumber_create_from_unsigned(0));
+                rc |= check_logical_op_rn_ui (tmpb, 0, b, tmpb, "^=");
+                rnumber_assign(b, tmpb);
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -1482,7 +1494,7 @@ char * nextArg()
 {
   ++_cur;
   if (_cur >= _argc) {
-	 printf("Error:  Expected an argument for option '%s'.\n",_argv[_cur-1]);
+         printf("Error:  Expected an argument for option '%s'.\n",_argv[_cur-1]);
   }
   return _argv[_cur];
 }
@@ -1507,23 +1519,23 @@ int main (int argc, char **argv)
 
     for ( ; _cur < _argc; ++_cur) {
       if (!strcmp (curArg(), "-seed")) {
-	seed = atoi (nextArg());
+        seed = atoi (nextArg());
       }
       else if (!strcmp (curArg(), "-n")) {
-	maxIter = atoi (nextArg());
+        maxIter = atoi (nextArg());
       }
       else if (!strcmp (curArg(), "-dcpath")) {
-	path = nextArg();
+        path = nextArg();
       }
       else if (!strcmp (curArg(), "-dc")) {
-	pgm = nextArg();
+        pgm = nextArg();
       }
       else if (!strcmp (curArg(), "-trace_level")) {
-	set_tracing_level( strtoul(nextArg(),0,0));
-	printf("trace_level_set 0x%x\n", get_tracing_level());
+        set_tracing_level( strtoul(nextArg(),0,0));
+        printf("trace_level_set 0x%x\n", get_tracing_level());
       }
       else {
-	usage (argv[0]);
+        usage (argv[0]);
       }
     }
 
@@ -1550,47 +1562,47 @@ int main (int argc, char **argv)
       printf ("Starting adds...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkOperator (sizes[i], "+.", calc);
+        rc |= checkOperator (sizes[i], "+.", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkOperator (sizes[i], "+", calc);
+        rc |= checkOperator (sizes[i], "+", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntOperator (sizes[i], "+", calc);
+        rc |= checkIntOperator (sizes[i], "+", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntOperator (sizes[i], "+.", calc);
+        rc |= checkIntOperator (sizes[i], "+.", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkMutator (sizes[i], "+=", calc);
+        rc |= checkMutator (sizes[i], "+=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntMutator (sizes[i], "+=", calc);
+        rc |= checkIntMutator (sizes[i], "+=", calc);
       printf (" finished.\n");
 
       // subtract
       printf ("Starting subtracts...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkOperator (sizes[i], "-", calc);
+        rc |= checkOperator (sizes[i], "-", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntOperator (sizes[i], "-", calc);
+        rc |= checkIntOperator (sizes[i], "-", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkMutator (sizes[i], "-=", calc);
+        rc |= checkMutator (sizes[i], "-=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntMutator (sizes[i], "-=", calc);
+        rc |= checkIntMutator (sizes[i], "-=", calc);
       printf (" finished.\n");
 
       // multiply
       printf ("Starting multiplies...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkOperator (sizes[i], "*.", calc);
+        rc |= checkOperator (sizes[i], "*.", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkOperator (sizes[i], "*", calc);
+        rc |= checkOperator (sizes[i], "*", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntOperator (sizes[i], "*", calc);
+        rc |= checkIntOperator (sizes[i], "*", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntOperator (sizes[i], "*.", calc);
+        rc |= checkIntOperator (sizes[i], "*.", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkMutator (sizes[i], "*=", calc);
+        rc |= checkMutator (sizes[i], "*=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntMutator (sizes[i], "*=", calc);
+        rc |= checkIntMutator (sizes[i], "*=", calc);
       rc |= checkMultSpecialCases (calc);
       printf (" finished.\n");
 
@@ -1598,13 +1610,13 @@ int main (int argc, char **argv)
       printf ("Starting divides...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkOperator (sizes[i], "/", calc);
+        rc |= checkOperator (sizes[i], "/", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntOperator (sizes[i], "/", calc);
+        rc |= checkIntOperator (sizes[i], "/", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkMutator (sizes[i], "/=", calc);
+        rc |= checkMutator (sizes[i], "/=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntMutator (sizes[i], "/=", calc);
+        rc |= checkIntMutator (sizes[i], "/=", calc);
       rc |= checkDivideSpecialCases (calc);
       printf (" finished.\n");
 
@@ -1612,102 +1624,102 @@ int main (int argc, char **argv)
       printf ("Starting mods...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkOperator (sizes[i], "%", calc);
+        rc |= checkOperator (sizes[i], "%", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntOperator (sizes[i], "%", calc);
+        rc |= checkIntOperator (sizes[i], "%", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkMutator (sizes[i], "%=", calc);
+        rc |= checkMutator (sizes[i], "%=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntMutator (sizes[i], "%=", calc);
+        rc |= checkIntMutator (sizes[i], "%=", calc);
       printf (" finished.\n");
 
       // unsigned <
       printf ("Starting <...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkComparator (sizes[i], "<", calc);
+        rc |= checkComparator (sizes[i], "<", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntComparator (sizes[i], "<", calc);
+        rc |= checkIntComparator (sizes[i], "<", calc);
       printf (" finished.\n");
 
       // unsigned <=
       printf ("Starting <=...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkComparator (sizes[i], "<=", calc);
+        rc |= checkComparator (sizes[i], "<=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntComparator (sizes[i], "<=", calc);
+        rc |= checkIntComparator (sizes[i], "<=", calc);
       printf (" finished.\n");
 
       // unsigned >
       printf ("Starting >...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkComparator (sizes[i], ">", calc);
+        rc |= checkComparator (sizes[i], ">", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntComparator (sizes[i], ">", calc);
+        rc |= checkIntComparator (sizes[i], ">", calc);
       printf (" finished.\n");
 
       // unsigned >=
       printf ("Starting >=...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkComparator (sizes[i], ">=", calc);
+        rc |= checkComparator (sizes[i], ">=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntComparator (sizes[i], ">=", calc);
+        rc |= checkIntComparator (sizes[i], ">=", calc);
       printf (" finished.\n");
 
       // ==
       printf ("Starting ==...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkComparator (sizes[i], "==", calc);
+        rc |= checkComparator (sizes[i], "==", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntComparator (sizes[i], "==", calc);
+        rc |= checkIntComparator (sizes[i], "==", calc);
       printf (" finished.\n");
 
       // !=
       printf ("Starting !=...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkComparator (sizes[i], "!=", calc);
+        rc |= checkComparator (sizes[i], "!=", calc);
       for (i = 0; i < n; i++) 
-	rc |= checkIntComparator (sizes[i], "!=", calc);
+        rc |= checkIntComparator (sizes[i], "!=", calc);
       printf (" finished.\n");
 
       // compare
       printf ("Starting compare...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkComparator (sizes[i], "compare", calc);
+        rc |= checkComparator (sizes[i], "compare", calc);
       printf (" finished.\n");
 
       // signedGT
       printf ("Starting signedGT...");
       fflush (stdout);
       for (i = 0; i < n; i++)
-	rc |= checkSignedComparator (sizes[i], "GT", calc);
+        rc |= checkSignedComparator (sizes[i], "GT", calc);
       printf (" finished.\n");
 
       // signedGE
       printf ("Starting signedGE...");
       fflush (stdout);
       for (i = 0; i < n; i++)
-	rc |= checkSignedComparator (sizes[i], "GE", calc);
+        rc |= checkSignedComparator (sizes[i], "GE", calc);
       printf (" finished.\n");
 
       // signedLT
       printf ("Starting signedLT...");
       fflush (stdout);
       for (i = 0; i < n; i++)
-	rc |= checkSignedComparator (sizes[i], "LT", calc);
+        rc |= checkSignedComparator (sizes[i], "LT", calc);
       printf (" finished.\n");
 
       // signedLE
       printf ("Starting signedLE...");
       fflush (stdout);
       for (i = 0; i < n; i++)
-	rc |= checkSignedComparator (sizes[i], "LE", calc);
+        rc |= checkSignedComparator (sizes[i], "LE", calc);
       printf (" finished.\n");
 
       // get bit
@@ -1715,7 +1727,7 @@ int main (int argc, char **argv)
       printf ("Starting bit accessors...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkBitAccessors (sizes[i]);
+        rc |= checkBitAccessors (sizes[i]);
       printf (" finished.\n");
 
       // get field
@@ -1723,14 +1735,14 @@ int main (int argc, char **argv)
       printf ("Starting field accessors...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkFieldAccessors (sizes[i]);
+        rc |= checkFieldAccessors (sizes[i]);
       printf (" finished.\n");
 
       // sign extend
       printf ("Starting sign extensions...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkSignExtends (sizes[i]);
+        rc |= checkSignExtends (sizes[i]);
       printf (" finished.\n");
 
       // invert
@@ -1739,7 +1751,7 @@ int main (int argc, char **argv)
       printf ("Starting inversions...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkInversions (sizes[i]);
+        rc |= checkInversions (sizes[i]);
       printf (" finished.\n");
 
       // left shift
@@ -1747,28 +1759,28 @@ int main (int argc, char **argv)
       printf ("Starting shifts...");
       fflush (stdout);
       for (i = 0; i < n; i++) 
-	rc |= checkShifts (sizes[i]);
+        rc |= checkShifts (sizes[i]);
       printf (" finished.\n");
 
       // setAll
       printf ("Starting setAlls...");
       fflush (stdout);
       for (i = 0; i < n; i++)
-	rc |= checkSetAlls (sizes[i]);
+        rc |= checkSetAlls (sizes[i]);
       printf (" finished.\n");
 
       // clearAll
       printf ("Starting clearAlls...");
       fflush (stdout);
       for (i = 0; i < n; i++)
-	rc |= checkClearAlls (sizes[i]);
+        rc |= checkClearAlls (sizes[i]);
       printf (" finished.\n");
 
       // getInt
       printf ("Starting getInts...");
       fflush (stdout);
       for (i = 0; i < n; i++)
-	rc |= checkGetInts (sizes[i]);
+        rc |= checkGetInts (sizes[i]);
       printf (" finished.\n");
 
       // and
@@ -1780,9 +1792,9 @@ int main (int argc, char **argv)
       printf (" finished.\n");
 
       if (rc)
-	printf ("Errors were found.  Seed used was %d\n", seed);
+        printf ("Errors were found.  Seed used was %d\n", seed);
       else
-	printf ("All tests passed.\n");
+        printf ("All tests passed.\n");
     }
   }
   return rc;
@@ -1801,7 +1813,7 @@ struct Calculator * calculator_create (const char *pgm)
     exit (1);
   }
   printf("calc %p calc->_fd1[0] %d calc->_fd1[1] %d calc->_fd2[0] %d calc->_fd2[1] %d\n",
-	 calc,  calc->_fd1[0], calc->_fd1[1], calc->_fd2[0], calc->_fd2[1]);
+         calc,  calc->_fd1[0], calc->_fd1[1], calc->_fd2[0], calc->_fd2[1]);
   {
     pid_t pid;
     if ((pid = fork ()) < 0) {
@@ -1816,12 +1828,12 @@ struct Calculator * calculator_create (const char *pgm)
       close (calc->_fd1[1]);
       close (calc->_fd2[0]);
       if (calc->_fd1[0] != 0)
-	dup2 (calc->_fd1[0], 0);
+        dup2 (calc->_fd1[0], 0);
       if (calc->_fd2[1] != 2)
-	dup2 (calc->_fd2[1], 1);
+        dup2 (calc->_fd2[1], 1);
       if (execl (pgm, calc->_pgm, NULL) < 0) {
-	printf ("Exec error\n");
-	exit (1);
+        printf ("Exec error\n");
+        exit (1);
       }
     }
   }
@@ -1863,7 +1875,7 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
   char bstr[256];
 
 /*   printf("%s:%d - a %s - b %s - c %s - op %s - ext %d\n", __FILE__, __LINE__,  */
-/* 	 rnumber_cstr(a), rnumber_cstr(b), rnumber_cstr(c), op, ext); */
+/*       rnumber_cstr(a), rnumber_cstr(b), rnumber_cstr(c), op, ext); */
   assert (rnumber_size(a) <= 1024 && rnumber_size(b) <= 1024);
   // dc requires uppercase hex; right now RNumbers print hex in lower case
   strcpy (astr, rnumber_cstr_radix(a,16,0));
@@ -1877,13 +1889,13 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
     printf ("%s:%d Result size error (1)  occurred in expression:  %s(%d) %s(%d) (%d) %s\n",
             __FILE__, __LINE__, astr, rnumber_size(a), bstr, rnumber_size(b), rnumber_size(c), op);
     printf ("%s:%d ext %d op[0] %c a size %d b size %d c size %d\n", __FILE__, __LINE__,
-	    rnumber_size(a), rnumber_size(b), rnumber_size(c));
+            rnumber_size(a), rnumber_size(b), rnumber_size(c));
   }
   return calculator_private_arith_calc(calc,astr,rnumber_size(a),bstr,rnumber_size(b),c,op,ext);
 }
 
 unsigned calculator_check_arith_unsigned (struct Calculator * calc, const struct RNumber * a, unsigned b, 
-					  const struct RNumber * c, char * op, int ext)
+                                          const struct RNumber * c, char * op, int ext)
 {
   char astr[256];
   char bstr[256];
@@ -1912,16 +1924,16 @@ unsigned calculator_check_arith_unsigned (struct Calculator * calc, const struct
 // c:     Expected result.
 // op:    Operator to use in calculation.
 unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsigned asize,
-					const char *bstr,unsigned bsize,
-					const struct RNumber * c,const char *op,
-					int ext)
+                                        const char *bstr,unsigned bsize,
+                                        const struct RNumber * c,const char *op,
+                                        int ext)
 {
   unsigned rc = 0;
 
   char cmd[1024];
   char buf[1024];
 /*   printf("%s:%d - astr %s - bstr %s c %s - op %c - ext %d\n", __FILE__, __LINE__,   */
-/*  	 astr, bstr,  rnumber_cstr(c), *op, ext);   */
+/*       astr, bstr,  rnumber_cstr(c), *op, ext);   */
   sprintf (cmd, "%s %s %c p c\n", astr, bstr, op[0]);
   /*  printf("%s:%d - cmd %s\n", __FILE__, __LINE__, cmd);*/
   {
@@ -1935,8 +1947,8 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
     do {
       int len = read (calc->_fd2[0], buf + n, 1024);
       if (len < 0) {
-	printf ("Read error\n");
-	exit (1);
+        printf ("Read error\n");
+        exit (1);
       }
       n += len;
     } while (n == 0 || buf[n-1] != '\n');
@@ -1950,24 +1962,24 @@ unsigned calculator_private_arith_calc (Calculator * calc,const char *astr,unsig
     if (!ext) {
       // Fixed size case.
       if (buf[0] == '-') {
-	res = rnumber_create_from_string_of_size_of_radix( buf + 1, rnumber_size(c), 16 );
-	rnumber_negate(res);
+        res = rnumber_create_from_string_of_size_of_radix( buf + 1, rnumber_size(c), 16 );
+        rnumber_negate(res);
       } else {
-	res = rnumber_create_from_string_of_size_of_radix( buf, rnumber_size(c), 16 );
+        res = rnumber_create_from_string_of_size_of_radix( buf, rnumber_size(c), 16 );
       }
     } else {
       // Dynamically sized case.
       if (buf[0] == '-') {
-	res = rnumber_create_from_string_of_radix_variable_sizing( buf + 1, 16);
-	rnumber_negate(res);
+        res = rnumber_create_from_string_of_radix_variable_sizing( buf + 1, 16);
+        rnumber_negate(res);
       } else {
-	res = rnumber_create_from_string_of_radix_variable_sizing( buf, 16);
+        res = rnumber_create_from_string_of_radix_variable_sizing( buf, 16);
       }
     }
 
     if (rnumber_rn_notequal_rn(res, c)) {
       printf ("%s:%d Error (3) occurred in expression:  %s(%d) %s(%d) %s\n", 
-	      __FILE__, __LINE__, astr, asize, bstr, bsize, op);
+              __FILE__, __LINE__, astr, asize, bstr, bsize, op);
       printf ("  RNumber res = %s, dc res = %s\n", rnumber_cstr(c), rnumber_cstr(res));
       rc = 1;
       exit(1);
@@ -2071,7 +2083,7 @@ unsigned calculator_check_comparator (Calculator * calc, const struct RNumber * 
 }
 
 unsigned calculator_check_comparator_unsigned (Calculator * calc, const struct RNumber * a, 
-					       unsigned b, int res, char *op)
+                                               unsigned b, int res, char *op)
 {
   char astr[256];
   char bstr[256];
@@ -2142,7 +2154,7 @@ unsigned calculator_check_comparator_unsigned (Calculator * calc, const struct R
 
   if (! rc) {
     printf ("%s:%d Error (5) occurred in expression:  %s(%d) %s %s\n", 
-	    __FILE__, __LINE__, astr, rnumber_cstr(a) , bstr, op);
+            __FILE__, __LINE__, astr, rnumber_cstr(a) , bstr, op);
     printf ("  RNumber res = %d, subtract output = %s", res, buf);
     rc = 1;
   }
