@@ -424,7 +424,7 @@ RNumber::RNumber( const RNumber& number, unsigned int size, Sizing sizing )
 //
 RNumber::RNumber( const string& number, Sizing sizing )
 {
-  int radix = rios;
+  Format radix = rios;
   
   unsigned size = getSizeWithRadix (number, radix);
 
@@ -442,7 +442,7 @@ RNumber::RNumber( const string& number, Sizing sizing )
 //
 RNumber::RNumber( const string& number, unsigned int size, Sizing sizing )
 {
-  int radix = rios;
+   Format radix = rios;
 
   // If a non-zero positive size is provided allocate space for it. Otherwise,
   // get the size and radix from the string contents and allocate space.
@@ -455,13 +455,11 @@ RNumber::RNumber( const string& number, unsigned int size, Sizing sizing )
 //
 // Create a new RNumber with the specified string value using the specified radix.
 //
-RNumber::RNumber( const string& number, Format radix, Sizing sizing )
-{
-  initNumber( getSizeWithRadix( number, (int)radix ), sizing );
+RNumber::RNumber (const string & number, Format radix, Sizing sizing) {
+   initNumber (getSizeWithRadix (number, radix), sizing);
 
   // Read in the number based on the determined radix.
-  readstr(*this,number,radix);
-  
+  readstr (*this,number,radix);
 }
 
 
@@ -473,7 +471,7 @@ RNumber::RNumber( const string& number, Format radix, Sizing sizing )
 //
 RNumber::RNumber( const string& number, unsigned int size, Format radix, Sizing sizing )
 {
-  int r = radix;
+   Format r = radix;
   // If a non-zero positive size is provided allocate space for it. Otherwise,
   // get the size and radix from the string contents and allocate space.
   initNumber( ( size ) ? size : getSizeWithRadix( number, r ), sizing );
@@ -565,7 +563,7 @@ RNumber& RNumber::operator=( unsigned int number )
 RNumber& RNumber::operator=( const string& number )
 {
 
-  int radix = rios;
+   Format radix = rios;
 
   initNumber( getSizeWithRadix( number, radix ), _sizing );
 
@@ -4272,8 +4270,7 @@ inline int count_underscores(const string &s) {
 // The passed in radix will be updated to the determined correct value.
 // If the string is empty, the default RNumber size is used.
 //
-unsigned int RNumber::getSizeWithRadix( const string& str, int &radix )
-{
+unsigned int RNumber::getSizeWithRadix (const string& str, Format radix) {
 
   unsigned int n = 0;
   unsigned int size;
@@ -4285,7 +4282,7 @@ unsigned int RNumber::getSizeWithRadix( const string& str, int &radix )
 
   // if no explicit radix requested, try to determine the
   // radix by prefix hints.
-  if ( radix & rios ) {
+  if (radix & rios) {
     if ( c == '+' || c == '-' )
       radix = rdec;
     else if ( c == '0' ) {
