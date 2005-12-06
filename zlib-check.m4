@@ -18,6 +18,11 @@ ac_zlib_lib=$ac_zlib_prefix/lib
 AC_MSG_CHECKING([will look in $ac_zlib_include for zlib header file
          will look in $ac_zlib_lib for zlib library (libz.so, libz.a) ])
 
+AC_PATH_PROG(W_DOT_WHICH, w.which)
+AC_MSG_RESULT([W_DOT_WHICH $W_DOT_WHICH])
+
+if test "x$W_DOT_WHICH" != x; then
+
 # look first in /usr/include, if zlib.h is not found there
 # look in /usr/local/include. When looking for the library,
 # you have to only look where the header was first found
@@ -62,6 +67,7 @@ AC_MSG_CHECKING(looking for zlib)
 AC_TRY_RUN([
 
 #include <stdio.h>
+#include <string.h>
 #include <strings.h>
 #include "zlib.h"
 

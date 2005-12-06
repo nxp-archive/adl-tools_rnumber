@@ -9,16 +9,17 @@
 ** ===========================================================================
 */
 
-#include "C-RNumber.h"
 #include "RNumber.h"
+#include "C-RNumber.h"
 #include "trace.h"
 
 using namespace rnumber;
-using namespace std;
 
 extern "C" {
-RNumber * rnumber_create() 
-{
+using namespace std;
+using namespace rnumber;
+
+RNumber * rnumber_create () {
   return new RNumber();
 }
 

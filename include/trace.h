@@ -19,48 +19,48 @@
 
 #ifdef __cplusplus
 #ifdef VERBOSE
-#define TRACE_LINE (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << __FUNCTION__ << "()" << endl;
-#define TRACE_MSG(x) (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << __FUNCTION__ << "() " << x << endl;
+#define TRACE_LINE (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << __FUNCTION__ << "()" << std::endl;
+#define TRACE_MSG(x) (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << __FUNCTION__ << "() " << x << std::endl;
 #define TRACE_START(x) (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << __FUNCTION__ << "() " << x << flush;
 #define TRACE_CONT(x) (*trace_stream) << x << flush;
-#define TRACE_END(x) (*trace_stream) << x << endl;
-#define GTRACE_LINE if ( !tracing_blocked ) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << __FUNCTION__ << "()" << endl; }
+#define TRACE_END(x) (*trace_stream) << x << std::endl;
+#define GTRACE_LINE if ( !tracing_blocked ) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << __FUNCTION__ << "()" << std::endl; }
 #define GTRACE_MSG(x) if ( !tracing_blocked) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V0(x) if ( trace_level_set( 0 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V1(x) if ( trace_level_set ( 1 ) ) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V2(x) if ( trace_level_set ( 2 ) ) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V3(x) if ( trace_level_set ( 4) ) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V4(x) if ( trace_level_set ( 8 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V5(x) if ( trace_level_set ( 0x10 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V6(x) if ( trace_level_set ( 0x20 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V7(x) if ( trace_level_set ( 0x40 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V8(x) if ( trace_level_set ( 0x80 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V9(x) if ( trace_level_set ( 0x100 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V10(x) if ( trace_level_set (0x200 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V11(x) if ( trace_level_set (0x400 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V12(x) if ( trace_level_SET (0x800 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V13(x) if ( trace_level_set (0x1000)) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V14(x) if ( trace_level_set ( 0x2000 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V15(x) if ( trace_level_set ( 0x4000 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #define V16(x)  if ( trace_level_set ( 0x8000 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #else
 //#warning "Tracing is off."
 #define TRACE_LINE
@@ -87,7 +87,7 @@
 #define V14(x)
 #define V15(x)
 #define V16(x)  if ( trace_level_set ( 0x8000 )) { (*trace_stream) << __FILE__ << ":" << std::dec << __LINE__ << ":" << \
-                      __FUNCTION__ << "() " << x << endl;}
+                      __FUNCTION__ << "() " << x << std::endl;}
 #endif
 #endif
  

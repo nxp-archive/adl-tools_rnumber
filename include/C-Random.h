@@ -46,12 +46,12 @@ int random_get_cur_gen();
 int random_get_num_gen();
 
 // Get a value from the current generator.
-struct RNumber * random_get_rnumber( int size );
+struct RNNS RNumber * random_get_rnumber( int size );
 unsigned  random_get_integer();
 unsigned  random_get_integer_n( unsigned n );
 double    random_get_double();
 
-struct RNumber *  random_get_from_range_rnumber( struct RNumber * minimum, struct RNumber * maximum );
+struct RNNS RNumber *  random_get_from_range_rnumber( struct RNNS RNumber * minimum, struct RNNS RNumber * maximum );
 unsigned   random_get_from_range_unsigned( unsigned minimum, unsigned maximum );
 
 // Load/save the state of the random number generator.

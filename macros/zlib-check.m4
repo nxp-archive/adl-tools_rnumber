@@ -63,7 +63,7 @@ AC_TRY_RUN([
 
 #include <stdio.h>
 #include <zlib.h>
-
+#include <string.h>
 int
 main ()
 {

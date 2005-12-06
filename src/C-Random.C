@@ -14,11 +14,11 @@
 #include "Random.h"
 
 using namespace std;
+using namespace rnumber;
 
 // By default, we set the seed based upon the time.
-void random_create()
-{
-  Random();
+void random_create () {
+   Random();
 }
 
 void random_set_gate_all ( int state_in )
