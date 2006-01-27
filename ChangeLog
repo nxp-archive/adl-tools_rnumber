@@ -1,3 +1,10 @@
+2006-01-27  Todd Dukes  <tdukes@freescale.com>
+
+	* Random.C getInteger (unsigned n) and getUint64 (uint 64)
+         - when n == 0 these functions returned  from [0:-1] instead
+           of 0. These functions have been changed so that calling with
+	   value of 0 will return 0.
+
         ========== rnumber release 1.25.1 (v1_25_1) on SunOS (sc0048) ==========
 
         ========== rnumber release 1.25.1 (v1_25_1) on SunOS (sc0048) ==========
