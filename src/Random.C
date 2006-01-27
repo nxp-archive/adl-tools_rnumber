@@ -107,14 +107,14 @@ unsigned RandomObj::getInteger( unsigned n )
 {
   if ( _gated ) 
     throw runtime_error ( "RandomObj::getInteger( unsigned n ) - Random number was generated while generator was gated." );
-  return (!n) ? getInteger() : _rand.genrand() % n;
+  return (n == 0) ? 0 : _rand.genrand() % n;
 }
 
 uint64 RandomObj::getUint64( uint64 n )
 {
   if ( _gated ) 
     throw runtime_error ( "RandomObj::getUint64( uint64 n ) - Random number was generated while generator was gated." );
-  return (!n) ? getUint64() : getUint64() % n;
+  return (n == 0) ? 0 : getUint64() % n;
 }
 
 // Get a double between 0 and 1
