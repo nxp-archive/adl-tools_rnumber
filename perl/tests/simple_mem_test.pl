@@ -1,12 +1,10 @@
-: # -*- perl -*-
-eval 'exec perl -w -S $0 ${1+"$@"}'
-    if 0;
+#!/usr/bin/env perl
 
 
 use strict;
-#use lib '/local1/work/lib/rnumber';
-#use lib '/cad/tools/rnumber/1.11.2/lib/rnumber';
-use lib '../src';
+use FindBin;
+use lib "../src";
+use lib "$FindBin::RealBin/../src";
 use rnumber;
 
 #with memory management this stays right at 48M.

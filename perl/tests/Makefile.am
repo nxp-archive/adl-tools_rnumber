@@ -9,7 +9,9 @@ TESTS = float-test.pl \
 	check-rnumber-example.pl 
 
 
-EXTRA_DIST = $(webdata_DATA)
+EXTRA_DIST = $(webdata_DATA) rnumber-example.output
+
+CLEANFILES = output
 
 webdata_DATA = $(TESTS)
 

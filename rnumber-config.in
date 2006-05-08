@@ -18,6 +18,7 @@ CFLAGS="@PROFILE@ -I@includedir@ "
 LIBDIRS="-L${pkglibdir}"
 HELPER_PATH="${pkgdatadir}"
 
+rnumber_ltlibs="${pkglibdir}/libRNumber.la"
 rnumber_libs="$LIBDIRS -lRNumber "
 rnumber_bl_libs="-lbl-rnumber_s "
 rnumber_bl_lib_path="-L ${pkglibdir} "
@@ -33,22 +34,23 @@ usage()
 Usage: rnumber-config [OPTION]... [LIBRARY]...
 
 Generic options
-  --version	output library version information
-  --help	display this help and exit
-  --prefix display installation root directory
+  --version         output library version information
+  --help            display this help and exit
+  --prefix          display installation root directory
 
 Compilation support options
-  --cflags	print pre-processor and compiler flags
-  --depend give list of libraries that target could depend on.
-  --helper-path print path to installed scripts and binaries
-                that support RNUMBER.
-  --libs	print library linking information
-  --libs-only-L	only print the -L/-R part of --libs
-  --libs-only-l only print the -l part of --libs
-  --perl-libs   print library path for perl. Cannot be combined with any other flags.
-  --static-libs print path to .a file.
-  --bl-libs-only-l library for bigloo.
-  --bl-libs-only-L library path for bigloo.
+  --cflags          print pre-processor and compiler flags
+  --depend          give list of libraries that target could depend on.
+  --helper-path     print path to installed scripts and binaries
+                    that support RNUMBER.
+  --libs            print library linking information
+  --ltlibs          print Libtool library information
+  --libs-only-L     only print the -L/-R part of --libs
+  --libs-only-l     only print the -l part of --libs
+  --perl-libs       print library path for perl. Cannot be combined with any other flags.
+  --static-libs     print path to .a file.
+  --bl-libs-only-l  library for bigloo.
+  --bl-libs-only-L  library path for bigloo.
 EOF
 
     exit $1
@@ -67,6 +69,7 @@ libs_l=false
 perl_libs=false
 helper_path=false
 static_libs=false
+ltlibs=false
 
 any=no
 
@@ -91,6 +94,9 @@ while test $# -gt 0; do
     --helper-path)
         helper_path=true
         ;;
+	--ltlibs)
+	    ltlibs=true
+		;;
     --static-libs)
         libs_L=true
         static_libs=true
@@ -146,6 +152,10 @@ fi
 
 if $depend; then
     all_flags=$STATIC_LIBS_DEPEND
+fi
+
+if $ltlibs; then
+	all_flags="$all_flags $rnumber_ltlibs"
 fi
 
 if $libs_L || $libs_l; then

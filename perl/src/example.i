@@ -2,6 +2,8 @@
 %module example
 %{
   /* put headers and other declarations here    */
+  extern double My_variable;
+
   %}
 
 extern double My_variable;

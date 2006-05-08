@@ -4,7 +4,7 @@ pkglib_LIBRARIES = libbl-rnumber_s-@BIGLOO_REVISION@.a libbl-rnumber_u-@BIGLOO_R
 SUBDIRS = rnumber
 
 EXTRA_DIST = $(bigloo_DATA)
-CLEANFILES = bl-rnumber.heap 
+CLEANFILES = bl-rnumber.heap brnumber_s.c
 BUILT_SOURCES = bl-rnumber.heap
 
 bigloodir = $(pkglibdir)
@@ -19,7 +19,7 @@ noinst_HEADERS = \
 INCLUDES = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
 
 RNUMBER_STATIC_LIBS = \
-	$(top_srcdir)/src/libRNumber.a
+	$(top_builddir)/src/.libs/libRNumber.a
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
@@ -52,12 +52,12 @@ libbl-rnumber_u-$(BIGLOO_REVISION).so: libbl-rnumber_u-$(BIGLOO_REVISION).a bl-r
 	ld -G -o $@ bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
 # the -addheap option is anylogous to the -o option of compiling.
-bl-rnumber.heap: rnumber.scm make-lib.scm
-	bigloo $(BIGLOO_HEAP_OPTIONS) make-lib.scm -addheap bl-rnumber.heap
+bl-rnumber.heap: $(srcdir)/make-lib.scm $(srcdir)/rnumber.scm
+	bigloo $(BIGLOO_HEAP_OPTIONS) $< -addheap $@
 
-brnumber_u.o: rnumber.scm 
-	bigloo $(BIGLOO_O_OPTIONS_OPT)  rnumber.scm -o brnumber_u.o
+brnumber_u.o: $(srcdir)/rnumber.scm 
+	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@
 
-brnumber_s.o: rnumber.scm 
-	bigloo $(BIGLOO_O_OPTIONS_DEBUG) rnumber.scm -o brnumber_s.o 
+brnumber_s.o: $(srcdir)/rnumber.scm 
+	bigloo $(BIGLOO_O_OPTIONS_DEBUG) $< -o $@ 
 

@@ -1,6 +1,6 @@
-pkglib_LIBRARIES = libRNumber.a
+pkglib_LTLIBRARIES = libRNumber.la
 
-libRNumber_a_SOURCES = \
+libRNumber_la_SOURCES = \
 	Trace.C \
 	IntIO.C \
 	KissRand.C \

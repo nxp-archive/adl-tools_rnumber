@@ -1,7 +1,7 @@
 dnl See whether c++ lib has std exceptions
 dnl this sets EXCEPTION_FILE to "local_exceptions.h" or <exceptions>
 dnl GCC_STD_EXCEPTIONS
-AC_DEFUN(AM_DECL_STD_EXCEPTIONS,
+AC_DEFUN([AM_DECL_STD_EXCEPTIONS],
 [dnl
  AC_TRY_COMPILE(
  [

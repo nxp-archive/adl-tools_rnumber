@@ -2,7 +2,7 @@ dnl check for zlib.
 dnl TJD_PATH_ZLIB ( path, action-if-found, action-if-not-found )
 dnl if no path is given this macro looks in /usr/lib then /usr/local/lib
 dnl this sets ZLIB_CFLAGS, and ZLIB_LIBS
-AC_DEFUN(TJD_PATH_ZLIB,
+AC_DEFUN([TJD_PATH_ZLIB],
 [dnl
 if test x$1 = x; then
   ac_zlib_std="yes"

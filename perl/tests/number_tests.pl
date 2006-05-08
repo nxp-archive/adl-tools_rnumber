@@ -1,8 +1,8 @@
-: # -*- perl -*-
-eval 'exec perl -w -S $0 ${1+"$@"}'
-    if 0;
+#!/usr/bin/env perl
 
-use lib '../src/';
+use FindBin;
+use lib "../src";
+use lib "$FindBin::RealBin/../src";
 use rnumber;
 
 sub rnumber_cstr {

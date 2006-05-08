@@ -1,31 +1,35 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(src/RNumber.C)
 
-RNUMBER_MAJOR_VERSION=1
-RNUMBER_MINOR_VERSION=25
-RNUMBER_MICRO_VERSION=2
-RNUMBER_INTERFACE_AGE=0
-RNUMBER_BINARY_AGE=0
-RNUMBER_VERSION=$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION
+m4_define([rnumber_major_version],[1])
+m4_define([rnumber_minor_version],[26])
+m4_define([rnumber_micro_version],[0])
+m4_define([rnumber_interface_age],[0])
+m4_define([rnumber_binary_age],[0])
+AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
+AM_INIT_AUTOMAKE
+AM_MAINTAINER_MODE
+
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_INSTALL
+AC_LANG_CPLUSPLUS
+AM_CPP_SETUP(3,4)
+
+## Setup to use libtool.
+AC_PROG_LIBTOOL
+
+RNUMBER_MAJOR_VERSION=rnumber_major_version
+RNUMBER_MINOR_VERSION=rnumber_minor_version
+RNUMBER_MICRO_VERSION=rnumber_micro_version
+RNUMBER_INTERFACE_AGE=rnumber_interface_age
+RNUMBER_BINARY_AGE=rnumber_binary_age
 
 AC_SUBST(RNUMBER_MAJOR_VERSION)
 AC_SUBST(RNUMBER_MINOR_VERSION)
 AC_SUBST(RNUMBER_MICRO_VERSION)
 AC_SUBST(RNUMBER_INTERFACE_AGE)
 AC_SUBST(RNUMBER_BINARY_AGE)
-AC_SUBST(RNUMBER_VERSION)
-
-VERSION=$RNUMBER_VERSION
-PACKAGE=rnumber
-
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
-AM_CONFIG_HEADER(config.h)
-AM_MAINTAINER_MODE
-AC_PROG_RANLIB
-AC_PROG_CC
-AC_PROG_CPP
-AC_PROG_CXX
-AM_CPP_SETUP
 
 #########################################################################
 #  Configure arguments 
@@ -66,68 +70,63 @@ if test "x$PERLPROG" = x ; then
 fi
 
 dnl find bigloo
+BIGLOO=
+BIGLOOBINDINGS=yes
 AC_ARG_ENABLE(bigloo-bindings,
-[  --disable-bigloo-bindings    Enable the building of Bigloo bindings.],
- BIGLOOBINDINGS=0,
- BIGLOOBINDINGS=1
+	AC_HELP_STRING([--enable-bigloo-bindings],[Enable the building of Bigloo bindings.  Default is true.]),
+	BIGLOOBINDINGS=$enableval,
 )
-if test "x$BIGLOOBINDINGS" != x ; then
-   dnl <find bigloo>
-   AC_PATH_PROG(BIGLOOPROG,bigloo)
-   if test "x$BIGLOOPROG" = x ; then
-      AC_ERROR("Could not find bigloo. Check your path to make sure it is present. Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/")
-   fi
+if test "x$BIGLOOBINDINGS" != xno ; then
+	dnl <find bigloo>
+	AC_PATH_PROG(BIGLOOPROG,bigloo)
+	if test "x$BIGLOOPROG" = x ; then
+		AC_MSG_RESULT([no.  Could not find bigloo. Check your path to make sure it is present. Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/.])
+	else
+	   	BIGLOO=bigloo
+		AC_MSG_CHECKING([that Bigloo is new enough])
+	   	BIGLOO_REVISION=`bigloo -revision`
+	   	BIGLOO_MAJOR=`echo $BIGLOO_REVISION | \
+	   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\1/'`
+	   	BIGLOO_MINOR=`echo $BIGLOO_REVISION | \
+	   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\2/'`
+	   	BIGLOO_MICRO=`echo $BIGLOO_REVISION | \
+	   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\3/'`
+	   	if test $BIGLOO_MAJOR -ge 2 ;then 
+	   	  if test $BIGLOO_MINOR -ge 7; then
+	   	        BIGLOO_NEW_ENOUGH=yes;
+	   	  else
+	   	        BIGLOO=
+	   	        BIGLOO_NEW_ENOUGH=no;
+	   	  fi
+	   	else
+	   	        BIGLOO=;
+	   	        BIGLOO_NEW_ENOUGH=no; 
+	   	fi
+		if [[ ${BIGLOO_NEW_ENOUGH} = yes ]] ; then
+	   		AC_MSG_RESULT([yes.  Bigloo is new enough (need 2.7a or newer)])
+			AC_MSG_CHECKING([for Bigloo installation directory])
+			LIBBASE=$(bigloo -eval "(begin (display *ld-library-dir*) (quit))")
+		   	BIGLOO_LIBDIR="${LIBBASE}/bigloo/${BIGLOO_REVISION}"
+			if [[ -d ${BIGLOO_LIBDIR} ]] ; then
+				AC_MSG_RESULT([yes:  ${BIGLOO_LIBDIR}])
+			   	AC_SUBST(BIGLOO_LIBDIR)
+			   	if test $GCC_MAJOR -ge 3; then
+			   	   BIGLOO_GCC3X="-lgcc_s"
+		   		else
+			   	   BIGLOO_GCC3X=""
+			   	fi
+			   	AC_SUBST(BIGLOO_GCC3X)
+			else
+				AC_MSG_RESULT([no.  Library directory ${BIGLOO_LIBDIR} does not exist.])
+			fi
+	   	else
+			AC_MSG_RESULT([no.  Bigloo not current enough:  2.7a required, found ${BIGLOO_REVISION}])
+		fi
+	fi
+fi
 
-   BIGLOO_REVISION=`$BIGLOOPROG -revision`
-   AC_PATH_PROG(W_DOT_WHICH, w.which)
-   AC_MSG_RESULT([W_DOT_WHICH $W_DOT_WHICH])
-
-   if test "x$W_DOT_WHICH" != x; then
-      BIGLOOPROG=`w.which bigloo`
-   fi
-   AC_MSG_RESULT([BIGLOOPROG $BIGLOOPROG])
-   if test "x$BIGLOOPROG" = x ; then
-      AC_WARN("Could not find bigloo. Check your path to make sure it is present.")
-      AC_WARN("Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/.")
-      AC_WARN("Bigloo bindings will *not* be built.")
-      BIGLOO=
-   else
-           BIGLOO=bigloo
-           AC_MSG_RESULT([Bigloo Program:  $BIGLOOPROG])
-           BIGLOO_BINDIR=`dirname $BIGLOOPROG`
-           BIGLOO_REVISION=`bigloo -revision`
-           BIGLOO_MAJOR=`echo $BIGLOO_REVISION | \
-                      sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\1/'`
-           BIGLOO_MINOR=`echo $BIGLOO_REVISION | \
-                      sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\2/'`
-           BIGLOO_MICRO=`echo $BIGLOO_REVISION | \
-                      sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\3/'`
-           AC_MSG_RESULT("bigloo major $BIGLOO_MAJOR minor $BIGLOO_MINOR micro $BIGLOO_MICRO")
-           if test $BIGLOO_MAJOR -ge 2 ;then 
-             if test $BIGLOO_MINOR -ge 6; then
-                   BIGLOO_NEW_ENOUGH=yes;
-             else
-                   BIGLOO=
-                   BIGLOO_NEW_ENOUGH=no;
-             fi
-           else
-                   BIGLOO=;
-                   BIGLOO_NEW_ENOUGH=no; 
-           fi
-           AC_MSG_RESULT("bigloo new enough (need 2.6a or newer): $BIGLOO_NEW_ENOUGH")
-           BIGLOO_LIBDIR=${BIGLOO_BINDIR}/../lib/bigloo/${BIGLOO_REVISION}
-           AC_MSG_RESULT([Bigloo bin dir:  $BIGLOO_BINDIR BIGLOO_LIBDIR $BIGLOO_LIBDIR])
-           AC_SUBST(BIGLOO_LIBDIR)
-           if test $GCC_MAJOR -ge 3; then
-              BIGLOO_GCC3X="-lgcc_s"
-           else
-              BIGLOO_GCC3X=""
-           fi
-           AC_MSG_RESULT([BIGLOO_GCC3X $BIGLOO_GCC3X])
-           AC_SUBST(BIGLOO_GCC3X)
-        fi
-else
-        echo "The building of Bigloo bindings has been disabled."
+if [[ x${BIGLOO} = x ]] ; then
+	AC_MSG_WARN([The building of Bigloo bindings has been disabled.])
 fi
 
 AC_SUBST([BIGLOO])
@@ -138,20 +137,21 @@ if test x$BIGLOO = x; then
 fi
 
 dnl find swig
+PERL=
+PERLBINDINGS=yes
 AC_ARG_ENABLE(perl-bindings,
-[  --disable-perl-bindings    Enable the building of Perl bindings.],
- PERLBINDINGS=,
- PERLBINDINGS=1
+	AC_HELP_STRING([--disable-perl-bindings],[Enable the building of Perl bindings.  Default is true.]),
+	PERLBINDINGS=$enableval,
 )
-if test "x$PERLBINDINGS" != x ; then
+if test "x$PERLBINDINGS" != xno ; then
         AC_PATH_PROG(SWIGPROG,swig)
         if test "x$SWIGPROG" = x ; then
         AC_WARN("Could not find swig. Check your path to make sure it is present.")
            AC_WARN("Swig is available from http://www.swig.org/.")
         AC_WARN("Since swig is needed for the perl bindings\, the perl bindings will *not* be built.")
-           PERLBINDINGS=
+           PERL=
         else
-           PERLBINDINGS=perl
+           PERL=perl
            PERL_ARCH_INCL="-I `perl -e 'use Config;print $Config{archlib};'`/CORE"
            PERL_CC_FLAGS="-fPIC `perl -e 'use Config; print $Config{ccflags}'`"
            AC_MSG_RESULT([SWIG: $SWIGPROG])
@@ -163,8 +163,8 @@ else
 fi
 AC_SUBST(PERL_ARCH_INCL)
 AC_SUBST(PERL_CC_FLAGS)
-AC_SUBST([PERLBINDINGS])
-AM_CONDITIONAL(WITHOUT_SWIG,test x$PERLBINDINGS = x)
+AC_SUBST([PERL])
+AM_CONDITIONAL(WITHOUT_SWIG,test x$PERL = x)
 
 dnl find scribe. If scribe is not available, don't build the documentation
 AC_PATH_PROG(SCRIBEPROG,scribe)
@@ -215,6 +215,6 @@ AC_CONFIG_FILES([\
 #   doc/Makefile \
 #   doc/user/Makefile \
 
-AC_CONFIG_FILES([rnumber-config],[chmod +x rnumber-config])
+AC_CONFIG_FILES([rnumber-config],[chmod +x,-w rnumber-config])
 
 AC_OUTPUT

@@ -1,9 +1,9 @@
-: # -*- perl -*-
-eval 'exec perl -w -S $0 ${1+"$@"}'
-    if 0;
+#!/usr/bin/env perl
 
 use strict;
+use FindBin;
 use lib "../src";
+use lib "$FindBin::RealBin/../src";
 use rnumber;
 
 my $an_rnumber = 0x100;

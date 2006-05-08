@@ -1,11 +1,9 @@
-: # -*- perl -*-
-eval 'exec perl -w -S $0 ${1+"$@"}'
-    if 0;
+#!/usr/bin/env perl
 
 use strict;
-#use lib '/local1/work/lib/rnumber';
-#use lib '/cad/tools/rnumber/1.11.2/lib/rnumber';
-use lib '../src';
+use FindBin;
+use lib "../src";
+use lib "$FindBin::RealBin/../src";
 use rnumber;
 
 sub predicates {
@@ -19,9 +17,10 @@ sub predicates {
       "\n";
 }
 
-#see what happens with floats.
+# See what happens with floats.
 predicates ("integer 10 ", 10);
 predicates ("float 10.5 ", 10.5);
 predicates ("rn 10      ", rn_ctor("10"));
 
-print rn_cstr(rn_plus ( rn_ctor ("10"), 10.54),10) . "\n";
+# This should work b/c 10.00 can be cast to an integer w/o losing precision.
+print rn_cstr(rn_plus ( rn_ctor ("10"), 10.00),10) . "\n";

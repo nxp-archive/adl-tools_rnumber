@@ -1,6 +1,4 @@
-: # -*- perl -*-
-eval 'exec perl -w -S $0 ${1+"$@"}'
-    if 0;
+#!/usr/bin/env perl
 
 # you can use this code to find rnumber in client programs
 # BEGIN {
@@ -10,7 +8,9 @@ eval 'exec perl -w -S $0 ${1+"$@"}'
 # }
 # use rnumber;
 
-use lib '../src/';
+use FindBin;
+use lib "../src";
+use lib "$FindBin::RealBin/../src";
 use rnumber;
 
 print "create a\n";

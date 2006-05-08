@@ -1,12 +1,12 @@
-: # -*- perl -*-
-eval 'exec perl -w -S $0 ${1+"$@"}'
-    if 0;
+#@/usr/bin/env perl
 
 use strict;
 
 print "This is perl.\n";
 
 use lib '.';
+use FindBin;
+use lib $FindBin::RealBin;
 use pl_rnumber;
 
 print pl_rnumber::rnumber_cstr(pl_rnumber::rnumber_create_from_unsigned(10)) . "\n";

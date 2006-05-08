@@ -1,3 +1,14 @@
+2006-05-08  Brian Kahne  <bkahne@freescale.com>
+
+	* Cleaned up configure.ac and the overall build environment so
+	that it builds cleanly using the newest versions of the GNU Build
+	System and passes "make distcheck".
+
+	* RNumber now uses libtool.  You can call "rnumber-config
+	--ltlibs" to fetch the libtool link line.  The rnumber.m4 macro
+	has been modified so that it exports RNUMBER_LTLIBS, which
+	contains this information.
+
         ===== rnumber release 1.25.2 (v1_25_2) on Linux (cde-tx32-ldt217) =====
 
         ========== rnumber release 1.25.2 (v1_25_2) on SunOS (sc0048) ==========

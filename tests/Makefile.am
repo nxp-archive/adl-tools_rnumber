@@ -1,7 +1,5 @@
 check_PROGRAMS = NumberTest ReadTest RandTest ShiftTest simple_test number_test 
 
-EXTRA_DIST = $(TEST_SCRIPTS) 
-
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
 ShiftTest_SOURCES = ShiftTest.C
@@ -9,15 +7,16 @@ ReadTest_SOURCES = ReadTest.C
 number_test_SOURCES = c-io.C number_test.c
 simple_test_SOURCES = simple_test.c c-io.C
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
+noinst_HEADERS = c-io.h
 
-TEST_SCRIPTS = NumberRegress ReadRegress 
-TESTS = $(TEST_SCRIPTS) RandTest ShiftTest simple_test number_test 
+INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src -I$(top_srcdir)/tests
 
-RNUMBER_STATIC_LIBS = \
-	$(top_srcdir)/src/libRNumber.a
+TESTSCRIPTS = NumberRegress ReadRegress 
+TESTS = $(TESTSCRIPTS) RandTest ShiftTest simple_test number_test 
 
-LDADD = $(RNUMBER_STATIC_LIBS)
+EXTRA_DIST = $(TESTSCRIPTS) ReadIn.txt ReadOut.regress
+
+LDADD = $(top_builddir)/src/libRNumber.la
 
 #bigloo_tests = simple_test number_test driver
 #EXTRA_PROGRAMS = simple_test number_test driver
