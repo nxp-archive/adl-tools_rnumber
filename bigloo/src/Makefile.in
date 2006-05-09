@@ -239,7 +239,6 @@ target_alias = @target_alias@
 pkglib_LIBRARIES = libbl-rnumber_s-@BIGLOO_REVISION@.a libbl-rnumber_u-@BIGLOO_REVISION@.a
 # libbl-rnumber.so
 SUBDIRS = rnumber
-EXTRA_DIST = $(bigloo_DATA)
 CLEANFILES = bl-rnumber.heap brnumber_s.c
 BUILT_SOURCES = bl-rnumber.heap
 bigloodir = $(pkglibdir)
@@ -259,7 +258,7 @@ BIGLOO_O_OPTIONS_DEBUG = -c -v2     -mkaddlib -g4 -cg -cc gcc -fsharing -q -rm
 BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
-BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT)
+BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT) -I $(srcdir)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

@@ -3,7 +3,6 @@ pkglib_LIBRARIES = libbl-rnumber_s-@BIGLOO_REVISION@.a libbl-rnumber_u-@BIGLOO_R
 
 SUBDIRS = rnumber
 
-EXTRA_DIST = $(bigloo_DATA)
 CLEANFILES = bl-rnumber.heap brnumber_s.c
 BUILT_SOURCES = bl-rnumber.heap
 
@@ -29,7 +28,7 @@ BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
-BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT)
+BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT) -I $(srcdir)
 
 %_u.o:%.scm
 	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@
