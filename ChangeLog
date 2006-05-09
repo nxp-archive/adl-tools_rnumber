@@ -1,5 +1,7 @@
         ==== rnumber release 1.26.0 (v1_26_0) on Linux (cde-tx32-ldt189) on 5/9/2006 ====
 
+        ==== rnumber release 1.26.0 (v1_26_0) on Linux (cde-tx32-ldt189) on 5/9/2006 ====
+
 2006-05-08  Brian Kahne  <bkahne@freescale.com>
 
 	* Cleaned up configure.ac and the overall build environment so
