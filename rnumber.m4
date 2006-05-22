@@ -4,7 +4,11 @@ dnl and RNUMBER_LIB_LIB
 dnl
 AC_DEFUN([AM_PATH_RNUMBER],
 [dnl 
-   AC_PATH_PROG(RNUMBER_CONFIG, rnumber-config, no)
+   AC_ARG_WITH([rnumber],AC_HELP_STRING([--with-rnumber],[specify a path to use to find the rnumber-config program.]),ac_rnumber=$withval)
+   if [[ x$ac_rnumber = x ]] ; then
+     ac_rnumber=$PATH
+   fi
+   AC_PATH_PROG(RNUMBER_CONFIG, rnumber-config, $ac_rnumber)
    min_rnumber_version=ifelse([$1], ,0.0.1,$1)
    AC_MSG_CHECKING(for rnumber version $min_rnumber_version)
    no_rnumber="" 

@@ -15,11 +15,12 @@ pkgdatadir=${datadir}/@PACKAGE@
 transform=@program_transform_name@
 
 CFLAGS="@PROFILE@ -I@includedir@ "
-LIBDIRS="-L${pkglibdir}"
+LIBDIRS="-L${pkglibdir} -Wl,-R${pkglibdir}"
+LIBS="-lRNumber"
 HELPER_PATH="${pkgdatadir}"
 
 rnumber_ltlibs="${pkglibdir}/libRNumber.la"
-rnumber_libs="$LIBDIRS -lRNumber "
+rnumber_libs="$LIBDIRS $LIBS "
 rnumber_bl_libs="-lbl-rnumber_s "
 rnumber_bl_lib_path="-L ${pkglibdir} "
 rnumber_cflags="$CFLAGS"
@@ -158,8 +159,12 @@ if $ltlibs; then
 	all_flags="$all_flags $rnumber_ltlibs"
 fi
 
-if $libs_L || $libs_l; then
-    all_flags="$all_flags $the_libs"
+if $libs_l; then
+    all_flags="$LIBS"
+fi
+
+if $libs_L; then
+    all_flags="$all_flags $LIBDIRS"
 fi
 
 if $perl_libs; then

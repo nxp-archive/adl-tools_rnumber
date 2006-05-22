@@ -3854,7 +3854,11 @@ ostream& RNumber::printToOS( ostream& os, int format ) const
 inline void RNumber::printWithStreamRadix(ostream &os,int format) const
 {
   unsigned int fmt = os.flags() & ios::basefield;
-
+  
+  if (os.flags() & ios_base::showbase) {
+    format |= rprefix;
+  }
+  
   // We cheat here- we use octal to designate binary so that we don't
   // have to mess with xalloc.
   switch (fmt) {
@@ -3944,15 +3948,19 @@ void RNumber::printHex( ostream& os,int format ) const
   ios::fmtflags old_options = os.flags( ( os.flags() & ~ios::basefield ) |
                                         ios::hex );
 
-  // Hexadecimal format.
   unsigned int width = os.width();
 
   const unsigned int* value = _valueBuffer;
 
+  // Print a prefix if requested.
   if (format & rprefix) {
     os << "0x";
   }
 
+  // Turn off prefix printing for the interior words.
+  os << noshowbase;
+
+  // write leading word, with any necessary padding.
   if ( width > WordBits / 4 || ( width == 0 && _wordCount > 1 )) {
     unsigned int n = ( ( _size % WordBits ) + 3 ) / 4;
     char oldFill = os.fill( '0' );
@@ -3966,6 +3974,7 @@ void RNumber::printHex( ostream& os,int format ) const
     os << value[0];
   }
 
+  // Continue with any other words.
   char oldFill = os.fill( '0' );
   for ( unsigned int i = 1; i < _wordCount; i++ ) {
     os << setw( WordBits / 4 );

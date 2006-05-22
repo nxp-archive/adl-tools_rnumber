@@ -1,3 +1,13 @@
+2006-05-22  Brian Kahne  <bkahne@freescale.com>
+
+	* Fixed rnumber-config so that the --libs and --libs-only-L option
+	will print a -R line as well as a -L line.  Also, the
+	--libs-only-L option now only prints the path information (as it
+	was supposed to) and not the library, too.
+
+	* RNumber::printHex() turns off the showbase flag for printing
+	interrior words so that 0x isn't replicated internally.
+
         ==== rnumber release 1.26.0 (v1_26_0) on Linux (cde-tx32-ldt189) on 5/9/2006 ====
 
         ==== rnumber release 1.26.0 (v1_26_0) on Linux (cde-tx32-ldt189) on 5/9/2006 ====
