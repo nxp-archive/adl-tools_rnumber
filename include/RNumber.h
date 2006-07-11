@@ -54,10 +54,10 @@ namespace rnumber {
          RNumber( const RNumber& number );
          RNumber( const RNumber& number, unsigned int size, Sizing sizing = fixed );
          // Create from an integer.
-         explicit RNumber( long long number, Sizing sizing = fixed );
-         explicit RNumber( unsigned long long number, Sizing sizing = fixed );
+         explicit RNumber( rnumber_t::int64 number, Sizing sizing = fixed );
+         explicit RNumber( rnumber_t::uint64 number, Sizing sizing = fixed );
          explicit RNumber( int number, Sizing sizing = fixed );
-         RNumber( unsigned int number, Sizing sizing = fixed );
+         RNumber( unsigned  number, Sizing sizing = fixed );
         
         
          explicit RNumber( int number, unsigned int size, Sizing sizing = fixed );
@@ -72,7 +72,8 @@ namespace rnumber {
          RNumber( const std::string& number, unsigned size, Format radix, Sizing sizing = fixed );
          RNumber( const std::string& number, Format radix, Sizing sizing = fixed );
          // Create from an integer array.
-         RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size, Sizing sizing = fixed );
+         RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size, 
+                 Sizing sizing = fixed );
          ~RNumber();
 
          // Assignment methods. operator=() assigns the value constrained by sizing;
