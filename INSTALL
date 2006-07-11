@@ -1,10 +1,3 @@
-cadinstall figleaf --fullplat -cfgopts="--enable-opt --enable-webdir=/proj/ppctools/FVT/figleaf/figleaf-html-<version>"
-
-=====================================================================
-
-Default install file below
-
-
 Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001, 2002 Free Software
 Foundation, Inc.
 
@@ -233,6 +226,4 @@ operates.
 
 `configure' also accepts some other, not widely useful, options.  Run
 `configure --help' for more details.
-
-
 
