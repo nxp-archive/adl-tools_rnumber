@@ -5,6 +5,7 @@ SUBDIRS = rnumber
 
 CLEANFILES = bl-rnumber.heap brnumber_s.c
 BUILT_SOURCES = bl-rnumber.heap
+EXTRA_DIST = make-lib.scm
 
 bigloodir = $(pkglibdir)
 bigloo_DATA = bl-rnumber.init bl-rnumber.heap 

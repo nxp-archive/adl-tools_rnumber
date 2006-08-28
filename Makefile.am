@@ -1,6 +1,8 @@
 
 EXTRA_DIST = $(MACROS) $(m4data_DATA)
 
+AUTOMAKE_OPTIONS = foreign
+
 MACROS = rnumber.m4
 
 m4datadir = $(datadir)/aclocal
