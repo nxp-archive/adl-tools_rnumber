@@ -1,3 +1,10 @@
+//
+// Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+//
+// You may distribute under the terms of the Artistic License, as specified in
+// the COPYING file.
+//
+
 #ifdef trace_h
 #error dont include this file twice. (including from a header file is usually what causes this).
 #else

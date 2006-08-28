@@ -1,4 +1,11 @@
 //
+// Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+//
+// You may distribute under the terms of the Artistic License, as specified in
+// the COPYING file.
+//
+
+//
 // Helper routines for reading and writing integers
 // to or from a stream.  This is done in an endian-neutral
 // way so that it will work on different platforms.

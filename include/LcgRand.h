@@ -1,4 +1,11 @@
 //
+// Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+//
+// You may distribute under the terms of the Artistic License, as specified in
+// the COPYING file.
+//
+
+//
 // Implements a lineaer congruential pseudo-random
 // number generator.  This is a simple generator of the
 // form x(n+1) = x(n)*a mod m.  In this case, m is prime,

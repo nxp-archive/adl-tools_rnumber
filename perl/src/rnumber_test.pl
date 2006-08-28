@@ -1,4 +1,10 @@
 #@/usr/bin/env perl
+#
+# Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+#
+# You may distribute under the terms of the Artistic License, as specified in
+# the COPYING file.
+#
 
 use strict;
 

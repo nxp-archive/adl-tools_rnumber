@@ -1,3 +1,10 @@
+#
+# Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+#
+# You may distribute under the terms of the Artistic License, as specified in
+# the COPYING file.
+#
+
 dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[1])

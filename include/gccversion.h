@@ -1,4 +1,11 @@
 //
+// Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+//
+// You may distribute under the terms of the Artistic License, as specified in
+// the COPYING file.
+//
+
+//
 // Simple header file for creating a GCC Version 
 // macro define.
 //

@@ -1,3 +1,10 @@
+//
+// Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+//
+// You may distribute under the terms of the Artistic License, as specified in
+// the COPYING file.
+//
+
 /* from swig manual version 1.1, page 13 */
 %module example
 %{

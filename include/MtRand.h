@@ -1,4 +1,11 @@
 //
+// Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
+//
+// You may distribute under the terms of the Artistic License, as specified in
+// the COPYING file.
+//
+
+//
 // This is a class which implements the Mersenne Twister 
 // random number generator.  This is a really powerful
 // linear pseudo-random number generator with a period of 2^19937-1.
