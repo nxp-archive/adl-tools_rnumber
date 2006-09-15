@@ -23,13 +23,16 @@ RNUMBER_STATIC_LIBS = \
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
-BIGLOO_O_OPTIONS_OPT   = -c -v2 -O3 -mkaddlib -cc gcc -fsharing -q -unsafe -unsafev -c
-BIGLOO_O_OPTIONS_DEBUG = -c -v2     -mkaddlib -g4 -cg -cc gcc -fsharing -q -rm
+BGL_CC = -cc gcc
+BIGLOO_O_OPTIONS_OPT   = -c -O3 -mkaddlib         $(BGL_CC) -fsharing -q -unsafe -unsafev
+BIGLOO_O_OPTIONS_DEBUG = -c     -mkaddlib -g4 -cg $(BGL_CC) -fsharing -q
 BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT) -I $(srcdir)
+
+CFLAGS += -DBIGLOO_SYSPUTC_LEVEL=@BIGLOO_SYSPUTC@
 
 %_u.o:%.scm
 	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@
@@ -37,18 +40,18 @@ BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT) -I $(srcd
 all: libbl-rnumber_s-$(BIGLOO_REVISION).a  libbl-rnumber_u-$(BIGLOO_REVISION).a 
 # libbl-rnumber_s.so libbl-rnumber_u.so
 
-libbl-rnumber_s-$(BIGLOO_REVISION).a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
+libbl-rnumber_s-@BIGLOO_REVISION@.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
 	ar qvc $@ bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib $@
 
-libbl-rnumber_u-$(BIGLOO_REVISION).a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
+libbl-rnumber_u-@BIGLOO_REVISION@.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
 	ar qvc $@ bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib $@
 
-libbl-rnumber_s-$(BIGLOO_REVISION).so: libbl-rnumber_s-$(BIGLOO_REVISION).a bl-rnumber.o 
+libbl-rnumber_s-@BIGLOO_REVISION@.so: libbl-rnumber_s-$(BIGLOO_REVISION).a bl-rnumber.o 
 	ld -G -o $@ bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
-libbl-rnumber_u-$(BIGLOO_REVISION).so: libbl-rnumber_u-$(BIGLOO_REVISION).a bl-rnumber.o 
+libbl-rnumber_u-@BIGLOO_REVISION@.so: libbl-rnumber_u-$(BIGLOO_REVISION).a bl-rnumber.o 
 	ld -G -o $@ bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
 # the -addheap option is anylogous to the -o option of compiling.

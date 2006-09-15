@@ -1,3 +1,15 @@
+2006-09-14  Todd Dukes  <tdukes@freescale.com>
+
+	* added missing rnumber_bitnot. to C-RNumber.h
+	* added simple self checking test for bigloo bindings. Its not
+	  very good, but should catch gross errors.
+
+2006-09-14  Todd Dukes  <tdukes@freescale.com> (Manuel Serrano)
+
+	* fixed Makefile.am problem with libbl-rnumber_* targets.
+
+        ==== rnumber release 2.0.1  ====
+
 2006-08-28  Todd Dukes  <tdukes@freescale.com>
 
 	* Added make-lib.scm to distribution (Makefile.am in bigloo/src)

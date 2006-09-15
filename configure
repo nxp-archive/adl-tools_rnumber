@@ -461,7 +461,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE RFLAG EFENCE GCC_VERSION GCC_MAJOR GCC_MINOR build build_cpu build_vendor build_os host host_cpu host_vendor host_os EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL RNUMBER_MAJOR_VERSION RNUMBER_MINOR_VERSION RNUMBER_MICRO_VERSION RNUMBER_INTERFACE_AGE RNUMBER_BINARY_AGE WEB_STUFF_TRUE WEB_STUFF_FALSE WEB_HOME M4 DCPROG PERLPROG BIGLOOPROG BIGLOO_LIBDIR BIGLOO_GCC3X BIGLOO WITHOUT_BIGLOO_TRUE WITHOUT_BIGLOO_FALSE SWIGPROG PERL_ARCH_INCL PERL_CC_FLAGS PERL WITHOUT_SWIG_TRUE WITHOUT_SWIG_FALSE SCRIBEPROG DOC WITHOUT_DOC_TRUE WITHOUT_DOC_FALSE PROFILE ACLOCAL_FLAGS BIGLOO_REVISION EXPLTEMPLATES LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE RFLAG EFENCE GCC_VERSION GCC_MAJOR GCC_MINOR build build_cpu build_vendor build_os host host_cpu host_vendor host_os EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL RNUMBER_MAJOR_VERSION RNUMBER_MINOR_VERSION RNUMBER_MICRO_VERSION RNUMBER_INTERFACE_AGE RNUMBER_BINARY_AGE WEB_STUFF_TRUE WEB_STUFF_FALSE WEB_HOME M4 DCPROG PERLPROG BIGLOOPROG BIGLOO_LIBDIR BIGLOO_GCC3X BIGLOO WITHOUT_BIGLOO_TRUE WITHOUT_BIGLOO_FALSE SWIGPROG PERL_ARCH_INCL PERL_CC_FLAGS PERL WITHOUT_SWIG_TRUE WITHOUT_SWIG_FALSE SCRIBEPROG DOC WITHOUT_DOC_TRUE WITHOUT_DOC_FALSE PROFILE ACLOCAL_FLAGS BIGLOO_REVISION BIGLOO_SYSPUTC EXPLTEMPLATES LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -18959,8 +18959,25 @@ echo $ECHO_N "checking that Bigloo is new enough... $ECHO_C" >&6
 	   	BIGLOO_MICRO=`echo $BIGLOO_REVISION | \
 	   	           sed 's/\([0-9]*\).\([0-9]*\)\([a-zA-Z]*\)/\3/'`
 	   	if test $BIGLOO_MAJOR -ge 2 ;then
-	   	  if test $BIGLOO_MINOR -ge 7; then
+	   	  if test $BIGLOO_MINOR -ge 8; then
 	   	        BIGLOO_NEW_ENOUGH=yes;
+                        echo "$as_me:$LINENO: checking bigloo sysputc level" >&5
+echo $ECHO_N "checking bigloo sysputc level... $ECHO_C" >&6
+			if test $BIGLOO_MICRO = a; then
+                           echo "$as_me:$LINENO: result: 1" >&5
+echo "${ECHO_T}1" >&6
+			   BIGLOO_SYSPUTC=1;
+			else
+                           if test $BIGLOO_MICRO = b; then
+                             echo "$as_me:$LINENO: result: 1" >&5
+echo "${ECHO_T}1" >&6
+                             BIGLOO_SYSPUTC=1;
+                           else
+                             echo "$as_me:$LINENO: result: 2" >&5
+echo "${ECHO_T}2" >&6
+			     BIGLOO_SYSPUTC=2;
+			   fi
+                        fi
 	   	  else
 	   	        BIGLOO=
 	   	        BIGLOO_NEW_ENOUGH=no;
@@ -18970,8 +18987,8 @@ echo $ECHO_N "checking that Bigloo is new enough... $ECHO_C" >&6
 	   	        BIGLOO_NEW_ENOUGH=no;
 	   	fi
 		if [ ${BIGLOO_NEW_ENOUGH} = yes ] ; then
-	   		echo "$as_me:$LINENO: result: yes.  Bigloo is new enough (need 2.7a or newer)" >&5
-echo "${ECHO_T}yes.  Bigloo is new enough (need 2.7a or newer)" >&6
+	   		echo "$as_me:$LINENO: result: yes.  Bigloo is new enough (need 2.8a or newer)" >&5
+echo "${ECHO_T}yes.  Bigloo is new enough (need 2.8a or newer)" >&6
 			echo "$as_me:$LINENO: checking for Bigloo installation directory" >&5
 echo $ECHO_N "checking for Bigloo installation directory... $ECHO_C" >&6
 			LIBBASE=$(bigloo -eval "(begin (display *ld-library-dir*) (quit))")
@@ -18991,8 +19008,8 @@ echo "${ECHO_T}yes:  ${BIGLOO_LIBDIR}" >&6
 echo "${ECHO_T}no.  Library directory ${BIGLOO_LIBDIR} does not exist." >&6
 			fi
 	   	else
-			echo "$as_me:$LINENO: result: no.  Bigloo not current enough:  2.7a required, found ${BIGLOO_REVISION}" >&5
-echo "${ECHO_T}no.  Bigloo not current enough:  2.7a required, found ${BIGLOO_REVISION}" >&6
+			echo "$as_me:$LINENO: result: no.  Bigloo not current enough:  2.8a required, found ${BIGLOO_REVISION}" >&5
+echo "${ECHO_T}no.  Bigloo not current enough:  2.8a required, found ${BIGLOO_REVISION}" >&6
 		fi
 	fi
 fi
@@ -19175,6 +19192,7 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 CXXFLAGS="-Wall -g $CPPSETUP"
+
 
 
 
@@ -20245,6 +20263,7 @@ s,@WITHOUT_DOC_FALSE@,$WITHOUT_DOC_FALSE,;t t
 s,@PROFILE@,$PROFILE,;t t
 s,@ACLOCAL_FLAGS@,$ACLOCAL_FLAGS,;t t
 s,@BIGLOO_REVISION@,$BIGLOO_REVISION,;t t
+s,@BIGLOO_SYSPUTC@,$BIGLOO_SYSPUTC,;t t
 s,@EXPLTEMPLATES@,$EXPLTEMPLATES,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t

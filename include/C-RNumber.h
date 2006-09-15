@@ -195,6 +195,7 @@ void rnumber_write_to_os( struct RNNS RNumber * rnumber, void * os );
  struct RNNS RNumber * rnumber_rn_bitxor_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_bitxor_ui( const struct RNNS RNumber * n1, unsigned int n2 );
  struct RNNS RNumber * rnumber_ui_bitxor_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_bitnot( const struct RNNS RNumber * n1 );
  struct RNNS RNumber * rnumber_rn_leftshift_rn( const struct RNNS RNumber * n, const struct RNNS RNumber * shift );
  struct RNNS RNumber * rnumber_rn_leftshift_ui( const struct RNNS RNumber * n, unsigned int shift );
  struct RNNS RNumber * rnumber_ui_leftshift_rn( unsigned int n, const struct RNNS RNumber * shift );

@@ -51,9 +51,11 @@ BIGLOOPROG = @BIGLOOPROG@
 BIGLOO_GCC3X = @BIGLOO_GCC3X@
 BIGLOO_LIBDIR = @BIGLOO_LIBDIR@
 BIGLOO_REVISION = @BIGLOO_REVISION@
+BIGLOO_SYSPUTC = @BIGLOO_SYSPUTC@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
-CFLAGS = @CFLAGS@
+
+CFLAGS = @CFLAGS@ -DBIGLOO_SYSPUTC_LEVEL=@BIGLOO_SYSPUTC@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
@@ -194,8 +196,9 @@ RNUMBER_STATIC_LIBS = \
 
 LDADD = $(RNUMBER_STATIC_LIBS)
 
-BIGLOO_O_OPTIONS_OPT = -c -v2 -O3 -mkaddlib -cc gcc -fsharing -q -unsafe -unsafev -c
-BIGLOO_O_OPTIONS_DEBUG = -c -v2     -mkaddlib -g4 -cg -cc gcc -fsharing -q -rm
+BGL_CC = -cc gcc
+BIGLOO_O_OPTIONS_OPT = -c -O3 -mkaddlib         $(BGL_CC) -fsharing -q -unsafe -unsafev
+BIGLOO_O_OPTIONS_DEBUG = -c     -mkaddlib -g4 -cg $(BGL_CC) -fsharing -q
 BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
@@ -292,14 +295,6 @@ uninstall-pkglibLIBRARIES:
 
 clean-pkglibLIBRARIES:
 	-test -z "$(pkglib_LIBRARIES)" || rm -f $(pkglib_LIBRARIES)
-libbl-rnumber_s-@BIGLOO_REVISION@.a: $(libbl_rnumber_s_@BIGLOO_REVISION@_a_OBJECTS) $(libbl_rnumber_s_@BIGLOO_REVISION@_a_DEPENDENCIES) 
-	-rm -f libbl-rnumber_s-@BIGLOO_REVISION@.a
-	$(libbl_rnumber_s_@BIGLOO_REVISION@_a_AR) libbl-rnumber_s-@BIGLOO_REVISION@.a $(libbl_rnumber_s_@BIGLOO_REVISION@_a_OBJECTS) $(libbl_rnumber_s_@BIGLOO_REVISION@_a_LIBADD)
-	$(RANLIB) libbl-rnumber_s-@BIGLOO_REVISION@.a
-libbl-rnumber_u-@BIGLOO_REVISION@.a: $(libbl_rnumber_u_@BIGLOO_REVISION@_a_OBJECTS) $(libbl_rnumber_u_@BIGLOO_REVISION@_a_DEPENDENCIES) 
-	-rm -f libbl-rnumber_u-@BIGLOO_REVISION@.a
-	$(libbl_rnumber_u_@BIGLOO_REVISION@_a_AR) libbl-rnumber_u-@BIGLOO_REVISION@.a $(libbl_rnumber_u_@BIGLOO_REVISION@_a_OBJECTS) $(libbl_rnumber_u_@BIGLOO_REVISION@_a_LIBADD)
-	$(RANLIB) libbl-rnumber_u-@BIGLOO_REVISION@.a
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -647,18 +642,18 @@ uninstall-info: uninstall-info-recursive
 all: libbl-rnumber_s-$(BIGLOO_REVISION).a  libbl-rnumber_u-$(BIGLOO_REVISION).a 
 # libbl-rnumber_s.so libbl-rnumber_u.so
 
-libbl-rnumber_s-$(BIGLOO_REVISION).a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
+libbl-rnumber_s-@BIGLOO_REVISION@.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_s.o 
 	ar qvc $@ bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib $@
 
-libbl-rnumber_u-$(BIGLOO_REVISION).a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
+libbl-rnumber_u-@BIGLOO_REVISION@.a: bl-rnumber.heap rnumber_proxy.o bl-rnumber.o brnumber_u.o 
 	ar qvc $@ bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 	ranlib $@
 
-libbl-rnumber_s-$(BIGLOO_REVISION).so: libbl-rnumber_s-$(BIGLOO_REVISION).a bl-rnumber.o 
+libbl-rnumber_s-@BIGLOO_REVISION@.so: libbl-rnumber_s-$(BIGLOO_REVISION).a bl-rnumber.o 
 	ld -G -o $@ bl-rnumber.o brnumber_s.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
-libbl-rnumber_u-$(BIGLOO_REVISION).so: libbl-rnumber_u-$(BIGLOO_REVISION).a bl-rnumber.o 
+libbl-rnumber_u-@BIGLOO_REVISION@.so: libbl-rnumber_u-$(BIGLOO_REVISION).a bl-rnumber.o 
 	ld -G -o $@ bl-rnumber.o brnumber_u.o rnumber_proxy.o $(RNUMBER_STATIC_LIBS)
 
 # the -addheap option is anylogous to the -o option of compiling.

@@ -9,7 +9,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[0])
-m4_define([rnumber_micro_version],[1])
+m4_define([rnumber_micro_version],[2])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
@@ -99,8 +99,21 @@ if test "x$BIGLOOBINDINGS" != xno ; then
 	   	BIGLOO_MICRO=`echo $BIGLOO_REVISION | \
 	   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\3/'`
 	   	if test $BIGLOO_MAJOR -ge 2 ;then 
-	   	  if test $BIGLOO_MINOR -ge 7; then
+	   	  if test $BIGLOO_MINOR -ge 8; then
 	   	        BIGLOO_NEW_ENOUGH=yes;
+                        AC_MSG_CHECKING([bigloo sysputc level])
+			if test $BIGLOO_MICRO = a; then
+                           AC_MSG_RESULT([1])
+			   BIGLOO_SYSPUTC=1; 
+			else
+                           if test $BIGLOO_MICRO = b; then
+                             AC_MSG_RESULT([1])
+                             BIGLOO_SYSPUTC=1; 
+                           else
+                             AC_MSG_RESULT([2])
+			     BIGLOO_SYSPUTC=2;
+			   fi
+                        fi
 	   	  else
 	   	        BIGLOO=
 	   	        BIGLOO_NEW_ENOUGH=no;
@@ -110,7 +123,7 @@ if test "x$BIGLOOBINDINGS" != xno ; then
 	   	        BIGLOO_NEW_ENOUGH=no; 
 	   	fi
 		if [[ ${BIGLOO_NEW_ENOUGH} = yes ]] ; then
-	   		AC_MSG_RESULT([yes.  Bigloo is new enough (need 2.7a or newer)])
+	   		AC_MSG_RESULT([yes.  Bigloo is new enough (need 2.8a or newer)])
 			AC_MSG_CHECKING([for Bigloo installation directory])
 			LIBBASE=$(bigloo -eval "(begin (display *ld-library-dir*) (quit))")
 		   	BIGLOO_LIBDIR="${LIBBASE}/bigloo/${BIGLOO_REVISION}"
@@ -127,7 +140,7 @@ if test "x$BIGLOOBINDINGS" != xno ; then
 				AC_MSG_RESULT([no.  Library directory ${BIGLOO_LIBDIR} does not exist.])
 			fi
 	   	else
-			AC_MSG_RESULT([no.  Bigloo not current enough:  2.7a required, found ${BIGLOO_REVISION}])
+			AC_MSG_RESULT([no.  Bigloo not current enough:  2.8a required, found ${BIGLOO_REVISION}])
 		fi
 	fi
 fi
@@ -198,6 +211,7 @@ AC_SUBST(PROFILE)
 AC_SUBST(ACLOCAL_FLAGS)
 AC_SUBST(CXXFLAGS)
 AC_SUBST(BIGLOO_REVISION)
+AC_SUBST(BIGLOO_SYSPUTC)
 AC_SUBST(EXPLTEMPLATES)
 AC_PROG_INSTALL
 AC_STDC_HEADERS

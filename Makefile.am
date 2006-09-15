@@ -21,10 +21,3 @@ bin_SCRIPTS = rnumber-config
 # final Makefile.
 ACLOCAL_AMFLAGS = -I ./macros
 
-# Tags
-TAGS_EXE	= btags
-TAGS		= .etags
-SOURCE_FILES    = $(shell list-sourcefiles.scm)
-
-$(TAGS) : $(SOURCE_FILES)
-	./make-tagfile

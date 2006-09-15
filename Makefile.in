@@ -51,6 +51,7 @@ BIGLOOPROG = @BIGLOOPROG@
 BIGLOO_GCC3X = @BIGLOO_GCC3X@
 BIGLOO_LIBDIR = @BIGLOO_LIBDIR@
 BIGLOO_REVISION = @BIGLOO_REVISION@
+BIGLOO_SYSPUTC = @BIGLOO_SYSPUTC@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -188,11 +189,6 @@ bin_SCRIPTS = rnumber-config
 # captures the state of the variable and substitutes it into the
 # final Makefile.
 ACLOCAL_AMFLAGS = -I ./macros
-
-# Tags
-TAGS_EXE = btags
-TAGS = .etags
-SOURCE_FILES = $(shell list-sourcefiles.scm)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -626,9 +622,6 @@ uninstall-info: uninstall-info-recursive
 	uninstall-info-recursive uninstall-m4dataDATA \
 	uninstall-recursive
 
-
-$(TAGS) : $(SOURCE_FILES)
-	./make-tagfile
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

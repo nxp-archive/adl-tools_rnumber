@@ -14,6 +14,16 @@
 #include "rnumber/rnumber_proxy.h"
 #include "bl-rnumber.h"
 
+#if BIGLOO_SYSPUTC_LEVEL == 1
+#  define BGL_SYSPUTC( c, port ) port->output_port_t.sysputc (c, port->output_port_t.ostream)
+#else
+#  if BIGLOO_SYSPUTC_LEVEL == 2
+#     define BGL_SYSPUTC( c, port ) port->output_port_t.sysputc (c, port)
+#  else
+#     error Currently only support BIGLOO_SYSPUT_LEVEL or 1 or 2 (please see output from configure)
+#  endif
+#endif
+
 extern int GC_finalize_on_demand;
 int rnumber_proxy_is_equal (obj_t lhs, obj_t rhs);
 
@@ -24,6 +34,7 @@ void set_GC_call_finalizers_to_zero () {
 // (char *)GC_malloc_atomic(sizeof(char) * BgL_limitz00_102 + 1); 
 
 static char * rnumber_to_string( RNumber_proxy_t array, char *c, int len ) {
+  //  printf("rnumber_to_string\n");
   //  char * rnumber_to_string_storage = (char *)(GC_malloc_atomic(sizeof(
   char * src = bl_rnumber_cstr_radix(array, 16, 1);
   if (strlen(src) < len) {
@@ -34,18 +45,13 @@ static char * rnumber_to_string( RNumber_proxy_t array, char *c, int len ) {
   return "<rnumber>";
 }
 
-/* static RNumber_proxy_t rnumber_output (RNumber_proxy_t array, obj_t * port) { */
-/*   char * str = bl_rnumber_cstr_radix (array, 16, 1); */
-/*   fprintf (port->output_port_t, "%s", str); */
-/*   free (str); */
-/*   return array; */
-/* } */
-
 static RNumber_proxy_t rnumber_output( RNumber_proxy_t array, obj_t port) {
     char * str = bl_rnumber_cstr_radix(array, 16, 1);
     char * cursor = str;
     while (*cursor) {
-      port->output_port_t.sysputc (*cursor, port->output_port_t.ostream);
+      // port->output_port_t.sysputc (*cursor, port->output_port_t.ostream);
+      //  define BGL_SYSPUTC( c, port ) port->output_port_t.sysputc (c, port->output_port_t.ostream)
+      BGL_SYSPUTC(*cursor,port);
       cursor++;
     }
     free (str);
@@ -68,7 +74,7 @@ RNumber_proxy_t proxy_from_rnumber( struct RNumber * rnumber)
 
     array->custom.to_string  = rnumber_to_string;
     array->custom.output     = (hol_t (*)())rnumber_output;
-    array->custom.final      = (void (*)(hol_t))rnumber_finalize;
+    array->custom.final      = (void (*)(hol_t))rnumber_finalize; // I need help with this.
     array->custom.identifier = RNUMBER_IDENTIFIER;
     array->custom.equal      = (int (*)(hol_t, hol_t))rnumber_proxy_is_equal;
     array->a_t.rnumber = rnumber;
