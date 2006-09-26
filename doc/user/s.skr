@@ -1,2 +1,8 @@
-(define *project-version* "2.0.3")
-(define *project-example-ftp-site* "./web-home/examples")
+
+(define *project-url* "http://www.somerset.sps.mot.com/projects/tools/tlv/rnumber")
+(define *user-dir* "http://www.somerset.sps.mot.com/projects/tools/tlv/rnumber/user")
+(define *project-name* "rnumber")
+(define *user-title* "rnumber")
+(define *project-version* "1.23.3")
+(define *project-example-ftp-site* "http://www.somerset.sps.mot.com/projects/tools/tlv/rnumber/examples")
+	

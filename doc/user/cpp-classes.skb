@@ -1,4 +1,4 @@
- (chapter :title "C++ classes"
+(chapter :title "C++ classes"
   (p [The RNumber library was implemented in C++, but there are language bindings available for
 using RNumber with other languages. This section describes each of the C++ classes the rnumber
 library makes available.])
