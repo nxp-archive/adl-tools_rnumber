@@ -1,20 +1,15 @@
-
-EXTRA_DIST = index.scr \
-	$(webdata_DATA)
-
 SUBDIRS = user
 
 webdatadir = $(WEB_HOME)
 webdata_DATA = index.html
 
+EXTRA_DIST = index.skb $(webdata_DATA)
+
 CLEANFILES = $(webdata_DATA)
-#EXTRA_DIST = $(TESTS) 
 
-#INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
+%.html : %.skb
+	$(SKRIBE) $^ -o $@
 
-%.html : %.scr
-	scribe $^ -o $@
-
-index.html: index.scr
+index.html: index.skb
 
 documentation:

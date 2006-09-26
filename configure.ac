@@ -9,7 +9,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[0])
-m4_define([rnumber_micro_version],[2])
+m4_define([rnumber_micro_version],[3])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
@@ -31,7 +31,9 @@ RNUMBER_MINOR_VERSION=rnumber_minor_version
 RNUMBER_MICRO_VERSION=rnumber_micro_version
 RNUMBER_INTERFACE_AGE=rnumber_interface_age
 RNUMBER_BINARY_AGE=rnumber_binary_age
+RNUMBER_VERSION="$RNUMBER_MAJOR_VERSION.$RNUMBER_MINOR_VERSION.$RNUMBER_MICRO_VERSION"
 
+AC_SUBST(RNUMBER_VERSION)
 AC_SUBST(RNUMBER_MAJOR_VERSION)
 AC_SUBST(RNUMBER_MINOR_VERSION)
 AC_SUBST(RNUMBER_MICRO_VERSION)
@@ -187,16 +189,57 @@ AC_SUBST([PERL])
 AM_CONDITIONAL(WITHOUT_SWIG,test x$PERL = x)
 
 dnl find scribe. If scribe is not available, don't build the documentation
-AC_PATH_PROG(SCRIBEPROG,scribe)
-if test "x$SCRIBEPROG" = x ; then
-   AC_WARN("Could not find scribe. Check your path to make sure it is present.")
-   AC_WARN("Scribe is available from http://www-sop.inria.fr/mimosa/Manuel.Serrano/scribe/")
-   AC_WARN("Since scribe is needed for the documentation\, the documentation will *not* be built.")
+AC_PATH_PROG(SKRIBEPROG,skribe)
+if test "x$SKRIBEPROG" = x ; then
+   AC_WARN("Could not find skribe. Check your path to make sure it is present.")
+   AC_WARN("Scribe is available from http://www-sop.inria.fr/mimosa/Manuel.Serrano/skribe/")
+   AC_WARN("Since skribe is required to build the documentation\, the documentation will *not* be built.")
    DOC=
 else
-   DOC=doc
-   AC_MSG_RESULT("SCRIBE $SCRIBEPROG")
+    SKRIBE=skribe
+    AC_MSG_CHECKING([that skribe is new enough])
+    SKRIBE_REVISION=`skribe --version`
+    AC_MSG_RESULT([revision $SKRIBE_REVISION])
+    SKRIBE_MAJOR=`echo $SKRIBE_REVISION | \
+		       sed 's/skribe v\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\1/'`
+    SKRIBE_MINOR=`echo $SKRIBE_REVISION | \
+		       sed 's/skribe v\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\2/'`
+    SKRIBE_MICRO=`echo $SKRIBE_REVISION | \
+		       sed 's/skribe v\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\3/'`
+    AC_MSG_RESULT([skribe $SKRIBE_MAJOR $SKRIBE_MINOR $SKRIBE_MICRO])
+    if test $SKRIBE_MAJOR -ge 1 ;then 
+       if test $SKRIBE_MINOR -ge 2; then
+          if test $SKRIBE_MICRO = a -o $SKRIBE_MICRO = b -o $SKRIBE_MICRO = c -o $SKRIBE_MICRO = d; then
+             SKRIBE_NEW_ENOUGH=no;
+             DOC=;
+          else
+	     AC_MSG_RESULT([skribe micro $SKRIBE_MICRO])
+             SKRIBE_NEW_ENOUGH=yes;
+             DOC=doc;
+	  fi
+       else
+          SKRIBE=
+          SKRIBE_NEW_ENOUGH=no;
+       fi
+    else
+       SKRIBE=;
+       SKRIBE_NEW_ENOUGH=no; 
+    fi
+    if [[ ${SKRIBE_NEW_ENOUGH} = yes ]] ; then
+       AC_MSG_RESULT([yes.  Skribe is new enough (need 1.2e or newer)])
+    else
+       AC_MSG_RESULT([no.  Skribe not current enough:  1.2e or new required, found ${SKRIBE_REVISION} Documentation will not be built.])
+    fi
+   AC_MSG_RESULT("SKRIBE $SKRIBEPROG")
 fi
+
+if test x$WEB_HOME = x; then
+   AC_MSG_RESULT([WEB_HOME $WEB_HOME])
+   AC_MSG_RESULT([Documentation will not be installed. (use --enable-web-home=<prefix> to install documentation)])
+else
+    AC_MSG_RESULT([Documentation will be installed in $WEB_HOME])
+fi
+
 AC_SUBST([DOC])
 AM_CONDITIONAL(WITHOUT_DOC,test x$DOC = x)
 
@@ -207,12 +250,13 @@ AC_LANG_CPLUSPLUS
 
 CXXFLAGS="-Wall -g $CPPSETUP"
 
-AC_SUBST(PROFILE)
 AC_SUBST(ACLOCAL_FLAGS)
-AC_SUBST(CXXFLAGS)
 AC_SUBST(BIGLOO_REVISION)
 AC_SUBST(BIGLOO_SYSPUTC)
+AC_SUBST(CXXFLAGS)
 AC_SUBST(EXPLTEMPLATES)
+AC_SUBST(PROFILE)
+AC_SUBST(SKRIBE)
 AC_PROG_INSTALL
 AC_STDC_HEADERS
 
@@ -228,13 +272,13 @@ AC_CONFIG_FILES([\
    bigloo/src/rnumber/Makefile \
    bigloo/src/bl-rnumber.init \
    bigloo/tests/Makefile \
+   doc/Makefile \
+   doc/user/Makefile \
    perl/Makefile \
    perl/src/Makefile \
    perl/tests/Makefile \
    tests/Makefile])
 
-#   doc/Makefile \
-#   doc/user/Makefile \
 
 AC_CONFIG_FILES([rnumber-config],[chmod +x,-w rnumber-config])
 

@@ -8,10 +8,7 @@ MACROS = rnumber.m4
 m4datadir = $(datadir)/aclocal
 m4data_DATA = $(MACROS)
 
-SUBDIRS = macros include src tests $(PERL) $(BIGLOO) 
-
-# Add in this directory to SUBDIRS when scribe works correctly.
-##$(DOC)
+SUBDIRS = macros include src tests $(PERL) $(BIGLOO) doc
 
 bin_SCRIPTS = rnumber-config
 

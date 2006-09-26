@@ -6,7 +6,12 @@ none of the random number generation functions are exported.])
       (p [There is only one rnumber variable, ,(code
 [*rnumber-version*]). This is the version of the library.]))
 
-   (section :title "Functions"
+   (section :title "Memory Management"
+      (p [If Bigloo was built with finalization enabled, Bigloo will
+destroy rnumbers that were created by calling the bigloo rnumber
+construction function ,(code [(rnumber-ctor ,(emph [arg]))]).]))
+
+(section :title "Functions"
       (table
 	 (tr :bg "#cccccc" (th :align 'center :colspan 3 "Exported Functions"))
 	 (tr :bg "#cccccc" (th "Function")(th "Description"))
@@ -161,8 +166,5 @@ of the RNumber. ,(code [rn]) must be an RNumber.]))
 	 (tr (tdl (code [rn-word-count ,(emph [rn])]))
 	    (tdl [Returns an integer representation of the number of
 words of memory with RNumber uses to store its number. ,(code [rn])
-must be an RNumber.]))))
+must be an RNumber.])))))
 
-   (section :title "Memory Management"
-      (p [Bigloo will destroy rnumbers created by calling the bigloo
-rnumber construction function ,(code [(rnumber-ctor ,(emph [arg]))]).])))

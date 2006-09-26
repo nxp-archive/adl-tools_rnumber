@@ -44,10 +44,11 @@
  (p [The rnumber library provides two different areas of functionality. There are large integers,
 referred to as rnumber's, and there are the random sequences.])
 
-   (include "cpp-classes.skb")
-   (include "c-functions.skb")   
+;   (include "cpp-classes.skb")
+;   (include "c-functions.skb")   
    (include "bigloo-bindings.skb")
-   (include "perl-bindings.skb")
+;   (include "perl-bindings.skb")
+
 
 (chapter :title "Bibliography"
    :number #f 
