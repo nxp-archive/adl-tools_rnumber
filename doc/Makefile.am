@@ -12,4 +12,3 @@ CLEANFILES = $(webdata_DATA)
 
 index.html: index.skb
 
-documentation:
