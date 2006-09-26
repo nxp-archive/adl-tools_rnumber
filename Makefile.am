@@ -17,4 +17,3 @@ bin_SCRIPTS = rnumber-config
 # captures the state of the variable and substitutes it into the
 # final Makefile.
 ACLOCAL_AMFLAGS = -I ./macros
-
