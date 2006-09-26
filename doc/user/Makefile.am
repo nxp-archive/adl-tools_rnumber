@@ -10,6 +10,7 @@ userwebdata_DATA = user.html \
 		user-7.html
 
 USER_SOURCE = user.skb bib.scr user-margin.scr bigloo-bindings.skb  c-functions.skb  cpp-classes.skb  perl-bindings.skb \
+	ctors.h \
 	arithmetic.h	       field-accessors.h  non-member-cond.h  rnumber-c.h		 types.h \
 	assign.h	       friends.h	  non-member.h	     rnumber-c-non-allocating.h  unary-cond.h \
 	attribute-accessors.h  kissrand.h	  random.h	     signed-cond.h		 unary.h \
