@@ -1,0 +1,133 @@
+ (chapter :title "C++ classes"
+  (p [The RNumber library was implemented in C++, but there are language bindings available for
+using RNumber with other languages. This section describes each of the C++ classes the rnumber
+library makes available.])
+
+  (section :title "RNumber"
+   
+   (p [This number class provides arithmetic and boolean expression support for numeric data of
+arbitrary sizes.  The programmer is no longer constrained by the size of a platform's registers.
+The number's sizing may be fixed or dynamic thus making it suitable for mimicking computer
+architecture components (such as registers) or for general purpose arithmetic. This particular
+implementation has limited support for signed numbers.])
+
+     (subsection :title "types"
+	(color :bg *prgm-color* (prog (source :language C :line 1 :file "enum.h"))))
+
+     (subsection
+	:title "Constructors and destructor."
+	(p [All numbers are fixed size by default.])
+	(color :bg *prgm-color* (prog (source :language C :line 1 :file "ctors.h"))))
+    
+     (subsection :title "Assignment methods."
+	(p [operator=() assigns the value constrained by sizing.
+assign() assigns the value with dynamic sizing,(scolon) clone()
+assigns all attributes,(scolon) resize() truncates/expands the value
+and sets fixed sizing. ])
+	(color :bg *prgm-color* (prog (source :language C :file "assign.h"))))
+
+     (subsection :title "Unary arithmetic operators."
+	(color :bg *prgm-color* (prog (source :language C :file "unary.h"))))
+
+     (subsection :title "Arithmetic assignment operators"
+	(p [Assignment size depends on sizing state.])
+	(color :bg *prgm-color* (prog (source :language C :file "arithmetic.h"))))
+
+     (subsection :title "Unary conditional expression operators."
+	(color :bg *prgm-color* (prog (source :language C :file "unary-cond.h"))))
+
+     (subsection :title "Signed conditional expression operators."
+	(color :bg *prgm-color* (prog (source :language C :file "signed-cond.h"))))
+
+     (subsection :title "Miscellaneous bit manipulation methods"
+	(color :bg *prgm-color* (prog (source :language C :file "misc-bit.h"))))
+
+     (subsection :title "Bit value accessors and manipulators"
+	(color :bg *prgm-color* (prog (source :language C :file "bit-value.h"))))
+
+     (subsection :title "Value accessors."
+	(color :bg *prgm-color* (prog (source :language C :file "value-accessors.h"))))
+
+     (subsection :title "Value field accessors and manipulators"
+	(color :bg *prgm-color* (prog (source :language C :file "field-accessors.h"))))
+
+     (subsection :title "Attribute accessors and manipulators"
+	(color :bg *prgm-color* (prog (source :language C :file "attribute-accessors.h"))))
+
+     (subsection :title "Sizing"
+	(color :bg *prgm-color* (prog (source :language C :file "sizing.h"))))
+  
+     (subsection :title "Streaming I/O methods"
+	(color :bg *prgm-color* (prog (source :language C :file "streaming-io.h"))))
+
+     (subsection :title "Friends"
+	(p [The Hash and Equal functors can be used to hashmap from
+the stl class libraries.])
+	(color :bg *prgm-color* (prog (source :language C :file "friends.h"))))
+
+     (subsection :title "Non-member functions"
+	(p [These functions are not member functions. They allow for
+mixed arithmetic expressions between RNumbers and unsigned
+integers. Notice that there are three versions of each function.])
+	(color :bg *prgm-color* (prog (source :language C :file "non-member.h")))
+
+	(p [These functions are not member functions. They allow for
+mixed conditional expressions between RNumbers and unsigned
+integers.])
+	(color :bg *prgm-color* (prog (source :language C :file "non-member-cond.h")))))
+     
+    (section :title "Types"
+       (p [Here are miscellaneous types that are defined in ,(code
+[types.h])])
+       (color :bg *prgm-color* (prog (source :language C :file "types.h"))))
+     
+    (section  :title "Random"
+ 
+       (p [The Random class provides random number generation for
+Raptor. It contains a completely static interface, so the actual class
+need never be instantiated.])
+
+       (subsection :title "Random"
+	  (p [This class is never instantiated- it's purely static.
+It contains multiple RandomObj generators which may be swapped in and
+out -- the current generator is then used by the various get
+functions.])
+
+	  (color :bg *prgm-color* (prog (source :language C :file "random.h"))))
+
+       (subsection :title "RandomObj"
+	  (p [Each of these items represents a random number
+generator.  The class is self contained, but they all share the same
+seed.])
+      (color :bg *prgm-color* (prog (source :language C :file "random-obj.h"))))
+
+   (subsection :title "RandomSTL"
+      (p [Functor for use with STL generic algorithms.])
+      (color :bg *prgm-color* (prog  (source :language C :file "random-stl.h")))))
+
+    (section :title "LcgRand"
+       (p [Implements a lineaer congruential pseudo-random number
+generator.  This is a simple generator of the form x(n+1) = x(n)*a mod
+m.  In this case, m is prime, so the result is a group with the above
+as its function.  The function visits all elements in the group before
+repeating, i.e. it orbits the entire group.  Since it's a group, it
+has an inverse, which is essentially The function itself is simply
+x(n-1) = x(n)*b mod m, where b is computed as b = a^(m-2) mod m,
+(i.e. go through the entire orbit but 1).  The end result is that this
+function is reversible, requires one 32-bit integer to represent
+state, and has a period of 2^32-1.  Note that if a larger period is
+desired, it's possible to simply create another lcg and combine the
+two results using addition -- this creates a fairly good distribution
+with about double the period.])
+   (color :bg *prgm-color* (prog (source :language C "lcgrand.h"))))
+ 
+    (section :title "KissRand"
+       (p [Implements the KISS random number generator.  This is a
+simple, but quite good, random number generator with a period of
+2^127.  The function is not reversible (that I know of).  It requires
+six words to store state (actually, just 5, but I include a count for
+debugging purposes). ])
+   (p [KissState is a memento object for storing state of the random
+number generator.])
+
+       (color :bg *prgm-color* (prog (source :language C :file "kissrand.h")))))
