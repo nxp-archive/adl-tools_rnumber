@@ -41,8 +41,43 @@
  (linebreak 1)
  (p [This is preliminary user documentation for RNumber.])
  (p [This document desribes version ] *project-version* [ of RNumber.])
- (p [The rnumber library provides two different areas of functionality. There are large integers,
-referred to as rnumber's, and there are the random sequences.])
+ (p [The rnumber library provides two different areas of
+functionality. There are large integers, referred to as rnumber's, and
+there are the random sequences.])
+
+   (chapter :title [Introduction]
+      (section :title [Large Integers]
+
+	 (p [RNumber was initially developed to provide support for large integers in C++ for
+developing an application to generate random stimulus for microprocessor validation (Raptor). This
+application domain has some unique requirements that were not present in number libraries available
+at the time. These main requirement not available was to be able to control whether the number would
+expand the number of bits that represent it on overflow or to wrap around to zero on overflow.])
+
+	 (p [Each RNumber created has a member of type ,(code [Sizing]) which controls whether
+extending or wrapping will occur.])
+	 (table
+	    (tr (th (bold [Sizing])) (th (bold [Behavior])))
+	    (tr (tdl (code [fixed]))  (tdl [Overflows wrap]))
+	    (tr (tdl (code [dynamic]) (tdl [Overflows extend size of rnumber]))))
+	 
+	 (p [Since signed integers were not required for the original application they are not
+supported. In other ways RNumber are as convenient as built in types for C++])
+      
+	 (p [Some time after the original use of RNumber in Raptor, bindings were created to use
+them with Bigloo for an application to analyze Raptor output (figleaf). In order to deal with the
+name mangling and overloaded operators, a C interface was created. To my knowledge, the C interface
+has never been used directly. Only the portions of the RNumber interface necessary to write figleaf
+were written.  However, this is most of the useful portions and the rest could be fairly easily
+added.])
+
+	 (p [Shortly after using RNumber with bigloo, a request was made to provide perl bindings as
+well. The C interface was used to create a simple swig interface.]))
+      
+      (section :title [Random Sequences]
+	 
+	 ))
+   
 
    (include "cpp-classes.skb")
    (include "c-functions.skb")   
