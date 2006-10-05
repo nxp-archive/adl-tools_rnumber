@@ -142,16 +142,16 @@ little-endian notation (ie. bit 0 is least significant)]))
 value of ,(code [value]). ,(code [rn]) must be an RNumber, ,(code
 [bit]) and ,(code [value]) must be integers. ,(code [bit]) indexes
 into the RNumber with bit-endian notation (ie. bit 0 is most
-significant. This function returns ,(code [#t]) if there are no
-errors.])))
+significant). This function returns ,(code [#t]) if there are no
+errors.]))
 
 	 (tr (tdl (code [rn-set-bit-lsb! ,(emph [rn bit value])]))
 	    (tdl [Sets the bit in the rnumber at ,(code [bit]) to the
 value of ,(code [value]). ,(code [rn]) must be an RNumber, ,(code
 [bit]) and ,(code [value]) must be integers. ,(code [bit]) indexes
 into the RNumber with little-endian notation (ie. bit 0 is least
-significant. This function returns ,(code [#t]) if there are no
-errors.])))
+significant). This function returns ,(code [#t]) if there are no
+errors.]))
 
 	 (tr (tdl (code [rn-resize! ,(emph [rn new-size])]))
 	    (tdl [Resizes the number to be ,(code [new-size])
