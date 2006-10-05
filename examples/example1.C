@@ -43,6 +43,9 @@ int main () {
    // same output as b.
    V0 (" c " << c << hex << " " << c << " " << showbase << c);
 
+   // you can print base 2 indirectly
+   V0 (" a " << a << " " << a.str (RNumber::rprefix | RNumber::rbin) << " " << hex << a);
+   
    // d is a wide number
    V0 (" d " << hex << d);
 
@@ -79,15 +82,15 @@ int main () {
    d.setAll ();
    e.setAll ();
 
-   V0 (" d (" << hex << d << ", " << d.size() << ", " << d.sizing ());
-   V0 (" e (" << hex << e << ", " << e.size() << ", " << e.sizing ());
+   V0 (" d (" << hex << d << ", " << dec << d.size() << ", " << d.sizing ());
+   V0 (" e (" << hex << e << ", " << dec << e.size() << ", " << e.sizing ());
 
    bool extend = true;
    d.assign (add (d, 1, extend));
    e.assign (add (e, 1, extend));
 
-   V0 (" d (" << hex << d << ", " << d.size() << ", " << d.sizing ());
-   V0 (" e (" << hex << e << ", " << e.size() << ", " << e.sizing ());
+   V0 (" d (" << hex << d << ", " << dec << d.size() << ", " << d.sizing ());
+   V0 (" e (" << hex << e << ", " << dec << e.size() << ", " << e.sizing ());
 
    // assign assigns state, but will not shrink numbers.
    d.assign (RNumber (0, 128));
@@ -106,14 +109,14 @@ int main () {
    d.setAll ();
    e.setAll ();
 
-   V0 (" d (" << hex << d << ", " << d.size() << ", " << d.sizing ());
-   V0 (" e (" << hex << e << ", " << e.size() << ", " << e.sizing ());
+   V0 (" d (" << hex << d << ", " << dec << d.size() << ", " << d.sizing ());
+   V0 (" e (" << hex << e << ", " << dec << e.size() << ", " << e.sizing ());
 
    // the add function can be used with the extend parameter to have 'growing' numbers
    // Notice that since 'd' is not dynamically sized, it will wrap. 
    d = add (d, 1, extend);
    e = add (e, 1, extend);
 
-   V0 (" d (" << hex << d << ", " << d.size() << ", " << d.sizing ());
-   V0 (" e (" << hex << e << ", " << e.size() << ", " << e.sizing ());
+   V0 (" d (" << hex << d << ", " << dec << d.size() << ", " << d.sizing ());
+   V0 (" e (" << hex << e << ", " << dec << e.size() << ", " << e.sizing ());
 }
