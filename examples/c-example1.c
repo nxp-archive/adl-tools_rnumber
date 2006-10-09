@@ -150,6 +150,7 @@ int main () {
 
    printf ("%s:%d d (%s, %d %d\n", __FILE__, __LINE__, 
            rnumber_cstr_radix (d, 16, 1), rnumber_size (d), rnumber_sizing (d));
+   printf ("this number should have variable sizing set\n");
    printf ("%s:%d e (%s, %d %d\n", __FILE__, __LINE__,
            rnumber_cstr_radix (e, 16, 1), rnumber_size (e), rnumber_sizing (e));
 

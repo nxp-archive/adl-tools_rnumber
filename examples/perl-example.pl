@@ -6,6 +6,8 @@
 # the COPYING file.
 #
 
+#If perl is in your path, you should be able to just run this script.
+
 use FindBin;
 
 use lib "../perl/src"; # this needs to point to where RNumber.pm and stuff from rnumber/perl/src was
@@ -110,17 +112,32 @@ $d = RNumber::rnumber_create_from_unsigned_of_size (0, 128);
 $e = RNumber::rnumber_create_from_unsigned_of_size_variable_sizing (0, 128);
 
 $d = $d - 1;
+
+printf ("%s:%d e %s %d %d\n", __FILE__, __LINE__,
+	RNumber::rnumber_cstr_radix ($e, 16, 1), RNumber::rnumber_size ($e), 
+	RNumber::rnumber_sizing ($e));
+
+printf "the next number should have variable sizing.\n";
+printf ("%s:%d e %s %d %d\n", __FILE__, __LINE__,
+	RNumber::rnumber_cstr_radix ($e - 1, 16, 1), RNumber::rnumber_size ($e - 1), 
+	RNumber::rnumber_sizing ($e - 1));
+
 $e = $e - 1;
+
+printf "the next number should have variable sizing.\n";
+printf ("%s:%d e %s %d %d\n", __FILE__, __LINE__,
+	RNumber::rnumber_cstr_radix ($e, 16, 1), RNumber::rnumber_size ($e), 
+	RNumber::rnumber_sizing ($e));
 
 #    rnumber_set_all (d);
 #    rnumber_set_all (e);
 
-    printf ("%s:%d d %s %d %d\n", __FILE__, __LINE__,
-            RNumber::rnumber_cstr_radix ($d, 16, 1), RNumber::rnumber_size ($d),
-	    RNumber::rnumber_sizing ($d));
-    printf ("%s:%d e %s %d %d\n", __FILE__, __LINE__,
-            RNumber::rnumber_cstr_radix ($e, 16, 1), RNumber::rnumber_size ($e), 
-	    RNumber::rnumber_sizing ($e));
+printf ("%s:%d d %s %d %d\n", __FILE__, __LINE__,
+	RNumber::rnumber_cstr_radix ($d, 16, 1), RNumber::rnumber_size ($d),
+	RNumber::rnumber_sizing ($d));
+printf ("%s:%d e %s %d %d\n", __FILE__, __LINE__,
+	RNumber::rnumber_cstr_radix ($e, 16, 1), RNumber::rnumber_size ($e), 
+	RNumber::rnumber_sizing ($e));
 
 $d = RNumber::rnumber_rn_add_ext_ui ($d, 1);
 $e = RNumber::rnumber_rn_add_ext_ui ($e, 1);
