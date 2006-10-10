@@ -240,6 +240,7 @@ sub rn_minus {
   my $first_ui = numericp($_[0]);
   my $second_rn = rnumberp($_[1]);
   my $second_ui = numericp($_[1]);
+  
 
 #  print  "first_rn  '$first_rn' first_ui  '$first_ui' second_rn '$second_rn' second_ui '$second_ui'\n";
 #  print "\@_ @_\n";

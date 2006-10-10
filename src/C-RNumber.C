@@ -524,8 +524,8 @@ struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNu
  struct RNumber * rnumber_rn_minus_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber((*n1)-(*n2));
 }
- struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, unsigned int n2 ){
-  return new RNumber(*n1-n2);
+struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, unsigned int n2 ){
+   return new RNumber(*n1-n2);
 }
  struct RNumber * rnumber_ui_minus_rn( unsigned int n1, const struct RNumber * n2 ) {
   return new RNumber(n1-(*n2));

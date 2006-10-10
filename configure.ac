@@ -274,6 +274,7 @@ AC_CONFIG_FILES([\
    bigloo/tests/Makefile \
    doc/Makefile \
    doc/user/Makefile \
+   examples/Makefile \
    perl/Makefile \
    perl/src/Makefile \
    perl/tests/Makefile \

@@ -2,7 +2,8 @@
 (skribe-load "web-article.skr")
 
 (document
- :title (font :size 1. "RNumber -- Arbitrarily Sized Integers and Random Number Generation Library")
+ :title (font :size 1. 
+	   "RNumber -- Arbitrarily Sized Integers and Random Number Generation Library")
 
  (section
   :title "Contact Information"
@@ -20,8 +21,10 @@
  (section
   :title "Reporting Defects"
 
-  (p [At Freescale, defects can be reported by using ,(ref :url "http://ddts.somerset.sps.mot.com/ddts/ddts_main" :text "DDTS"). The
-    class is ,(code [CADTools]) and the project is ,(code
-    [rnumber]).] )
-  (p [If this url is not available to you please email a problem report to one of the people listed in the Contact
-	 Information section above.])))
+  (p [At Freescale, defects can be reported by using ,(ref :url
+"http://ddts.somerset.sps.mot.com/ddts/ddts_main" :text "DDTS"). The
+class is ,(code [CADTools]) and the project is ,(code [rnumber]).] )
+    
+  (p [If this url is not available to you please email a problem
+report to one of the people listed in the Contact Information section
+above.])))

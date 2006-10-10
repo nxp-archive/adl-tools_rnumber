@@ -830,7 +830,13 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
         }
     }
 
-  return RNumber( sumValue0, maxwc, maxs );
+   RNumber::Sizing local_sizing = RNumber::fixed;
+
+  if ((n1.sizing () == RNumber::dynamic) ||
+      (n2.sizing ()== RNumber::dynamic)) {
+     local_sizing = RNumber::dynamic;
+  }
+ return RNumber( sumValue0, maxwc, maxs, local_sizing);
 }
 
 
@@ -885,7 +891,7 @@ inline const RNumber rnumber::add( const RNumber& n1, unsigned int n2, bool exte
         }
     }
 
-  return RNumber( sumValue0, n1wc, maxs );
+  return RNumber( sumValue0, n1wc, maxs, n1.sizing ());
 }
 
 
@@ -1035,7 +1041,6 @@ RNumber& RNumber::operator+=( unsigned int number )
 //
 inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
 {
-
   const unsigned int n1wc = n1._wordCount;
   const unsigned int n2wc = n2._wordCount;
   const unsigned int minwc = min( n1wc, n2wc );
@@ -1083,7 +1088,14 @@ inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
         }
     }
 
-  return RNumber( diffValue0, maxwc, max( n1._size, n2._size ) );
+  RNumber::Sizing local_sizing = RNumber::fixed;
+
+  if ((n1.sizing () == RNumber::dynamic) ||
+      (n2.sizing () == RNumber::dynamic)) {
+     local_sizing = RNumber::dynamic;
+  }
+
+  return RNumber( diffValue0, maxwc, max( n1._size, n2._size ), local_sizing);
 }
 
 
@@ -1114,7 +1126,7 @@ inline const RNumber rnumber::subtract( const RNumber& n1, unsigned int n2 )
       cin = ( a | ~c ) >> ( WordBits - 1 );
     }
 
-  return RNumber( diffValue0, n1wc, max( n1._size, WordBits ) );
+  return RNumber( diffValue0, n1wc, max( n1._size, WordBits ), n1.sizing() );
 }
 
 
@@ -1146,7 +1158,7 @@ inline const RNumber rnumber::subtract( unsigned int n1, const RNumber& n2 )
       cin = ( a | ~c ) >> ( WordBits - 1 );
     }
 
-  return RNumber( diffValue0, n2wc, max( n2._size, WordBits ) );
+  return RNumber( diffValue0, n2wc, max( n2._size, WordBits ), n2.sizing () );
 }
 
 
@@ -1155,7 +1167,6 @@ inline const RNumber rnumber::subtract( unsigned int n1, const RNumber& n2 )
 //
 const RNumber rnumber::operator-( const RNumber& n1, const RNumber& n2 )
 {
-
   return subtract( n1, n2 );
 }
 
@@ -1309,7 +1320,13 @@ inline const RNumber rnumber::multiply( const RNumber& n1, const RNumber& n2, bo
       resultValue0 += ((n1wc + n2wc) - maxwc );
     }
 
-  return RNumber( resultValue0, maxwc, maxs );
+  RNumber::Sizing local_sizing = RNumber::fixed;
+
+  if ((n1.sizing () == RNumber::dynamic) ||
+      (n2.sizing () == RNumber::dynamic)) {
+     local_sizing = RNumber::dynamic;
+  }
+  return RNumber( resultValue0, maxwc, maxs, local_sizing);
 }
 
 
@@ -1352,7 +1369,7 @@ inline const RNumber rnumber::multiply( const RNumber& n1, unsigned int n2, bool
       resultValue0 += ((n1wc + 1) - wc );
     }
 
-  return RNumber( resultValue0, wc, maxs );
+  return RNumber( resultValue0, wc, maxs, n1.sizing ());
 }
 
 
@@ -1789,7 +1806,13 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
   while ( s >= r )
     *( s-- ) = 0;
 
-  return RNumber( (unsigned int*) r, maxwc, maxs );
+  RNumber::Sizing local_sizing = RNumber::fixed;
+
+  if ((n1.sizing () == RNumber::dynamic) ||
+      (n2.sizing () == RNumber::dynamic)) {
+     local_sizing = RNumber::dynamic;
+  }
+  return RNumber( (unsigned int*) r, maxwc, maxs, local_sizing);
 }
 
 
@@ -1911,7 +1934,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
   while ( s >= r )
     *( s-- ) = 0;
 
-  return RNumber( (unsigned int*) r, n1wc, maxs );
+  return RNumber( (unsigned int*) r, n1wc, maxs, n1.sizing ());
 }
 
 
@@ -2035,7 +2058,7 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
   while ( s >= r )
     *( s-- ) = 0;
 
-  return RNumber( (unsigned int*) r, n2wc, maxs );
+  return RNumber( (unsigned int*) r, n2wc, maxs, n2.sizing ());
 }
 
 

@@ -11,6 +11,7 @@
            (rn? a)
            (rnumber-ctor arg)
            (rn-ctor arg)
+	   (rn-assign! rn rn2)
            (rnumber->cstr rnumber . radix-prefix)
            (rn->string rnumber . radix-prefix)
            (rnumber-parse-string str)
@@ -38,6 +39,10 @@
            (rn-set-bit-lsb! rn bit value)
            (rn-resize! rn new-size)
            (rn-size rn)
+           (rn-sizing rn)
+	   (rn-set-all! rn)
+	   (rn-set-dynamic! rn)
+	   (rn-set-fixed! rn)
            (rn-word-count rn))
    (include "rnumber-version.h")
    (eval (export-exports))
@@ -291,6 +296,12 @@
 (define *rnumber-one-arg-error* "needs one argument that is either a rnumber on an int.")
 (define *rnumber-only-one-arg-error* "needs one argument that must be an rnumber.")
 
+(define (rn-assign! rn rn2)
+   (if (and (RNumber_proxy_t? rn)
+	    (RNumber_proxy_t? rn2))
+       (rnumber-assign rn rn2)
+       (error "rn-assign!" "'rn' or 'rn2' is not an rnumber  " (cons rn rn2))))
+
 (define (rn=? a b)
    ;(print "(rn=? " a " " b ")")
    (let ((first-rn (RNumber_proxy_t? a))
@@ -502,6 +513,26 @@
    (if (RNumber_proxy_t? rn)
        (rnumber-size rn)
        (error "rn-size" "expects rnumber" rn)))
+
+(define (rn-sizing rn)
+   (if (RNumber_proxy_t? rn)
+       (rnumber-sizing rn)
+       (error "rn-sizing" "expects rnumber" rn)))
+
+(define (rn-set-all! rn)
+   (if (RNumber_proxy_t? rn)
+       (rnumber-set-all rn)
+       (error "rn-set-all!" "expects rnumber" rn)))
+
+(define (rn-set-dynamic! rn)
+   (if (RNumber_proxy_t? rn)
+       (rnumber-set-dynamic rn)
+       (error "rn-set-dynamic!" "expects rnumber" rn)))
+
+(define (rn-set-fixed! rn)
+   (if (RNumber_proxy_t? rn)
+       (rnumber-set-fixed rn)
+       (error "rn-set-fixed!" "expects rnumber" rn)))
 
 (define (rn-word-count rn)
    (if (RNumber_proxy_t? rn)

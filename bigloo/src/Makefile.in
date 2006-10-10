@@ -54,8 +54,7 @@ BIGLOO_REVISION = @BIGLOO_REVISION@
 BIGLOO_SYSPUTC = @BIGLOO_SYSPUTC@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
-
-CFLAGS = @CFLAGS@ -DBIGLOO_SYSPUTC_LEVEL=@BIGLOO_SYSPUTC@
+CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
@@ -206,6 +205,8 @@ BIGLOO_O_OPTIONS = $(BIGLOO_O_OPTIONS_OPT)
 BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT) -I $(srcdir)
+
+AM_CFLAGS = $(CFLAGS) -DBIGLOO_SYSPUTC_LEVEL=@BIGLOO_SYSPUTC@
 subdir = bigloo/src
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = rnumber-version.h bl-rnumber.init

@@ -32,7 +32,8 @@ BIGLOO_HEAP_OPTIONS_OPT = -unsafe -q -mkaddheap -mkaddlib
 BIGLOO_HEAP_OPTIONS_DEBUG = -q -mkaddheap -mkaddlib 
 BIGLOO_HEAP_OPTIONS = -heap-library rnumber $(BIGLOO_HEAP_OPTIONS_OPT) -I $(srcdir)
 
-CFLAGS += -DBIGLOO_SYSPUTC_LEVEL=@BIGLOO_SYSPUTC@
+AM_CFLAGS = $(CFLAGS)
+AM_CFLAGS += -DBIGLOO_SYSPUTC_LEVEL=@BIGLOO_SYSPUTC@
 
 %_u.o:%.scm
 	bigloo $(BIGLOO_O_OPTIONS_OPT)  $< -o $@

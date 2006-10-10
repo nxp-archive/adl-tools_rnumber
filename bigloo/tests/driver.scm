@@ -50,7 +50,7 @@
 	  (begin (print "version " rnumber-version)
 		 (repl))
 	  (let ((args (reverse in)))
-	     (print "version " rnumber-version)
+	     ;(print "version " rnumber-version)
 	     (set! *the-command-line* args)
 	     (loadq (car args))
 	     (let ((cmd (cons (string->symbol (prefix (basename (car *the-command-line*))))

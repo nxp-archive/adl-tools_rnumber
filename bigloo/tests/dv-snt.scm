@@ -1,3 +1,4 @@
+#! ./driver
 ;
 ; Copyright (C) 2005 by Freescale Semiconductor Inc.  All rights reserved.
 ;
@@ -5,11 +6,10 @@
 ; the COPYING file.
 ;
 
-#!./driver
-
-(let ((a (rnumber-ctor 10))
-      (b (rnumber-ctor 15))
-      (c (rnumber-ctor 10)))
-  (print "rnumber-rn-equal-rn a b " (rnumber-equal a b))
-  (print "rnumber-rn-equal-rn a c " (rnumber-equal a c)))
+(define (dv-snt . args)
+   (let ((a (rn-ctor 10))
+	 (b (rn-ctor 15))
+	 (c (rn-ctor 10)))
+      (print "rn=? a b " (rn=? a b))
+      (print "rn=? a c " (rn=? a c))))
     

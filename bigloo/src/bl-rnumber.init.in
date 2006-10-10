@@ -5,7 +5,7 @@
       (string-append "-I @prefix@/include" *cflags*))
 
 (set! *ld-options*
-      (string-append "-L @prefix@/lib/@PACKAGE@ " *ld-options*))
+      (string-append " -lstdc++ " " -L @prefix@/lib/@PACKAGE@ " *ld-options*))
 
 (set! *bigloo-user-lib*
       (cons "-lRNumber" *bigloo-user-lib*))

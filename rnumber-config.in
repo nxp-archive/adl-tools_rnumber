@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# this is shamelessly stolen from gnome-config
-
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 
@@ -15,13 +13,14 @@ pkgdatadir=${datadir}/@PACKAGE@
 transform=@program_transform_name@
 
 CFLAGS="@PROFILE@ -I@includedir@ "
-LIBDIRS="-L${pkglibdir} -Wl,-R${pkglibdir}"
+RFLAG="-Wl,-R${pkglibdir}"
+LIBDIRS="-L${pkglibdir} $RFLAG"
 LIBS="-lRNumber"
 HELPER_PATH="${pkgdatadir}"
 
 rnumber_ltlibs="${pkglibdir}/libRNumber.la"
 rnumber_libs="$LIBDIRS $LIBS "
-rnumber_bl_libs="-lbl-rnumber_s "
+rnumber_bl_libs="-lstdc++ -lbl-rnumber_s-@BIGLOO_REVISION@ "
 rnumber_bl_lib_path="-L ${pkglibdir} "
 rnumber_cflags="$CFLAGS"
 rnumber_perl_libs="${pkglibdir}"
@@ -50,6 +49,7 @@ Compilation support options
   --libs-only-l     only print the -l part of --libs
   --perl-libs       print library path for perl. Cannot be combined with any other flags.
   --static-libs     print path to .a file.
+  --bl-libs         library path and library flag for bigloo.
   --bl-libs-only-l  library for bigloo.
   --bl-libs-only-L  library path for bigloo.
 EOF
@@ -121,6 +121,10 @@ while test $# -gt 0; do
         ;;
     --libs-only-l)
         libs_l=true
+        ;;
+    --bl-libs)
+        bl_libs_l=true
+        bl_libs_L=true
         ;;
     --bl-libs-only-l)
         bl_libs_l=true

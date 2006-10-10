@@ -1,3 +1,9 @@
+2006-10-10  Todd Dukes  <tdukes@austin.rr.com>
+
+	* added -lstdc++ to link command inside bl-rnumber.init.in
+
+        ==== rnumber release 2.0.3  ====
+
 2006-09-26  Todd Dukes  <tdukes@freescale.com>
 
 	* reintroduced documentation to configure.ac and Makefiles.
