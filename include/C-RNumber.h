@@ -18,6 +18,8 @@
 #ifndef C_RNumber_h
 #define C_RNumber_h "$Id$"
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 
 namespace rnumber {
@@ -39,10 +41,10 @@ extern "C" {
 #define WORD_THRESHOLD 2
 
 struct RNNS RNumber * rnumber_create();
-struct RNNS RNumber * rnumber_create_from_unsigned( unsigned int number );
-struct RNNS RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned int number );
-struct RNNS RNumber * rnumber_create_from_unsigned_of_size( unsigned int number, unsigned int size );
-struct RNNS RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number, unsigned int size );
+struct RNNS RNumber * rnumber_create_from_unsigned( uint32_t number );
+struct RNNS RNumber * rnumber_create_from_unsigned_variable_sizing( uint32_t number );
+struct RNNS RNumber * rnumber_create_from_unsigned_of_size( uint32_t number, unsigned int size );
+struct RNNS RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( uint32_t number, unsigned int size );
 struct RNNS RNumber * rnumber_create_from_string( const char * number  );
 struct RNNS RNumber * rnumber_create_from_string_variable_sizing( const char * number );
 struct RNNS RNumber * rnumber_create_from_string_of_size( const char * number, unsigned int size );
@@ -51,8 +53,8 @@ struct RNNS RNumber * rnumber_create_from_string_of_radix( const char * number, 
 struct RNNS RNumber * rnumber_create_from_string_of_radix_variable_sizing( const char * number, int radix );
 struct RNNS RNumber * rnumber_create_from_string_of_size_of_radix( const char * number, unsigned int size, int radix);
 struct RNNS RNumber * rnumber_create_from_string_of_size_of_radix_variable_sizing( const char * number, unsigned int size, int radix);
-struct RNNS RNumber * rnumber_create_from_numVector( unsigned int* numVector, unsigned int wordCount, unsigned int size );
-struct RNNS RNumber * rnumber_create_from_numVector_variable_sizing (unsigned int* numVector, unsigned int wordCount, 
+struct RNNS RNumber * rnumber_create_from_numVector( uint32_t* numVector, unsigned int wordCount, unsigned int size );
+struct RNNS RNumber * rnumber_create_from_numVector_variable_sizing (uint32_t* numVector, unsigned int wordCount, 
                                                                      unsigned int size);
 struct RNNS RNumber * rnumber_create_from_rnumber( const struct RNNS RNumber * rnumber );
 struct RNNS RNumber * rnumber_copy_to_size( const struct RNNS RNumber * number, unsigned int size);
@@ -62,7 +64,7 @@ void rnumber_destroy( struct RNNS RNumber * rnumber );
   // Assignment methods. operator=() assigns the value constrained by sizing;
   // assign() assigns the value with dynamic sizing; clone() assigns all
   // attributes; resize() truncates/expands the value and sets fixed sizing.
-struct RNNS RNumber * rnumber_assign_from_uint (struct RNNS RNumber * rnumber, unsigned int number);
+struct RNNS RNumber * rnumber_assign_from_uint (struct RNNS RNumber * rnumber, uint32_t number);
 struct RNNS RNumber * rnumber_assign_from_string (struct RNNS RNumber * rnumber, char * number_string);
 struct RNNS RNumber * rnumber_assign (struct RNNS RNumber * rnumber, struct RNNS RNumber * number);
 struct RNNS RNumber * rnumber_copy (struct RNNS RNumber * rnumber, struct RNNS RNumber * number);
@@ -74,21 +76,21 @@ struct RNNS RNumber * rnumber_unary_tilde( struct RNNS RNumber * rnumber);
 
   // Arithmetic assignment operators; assignment size depends on sizing state.
 struct RNNS RNumber * rnumber_plus_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_plus_assign_from_unsigned ( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_plus_assign_from_unsigned ( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_minus_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_minus_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_minus_assign_from_unsigned( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_multiply_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_multiply_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_multiply_assign_from_unsigned( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_divide_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_divide_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_divide_assign_from_unsigned( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_mod_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_mod_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_mod_assign_from_unsigned( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_bitand_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_bitand_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_bitand_assign_from_unsigned( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_bitor_assign( struct RNNS RNumber * rnumber,  struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_bitor_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_bitor_assign_from_unsigned( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_bitxor_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * number );
-struct RNNS RNumber * rnumber_bitxor_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int number );
+struct RNNS RNumber * rnumber_bitxor_assign_from_unsigned( struct RNNS RNumber * rnumber, uint32_t number );
 struct RNNS RNumber * rnumber_leftshift_assign( struct RNNS RNumber * rnumber, struct RNNS RNumber * shift );
 struct RNNS RNumber * rnumber_leftshift_assign_from_unsigned( struct RNNS RNumber * rnumber, unsigned int shift );
 struct RNNS RNumber * rnumber_rightshift_assign( struct RNNS RNumber * rnumber,  struct RNNS RNumber * shift );
@@ -115,13 +117,13 @@ struct RNNS RNumber * rnumber_truncate( struct RNNS RNumber * rnumber, unsigned 
   // Bit value accessors and manipulators.
 unsigned int rnumber_getbit( struct RNNS RNumber * rnumber, unsigned int pos);
 unsigned int rnumber_getbit_lsb( struct RNNS RNumber * rnumber, unsigned int pos );
-void rnumber_setbit( struct RNNS RNumber * rnumber, unsigned int pos, unsigned int value );
-void rnumber_setbit_lsb( struct RNNS RNumber * rnumber,unsigned int pos, unsigned int value );
-void rnumber_assignbit( struct RNNS RNumber * rnumber, unsigned int pos, unsigned int value );
-void rnumber_assignbit_lsb( struct RNNS RNumber * rnumber, unsigned int pos, unsigned int value );
+void rnumber_setbit( struct RNNS RNumber * rnumber, unsigned int pos, uint32_t value );
+void rnumber_setbit_lsb( struct RNNS RNumber * rnumber,unsigned int pos, uint32_t value );
+void rnumber_assignbit( struct RNNS RNumber * rnumber, unsigned int pos, uint32_t value );
+void rnumber_assignbit_lsb( struct RNNS RNumber * rnumber, unsigned int pos, uint32_t value );
 
   // Value accessors.
-unsigned int rnumber_get_uint( struct RNNS RNumber * rnumber);
+uint32_t rnumber_get_uint( struct RNNS RNumber * rnumber);
 char * rnumber_cstr( const struct RNNS RNumber * rnumber);
 char * rnumber_cstr_radix( const struct RNNS RNumber * rnumber, int radix,int bool_prefix);
 
@@ -166,66 +168,66 @@ void rnumber_write_to_os( struct RNNS RNumber * rnumber, void * os );
 // Non-member functions that allow for mixed arithmetic expressions between
 // RNumbers and unsigned integers.
  struct RNNS RNumber * rnumber_rn_plus_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_plus_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_plus_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_plus_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_plus_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_add_ext_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_add_ext_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_add_ext_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_add_ext_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_add_ext_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_minus_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_minus_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_minus_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_minus_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_minus_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_multiply_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_multiply_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_multiply_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_multiply_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_multiply_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_multiply_ext_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_multiply_ext_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_multiply_ext_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_multiply_ext_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_multiply_ext_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_divide_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_divide_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_divide_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_divide_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_divide_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_mod_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_mod_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_mod_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_mod_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_mod_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_bitand_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_bitand_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_bitand_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_bitand_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_bitand_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_bitor_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_bitor_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_bitor_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_bitor_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_bitor_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_bitxor_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_bitxor_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_bitxor_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_bitxor_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_bitxor_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_bitnot( const struct RNNS RNumber * n1 );
  struct RNNS RNumber * rnumber_rn_leftshift_rn( const struct RNNS RNumber * n, const struct RNNS RNumber * shift );
  struct RNNS RNumber * rnumber_rn_leftshift_ui( const struct RNNS RNumber * n, unsigned int shift );
- struct RNNS RNumber * rnumber_ui_leftshift_rn( unsigned int n, const struct RNNS RNumber * shift );
+ struct RNNS RNumber * rnumber_ui_leftshift_rn( uint32_t n, const struct RNNS RNumber * shift );
  struct RNNS RNumber * rnumber_rn_leftshift_ext_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
- struct RNNS RNumber * rnumber_rn_leftshift_ext_ui( const struct RNNS RNumber * n1, unsigned int n2 );
- struct RNNS RNumber * rnumber_ui_leftshift_ext_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+ struct RNNS RNumber * rnumber_rn_leftshift_ext_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+ struct RNNS RNumber * rnumber_ui_leftshift_ext_rn( uint32_t n1, const struct RNNS RNumber * n2 );
  struct RNNS RNumber * rnumber_rn_rightshift_rn( const struct RNNS RNumber * n, const struct RNNS RNumber * shift );
  struct RNNS RNumber * rnumber_rn_rightshift_ui( const struct RNNS RNumber * n, unsigned int shift );
- struct RNNS RNumber * rnumber_ui_rightshift_rn( unsigned int n, const struct RNNS RNumber * shift );
+ struct RNNS RNumber * rnumber_ui_rightshift_rn( uint32_t n, const struct RNNS RNumber * shift );
 
 // Non-member functions that allow for mixed conditional expressions between
 // RNumbers and unsigned integers.
 int rnumber_rn_notequal_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
-int rnumber_rn_notequal_ui( const struct RNNS RNumber * n1, unsigned int n2 );
-int rnumber_ui_notequal_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+int rnumber_rn_notequal_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+int rnumber_ui_notequal_rn( uint32_t n1, const struct RNNS RNumber * n2 );
 int rnumber_rn_equal_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
-int rnumber_rn_equal_ui( const struct RNNS RNumber * n1, unsigned int n2 );
-int rnumber_ui_equal_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+int rnumber_rn_equal_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+int rnumber_ui_equal_rn( uint32_t n1, const struct RNNS RNumber * n2 );
 int rnumber_rn_lessthan_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
-int rnumber_rn_lessthan_ui( const struct RNNS RNumber * n1, unsigned int n2 );
-int rnumber_ui_lessthan_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+int rnumber_rn_lessthan_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+int rnumber_ui_lessthan_rn( uint32_t n1, const struct RNNS RNumber * n2 );
 int rnumber_rn_lessequal_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
-int rnumber_rn_lessequal_ui( const struct RNNS RNumber * n1, unsigned int n2 );
-int rnumber_ui_lessequal_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+int rnumber_rn_lessequal_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+int rnumber_ui_lessequal_rn( uint32_t n1, const struct RNNS RNumber * n2 );
 int rnumber_rn_greaterthan_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
-int rnumber_rn_greaterthan_ui( const struct RNNS RNumber * n1, unsigned int n2 );
-int rnumber_ui_greaterthan_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+int rnumber_rn_greaterthan_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+int rnumber_ui_greaterthan_rn( uint32_t n1, const struct RNNS RNumber * n2 );
 int rnumber_rn_greaterequal_rn( const struct RNNS RNumber * n1, const struct RNNS RNumber * n2 );
-int rnumber_rn_greaterequal_ui( const struct RNNS RNumber * n1, unsigned int n2 );
-int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNNS RNumber * n2 );
+int rnumber_rn_greaterequal_ui( const struct RNNS RNumber * n1, uint32_t n2 );
+int rnumber_ui_greaterequal_rn( uint32_t n1, const struct RNNS RNumber * n2 );
 
 int rnumber_rhex();
 int rnumber_rbin();

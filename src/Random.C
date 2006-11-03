@@ -29,7 +29,6 @@
 
 using namespace std;
 using namespace rnumber;
-using namespace rnumber_t;
 
 // We always install a default random object.
 unsigned Random::_currentGen = 0;
@@ -100,11 +99,11 @@ unsigned RandomObj::getInteger()
   return _rand.genrand();
 }
 
-uint64 RandomObj::getUint64()
+uint64_t RandomObj::getUint64()
 {
   if ( _gated ) 
     throw runtime_error ( " RandomObj::getUint64 - Random number was generated while generator was gated." );
-  uint64 x = _rand.genrand();
+  uint64_t x = _rand.genrand();
   x <<= 32;
   return (x | _rand.genrand());
 }
@@ -117,7 +116,7 @@ unsigned RandomObj::getInteger( unsigned n )
   return (n == 0) ? 0 : _rand.genrand() % n;
 }
 
-uint64 RandomObj::getUint64( uint64 n )
+uint64_t RandomObj::getUint64( uint64_t n )
 {
   if ( _gated ) 
     throw runtime_error ( "RandomObj::getUint64( uint64 n ) - Random number was generated while generator was gated." );

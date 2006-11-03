@@ -20,7 +20,7 @@ VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ..
+top_builddir = ../..
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = @INSTALL@
 install_sh_DATA = $(install_sh) -c -m 644
@@ -36,8 +36,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = macros
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in ChangeLog
+subdir = doc/user
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/macros/cpp-setup.m4 \
 	$(top_srcdir)/macros/libtool.m4 $(top_srcdir)/configure.ac
@@ -53,9 +53,9 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(m4datadir)"
-m4dataDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(m4data_DATA)
+am__installdirs = "$(DESTDIR)$(userwebdatadir)"
+userwebdataDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(userwebdata_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_FLAGS = @ACLOCAL_FLAGS@
@@ -200,14 +200,39 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-MACROS = \
-	std-exceptions.m4 \
-	zlib-check.m4 \
-	cpp-setup.m4
+userwebdatadir = $(WEB_HOME)/user
+userwebdata_DATA = user.html \
+		user-1.html \
+		user-2.html \
+		user-3.html \
+		user-4.html \
+		user-5.html \
+		user-6.html \
+		user-7.html
 
-EXTRA_DIST = $(MACROS)
-m4datadir = $(datadir)/aclocal
-m4data_DATA = $(MACROS)
+USER_SOURCE = user.skb bib.scr user-margin.scr bigloo-bindings.skb  c-functions.skb  cpp-classes.skb  perl-bindings.skb \
+	ctors.h \
+	arithmetic.h	       field-accessors.h  non-member-cond.h  rnumber-c.h		 types.h \
+	assign.h	       friends.h	  non-member.h	     rnumber-c-non-allocating.h  unary-cond.h \
+	attribute-accessors.h  kissrand.h	  random.h	     signed-cond.h		 unary.h \
+	bit-value.h	       lcgrand.h	  random-obj.h	     sizing.h			 value-accessors.h \
+	enum.h		       misc-bit.h	  random-stl.h	     streaming-io.h 
+
+EXTRA_DIST = $(USER_SOURCE)
+CLEANFILES = $(userwebdata_DATA)
+PROJECT = rnumber
+PROJECT_VERSION = $(RNUMBER_VERSION)
+USER_TITLE = RNumber
+PROJECT_URL = $(WEB_HOME)
+PROJECT_EXAMPLE_FTP_SITE = $(WEB_HOME)/examples
+USER_URL = $(PROJECT_URL)/user
+SKRIBEFLAGS = 
+SUSER_URL = --eval "\(define *user-dir* \"$(USER_URL)\"\)"
+SPROJ_NAME = --eval "\(define *project-name* \"$(PROJECT)\"\)"
+SUSER_TITLE = --eval "\(define *user-title* \"$(PROJECT)\"\)"
+SPROJ_URL = "(define *project-url* \"$(PROJECT_URL)\")"
+SPROJ_VER = "(define *project-version* \"$(PROJECT_VERSION)\")"
+SEXAMPLE_FTP = "(define *project-example-ftp-site* \"$(PROJECT_EXAMPLE_FTP_SITE)\")"
 all: all-am
 
 .SUFFIXES:
@@ -220,9 +245,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  macros/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  doc/user/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  macros/Makefile
+	  $(AUTOMAKE) --foreign  doc/user/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -250,22 +275,22 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
-install-m4dataDATA: $(m4data_DATA)
+install-userwebdataDATA: $(userwebdata_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(m4datadir)" || $(mkdir_p) "$(DESTDIR)$(m4datadir)"
-	@list='$(m4data_DATA)'; for p in $$list; do \
+	test -z "$(userwebdatadir)" || $(mkdir_p) "$(DESTDIR)$(userwebdatadir)"
+	@list='$(userwebdata_DATA)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f=$(am__strip_dir) \
-	  echo " $(m4dataDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(m4datadir)/$$f'"; \
-	  $(m4dataDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(m4datadir)/$$f"; \
+	  echo " $(userwebdataDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(userwebdatadir)/$$f'"; \
+	  $(userwebdataDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(userwebdatadir)/$$f"; \
 	done
 
-uninstall-m4dataDATA:
+uninstall-userwebdataDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(m4data_DATA)'; for p in $$list; do \
+	@list='$(userwebdata_DATA)'; for p in $$list; do \
 	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(m4datadir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(m4datadir)/$$f"; \
+	  echo " rm -f '$(DESTDIR)$(userwebdatadir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(userwebdatadir)/$$f"; \
 	done
 tags: TAGS
 TAGS:
@@ -305,7 +330,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(m4datadir)"; do \
+	for dir in "$(DESTDIR)$(userwebdatadir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -325,6 +350,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -350,7 +376,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-m4dataDATA
+install-data-am: install-userwebdataDATA
 
 install-exec-am:
 
@@ -372,25 +398,45 @@ pdf: pdf-am
 
 pdf-am:
 
-ps: ps-am
-
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-m4dataDATA
+uninstall-am: uninstall-info-am uninstall-userwebdataDATA
 
 .PHONY: all all-am check check-am clean clean-generic clean-libtool \
 	distclean distclean-generic distclean-libtool distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-m4dataDATA install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	uninstall uninstall-am uninstall-info-am uninstall-m4dataDATA
+	install-info install-info-am install-man install-strip \
+	install-userwebdataDATA installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
+	ps ps-am uninstall uninstall-am uninstall-info-am \
+	uninstall-userwebdataDATA
 
 
-cinstall:
-	$(MAKE) install
+ps : user.ps
+
+%.html : %.skb
+	echo $(SPROJ_VER) > s.skr
+	echo $(SEXAMPLE_FTP) >> s.skr
+	$(SKRIBE) $(SKRIBEFLAGS) $< -o $@
+
+%.ps : %.dvi
+	dvips -o $@ $<
+
+%.dvi : %.tex
+	latex $<
+	latex $<
+	latex $<
+
+%.tex : %.skb
+	echo $(SPROJ_VER) > s.skr
+	echo $(SEXAMPLE_FTP) >> s.skr
+	$(SCRIBE) $(SCRIBEFLAGS) $< -o $@
+
+user.html: $(USER_SOURCE)
+
+user.ps:  $(USER_SOURCE)
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

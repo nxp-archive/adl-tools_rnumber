@@ -897,7 +897,7 @@ static unsigned checkConstructors ()
   unsigned i;
   unsigned rc = 0;
 
-  unsigned long long x = 0x12345678deadbeefULL;
+  uint64_t x = 0x12345678deadbeefULL;
   RNumber a(x);
 //  cout << "x " << ::hex << x << " a " << a << endl;
   

@@ -46,16 +46,16 @@ unsigned int RNumber::_defaultSize = 32;
 //
 // Function prototypes for static helper functions that are private to this class.
 //
-static inline unsigned int lowHalf( unsigned int n );
-static inline unsigned int highHalf( unsigned int n );
-static inline unsigned int highLowConcat( unsigned int nh, unsigned int nl );
+static inline uint32_t lowHalf( uint32_t n );
+static inline uint32_t highHalf( uint32_t n );
+static inline uint32_t highLowConcat( uint32_t nh, uint32_t nl );
 
-static inline unsigned int* getTempBuffer( unsigned int wordCount );
-static inline unsigned int countLeadingZeroWords( const unsigned int* n, unsigned int nLen );
-static inline unsigned int skipLeadingZeroWords( const unsigned int* n, unsigned int nLen );
-static inline unsigned int skipLeadingZeroBytes( const unsigned char* n, unsigned int nLen );
-static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned int nLen );
-static inline void convertToBytes( const unsigned int* wordBuffer, unsigned char* byteBuffer, unsigned int wordCount );
+static inline uint32_t* getTempBuffer( uint32_t wordCount );
+static inline uint32_t countLeadingZeroWords( const uint32_t* n, unsigned int nLen );
+static inline uint32_t skipLeadingZeroWords( const uint32_t* n, unsigned int nLen );
+static inline uint32_t skipLeadingZeroBytes( const unsigned char* n, unsigned int nLen );
+static inline uint32_t skipLeadingZeroBits( const uint32_t* n, unsigned int nLen );
+static inline void convertToBytes( const uint32_t* wordBuffer, unsigned char* byteBuffer, unsigned int wordCount );
 
 // General read function from strings, with radix specified
 // by the prefix in the input.
@@ -64,15 +64,15 @@ void readstr(RNumber &,const string &);
 // is allowed.
 void readstr(RNumber &,const string &,int format);
 
-static void multiplyExtended( const unsigned int* vb1, unsigned int wc1, const unsigned int* vb2, unsigned int wc2, 
-                              unsigned int* resValue0,bool extend );
+static void multiplyExtended( const uint32_t* vb1, unsigned int wc1, const uint32_t* vb2, unsigned int wc2, 
+                              uint32_t* resValue0,bool extend );
 static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char* yb, unsigned int ylen, unsigned char* q );
 
 
 //
 // Return the low half part of n.
 //
-static inline unsigned int lowHalf( unsigned int n )
+static inline uint32_t lowHalf( uint32_t n )
 {
   return n & HalfWordMask;
 }
@@ -81,7 +81,7 @@ static inline unsigned int lowHalf( unsigned int n )
 //
 // Return the high half part of n.
 //
-static inline unsigned int highHalf( unsigned int n )
+static inline uint32_t highHalf( uint32_t n )
 {
   return n >> HalfWordBits;
 }
@@ -90,35 +90,35 @@ static inline unsigned int highHalf( unsigned int n )
 //
 // Concatenate the high part nh and low part nl.
 //
-static inline unsigned int highLowConcat( unsigned int nh, unsigned int nl )
+static inline uint32_t highLowConcat( uint32_t nh, uint32_t nl )
 {
   return ( nh << HalfWordBits ) | ( nl & HalfWordMask );
 }
 
 class TempBuffer {
 public:
-  TempBuffer() : _size(4), _buf(new unsigned[_size]) {};
+  TempBuffer() : _size(4), _buf(new uint32_t[_size]) {};
   ~TempBuffer() { delete [] _buf; };
-  unsigned int *get(unsigned wc) {
+  uint32_t *get(unsigned wc) {
     if (wc > _size) {
       delete [] _buf;
       _size *= 2;
       if (wc > _size) {
         _size = wc;
       }
-      _buf = new unsigned[_size];
+      _buf = new uint32_t[_size];
     }
     return _buf;
   }
 private:
-  unsigned  _size;
-  unsigned *_buf;
+  uint32_t  _size;
+  uint32_t *_buf;
 };
 
 //
 // Return a static buffer for use in RNumber operators.
 //
-static inline unsigned int* getTempBuffer( unsigned int wordCount )
+static inline uint32_t* getTempBuffer( unsigned int wordCount )
 {
   static TempBuffer tempBuffer;
   return tempBuffer.get(wordCount);
@@ -127,12 +127,12 @@ static inline unsigned int* getTempBuffer( unsigned int wordCount )
 //
 // Returns the number of leading zero words.
 //
-static inline unsigned int countLeadingZeroWords( const unsigned int* n, unsigned int nLen )
+static inline unsigned int countLeadingZeroWords( const uint32_t* n, unsigned int nLen )
 {
   assert( nLen != 0 );
 
   unsigned int count = 0;
-  const unsigned int* p = n;
+  const uint32_t* p = n;
 
   while ( ( --nLen > 0 ) && ( !*p ) ) {
     ++count;
@@ -145,11 +145,11 @@ static inline unsigned int countLeadingZeroWords( const unsigned int* n, unsigne
 //
 // Return the number of words in the number excluding leading zeros.
 //
-static inline unsigned int skipLeadingZeroWords( const unsigned int* n, unsigned int nLen )
+static inline uint32_t skipLeadingZeroWords( const uint32_t* n, unsigned int nLen )
 {
   assert( nLen != 0 );
 
-  const unsigned int* p = n;
+  const uint32_t* p = n;
 
   while ( ( --nLen > 0 ) && ( !*p ) )
     p++;
@@ -176,11 +176,11 @@ static inline unsigned int skipLeadingZeroBytes( const unsigned char* n, unsigne
 //
 // Return the number of bits in the number excluding leading zero bits.
 //
-static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned int nLen )
+static inline unsigned int skipLeadingZeroBits( const uint32_t* n, unsigned int nLen )
 {
   assert( nLen != 0 );
 
-  const unsigned int* p = n;
+  const uint32_t* p = n;
   const unsigned int START_BIT_POS = 0x1 << ( WordBits - 1 );
   unsigned off = ((nLen - 1) % WordBits) + 1;
   unsigned int bitPos = 0x1 << ( off - 1 );
@@ -212,7 +212,7 @@ static inline unsigned int skipLeadingZeroBits( const unsigned int* n, unsigned 
 //
 // Convert word-based number representation to byte-based representation.
 //
-static inline void convertToBytes( const unsigned int* wordBuffer,
+static inline void convertToBytes( const uint32_t* wordBuffer,
                                    unsigned char* byteBuffer,
                                    unsigned int wordCount )
 {
@@ -235,7 +235,7 @@ inline void RNumber::assignAndTruncateNumber( const RNumber& number )
   assert( _size <= number._size );
 
   int diff = number._wordCount - _wordCount;
-  unsigned int* nvb = number._valueBuffer + diff;
+  uint32_t* nvb = number._valueBuffer + diff;
 
   for ( unsigned int i = 0; i < _wordCount; i++ )
     _valueBuffer[i] = nvb[i];
@@ -255,7 +255,7 @@ inline void RNumber::assignNumber( const RNumber& number )
     {
       // This loop will be tight but we do not incur the memcpy() function
       // call penalty.
-      unsigned int* nvb = number._valueBuffer;
+      uint32_t* nvb = number._valueBuffer;
 
       for ( unsigned int i = 0; i < _wordCount; i++ )
         _valueBuffer[i] = nvb[i];
@@ -282,8 +282,8 @@ inline void RNumber::assignNumber( const RNumber& number )
         for ( int i = 0; i < wordDiff; i++ )
           _valueBuffer[i] = 0;
 
-      unsigned int* vb  = _valueBuffer + wordDiff;
-      unsigned int* nvb = number._valueBuffer;
+      uint32_t* vb  = _valueBuffer + wordDiff;
+      uint32_t* nvb = number._valueBuffer;
 
       // This loop will be tight but we do not incur the memcpy() function
       // call penalty.
@@ -333,7 +333,7 @@ inline RNumber& RNumber::truncateExtended( unsigned int size )
 
       if ( size % WordBits )
         {
-          unsigned int mask = ( 0x1 << ( size % WordBits ) ) - 1;
+          uint32_t mask = ( 0x1 << ( size % WordBits ) ) - 1;
 
           _valueBuffer[n - 1] &= mask;
           n--;
@@ -353,21 +353,21 @@ inline RNumber& RNumber::truncateExtended( unsigned int size )
 // Create a new RNumber with the specified value but constrained to the
 // specified size.
 //
-RNumber::RNumber( unsigned int number, unsigned int size, Sizing sizing )
+RNumber::RNumber( uint32_t number, unsigned int size, Sizing sizing )
 {
   initNumber( ( size ) ? size : _defaultSize, sizing );
   _valueBuffer[_wordCount - 1] = number;
   truncateTop();
 }
 
-RNumber::RNumber( int number, unsigned int size, Sizing sizing )
+RNumber::RNumber( int32_t number, unsigned int size, Sizing sizing )
 {
   initNumber( ( size ) ? size : _defaultSize, sizing );
   _valueBuffer[_wordCount - 1] = number;
   truncateTop();
 }
 
-RNumber::RNumber( long long number, unsigned int size, Sizing sizing ) {
+RNumber::RNumber( int64_t number, unsigned int size, Sizing sizing ) {
    assert(size <= 64);
    initNumber( size, sizing );
    if (size <= 32) {
@@ -379,7 +379,7 @@ RNumber::RNumber( long long number, unsigned int size, Sizing sizing ) {
    truncateTop();
 }
 
-RNumber::RNumber( unsigned long long number, unsigned int size, Sizing sizing ) {
+RNumber::RNumber( uint64_t number, unsigned int size, Sizing sizing ) {
    assert(size <= 64);
    initNumber( size, sizing );
    if (size <= 32) {
@@ -401,7 +401,7 @@ RNumber::RNumber( const RNumber& number, unsigned int size, Sizing sizing )
   // Initialize RNumber internals with the specified size.
   initNumber( ( size ) ? size : number._size, sizing );
 
-  unsigned int* nvb = number._valueBuffer;
+  uint32_t* nvb = number._valueBuffer;
 
   if ( _size == number._size )
     {
@@ -418,7 +418,7 @@ RNumber::RNumber( const RNumber& number, unsigned int size, Sizing sizing )
       // The specified size was larger than the value. Since the internals were
       // already initialized to zero from above, just copy the needed words.
       int diff = _wordCount - number._wordCount;
-      unsigned int* vb = _valueBuffer + diff;
+      uint32_t* vb = _valueBuffer + diff;
 
       for ( unsigned int i = 0, nwc = number._wordCount; i < nwc; i++ )
         vb[i] = nvb[i];
@@ -492,7 +492,7 @@ RNumber::RNumber( const string& number, unsigned int size, Format radix, Sizing 
 //
 // Construct an RNumber taking an array of unsigned int values as data
 //
-RNumber::RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size, Sizing sizing )
+RNumber::RNumber(const uint32_t* numVector, unsigned int wordCount, unsigned int size, Sizing sizing )
 {
   // Update the RNumber internal members.
   _size = size;
@@ -509,10 +509,10 @@ RNumber::RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned
       _valueBuffer = _value.fixedValue + WORD_THRESHOLD - _wordCount;
     }
   else
-    _valueBuffer = _value.varValue = new unsigned int[_wordCount];
+    _valueBuffer = _value.varValue = new uint32_t[_wordCount];
 
-  unsigned int* vb = _valueBuffer + _wordCount - 1;
-  const unsigned int* nb = numVector + wordCount - 1;
+  uint32_t* vb = _valueBuffer + _wordCount - 1;
+  const uint32_t* nb = numVector + wordCount - 1;
   unsigned int n = ( wordCount < _wordCount ) ? wordCount : _wordCount;
 
   for ( i = 0; i < n; i++ )
@@ -535,7 +535,7 @@ RNumber::RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned
 // Our size is only modified if it needs to be enlarged to contain the 32-bit
 // value and our _sizing is dynamic.
 //
-RNumber& RNumber::operator=( unsigned int number )
+RNumber& RNumber::operator=( uint32_t number )
 {
 
   // First clear out any most-significant words. Then assign the number to the
@@ -663,7 +663,7 @@ void RNumber::resize( unsigned int size )
 
       if ( _wordCount > WORD_THRESHOLD && nwc <= WORD_THRESHOLD )
         {
-          unsigned int* vb = _valueBuffer + wordDiff;
+          uint32_t* vb = _valueBuffer + wordDiff;
           unsigned int threshDiff = WORD_THRESHOLD - nwc;
 
           for ( i = 0; i < threshDiff; i++ )
@@ -697,9 +697,9 @@ void RNumber::resize( unsigned int size )
 
       if ( _wordCount <= WORD_THRESHOLD && nwc > WORD_THRESHOLD )
         {
-          unsigned int* fv = _value.fixedValue + WORD_THRESHOLD - _wordCount;
+          uint32_t* fv = _value.fixedValue + WORD_THRESHOLD - _wordCount;
 
-          _valueBuffer = new unsigned int[nwc];
+          _valueBuffer = new uint32_t[nwc];
 
           for ( i = 0; i < wordDiff; i++ )
             _valueBuffer[i] = 0;
@@ -713,8 +713,8 @@ void RNumber::resize( unsigned int size )
         _valueBuffer -= wordDiff;
       else
         {
-          unsigned int* nvb = new unsigned int[nwc];
-          unsigned int* vb = _valueBuffer;
+          uint32_t* nvb = new uint32_t[nwc];
+          uint32_t* vb = _valueBuffer;
 
           for ( i = 0; i < wordDiff; i++ )
             nvb[i] = 0;
@@ -754,7 +754,7 @@ const RNumber RNumber::operator-() const
 const RNumber RNumber::operator~() const
 {
 
-  unsigned int* ivb = getTempBuffer( _wordCount );
+  uint32_t* ivb = getTempBuffer( _wordCount );
 
   for ( unsigned int i = 0; i < _wordCount; i++ )
     ivb[i] = ~_valueBuffer[i];
@@ -777,15 +777,15 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
 
   // We add by traversing through each set of words, in parallel, adding as we go.
   // Thus, our starting position is the last word in each array (the lowest-order word).
-  const unsigned int* value = n1._valueBuffer + n1wc - 1;
-  const unsigned int* numValue = n2._valueBuffer + n2wc - 1;
+  const uint32_t* value = n1._valueBuffer + n1wc - 1;
+  const uint32_t* numValue = n2._valueBuffer + n2wc - 1;
   // If we're extending, then the maximum we can grow is by one extra word.
-  unsigned int* sumValue0 = getTempBuffer( ( extend ) ? maxwc + 1 : maxwc );
+  uint32_t* sumValue0 = getTempBuffer( ( extend ) ? maxwc + 1 : maxwc );
   // Position our sum pointer at the last word in the temporary buffer.
-  unsigned int* sumValue = sumValue0 + ( ( extend ) ? maxwc : maxwc - 1 );
+  uint32_t* sumValue = sumValue0 + ( ( extend ) ? maxwc : maxwc - 1 );
 
-  unsigned int cin = 0;
-  unsigned int a, b, c;
+  uint32_t cin = 0;
+  uint32_t a, b, c;
   unsigned int i;
 
   for ( i = 0; i < minwc; i++ )
@@ -797,7 +797,7 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
       cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
     }
 
-  const unsigned int* leftOver = ( n1wc < n2wc ) ? numValue : value;
+  const uint32_t* leftOver = ( n1wc < n2wc ) ? numValue : value;
 
   for ( i = minwc; i < maxwc; i++ )
     {
@@ -843,22 +843,22 @@ inline const RNumber rnumber::add( const RNumber& n1, const RNumber& n2, bool ex
 //
 // Non-member function for adding an RNumber and unsigned.
 //
-inline const RNumber rnumber::add( const RNumber& n1, unsigned int n2, bool extend )
+inline const RNumber rnumber::add( const RNumber& n1, uint32_t n2, bool extend )
 {
 
   unsigned int maxs = max( n1._size, WordBits );
   unsigned int n1wc = n1._wordCount;
 
-  const unsigned int* value = n1._valueBuffer + n1wc - 1;
-  unsigned int* sumValue0 = getTempBuffer( ( extend ) ? n1wc + 1 : n1wc );
-  unsigned int* sumValue = sumValue0 + ( ( extend ) ? n1wc : n1wc - 1 );
+  const uint32_t* value = n1._valueBuffer + n1wc - 1;
+  uint32_t* sumValue0 = getTempBuffer( ( extend ) ? n1wc + 1 : n1wc );
+  uint32_t* sumValue = sumValue0 + ( ( extend ) ? n1wc : n1wc - 1 );
 
   *sumValue = *value + n2;
 
-  unsigned int a = *( value-- );
-  unsigned int b = n2;
-  unsigned int c = *( sumValue-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
+  uint32_t a = *( value-- );
+  uint32_t b = n2;
+  uint32_t c = *( sumValue-- );
+  uint32_t cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < n1wc - 1; i++ )
     {
@@ -908,7 +908,7 @@ const RNumber rnumber::operator+( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the addition of an RNumber to an unsigned.
 //
-const RNumber rnumber::operator+( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator+( const RNumber& n1, uint32_t n2 )
 {
 
   return add( n1, n2, false );
@@ -918,7 +918,7 @@ const RNumber rnumber::operator+( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the addition of an unsigned to an RNumber.
 //
-const RNumber rnumber::operator+( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator+( uint32_t n1, const RNumber& n2 )
 {
 
   return add( n2, n1, false );
@@ -939,7 +939,7 @@ const RNumber rnumber::addExt( const RNumber& n1, const RNumber& n2 )
 // Non-member function for the addition of an RNumber to an unsigned. This add
 // function will return a result that includes the carry.
 //
-const RNumber rnumber::addExt( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::addExt( const RNumber& n1, uint32_t n2 )
 {
   return add( n1, n2, true );
 }
@@ -949,7 +949,7 @@ const RNumber rnumber::addExt( const RNumber& n1, unsigned int n2 )
 // Non-member function for the addition of an unsigned to an RNumber. This add
 // function will return a result that includes the carry.
 //
-const RNumber rnumber::addExt( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::addExt( uint32_t n1, const RNumber& n2 )
 {
   return add( n2, n1, true );
 }
@@ -968,11 +968,11 @@ RNumber& RNumber::operator+=( const RNumber& number )
     resize( number._size );
 
   unsigned int minwc = min( _wordCount, number._wordCount );
-  unsigned int* value = _valueBuffer + _wordCount - 1;
-  const unsigned int* numValue = number._valueBuffer + number._wordCount - 1;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
+  const uint32_t* numValue = number._valueBuffer + number._wordCount - 1;
 
-  unsigned int cin = 0;
-  unsigned int a, b, c;
+  uint32_t cin = 0;
+  uint32_t a, b, c;
   unsigned int i;
 
   for ( i = 0; i < minwc; i++ )
@@ -1002,7 +1002,7 @@ RNumber& RNumber::operator+=( const RNumber& number )
 // The same as operator+ but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator+=( unsigned int number )
+RNumber& RNumber::operator+=( uint32_t number )
 {
 
   // If the right operand is larger than us and our sizing is dynamic,
@@ -1010,14 +1010,14 @@ RNumber& RNumber::operator+=( unsigned int number )
   if ( _sizing == dynamic && _size < WordBits )
     resize( WordBits );
 
-  unsigned int* value = _valueBuffer + _wordCount - 1;
-  unsigned int a = *value;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
+  uint32_t a = *value;
 
   *value += number;
 
-  unsigned int b = number;
-  unsigned int c = *( value-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
+  uint32_t b = number;
+  uint32_t c = *( value-- );
+  uint32_t cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   if ( cin )
     {
@@ -1046,14 +1046,14 @@ inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
   const unsigned int minwc = min( n1wc, n2wc );
   const unsigned int maxwc = max( n1wc, n2wc );
 
-  const unsigned int* value = n1._valueBuffer + n1wc - 1;
-  const unsigned int* numValue = n2._valueBuffer + n2wc - 1;
-  unsigned int* diffValue0 = getTempBuffer( maxwc );
-  unsigned int* diffValue = diffValue0 + maxwc - 1;
+  const uint32_t* value = n1._valueBuffer + n1wc - 1;
+  const uint32_t* numValue = n2._valueBuffer + n2wc - 1;
+  uint32_t* diffValue0 = getTempBuffer( maxwc );
+  uint32_t* diffValue = diffValue0 + maxwc - 1;
 
-  unsigned int cin = 1;
-  unsigned int inv;
-  unsigned int a, b, c;
+  uint32_t cin = 1;
+  uint32_t inv;
+  uint32_t a, b, c;
   unsigned int i;
 
   for ( i = 0; i < minwc; i++ )
@@ -1102,21 +1102,21 @@ inline const RNumber rnumber::subtract( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for subtracting an unsigned from an RNumber.
 //
-inline const RNumber rnumber::subtract( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::subtract( const RNumber& n1, uint32_t n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
 
-  const unsigned int* value = n1._valueBuffer + n1wc - 1;
-  unsigned int* diffValue0 = getTempBuffer( n1wc );
-  unsigned int* diffValue = diffValue0 + n1wc - 1;
+  const uint32_t* value = n1._valueBuffer + n1wc - 1;
+  uint32_t* diffValue0 = getTempBuffer( n1wc );
+  uint32_t* diffValue = diffValue0 + n1wc - 1;
 
   *diffValue = *value + ~n2 + 1;
 
-  unsigned int a = *( value-- );
-  unsigned int b = ~n2;
-  unsigned int c = *( diffValue-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
+  uint32_t a = *( value-- );
+  uint32_t b = ~n2;
+  uint32_t c = *( diffValue-- );
+  uint32_t cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < n1wc - 1; i++ )
     {
@@ -1133,22 +1133,22 @@ inline const RNumber rnumber::subtract( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for subtracting an RNumber from an unsigned.
 //
-inline const RNumber rnumber::subtract( unsigned int n1, const RNumber& n2 )
+inline const RNumber rnumber::subtract( uint32_t n1, const RNumber& n2 )
 {
 
   const unsigned int n2wc = n2._wordCount;
 
-  const unsigned int* numValue = n2._valueBuffer + n2wc - 1;
-  unsigned int* diffValue0 = getTempBuffer( n2wc );
-  unsigned int* diffValue = diffValue0 + n2wc - 1;
+  const uint32_t* numValue = n2._valueBuffer + n2wc - 1;
+  uint32_t* diffValue0 = getTempBuffer( n2wc );
+  uint32_t* diffValue = diffValue0 + n2wc - 1;
 
-  unsigned int inv = ~( *( numValue-- ) );
+  uint32_t inv = ~( *( numValue-- ) );
   *diffValue = n1 + inv + 1;
 
-  unsigned int a = n1;
-  unsigned int b = inv;
-  unsigned int c = *( diffValue-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
+  uint32_t a = n1;
+  uint32_t b = inv;
+  uint32_t c = *( diffValue-- );
+  uint32_t cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < n2wc - 1; i++ )
     {
@@ -1175,7 +1175,7 @@ const RNumber rnumber::operator-( const RNumber& n1, const RNumber& n2 )
 // Non-member function for the subtraction of an unsigned from
 // an RNumber.
 //
-const RNumber rnumber::operator-( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator-( const RNumber& n1, uint32_t n2 )
 {
 
   return subtract( n1, n2 );
@@ -1186,7 +1186,7 @@ const RNumber rnumber::operator-( const RNumber& n1, unsigned int n2 )
 // Non-member function for the subtraction of an RNumber from
 // an unsigned.
 //
-const RNumber rnumber::operator-( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator-( uint32_t n1, const RNumber& n2 )
 {
 
   return subtract( n1, n2 );
@@ -1206,12 +1206,12 @@ RNumber& RNumber::operator-=( const RNumber& number )
     resize( number._size );
 
   unsigned int minwc = min( _wordCount, number._wordCount );
-  unsigned int* value = _valueBuffer + _wordCount - 1;
-  const unsigned int* numValue = number._valueBuffer + number._wordCount - 1;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
+  const uint32_t* numValue = number._valueBuffer + number._wordCount - 1;
 
-  unsigned int cin = 1;
-  unsigned int inv;
-  unsigned int a, b, c;
+  uint32_t cin = 1;
+  uint32_t inv;
+  uint32_t a, b, c;
   unsigned int i;
 
   for ( i = 0; i < minwc; i++ )
@@ -1244,7 +1244,7 @@ RNumber& RNumber::operator-=( const RNumber& number )
 // not create temporary objects.
 //
 //
-RNumber& RNumber::operator-=( unsigned int number )
+RNumber& RNumber::operator-=( uint32_t number )
 {
 
   // If the right operand is larger than us and our sizing is dynamic,
@@ -1252,14 +1252,14 @@ RNumber& RNumber::operator-=( unsigned int number )
   if ( _sizing == dynamic && _size < WordBits )
     resize( WordBits );
 
-  unsigned int* value = _valueBuffer + _wordCount - 1;
-  unsigned int a = *value;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
+  uint32_t a = *value;
 
   *value += ~number + 1;
 
-  unsigned int b = ~number;
-  unsigned int c = *( value-- );
-  unsigned int cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
+  uint32_t b = ~number;
+  uint32_t c = *( value-- );
+  uint32_t cin = ( ( a & b ) | ( ( a | b ) & ~c ) ) >> ( WordBits - 1 );
 
   for ( unsigned int i = 0; i < _wordCount - 1; i++ )
     {
@@ -1293,8 +1293,8 @@ inline const RNumber rnumber::multiply( const RNumber& n1, const RNumber& n2, bo
   const unsigned int n2wc = n2._wordCount;
   unsigned int maxwc = max( n1wc, n2wc );
 
-  const unsigned int* n1vb = n1._valueBuffer;
-  const unsigned int* n2vb = n2._valueBuffer;
+  const uint32_t* n1vb = n1._valueBuffer;
+  const uint32_t* n2vb = n2._valueBuffer;
 
   if ( n1wc == 1 && n2wc == 1 && !extend)
     return RNumber( n1vb[0] * n2vb[0],maxs );
@@ -1305,7 +1305,7 @@ inline const RNumber rnumber::multiply( const RNumber& n1, const RNumber& n2, bo
   else if ( n2 == 1 )
     return RNumber( n1, maxs );
 
-  unsigned int* resultValue0 = getTempBuffer( ( extend ) ? n1wc + n2wc : maxwc );
+  uint32_t* resultValue0 = getTempBuffer( ( extend ) ? n1wc + n2wc : maxwc );
 
   // If the top operand is smaller than the bottom, swap them for speed.
   if ( n1wc < n2wc )
@@ -1341,12 +1341,12 @@ inline const RNumber rnumber::multiply( const RNumber& n1, const RNumber& n2, bo
 // 3. if u or v is = 1, result is other operand.
 // 4. extended multiply is necessary.
 //
-inline const RNumber rnumber::multiply( const RNumber& n1, unsigned int n2, bool extend )
+inline const RNumber rnumber::multiply( const RNumber& n1, uint32_t n2, bool extend )
 {
 
   unsigned int maxs = max( n1._size, WordBits );
   unsigned int n1wc = n1._wordCount;
-  const unsigned int* n1vb = n1._valueBuffer;
+  const uint32_t* n1vb = n1._valueBuffer;
 
   if ( n1wc == 1 && !extend)
     return RNumber( n1vb[0] * n2, maxs );
@@ -1358,7 +1358,7 @@ inline const RNumber rnumber::multiply( const RNumber& n1, unsigned int n2, bool
     return RNumber( n1, maxs );
 
   int wc = (extend) ? n1wc + 1 : n1wc;
-  unsigned int* resultValue0 = getTempBuffer( wc );
+  uint32_t* resultValue0 = getTempBuffer( wc );
 
   multiplyExtended( n1vb, n1wc, &n2, 1, resultValue0, extend );
 
@@ -1386,7 +1386,7 @@ const RNumber rnumber::operator*( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the multiplication of an RNumber and unsigned.
 //
-const RNumber rnumber::operator*( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator*( const RNumber& n1, uint32_t n2 )
 {
 
   return multiply( n1, n2, false );
@@ -1396,7 +1396,7 @@ const RNumber rnumber::operator*( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the multiplication of an unsigned and RNumber.
 //
-const RNumber rnumber::operator*( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator*( uint32_t n1, const RNumber& n2 )
 {
 
   return multiply( RNumber(n1), n2, false );
@@ -1418,7 +1418,7 @@ const RNumber rnumber::multiplyExt( const RNumber& n1, const RNumber& n2 )
 // Non-member function for the multiplication of an RNumber and unsigned.
 // This multiply function will return the complete result.
 //
-const RNumber rnumber::multiplyExt( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::multiplyExt( const RNumber& n1, uint32_t n2 )
 {
 
   return multiply( n1, n2, true );
@@ -1429,7 +1429,7 @@ const RNumber rnumber::multiplyExt( const RNumber& n1, unsigned int n2 )
 // Non-member function for the multiplication of an unsigned and RNumber.
 // This multiply function will return the complete result.
 //
-const RNumber rnumber::multiplyExt( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::multiplyExt( uint32_t n1, const RNumber& n2 )
 {
 
   return multiply( RNumber(n1), n2, true );
@@ -1451,7 +1451,7 @@ RNumber& RNumber::operator*=( const RNumber& number )
   const unsigned int nwc = number._wordCount;
   const unsigned int maxwc = max( _wordCount, nwc );
 
-  const unsigned int* nvb = number._valueBuffer;
+  const uint32_t* nvb = number._valueBuffer;
 
   if ( _wordCount == 1 && nwc == 1 )
     {
@@ -1466,8 +1466,8 @@ RNumber& RNumber::operator*=( const RNumber& number )
     ;
   else
     {
-      unsigned int* resultValue0 = getTempBuffer( maxwc );
-      unsigned int* resultValue = resultValue0;
+      uint32_t* resultValue0 = getTempBuffer( maxwc );
+      uint32_t* resultValue = resultValue0;
 
       multiplyExtended( _valueBuffer, _wordCount, nvb, nwc, resultValue0, false );
 
@@ -1488,7 +1488,7 @@ RNumber& RNumber::operator*=( const RNumber& number )
 // The same as operator* but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator*=( unsigned int number )
+RNumber& RNumber::operator*=( uint32_t number )
 {
 
   // If the right operand is larger than us and our sizing is dynamic,
@@ -1509,7 +1509,7 @@ RNumber& RNumber::operator*=( unsigned int number )
     ;
   else
     {
-      unsigned int* resultValue0 = getTempBuffer( _wordCount );
+      uint32_t* resultValue0 = getTempBuffer( _wordCount );
 
       multiplyExtended( _valueBuffer, _wordCount, &number, 1, resultValue0, false );
 
@@ -1579,23 +1579,23 @@ RNumber& RNumber::operator*=( unsigned int number )
 //
 // Note2: The word size of vb1 must *always* be >= the word size of vb2.
 //
-static void multiplyExtended( const unsigned int* vb1, unsigned int wc1,
-                              const unsigned int* vb2, unsigned int wc2,
-                              unsigned int* resValue0, bool extend )
+static void multiplyExtended( const uint32_t* vb1, unsigned int wc1,
+                              const uint32_t* vb2, unsigned int wc2,
+                              uint32_t* resValue0, bool extend )
 {
-  const unsigned int* valEnd = vb1 + wc1 - 1;
-  const unsigned int* numEnd = vb2 + wc2 - 1;
+  const uint32_t* valEnd = vb1 + wc1 - 1;
+  const uint32_t* numEnd = vb2 + wc2 - 1;
   unsigned int maxwc = (extend) ? (wc1+wc2) : max( wc1, wc2 );
-  unsigned int* resValue = resValue0 + maxwc - 1;
-  const unsigned int* u;
-  const unsigned int* v;
-  unsigned int uj, vij, vij1;
-  unsigned int lw, hw;
-  unsigned int mult1, mult2;
-  unsigned int carry = 0;
-  unsigned int i2;
+  uint32_t* resValue = resValue0 + maxwc - 1;
+  const uint32_t* u;
+  const uint32_t* v;
+  uint32_t uj, vij, vij1;
+  uint32_t lw, hw;
+  uint32_t mult1, mult2;
+  uint32_t carry = 0;
+  uint32_t i2;
 
-  for ( unsigned int i = 0; i < maxwc * 2; i += 2 )
+  for ( uint32_t i = 0; i < maxwc * 2; i += 2 )
     {
       i2 = i / 2;
       lw = lowHalf( carry );
@@ -1611,7 +1611,7 @@ static void multiplyExtended( const unsigned int* vb1, unsigned int wc1,
       // words which don't exist, hence our pointer will be less than the start pointer.
       v = numEnd - i2;
 
-      for ( unsigned int j = 0; j < i; j += 2 )
+      for ( uint32_t j = 0; j < i; j += 2 )
         {
           // If we're in extending-arithmetic mode, we might pass the
           // most-significant word.  In that case, we use 0.
@@ -1706,12 +1706,12 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
   const unsigned int n2wc = n2._wordCount;
   const unsigned int maxwc = max( n1wc, n2wc );
 
-  const unsigned int* n1vb = n1._valueBuffer;
-  const unsigned int* n2vb = n2._valueBuffer;
+  const uint32_t* n1vb = n1._valueBuffer;
+  const uint32_t* n2vb = n2._valueBuffer;
 
   if ( n1wc == 1 && n2wc == 1 )
     {
-      unsigned int result = 0xffffffff;
+      uint32_t result = 0xffffffff;
 
       if ( n2vb[0] )
         result = n1vb[0] / n2vb[0];
@@ -1730,8 +1730,8 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
 
   // Convert word-based representation to byte-based representation.  A separate
   // buffer is used so that it will work correctly on a little endian architecture.
-  unsigned char* y = new unsigned char[n2wc * sizeof( unsigned int ) + 1];
-  unsigned char* x = new unsigned char[n1wc * sizeof( unsigned int ) + 1];
+  unsigned char* y = new unsigned char[n2wc * sizeof( uint32_t ) + 1];
+  unsigned char* x = new unsigned char[n1wc * sizeof( uint32_t ) + 1];
   unsigned char* p = x;
 
   *( x++ ) = 0;
@@ -1739,8 +1739,8 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
   convertToBytes( n2vb, y, n2wc );
 
   // Skip leading zeros in both numbers.
-  unsigned int xlen = skipLeadingZeroBytes( x, n1wc * sizeof( unsigned int ) );
-  unsigned int ylen = skipLeadingZeroBytes( y, n2wc * sizeof( unsigned int ) );
+  uint32_t xlen = skipLeadingZeroBytes( x, n1wc * sizeof( uint32_t ) );
+  uint32_t ylen = skipLeadingZeroBytes( y, n2wc * sizeof( uint32_t ) );
 
   // Case 4.
   if ( xlen < ylen )
@@ -1756,7 +1756,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
       delete [] p;
       delete [] y;
 
-      unsigned int v = n2vb[n2wc - 1];
+      uint32_t v = n2vb[n2wc - 1];
       
       if ( v )
         return RNumber( n1vb[n1wc - 1] / v, maxs );
@@ -1769,8 +1769,8 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
         }
     }
 
-  unsigned char* xb = x + n1wc * sizeof( unsigned int ) - xlen;
-  unsigned char* yb = y + n2wc * sizeof( unsigned int ) - ylen;
+  unsigned char* xb = x + n1wc * sizeof( uint32_t ) - xlen;
+  unsigned char* yb = y + n2wc * sizeof( uint32_t ) - ylen;
   unsigned char* q = (unsigned char*) getTempBuffer( maxwc * 2 );
   yb[ylen] = 0;   // in case ylen < 2
 
@@ -1780,9 +1780,9 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
   delete [] y;
 
   // Convert byte-based result to word-based result.
-  unsigned int* r = (unsigned int*) ( q + maxwc * sizeof( unsigned int ) );
-  unsigned int* s = r + maxwc - 1;
-  unsigned int shift = 0;
+  uint32_t* r = (uint32_t*) ( q + maxwc * sizeof( uint32_t ) );
+  uint32_t* s = r + maxwc - 1;
+  uint32_t shift = 0;
 
   p = q + xlen - ylen;
   *s = 0;
@@ -1812,7 +1812,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
       (n2.sizing () == RNumber::dynamic)) {
      local_sizing = RNumber::dynamic;
   }
-  return RNumber( (unsigned int*) r, maxwc, maxs, local_sizing);
+  return RNumber( (uint32_t*) r, maxwc, maxs, local_sizing);
 }
 
 
@@ -1831,17 +1831,17 @@ inline const RNumber rnumber::divide( const RNumber& n1, const RNumber& n2 )
 //    use native divide on low words.
 // 6. extended divide is necessary.
 //
-inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::divide( const RNumber& n1, uint32_t n2 )
 {
 
   const unsigned int maxs = max( n1._size, WordBits );
   const unsigned int n1wc = n1._wordCount;
 
-  const unsigned int* n1vb = n1._valueBuffer;
+  const uint32_t* n1vb = n1._valueBuffer;
 
   if ( n1wc == 1 )
     {
-      unsigned int result = 0xffffffff;
+      uint32_t result = 0xffffffff;
 
       if ( n2 )
         result = n1vb[0] / n2;
@@ -1860,8 +1860,8 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
 
   // Convert word-based representation to byte-based representation.  A separate
   // buffer is used so that it will work correctly on a little endian architecture.
-  unsigned char* y = new unsigned char[sizeof( unsigned int ) + 1];
-  unsigned char* x = new unsigned char[n1wc * sizeof( unsigned int ) + 1];
+  unsigned char* y = new unsigned char[sizeof( uint32_t ) + 1];
+  unsigned char* x = new unsigned char[n1wc * sizeof( uint32_t ) + 1];
   unsigned char* p = x;
 
   *( x++ ) = 0;
@@ -1869,8 +1869,8 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
   convertToBytes( &n2, y, 1 );
 
   // Skip leading zeros in both numbers.
-  unsigned int xlen = skipLeadingZeroBytes( x, n1wc * sizeof( unsigned int ) );
-  unsigned int ylen = skipLeadingZeroBytes( y, sizeof( unsigned int ) );
+  unsigned int xlen = skipLeadingZeroBytes( x, n1wc * sizeof( uint32_t ) );
+  unsigned int ylen = skipLeadingZeroBytes( y, sizeof( uint32_t ) );
 
   // Case 4.
   if ( xlen < ylen )
@@ -1897,8 +1897,8 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
         }
     }
 
-  unsigned char* xb = x + n1wc * sizeof( unsigned int ) - xlen;
-  unsigned char* yb = y + sizeof( unsigned int ) - ylen;
+  unsigned char* xb = x + n1wc * sizeof( uint32_t ) - xlen;
+  unsigned char* yb = y + sizeof( uint32_t ) - ylen;
   unsigned char* q = (unsigned char*) getTempBuffer( n1wc * 2 );
   yb[ylen] = 0;   // in case ylen < 2
 
@@ -1908,9 +1908,9 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
   delete [] y;
 
   // Convert byte-based result to word-based result.
-  unsigned int* r = (unsigned int*) ( q + n1wc * sizeof( unsigned int ) );
-  unsigned int* s = r + n1wc - 1;
-  unsigned int shift = 0;
+  uint32_t* r = (uint32_t*) ( q + n1wc * sizeof( uint32_t ) );
+  uint32_t* s = r + n1wc - 1;
+  uint32_t shift = 0;
 
   p = q + xlen - ylen;
   *s = 0;
@@ -1934,7 +1934,7 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
   while ( s >= r )
     *( s-- ) = 0;
 
-  return RNumber( (unsigned int*) r, n1wc, maxs, n1.sizing ());
+  return RNumber( (uint32_t*) r, n1wc, maxs, n1.sizing ());
 }
 
 
@@ -1953,17 +1953,17 @@ inline const RNumber rnumber::divide( const RNumber& n1, unsigned int n2 )
 //    use native divide on low words.
 // 6. extended divide is necessary.
 //
-inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
+inline const RNumber rnumber::divide( uint32_t n1, const RNumber& n2 )
 {
 
   const unsigned int maxs = max( WordBits, n2._size );
   const unsigned int n2wc = n2._wordCount;
 
-  const unsigned int* n2vb = n2._valueBuffer;
+  const uint32_t* n2vb = n2._valueBuffer;
 
   if ( n2wc == 1 )
     {
-      unsigned int result = 0xffffffff;
+      uint32_t result = 0xffffffff;
 
       if ( n2vb[0] )
         result = n1 / n2vb[0];
@@ -1982,8 +1982,8 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
 
   // Convert word-based representation to byte-based representation.  A separate
   // buffer is used so that it will work correctly on a little endian architecture.
-  unsigned char* y = new unsigned char[n2wc * sizeof( unsigned int ) + 1];
-  unsigned char* x = new unsigned char[sizeof( unsigned int ) + 1];
+  unsigned char* y = new unsigned char[n2wc * sizeof( uint32_t ) + 1];
+  unsigned char* x = new unsigned char[sizeof( uint32_t ) + 1];
   unsigned char* p = x;
 
   *( x++ ) = 0;
@@ -1991,8 +1991,8 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
   convertToBytes( n2vb, y, n2wc );
 
   // Skip leading zeros in both numbers.
-  unsigned int xlen = skipLeadingZeroBytes( x, sizeof( unsigned int ) );
-  unsigned int ylen = skipLeadingZeroBytes( y, n2wc * sizeof( unsigned int ) );
+  unsigned int xlen = skipLeadingZeroBytes( x, sizeof( uint32_t ) );
+  unsigned int ylen = skipLeadingZeroBytes( y, n2wc * sizeof( uint32_t ) );
 
   // Case 4.
   if ( xlen < ylen )
@@ -2008,7 +2008,7 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
       delete [] p;
       delete [] y;
 
-      unsigned int v = n2vb[n2wc - 1];
+      uint32_t v = n2vb[n2wc - 1];
       
       if ( v )
         return RNumber( n1 / v, maxs );
@@ -2021,8 +2021,8 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
         }
     }
 
-  unsigned char* xb = x + sizeof( unsigned int ) - xlen;
-  unsigned char* yb = y + n2wc * sizeof( unsigned int ) - ylen;
+  unsigned char* xb = x + sizeof( uint32_t ) - xlen;
+  unsigned char* yb = y + n2wc * sizeof( uint32_t ) - ylen;
   unsigned char* q = (unsigned char*) getTempBuffer( n2wc * 2 );
   yb[ylen] = 0;   // in case ylen < 2
 
@@ -2032,9 +2032,9 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
   delete [] y;
 
   // Convert byte-based result to word-based result.
-  unsigned int* r = (unsigned int*) ( q + n2wc * sizeof( unsigned int ) );
-  unsigned int* s = r + n2wc - 1;
-  unsigned int shift = 0;
+  uint32_t* r = (uint32_t*) ( q + n2wc * sizeof( uint32_t ) );
+  uint32_t* s = r + n2wc - 1;
+  uint32_t shift = 0;
 
   p = q + xlen - ylen;
   *s = 0;
@@ -2058,7 +2058,7 @@ inline const RNumber rnumber::divide( unsigned int n1, const RNumber& n2 )
   while ( s >= r )
     *( s-- ) = 0;
 
-  return RNumber( (unsigned int*) r, n2wc, maxs, n2.sizing ());
+  return RNumber( (uint32_t*) r, n2wc, maxs, n2.sizing ());
 }
 
 
@@ -2075,7 +2075,7 @@ const RNumber rnumber::operator/( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the division of an RNumber and unsigned.
 //
-const RNumber rnumber::operator/( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator/( const RNumber& n1, uint32_t n2 )
 {
 
   return divide( n1, n2 );
@@ -2085,7 +2085,7 @@ const RNumber rnumber::operator/( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the division of an unsigned and RNumber.
 //
-const RNumber rnumber::operator/( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator/( uint32_t n1, const RNumber& n2 )
 {
 
   return divide( n1, n2 );
@@ -2106,7 +2106,7 @@ RNumber& RNumber::operator/=( const RNumber& number )
 
   const unsigned int nwc = number._wordCount;
   const unsigned int maxwc = max( _wordCount, number._wordCount );
-  const unsigned int* nvb = number._valueBuffer;
+  const uint32_t* nvb = number._valueBuffer;
 
   if ( _wordCount == 1 && nwc == 1 )
     {
@@ -2131,8 +2131,8 @@ RNumber& RNumber::operator/=( const RNumber& number )
 
   // Convert word-based representation to byte-based representation.  A separate
   // buffer is used so that it will work correctly on a little endian architecture.
-  unsigned char* y = new unsigned char[nwc * sizeof( unsigned int ) + 1];
-  unsigned char* x = new unsigned char[_wordCount * sizeof( unsigned int ) + 1];
+  unsigned char* y = new unsigned char[nwc * sizeof( uint32_t ) + 1];
+  unsigned char* x = new unsigned char[_wordCount * sizeof( uint32_t ) + 1];
   unsigned char* p = x;
 
   *( x++ ) = 0;
@@ -2140,8 +2140,8 @@ RNumber& RNumber::operator/=( const RNumber& number )
   convertToBytes( nvb, y, nwc );
 
   // Skip leading zeros in both numbers.
-  unsigned int xlen = skipLeadingZeroBytes( x, _wordCount * sizeof( unsigned int ) );
-  unsigned int ylen = skipLeadingZeroBytes( y, nwc * sizeof( unsigned int ) );
+  unsigned int xlen = skipLeadingZeroBytes( x, _wordCount * sizeof( uint32_t ) );
+  unsigned int ylen = skipLeadingZeroBytes( y, nwc * sizeof( uint32_t ) );
 
   // Case 4.
   if ( xlen < ylen )
@@ -2160,7 +2160,7 @@ RNumber& RNumber::operator/=( const RNumber& number )
       delete [] p;
       delete [] y;
 
-      unsigned int v = nvb[nwc - 1];
+      uint32_t v = nvb[nwc - 1];
 
       if ( v )
         _valueBuffer[_wordCount - 1] /= v;
@@ -2170,8 +2170,8 @@ RNumber& RNumber::operator/=( const RNumber& number )
       return *this;
     }
 
-  unsigned char* xb = x + _wordCount * sizeof( unsigned int ) - xlen;
-  unsigned char* yb = y + nwc * sizeof( unsigned int ) - ylen;
+  unsigned char* xb = x + _wordCount * sizeof( uint32_t ) - xlen;
+  unsigned char* yb = y + nwc * sizeof( uint32_t ) - ylen;
   unsigned char* q = (unsigned char*) getTempBuffer( maxwc );
   yb[ylen] = 0;   // in case ylen < 2
 
@@ -2181,8 +2181,8 @@ RNumber& RNumber::operator/=( const RNumber& number )
   delete [] y;
 
   // Convert byte-based result to word-based result
-  unsigned int* s = _valueBuffer + _wordCount - 1;
-  unsigned int shift = 0;
+  uint32_t* s = _valueBuffer + _wordCount - 1;
+  uint32_t shift = 0;
   p = q + xlen - ylen;
   *s = 0;
 
@@ -2213,7 +2213,7 @@ RNumber& RNumber::operator/=( const RNumber& number )
 // The same as operator/ but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator/=( unsigned int number )
+RNumber& RNumber::operator/=( uint32_t number )
 {
 
   // If the right operand is larger than us and our sizing is dynamic,
@@ -2244,8 +2244,8 @@ RNumber& RNumber::operator/=( unsigned int number )
 
   // Convert word-based representation to byte-based representation.  A separate
   // buffer is used so that it will work correctly on a little endian architecture.
-  unsigned char* y = new unsigned char[sizeof( unsigned int ) + 1];
-  unsigned char* x = new unsigned char[_wordCount * sizeof( unsigned int ) + 1];
+  unsigned char* y = new unsigned char[sizeof( uint32_t ) + 1];
+  unsigned char* x = new unsigned char[_wordCount * sizeof( uint32_t ) + 1];
   unsigned char* p = x;
 
   *( x++ ) = 0;
@@ -2253,8 +2253,8 @@ RNumber& RNumber::operator/=( unsigned int number )
   convertToBytes( &number, y, 1 );
 
   // Skip leading zeros in both numbers.
-  unsigned int xlen = skipLeadingZeroBytes( x, _wordCount * sizeof( unsigned int ) );
-  unsigned int ylen = skipLeadingZeroBytes( y, sizeof( unsigned int ) );
+  unsigned int xlen = skipLeadingZeroBytes( x, _wordCount * sizeof( uint32_t ) );
+  unsigned int ylen = skipLeadingZeroBytes( y, sizeof( uint32_t ) );
 
   // Case 4.
   if ( xlen < ylen )
@@ -2281,8 +2281,8 @@ RNumber& RNumber::operator/=( unsigned int number )
       return *this;
     }
 
-  unsigned char* xb = x + _wordCount * sizeof( unsigned int ) - xlen;
-  unsigned char* yb = y + sizeof( unsigned int ) - ylen;
+  unsigned char* xb = x + _wordCount * sizeof( uint32_t ) - xlen;
+  unsigned char* yb = y + sizeof( uint32_t ) - ylen;
   unsigned char* q = (unsigned char*) getTempBuffer( _wordCount );
   yb[ylen] = 0;   // in case ylen < 2
 
@@ -2292,8 +2292,8 @@ RNumber& RNumber::operator/=( unsigned int number )
   delete [] y;
 
   // Convert byte-based result to word-based result
-  unsigned int* s = _valueBuffer + _wordCount - 1;
-  unsigned int shift = 0;
+  uint32_t* s = _valueBuffer + _wordCount - 1;
+  uint32_t shift = 0;
   p = q + xlen - ylen;
   *s = 0;
 
@@ -2342,17 +2342,19 @@ RNumber& RNumber::operator/=( unsigned int number )
 static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char* yb, unsigned int ylen,
                             unsigned char* q )
 {
-  unsigned int qk;    // qk is a guess for q[k] such that q[k] = qk or qk - 1.
-  unsigned int x3;    // most significant 3 bytes of x
-  unsigned int y2;    // most significant 2 bytes of y.
+  uint32_t qk;    // qk is a guess for q[k] such that q[k] = qk or qk - 1.
+  uint32_t x3;    // most significant 3 bytes of x
+  uint32_t y2;    // most significant 2 bytes of y.
 
   y2 = ( yb[0] << ByteBits ) + yb[1];
-
+                     
+  // This represents dividend[i-1], which starts at 0 for when i == 0.
+  uint32_t first_byte = 0;
   // Find each q[k]. qk is a guess for q[k] such that q[k] = qk or qk - 1.
   // Find qk by just using 2 bytes of y and 3 bytes of x.
   for ( unsigned int k = 0; k <= xlen - ylen; k++ )
     {
-      x3 = ( xb[k - 1] << ( 2 * ByteBits ) ) + ( xb[k] << ByteBits ) + xb[k + 1];
+      x3 = ( first_byte << ( 2 * ByteBits ) ) + ( xb[k] << ByteBits ) + xb[k + 1];
       qk = x3 / y2;
 
       // qk cannot be larger than the largest value in ByteRadix.
@@ -2414,6 +2416,7 @@ static void divideExtended( unsigned char* xb, unsigned int xlen, unsigned char*
             }
         }
       q[k] = (unsigned char) qk;
+      first_byte = xb[k];
     }
 }
 
@@ -2435,7 +2438,7 @@ inline const RNumber rnumber::mod( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the modulus of an RNumber using an unsigned.
 //
-inline const RNumber rnumber::mod( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::mod( const RNumber& n1, uint32_t n2 )
 {
 
   RNumber result( 0, WordBits );
@@ -2449,7 +2452,7 @@ inline const RNumber rnumber::mod( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the modulus of an unsigned using an RNumber.
 //
-inline const RNumber rnumber::mod( unsigned int n1, const RNumber& n2 )
+inline const RNumber rnumber::mod( uint32_t n1, const RNumber& n2 )
 {
 
   RNumber result( 0, n2._size );
@@ -2473,7 +2476,7 @@ const RNumber rnumber::operator%( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for the modulus of an RNumber and unsigned.
 //
-const RNumber rnumber::operator%( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator%( const RNumber& n1, uint32_t n2 )
 {
 
   return mod( n1, n2 );
@@ -2483,7 +2486,7 @@ const RNumber rnumber::operator%( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for the modulus of an unsigned and RNumber.
 //
-const RNumber rnumber::operator%( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator%( uint32_t n1, const RNumber& n2 )
 {
 
   return mod( n1, n2 );
@@ -2507,7 +2510,7 @@ RNumber& RNumber::operator%=( const RNumber& number )
 // The same as operator% but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator%=( unsigned int number )
+RNumber& RNumber::operator%=( uint32_t number )
 {
 
   *this -= ( *this / number ) * number;
@@ -2527,10 +2530,10 @@ inline const RNumber rnumber::bitWiseAnd( const RNumber& n1, const RNumber& n2 )
   const unsigned int minwc = min( n1wc, n2wc );
   const unsigned int maxwc = max( n1wc, n2wc );
 
-  const unsigned int* value    = n1._valueBuffer + n1wc - 1;
-  const unsigned int* numValue = n2._valueBuffer + n2wc - 1;
-  unsigned int* resValue0 = getTempBuffer( maxwc );
-  unsigned int* resValue = resValue0 + maxwc - 1;
+  const uint32_t* value    = n1._valueBuffer + n1wc - 1;
+  const uint32_t* numValue = n2._valueBuffer + n2wc - 1;
+  uint32_t* resValue0 = getTempBuffer( maxwc );
+  uint32_t* resValue = resValue0 + maxwc - 1;
 
   unsigned int i;
 
@@ -2547,14 +2550,14 @@ inline const RNumber rnumber::bitWiseAnd( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ANDing an RNumber and unsigned.
 //
-inline const RNumber rnumber::bitWiseAnd( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::bitWiseAnd( const RNumber& n1, uint32_t n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
 
-  const unsigned int* value = n1._valueBuffer + n1wc - 1;
-  unsigned int* resValue0 = getTempBuffer( n1wc );
-  unsigned int* resValue = resValue0 + n1wc - 1;
+  const uint32_t* value = n1._valueBuffer + n1wc - 1;
+  uint32_t* resValue0 = getTempBuffer( n1wc );
+  uint32_t* resValue = resValue0 + n1wc - 1;
 
   *( resValue-- ) = *value & n2;
 
@@ -2578,7 +2581,7 @@ const RNumber rnumber::operator&( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ANDing an RNumber and unsigned.
 //
-const RNumber rnumber::operator&( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator&( const RNumber& n1, uint32_t n2 )
 {
 
   return bitWiseAnd( n1, n2 );
@@ -2588,7 +2591,7 @@ const RNumber rnumber::operator&( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise ANDing an unsigned and RNumber.
 //
-const RNumber rnumber::operator&( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator&( uint32_t n1, const RNumber& n2 )
 {
 
   return bitWiseAnd( n2, n1 );
@@ -2608,8 +2611,8 @@ RNumber& RNumber::operator&=( const RNumber& number )
     resize( number._size );
 
   unsigned int minwc = min( _wordCount, number._wordCount );
-  unsigned int* value = _valueBuffer + _wordCount - 1;
-  const unsigned int* numValue = number._valueBuffer + number._wordCount - 1;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
+  const uint32_t* numValue = number._valueBuffer + number._wordCount - 1;
 
   unsigned int i;
 
@@ -2627,7 +2630,7 @@ RNumber& RNumber::operator&=( const RNumber& number )
 // The same as operator& but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator&=( unsigned int number )
+RNumber& RNumber::operator&=( uint32_t number )
 {
 
   // If the right operand is larger than us and our sizing is dynamic,
@@ -2635,7 +2638,7 @@ RNumber& RNumber::operator&=( unsigned int number )
   if ( _sizing == dynamic && _size < WordBits )
     resize( WordBits );
 
-  unsigned int* value = _valueBuffer;
+  uint32_t* value = _valueBuffer;
 
   for ( unsigned int i = 0; i < _wordCount - 1; i++ )
     *( value++ ) = 0;
@@ -2657,10 +2660,10 @@ inline const RNumber rnumber::bitWiseOr( const RNumber& n1, const RNumber& n2 )
   const unsigned int minwc = min( n1wc, n2wc );
   const unsigned int maxwc = max( n1wc, n2wc );
 
-  const unsigned int* value = n1._valueBuffer + n1wc - 1;
-  const unsigned int* numValue = n2._valueBuffer + n2wc - 1;
-  unsigned int* resValue0 = getTempBuffer( maxwc );
-  unsigned int* resValue = resValue0 + maxwc - 1;
+  const uint32_t* value = n1._valueBuffer + n1wc - 1;
+  const uint32_t* numValue = n2._valueBuffer + n2wc - 1;
+  uint32_t* resValue0 = getTempBuffer( maxwc );
+  uint32_t* resValue = resValue0 + maxwc - 1;
 
   unsigned int i;
 
@@ -2681,14 +2684,14 @@ inline const RNumber rnumber::bitWiseOr( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ORing two RNumbers.
 //
-inline const RNumber rnumber::bitWiseOr( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::bitWiseOr( const RNumber& n1, uint32_t n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
 
-  const unsigned int* value = n1._valueBuffer;
-  unsigned int* resValue0 = getTempBuffer( n1wc );
-  unsigned int* resValue = resValue0;
+  const uint32_t* value = n1._valueBuffer;
+  uint32_t* resValue0 = getTempBuffer( n1wc );
+  uint32_t* resValue = resValue0;
 
   for ( unsigned int i = 0; i < n1wc - 1; i++ )
     *( resValue++ ) = *( value++ );
@@ -2712,7 +2715,7 @@ const RNumber rnumber::operator|( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise ORing an RNumber and unsigned.
 //
-const RNumber rnumber::operator|( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator|( const RNumber& n1, uint32_t n2 )
 {
 
   return bitWiseOr( n1, n2 );
@@ -2722,7 +2725,7 @@ const RNumber rnumber::operator|( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise ORing an unsigned and RNumber.
 //
-const RNumber rnumber::operator|( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator|( uint32_t n1, const RNumber& n2 )
 {
 
   return bitWiseOr( n2, n1 );
@@ -2742,8 +2745,8 @@ RNumber& RNumber::operator|=( const RNumber& number )
     resize( number._size );
 
   unsigned int minwc = min( _wordCount, number._wordCount );
-  unsigned int* value = _valueBuffer + _wordCount - 1;
-  const unsigned int* numValue = number._valueBuffer + number._wordCount - 1;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
+  const uint32_t* numValue = number._valueBuffer + number._wordCount - 1;
 
   for ( unsigned int i = 0; i < minwc; i++ )
     *( value-- ) |= *( numValue-- );
@@ -2758,7 +2761,7 @@ RNumber& RNumber::operator|=( const RNumber& number )
 // The same as operator| but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator|=( unsigned int number )
+RNumber& RNumber::operator|=( uint32_t number )
 {
 
   // If the right operand is larger than us and our sizing is dynamic,
@@ -2766,7 +2769,7 @@ RNumber& RNumber::operator|=( unsigned int number )
   if ( _sizing == dynamic && _size < WordBits )
     resize( WordBits );
 
-  unsigned int* value = _valueBuffer + _wordCount - 1;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
 
   *value |= number;
 
@@ -2787,10 +2790,10 @@ inline const RNumber rnumber::bitWiseXor( const RNumber& n1, const RNumber& n2 )
   const unsigned int minwc = min( n1wc, n2wc );
   const unsigned int maxwc = max( n1wc, n2wc );
 
-  const unsigned int* value = n1._valueBuffer + n1wc - 1;
-  const unsigned int* numValue = n2._valueBuffer + n2wc - 1;
-  unsigned int* resValue0 = getTempBuffer( maxwc );
-  unsigned int* resValue = resValue0 + maxwc - 1;
+  const uint32_t* value = n1._valueBuffer + n1wc - 1;
+  const uint32_t* numValue = n2._valueBuffer + n2wc - 1;
+  uint32_t* resValue0 = getTempBuffer( maxwc );
+  uint32_t* resValue = resValue0 + maxwc - 1;
 
   unsigned int i;
 
@@ -2811,14 +2814,14 @@ inline const RNumber rnumber::bitWiseXor( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise XORing an RNumber and an unsigned.
 //
-inline const RNumber rnumber::bitWiseXor( const RNumber& n1, unsigned int n2 )
+inline const RNumber rnumber::bitWiseXor( const RNumber& n1, uint32_t n2 )
 {
 
   const unsigned int n1wc = n1._wordCount;
 
-  const unsigned int* value = n1._valueBuffer;
-  unsigned int* resValue0 = getTempBuffer( n1wc );
-  unsigned int* resValue = resValue0;
+  const uint32_t* value = n1._valueBuffer;
+  uint32_t* resValue0 = getTempBuffer( n1wc );
+  uint32_t* resValue = resValue0;
 
   for ( unsigned int i = 0; i < n1wc - 1; i++ )
     *( resValue++ ) = *( value++ );
@@ -2842,7 +2845,7 @@ const RNumber rnumber::operator^( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for bit-wise XORing an RNumber and unsigned.
 //
-const RNumber rnumber::operator^( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator^( const RNumber& n1, uint32_t n2 )
 {
 
   return bitWiseXor( n1, n2 );
@@ -2852,7 +2855,7 @@ const RNumber rnumber::operator^( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for bit-wise XORing an unsigned and RNumber.
 //
-const RNumber rnumber::operator^( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator^( uint32_t n1, const RNumber& n2 )
 {
 
   return bitWiseXor( n2, n1 );
@@ -2872,8 +2875,8 @@ RNumber& RNumber::operator^=( const RNumber& number )
     resize( number._size );
 
   unsigned int minwc = min( _wordCount, number._wordCount );
-  unsigned int* value = _valueBuffer + _wordCount - 1;;
-  const unsigned int* numValue = number._valueBuffer + number._wordCount - 1;
+  uint32_t* value = _valueBuffer + _wordCount - 1;;
+  const uint32_t* numValue = number._valueBuffer + number._wordCount - 1;
 
   for ( unsigned int i = 0; i < minwc; i++ )
     *( value-- ) ^= *( numValue-- );
@@ -2888,7 +2891,7 @@ RNumber& RNumber::operator^=( const RNumber& number )
 // The same as operator^ but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator^=( unsigned int number )
+RNumber& RNumber::operator^=( uint32_t number )
 {
 
   // If the right operand is larger than us and our sizing is dynamic,
@@ -2896,7 +2899,7 @@ RNumber& RNumber::operator^=( unsigned int number )
   if ( _sizing == dynamic && _size < WordBits )
     resize( WordBits );
 
-  unsigned int* value = _valueBuffer + _wordCount - 1;
+  uint32_t* value = _valueBuffer + _wordCount - 1;
 
   *value ^= number;
 
@@ -2915,13 +2918,13 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift.uint32();
   unsigned int nwc = n._wordCount;
-  const unsigned int totalwc = nwc + ( shift.uint32() / WordBits ) + 1;
+  const uint32_t totalwc = nwc + ( shift.uint32() / WordBits ) + 1;
 
-  const unsigned int* value = n._valueBuffer + nwc - 1;
+  const uint32_t* value = n._valueBuffer + nwc - 1;
   unsigned alloc  = (extend) ? totalwc : nwc;
   unsigned adjust = (extend) ? (totalwc - nwc) : 0;
-  unsigned int* resValue0 = getTempBuffer( alloc );
-  unsigned int* resValue = resValue0 + alloc - 1;
+  uint32_t* resValue0 = getTempBuffer( alloc );
+  uint32_t* resValue = resValue0 + alloc - 1;
 
   unsigned int i;
 
@@ -2938,10 +2941,10 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
         }
       else if ( shift < WordBits )
         {
-          unsigned int intShift = shift.uint32();
-          int invShift = WordBits - intShift;
-          unsigned int mask = ( 0x1 << intShift ) - 1;
-          unsigned int cin = 0;
+          uint32_t intShift = shift.uint32();
+          int32_t invShift = WordBits - intShift;
+          uint32_t mask = ( 0x1 << intShift ) - 1;
+          uint32_t cin = 0;
 
           if ( extend )
             {
@@ -2957,7 +2960,7 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
         }
       else if ( ( shift % WordBits ) == 0 )
         {
-          unsigned int offset = shift.uint32() / WordBits;
+          uint32_t offset = shift.uint32() / WordBits;
 
           if ( extend )
             {
@@ -2989,18 +2992,18 @@ inline const RNumber rnumber::leftShift( const RNumber& n, const RNumber& shift,
 //
 // Non-member function for left shifting an RNumber using an unsigned.
 //
-inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, bool extend )
+inline const RNumber rnumber::leftShift( const RNumber& n, uint32_t shift, bool extend )
 {
   unsigned int ns = n._size;
   const unsigned int totals = ns + shift;
   unsigned int nwc = n._wordCount;
   const unsigned int totalwc = nwc + ( shift / WordBits ) + 1;
 
-  const unsigned int* value = n._valueBuffer + nwc - 1;
+  const uint32_t* value = n._valueBuffer + nwc - 1;
   unsigned alloc  = (extend) ? totalwc : nwc;
   unsigned adjust = (extend) ? (totalwc - nwc) : 0;
-  unsigned int* resValue0 = getTempBuffer( alloc );
-  unsigned int* resValue = resValue0 + alloc - 1;
+  uint32_t* resValue0 = getTempBuffer( alloc );
+  uint32_t* resValue = resValue0 + alloc - 1;
 
   unsigned int i;
 
@@ -3018,8 +3021,8 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
       else if ( shift < WordBits )
         {
           int invShift = WordBits - shift;
-          unsigned int mask = ( 1 << shift ) - 1;
-          unsigned int cin = 0;
+          uint32_t mask = ( 1 << shift ) - 1;
+          uint32_t cin = 0;
 
           if ( extend )
             {
@@ -3035,7 +3038,7 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
         }
       else if ( ( shift % WordBits ) == 0 )
         {
-          unsigned int offset = shift / WordBits;
+          uint32_t offset = shift / WordBits;
 
           if ( extend )
             {
@@ -3071,10 +3074,10 @@ inline const RNumber rnumber::leftShift( const RNumber& n, unsigned int shift, b
 //
 // Non-member function for left shifting an unsigned using an RNumber.
 //
-inline const RNumber rnumber::leftShift( unsigned int n, const RNumber& shift, bool extend )
+inline const RNumber rnumber::leftShift( uint32_t n, const RNumber& shift, bool extend )
 {
 
-  unsigned int* resValue0 = getTempBuffer( 1 );
+  uint32_t* resValue0 = getTempBuffer( 1 );
 
   if ( shift == 0 )
     *resValue0 = n;
@@ -3100,7 +3103,7 @@ const RNumber rnumber::operator<<( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for left shifting an RNumber with an unsigned.
 //
-const RNumber rnumber::operator<<( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator<<( const RNumber& n1, uint32_t n2 )
 {
   return leftShift( n1, n2, false );
 }
@@ -3109,7 +3112,7 @@ const RNumber rnumber::operator<<( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for left shifting an unsigned with an RNumber.
 //
-const RNumber rnumber::operator<<( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator<<( uint32_t n1, const RNumber& n2 )
 {
 
   return leftShift( n1, n2, false );
@@ -3129,7 +3132,7 @@ const RNumber rnumber::leftShiftExt( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for left shifting an RNumber with an unsigned.
 //
-const RNumber rnumber::leftShiftExt( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::leftShiftExt( const RNumber& n1, uint32_t n2 )
 {
 
   return leftShift( n1, n2, true );
@@ -3139,7 +3142,7 @@ const RNumber rnumber::leftShiftExt( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for left shifting an unsigned with an RNumber.
 //
-const RNumber rnumber::leftShiftExt( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::leftShiftExt( uint32_t n1, const RNumber& n2 )
 {
 
   return leftShift( n1, n2, true );
@@ -3159,12 +3162,12 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
     {
       if ( shift < WordBits )
         {
-          unsigned int* value = _valueBuffer + _wordCount - 1;
-          unsigned int intShift = shift.uint32();
+          uint32_t* value = _valueBuffer + _wordCount - 1;
+          uint32_t intShift = shift.uint32();
           int invShift = WordBits - intShift;
-          unsigned int mask = ( 1 << intShift ) - 1;
-          unsigned int cin = 0;
-          unsigned int old;
+          uint32_t mask = ( 1 << intShift ) - 1;
+          uint32_t cin = 0;
+          uint32_t old;
 
           for ( i = 0; i < _wordCount; i++ )
             {
@@ -3178,8 +3181,8 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
         }
       else if ( ( shift % WordBits ) == 0 )
         {
-          unsigned int* value = _valueBuffer;
-          unsigned int offset = shift.uint32() / WordBits;
+          uint32_t* value = _valueBuffer;
+          uint32_t offset = shift.uint32() / WordBits;
 
           for ( i = offset; i < _wordCount; i++ )
             {
@@ -3197,7 +3200,7 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
     }
   else
     {
-      unsigned int* value = _valueBuffer;
+      uint32_t* value = _valueBuffer;
 
       for ( i = 0; i < _wordCount; i++ )
         *( value++ ) = 0;
@@ -3211,7 +3214,7 @@ RNumber& RNumber::operator<<=( const RNumber& shift )
 // The same as operator<< but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator<<=( unsigned int shift )
+RNumber& RNumber::operator<<=( uint32_t shift )
 {
 
   unsigned int i;
@@ -3220,11 +3223,11 @@ RNumber& RNumber::operator<<=( unsigned int shift )
     {
       if ( shift < WordBits )
         {
-          unsigned int* value = _valueBuffer + _wordCount - 1;
-          int invShift = WordBits - shift;
-          unsigned int mask = ( 1 << shift ) - 1;
-          unsigned int cin = 0;
-          unsigned int old;
+          uint32_t* value = _valueBuffer + _wordCount - 1;
+          int32_t invShift = WordBits - shift;
+          uint32_t mask = ( 1 << shift ) - 1;
+          uint32_t cin = 0;
+          uint32_t old;
 
           for ( i = 0; i < _wordCount; i++ )
             {
@@ -3238,8 +3241,8 @@ RNumber& RNumber::operator<<=( unsigned int shift )
         }
       else if ( ( shift % WordBits ) == 0 )
         {
-          unsigned int* value = _valueBuffer;
-          unsigned int offset = shift / WordBits;
+          uint32_t* value = _valueBuffer;
+          uint32_t offset = shift / WordBits;
 
           for ( i = offset; i < _wordCount; i++ )
             {
@@ -3257,7 +3260,7 @@ RNumber& RNumber::operator<<=( unsigned int shift )
     }
   else
     {
-      unsigned int* value = _valueBuffer;
+      uint32_t* value = _valueBuffer;
 
       for ( i = 0; i < _wordCount; i++ )
         *( value++ ) = 0;
@@ -3273,18 +3276,18 @@ RNumber& RNumber::operator<<=( unsigned int shift )
 inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift )
 {
   const unsigned int nwc = n._wordCount;
-  const unsigned int* value = n._valueBuffer;
-  unsigned int* resValue0 = getTempBuffer( nwc );
-  unsigned int* resValue = resValue0;
+  const uint32_t* value = n._valueBuffer;
+  uint32_t* resValue0 = getTempBuffer( nwc );
+  uint32_t* resValue = resValue0;
 
   unsigned int i;
 
   if (shift < n._size) {
     if (shift < WordBits) {
-      unsigned int intShift = shift.uint32();
-      int invShift = WordBits - intShift;
-      unsigned int mask = ( 1 << intShift ) - 1;
-      unsigned int cin = 0;
+      uint32_t intShift = shift.uint32();
+      int32_t invShift = WordBits - intShift;
+      uint32_t mask = ( 1 << intShift ) - 1;
+      uint32_t cin = 0;
 
       for (i = 0; i < nwc; i++) {
         *(resValue++) = (*value >> intShift) | cin;
@@ -3292,7 +3295,7 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
       }
     }
     else if ((shift % WordBits) == 0) {
-      unsigned int offset = shift.uint32() / WordBits;
+      uint32_t offset = shift.uint32() / WordBits;
 
       for ( i = 0; i < offset; i++ ) {
         *( resValue++ ) = 0;
@@ -3321,14 +3324,14 @@ inline const RNumber rnumber::rightShift( const RNumber& n, const RNumber& shift
 //
 // Non-member function for right shifting an RNumber using an unsigned.
 //
-inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
+inline const RNumber rnumber::rightShift( const RNumber& n, uint32_t shift )
 {
 
   const unsigned int nwc = n._wordCount;
 
-  const unsigned int* value = n._valueBuffer;
-  unsigned int* resValue0 = getTempBuffer( nwc );
-  unsigned int* resValue = resValue0;
+  const uint32_t* value = n._valueBuffer;
+  uint32_t* resValue0 = getTempBuffer( nwc );
+  uint32_t* resValue = resValue0;
 
   unsigned int i;
 
@@ -3337,8 +3340,8 @@ inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
       if ( shift < WordBits )
         {
           int invShift = WordBits - shift;
-          unsigned int mask = ( 1 << shift ) - 1;
-          unsigned int cin = 0;
+          uint32_t mask = ( 1 << shift ) - 1;
+          uint32_t cin = 0;
 
           for ( i = 0; i < nwc; i++ )
             {
@@ -3348,7 +3351,7 @@ inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
         }
       else if ( ( shift % WordBits ) == 0 )
         {
-          unsigned int offset = shift / WordBits;
+          uint32_t offset = shift / WordBits;
 
           for ( i = 0; i < offset; i++ )
             *( resValue++ ) = 0;
@@ -3377,10 +3380,10 @@ inline const RNumber rnumber::rightShift( const RNumber& n, unsigned int shift )
 //
 // Non-member function for right shifting an RNumber using an RNumber.
 //
-inline const RNumber rnumber::rightShift( unsigned int n, const RNumber& shift )
+inline const RNumber rnumber::rightShift( uint32_t n, const RNumber& shift )
 {
 
-  unsigned int* resValue0 = getTempBuffer( 1 );
+  uint32_t* resValue0 = getTempBuffer( 1 );
 
   if ( shift == 0 )
     *resValue0 = n;
@@ -3406,7 +3409,7 @@ const RNumber rnumber::operator>>( const RNumber& n1, const RNumber& n2 )
 //
 // Non-member function for right shifting an RNumber with an unsigned.
 //
-const RNumber rnumber::operator>>( const RNumber& n1, unsigned int n2 )
+const RNumber rnumber::operator>>( const RNumber& n1, uint32_t n2 )
 {
 
   return rightShift( n1, n2 );
@@ -3416,7 +3419,7 @@ const RNumber rnumber::operator>>( const RNumber& n1, unsigned int n2 )
 //
 // Non-member function for right shifting an unsigned with an RNumber.
 //
-const RNumber rnumber::operator>>( unsigned int n1, const RNumber& n2 )
+const RNumber rnumber::operator>>( uint32_t n1, const RNumber& n2 )
 {
 
   return rightShift( n1, n2 );
@@ -3430,18 +3433,18 @@ const RNumber rnumber::operator>>( unsigned int n1, const RNumber& n2 )
 RNumber& RNumber::operator>>=( const RNumber& shift ) 
 {
 
-  unsigned int* value = _valueBuffer;
+  uint32_t* value = _valueBuffer;
   unsigned int i;
 
   if ( shift < _size )
     {
       if ( shift < WordBits )
         {
-          unsigned int intShift = shift.uint32();
-          int invShift = WordBits - intShift;
-          unsigned int mask = ( 1 << intShift ) - 1;
-          unsigned int cin = 0;
-          unsigned int old;
+          uint32_t intShift = shift.uint32();
+          int32_t invShift = WordBits - intShift;
+          uint32_t mask = ( 1 << intShift ) - 1;
+          uint32_t cin = 0;
+          uint32_t old;
 
           for ( i = 0; i < _wordCount; i++ )
             {
@@ -3453,7 +3456,7 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
         }
       else if ( ( shift % WordBits ) == 0 )
         {
-          unsigned int offset = shift.uint32() / WordBits;
+          uint32_t offset = shift.uint32() / WordBits;
 
           value = _valueBuffer + _wordCount - 1;
 
@@ -3483,20 +3486,20 @@ RNumber& RNumber::operator>>=( const RNumber& shift )
 // The same as operator>> but the assignment allows us to optimize the code to
 // not create temporary objects.
 //
-RNumber& RNumber::operator>>=( unsigned int shift ) 
+RNumber& RNumber::operator>>=( uint32_t shift ) 
 {
 
-  unsigned int* value = _valueBuffer;
+  uint32_t* value = _valueBuffer;
   unsigned int i;
 
   if ( shift < _size )
     {
       if ( shift < WordBits )
         {
-          int invShift = WordBits - shift;
-          unsigned int mask = ( 1 << shift ) - 1;
-          unsigned int cin = 0;
-          unsigned int old;
+          int32_t invShift = WordBits - shift;
+          uint32_t mask = ( 1 << shift ) - 1;
+          uint32_t cin = 0;
+          uint32_t old;
 
           for ( i = 0; i < _wordCount; i++ )
             {
@@ -3508,7 +3511,7 @@ RNumber& RNumber::operator>>=( unsigned int shift )
         }
       else if ( ( shift % WordBits ) == 0 )
         {
-          unsigned int offset = shift / WordBits;
+          uint32_t offset = shift / WordBits;
 
           value = _valueBuffer + _wordCount - 1;
 
@@ -3618,14 +3621,14 @@ RNumber& RNumber::signExtend( unsigned int bit )
 
       if ( size % WordBits )
         {
-          unsigned int mask = ( 1 << ( size % WordBits ) ) - 1;
+          uint32_t mask = ( 1 << ( size % WordBits ) ) - 1;
 
           _valueBuffer[n - 1] = ( sign ) ? ( _valueBuffer[n - 1] | ~mask ) :
             ( _valueBuffer[n - 1] & mask );
           n--;
         }
 
-      unsigned int v = ( sign ? 0xffffffff : 0x0 );
+      uint32_t v = ( sign ? 0xffffffff : 0x0 );
 
       for ( int i = 0; i < n; i++ )
         _valueBuffer[i] = v;
@@ -3668,7 +3671,7 @@ unsigned int RNumber::getBit( unsigned int pos ) const
 
   int word = _wordCount - ( pos / WordBits ) - 1;
   int shift = pos % WordBits;
-  const unsigned int* value = _valueBuffer;
+  const uint32_t* value = _valueBuffer;
 
   return ( ( word >= 0 ) ? ( value[word] >> shift ) & 0x1 : 0 );
 }
@@ -3682,7 +3685,7 @@ unsigned int RNumber::getBitLSB( unsigned int pos ) const
 
   int word = _wordCount - ( pos / WordBits ) - 1;
   int shift = pos % WordBits;
-  const unsigned int* value = _valueBuffer;
+  const uint32_t* value = _valueBuffer;
 
   return ( ( word >= 0 ) ? ( value[word] >> shift ) & 0x1 : 0 );
 }
@@ -3698,8 +3701,8 @@ void RNumber::setBit( unsigned int pos, unsigned int val )
 
   int word = _wordCount - ( pos / WordBits ) - 1;
   int shift = pos % WordBits;
-  unsigned int mask = 1 << shift;
-  unsigned int* value = _valueBuffer;
+  uint32_t mask = 1 << shift;
+  uint32_t* value = _valueBuffer;
 
   if ( word >= 0 )
     value[word] = ( value[word] & ~mask ) | ( ( val & 0x1 ) << shift );
@@ -3713,8 +3716,8 @@ void RNumber::setBitLSB( unsigned int pos, unsigned int val )
 {
   int word = _wordCount - ( pos / WordBits ) - 1;
   int shift = pos % WordBits;
-  unsigned int mask = 1 << shift;
-  unsigned int* value = _valueBuffer;
+  uint32_t mask = 1 << shift;
+  uint32_t* value = _valueBuffer;
 
   if ( word >= 0 )
     value[word] = ( value[word] & ~mask ) | ( ( val & 0x1 ) << shift );
@@ -3776,7 +3779,7 @@ unsigned int RNumber::getUIntField( unsigned int start, unsigned int end ) const
       unsigned int length = end - start + 1;
       assert( length <= 32 );
 
-      unsigned int mask = ( length < 32 ) ? ( 1 << length ) - 1 : -1;
+      uint32_t mask = ( length < 32 ) ? ( 1 << length ) - 1 : -1;
 
       start = _size - start - 1;
       end = _size - end - 1;
@@ -3785,8 +3788,8 @@ unsigned int RNumber::getUIntField( unsigned int start, unsigned int end ) const
         {
           // The start and end values do not cross over word boundaries, with
           // respect to the total size. Shift over and mask the proper field.
-          unsigned int word = _wordCount - ( start / WordBits ) - 1;
-          unsigned int shift = end % WordBits;
+          uint32_t word = _wordCount - ( start / WordBits ) - 1;
+          uint32_t shift = end % WordBits;
 
           return ( _valueBuffer[word] >> shift ) & mask;
         }
@@ -3980,7 +3983,7 @@ void RNumber::printHex( ostream& os,int format ) const
 
   unsigned int width = os.width();
 
-  const unsigned int* value = _valueBuffer;
+  const uint32_t* value = _valueBuffer;
 
   // Print a prefix if requested.
   if (format & rprefix) {
@@ -4218,7 +4221,11 @@ public:
     while ( (c = operator()()) && isspace(c));
     return c;
   };
-  void putback(char c) { --_i; };
+  void putback(char c) { 
+    if (_i != _s.begin()) {
+      --_i; 
+    }
+  };
 private:
   const string &_s;
   string::const_iterator _i;
@@ -4252,11 +4259,11 @@ void RNumber::read( istream& is )
   _wordCount = ( _size + WordBits - 1 ) / WordBits;
 
   if ( _wordCount > WORD_THRESHOLD )
-    _valueBuffer = _value.varValue = new unsigned int [_wordCount];
+    _valueBuffer = _value.varValue = new uint32_t [_wordCount];
   else
     _valueBuffer = _value.fixedValue + WORD_THRESHOLD - _wordCount;
 
-  unsigned int* value = _valueBuffer;
+  uint32_t* value = _valueBuffer;
 
   for (unsigned i = 0; i != _wordCount; ++i) {
     value[i] = readInt(is);

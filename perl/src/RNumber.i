@@ -24,10 +24,10 @@ extern int rnumber_predicate_init();
 
 extern struct RNumber;
 extern struct RNumber * rnumber_create();
-extern struct RNumber * rnumber_create_from_unsigned( unsigned int number );
-extern struct RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned int number );
-extern struct RNumber * rnumber_create_from_unsigned_of_size( unsigned int number, unsigned int size );
-extern struct RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number, unsigned int size );
+extern struct RNumber * rnumber_create_from_unsigned( unsigned long number );
+extern struct RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned long number );
+extern struct RNumber * rnumber_create_from_unsigned_of_size( unsigned long number, unsigned int size );
+extern struct RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned long number, unsigned int size );
 extern struct RNumber * rnumber_create_from_string( char * number  );
 extern struct RNumber * rnumber_create_from_string_variable_sizing( char * number );
 extern struct RNumber * rnumber_create_from_string_of_size( char * number, unsigned int size );
@@ -37,8 +37,8 @@ extern struct RNumber * rnumber_create_from_string_of_radix_variable_sizing( cha
 extern struct RNumber * rnumber_create_from_string_of_size_of_radix( char * number, unsigned int size, int radix);
 extern struct RNumber * rnumber_create_from_string_of_size_of_radix_variable_sizing( char * number, unsigned int size,
 										     int radix);
-extern struct RNumber * rnumber_create_from_numVector( unsigned int* numVector, unsigned int wordCount, unsigned int size );
-extern struct RNumber * rnumber_create_from_numVector_variable_sizing( unsigned int* numVector, unsigned int wordCount, 
+extern struct RNumber * rnumber_create_from_numVector( unsigned long* numVector, unsigned int wordCount, unsigned int size );
+extern struct RNumber * rnumber_create_from_numVector_variable_sizing( unsigned long* numVector, unsigned int wordCount, 
 								       unsigned int size );
 
 extern struct RNumber * rnumber_create_from_rnumber( const struct RNumber * rnumber );
@@ -49,7 +49,7 @@ extern void rnumber_destroy( struct RNumber * rnumber );
   // Assignment methods. operator=() assigns the value constrained by sizing;
   // assign() assigns the value with dynamic sizing; clone() assigns all
   // attributes; resize() truncates/expands the value and sets fixed sizing.
-extern struct RNumber * rnumber_assign_from_uint ( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_assign_from_uint ( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_assign_from_string ( struct RNumber * rnumber, char * number_string );
 extern struct RNumber * rnumber_assign( struct RNumber * rnumber, struct RNumber * number );
 extern struct RNumber * rnumber_copy( struct RNumber * rnumber, struct RNumber * number );
@@ -61,21 +61,21 @@ extern struct RNumber * rnumber_unary_tilde( struct RNumber * rnumber);
 
   // Arithmetic assignment operators; assignment size depends on sizing state.
 extern struct RNumber * rnumber_plus_assign( struct RNumber * rnumber, struct RNumber * number );
-extern struct RNumber * rnumber_plus_assign_from_unsigned ( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_plus_assign_from_unsigned ( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_minus_assign( struct RNumber * rnumber, struct RNumber * number );
-extern struct RNumber * rnumber_minus_assign_from_unsigned( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_minus_assign_from_unsigned( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_multiply_assign( struct RNumber * rnumber, struct RNumber * number );
-extern struct RNumber * rnumber_multiply_assign_from_unsigned( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_multiply_assign_from_unsigned( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_divide_assign( struct RNumber * rnumber, struct RNumber * number );
-extern struct RNumber * rnumber_divide_assign_from_unsigned( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_divide_assign_from_unsigned( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_mod_assign( struct RNumber * rnumber, struct RNumber * number );
-extern struct RNumber * rnumber_mod_assign_from_unsigned( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_mod_assign_from_unsigned( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_bitand_assign( struct RNumber * rnumber, struct RNumber * number );
-extern struct RNumber * rnumber_bitand_assign_from_unsigned( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_bitand_assign_from_unsigned( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_bitor_assign( struct RNumber * rnumber,  struct RNumber * number );
-extern struct RNumber * rnumber_bitor_assign_from_unsigned( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_bitor_assign_from_unsigned( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_bitxor_assign( struct RNumber * rnumber, struct RNumber * number );
-extern struct RNumber * rnumber_bitxor_assign_from_unsigned( struct RNumber * rnumber, unsigned int number );
+extern struct RNumber * rnumber_bitxor_assign_from_unsigned( struct RNumber * rnumber, unsigned long number );
 extern struct RNumber * rnumber_leftshift_assign( struct RNumber * rnumber, struct RNumber * shift );
 extern struct RNumber * rnumber_leftshift_assign_from_unsigned( struct RNumber * rnumber, unsigned int shift );
 extern struct RNumber * rnumber_rightshift_assign( struct RNumber * rnumber,  struct RNumber * shift );
@@ -153,65 +153,65 @@ extern void rnumber_write_to_os( struct RNumber * rnumber, void * os );
 // Non-member functions that allow for mixed arithmetic expressions between
 // RNumbers and unsigned integers.
 extern  struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_plus_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_plus_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_plus_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_plus_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_add_ext_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_add_ext_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_add_ext_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_add_ext_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_add_ext_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_minus_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_minus_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_minus_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_multiply_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_multiply_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_multiply_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_multiply_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_multiply_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_multiply_ext_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_multiply_ext_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_multiply_ext_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_multiply_ext_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_multiply_ext_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_divide_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_divide_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_divide_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_divide_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_divide_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_mod_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_mod_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_mod_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_mod_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_mod_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_bitand_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_bitand_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_bitand_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_bitand_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_bitand_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_bitor_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_bitor_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_bitor_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_bitor_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_bitor_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_bitxor_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_bitxor_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_bitxor_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_bitxor_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_bitxor_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct RNumber * shift );
 extern  struct RNumber * rnumber_rn_leftshift_ui( const struct RNumber * n, unsigned int shift );
-extern  struct RNumber * rnumber_ui_leftshift_rn( unsigned int n, const struct RNumber * shift );
+extern  struct RNumber * rnumber_ui_leftshift_rn( unsigned long n, const struct RNumber * shift );
 extern  struct RNumber * rnumber_rn_leftshift_ext_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern  struct RNumber * rnumber_rn_leftshift_ext_ui( const struct RNumber * n1, unsigned int n2 );
-extern  struct RNumber * rnumber_ui_leftshift_ext_rn( unsigned int n1, const struct RNumber * n2 );
+extern  struct RNumber * rnumber_rn_leftshift_ext_ui( const struct RNumber * n1, unsigned long n2 );
+extern  struct RNumber * rnumber_ui_leftshift_ext_rn( unsigned long n1, const struct RNumber * n2 );
 extern  struct RNumber * rnumber_rn_rightshift_rn( const struct RNumber * n, const struct RNumber * shift );
 extern  struct RNumber * rnumber_rn_rightshift_ui( const struct RNumber * n, unsigned int shift );
-extern  struct RNumber * rnumber_ui_rightshift_rn( unsigned int n, const struct RNumber * shift );
+extern  struct RNumber * rnumber_ui_rightshift_rn( unsigned long n, const struct RNumber * shift );
 
 // Non-member functions that allow for mixed conditional expressions between
 // RNumbers and unsigned integers.
 extern int rnumber_rn_notequal_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern int rnumber_rn_notequal_ui( const struct RNumber * n1, unsigned int n2 );
-extern int rnumber_ui_notequal_rn( unsigned int n1, const struct RNumber * n2 );
+extern int rnumber_rn_notequal_ui( const struct RNumber * n1, unsigned long n2 );
+extern int rnumber_ui_notequal_rn( unsigned long n1, const struct RNumber * n2 );
 extern int rnumber_rn_equal_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern int rnumber_rn_equal_ui( const struct RNumber * n1, unsigned int n2 );
-extern int rnumber_ui_equal_rn( unsigned int n1, const struct RNumber * n2 );
+extern int rnumber_rn_equal_ui( const struct RNumber * n1, unsigned long n2 );
+extern int rnumber_ui_equal_rn( unsigned long n1, const struct RNumber * n2 );
 extern int rnumber_rn_lessthan_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern int rnumber_rn_lessthan_ui( const struct RNumber * n1, unsigned int n2 );
-extern int rnumber_ui_lessthan_rn( unsigned int n1, const struct RNumber * n2 );
+extern int rnumber_rn_lessthan_ui( const struct RNumber * n1, unsigned long n2 );
+extern int rnumber_ui_lessthan_rn( unsigned long n1, const struct RNumber * n2 );
 extern int rnumber_rn_lessequal_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern int rnumber_rn_lessequal_ui( const struct RNumber * n1, unsigned int n2 );
-extern int rnumber_ui_lessequal_rn( unsigned int n1, const struct RNumber * n2 );
+extern int rnumber_rn_lessequal_ui( const struct RNumber * n1, unsigned long n2 );
+extern int rnumber_ui_lessequal_rn( unsigned long n1, const struct RNumber * n2 );
 extern int rnumber_rn_greaterthan_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern int rnumber_rn_greaterthan_ui( const struct RNumber * n1, unsigned int n2 );
-extern int rnumber_ui_greaterthan_rn( unsigned int n1, const struct RNumber * n2 );
+extern int rnumber_rn_greaterthan_ui( const struct RNumber * n1, unsigned long n2 );
+extern int rnumber_ui_greaterthan_rn( unsigned long n1, const struct RNumber * n2 );
 extern int rnumber_rn_greaterequal_rn( const struct RNumber * n1, const struct RNumber * n2 );
-extern int rnumber_rn_greaterequal_ui( const struct RNumber * n1, unsigned int n2 );
-extern int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNumber * n2 );
+extern int rnumber_rn_greaterequal_ui( const struct RNumber * n1, unsigned long n2 );
+extern int rnumber_ui_greaterequal_rn( unsigned long n1, const struct RNumber * n2 );
 
 extern int rnumber_rhex();
 extern int rnumber_rbin();

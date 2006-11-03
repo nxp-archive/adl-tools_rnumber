@@ -62,9 +62,9 @@ public:
   // Various functions for getting random data.
   RNumber           getRNumber( unsigned int size );
   unsigned          getInteger();
-  rnumber_t::uint64 getUint64();
+  uint64_t          getUint64();
   unsigned          getInteger( unsigned n );
-  rnumber_t::uint64 getUint64( rnumber_t::uint64 n );
+  uint64_t         getUint64( uint64_t n );
   double            getDouble();
   // Range-based gets.  Handles those awful signed ranges that are still
   // in Raptor.

@@ -61,16 +61,16 @@ namespace rnumber {
          RNumber( const RNumber& number );
          RNumber( const RNumber& number, unsigned int size, Sizing sizing = fixed );
          // Create from an integer.
-         explicit RNumber( rnumber_t::int64 number, Sizing sizing = fixed );
-         explicit RNumber( rnumber_t::uint64 number, Sizing sizing = fixed );
-         explicit RNumber( int number, Sizing sizing = fixed );
-         RNumber( unsigned  number, Sizing sizing = fixed );
+         explicit RNumber( int64_t number, Sizing sizing = fixed );
+         explicit RNumber( uint64_t number, Sizing sizing = fixed );
+         explicit RNumber( int32_t number, Sizing sizing = fixed );
+         RNumber( uint32_t  number, Sizing sizing = fixed );
         
         
-         explicit RNumber( int number, unsigned int size, Sizing sizing = fixed );
-         explicit RNumber( unsigned int number, unsigned int size, Sizing sizing = fixed );
-         explicit RNumber( long long number, unsigned int size, Sizing sizing = fixed );
-         explicit RNumber( unsigned long long, unsigned int size, Sizing sizing = fixed );
+         explicit RNumber( int32_t number, unsigned int size, Sizing sizing = fixed );
+         explicit RNumber( uint32_t number, unsigned int size, Sizing sizing = fixed );
+         explicit RNumber( int64_t number, unsigned int size, Sizing sizing = fixed );
+         explicit RNumber( uint64_t, unsigned int size, Sizing sizing = fixed );
         
          // Create from a string.  Where radix is explicitly set, the input should
          // contain a prefix, e.g. 0x...
@@ -79,14 +79,14 @@ namespace rnumber {
          RNumber( const std::string& number, unsigned size, Format radix, Sizing sizing = fixed );
          RNumber( const std::string& number, Format radix, Sizing sizing = fixed );
          // Create from an integer array.
-         RNumber(const unsigned int* numVector, unsigned int wordCount, unsigned int size, 
+         RNumber(const uint32_t* numVector, unsigned int wordCount, unsigned int size, 
                  Sizing sizing = fixed );
          ~RNumber();
 
          // Assignment methods. operator=() assigns the value constrained by sizing;
          // assign() assigns the value with dynamic sizing; clone() assigns all
          // attributes; resize() truncates/expands the value and sets fixed sizing.
-         RNumber& operator=( unsigned int number );
+         RNumber& operator=( uint32_t number );
          RNumber& operator=( const std::string& number );
          RNumber& operator=( const RNumber& number );
          RNumber& assign( const RNumber& number );
@@ -147,8 +147,8 @@ namespace rnumber {
 
          // Value accessors.
          unsigned int intValue() const  { return uint32(); }
-         unsigned int uint32() const;
-         rnumber_t::uint64 uint64() const;
+         uint32_t uint32() const;
+         uint64_t uint64() const;
          // if buffer is NULL, caller must deallocate return value.
          // if buffer is not NULL, it must be large enough for value plus
          // one byte for NULL char at end.
@@ -202,12 +202,12 @@ namespace rnumber {
 
          unsigned int _size;
          unsigned int _wordCount;
-         unsigned int* _valueBuffer;
+         uint32_t   * _valueBuffer;
          Sizing _sizing;
 
          union {
-               unsigned int* varValue;
-               unsigned int fixedValue[WORD_THRESHOLD];
+               uint32_t* varValue;
+               uint32_t fixedValue[WORD_THRESHOLD];
          } _value;
 
          void initNumber( unsigned int size, Sizing sizing );
@@ -229,106 +229,106 @@ namespace rnumber {
          void printHex( std::ostream& os,int format) const;
 
          friend  const RNumber add( const RNumber& n1, const RNumber& n2, bool extend );
-         friend  const RNumber add( const RNumber& n1, unsigned int n2, bool extend );
+         friend  const RNumber add( const RNumber& n1, uint32_t n2, bool extend );
          friend  const RNumber subtract( const RNumber& n1, const RNumber& n2 );
-         friend  const RNumber subtract( const RNumber& n1, unsigned int n2 );
-         friend  const RNumber subtract( unsigned int n1, const RNumber& n2 );
+         friend  const RNumber subtract( const RNumber& n1, uint32_t n2 );
+         friend  const RNumber subtract( uint32_t n1, const RNumber& n2 );
          friend  const RNumber multiply( const RNumber& n1, const RNumber& n2, bool extend );
-         friend  const RNumber multiply( const RNumber& n1, unsigned int n2, bool extend );
+         friend  const RNumber multiply( const RNumber& n1, uint32_t n2, bool extend );
          friend  const RNumber divide( const RNumber& n1, const RNumber& n2 );
-         friend  const RNumber divide( const RNumber& n1, unsigned int n2 );
-         friend  const RNumber divide( unsigned int n1, const RNumber& n2 );
+         friend  const RNumber divide( const RNumber& n1, uint32_t n2 );
+         friend  const RNumber divide( uint32_t n1, const RNumber& n2 );
          friend  const RNumber mod( const RNumber& n1, const RNumber& n2 );
-         friend  const RNumber mod( const RNumber& n1, unsigned int n2 );
-         friend  const RNumber mod( unsigned int n1, const RNumber& n2 );
+         friend  const RNumber mod( const RNumber& n1, uint32_t n2 );
+         friend  const RNumber mod( uint32_t n1, const RNumber& n2 );
          friend  const RNumber bitWiseAnd( const RNumber& n1, const RNumber& n2 );
-         friend  const RNumber bitWiseAnd( const RNumber& n1, unsigned int n2 );
+         friend  const RNumber bitWiseAnd( const RNumber& n1, uint32_t n2 );
          friend  const RNumber bitWiseOr( const RNumber& n1, const RNumber& n2 );
-         friend  const RNumber bitWiseOr( const RNumber& n1, unsigned int n2 );
+         friend  const RNumber bitWiseOr( const RNumber& n1, uint32_t n2 );
          friend  const RNumber bitWiseXor( const RNumber& n1, const RNumber& n2 );
-         friend  const RNumber bitWiseXor( const RNumber& n1, unsigned int n2 );
+         friend  const RNumber bitWiseXor( const RNumber& n1, uint32_t n2 );
          friend  const RNumber bitWiseNot( const RNumber& n1);
          friend const  RNumber leftShift( const RNumber& num, const RNumber& shift, bool extend );
-         friend const  RNumber leftShift( const RNumber& num, unsigned int shift, bool extend );
-         friend const  RNumber leftShift( unsigned int num, const RNumber& shift, bool extend );
+         friend const  RNumber leftShift( const RNumber& num, uint32_t shift, bool extend );
+         friend const  RNumber leftShift( uint32_t num, const RNumber& shift, bool extend );
          friend  const RNumber rightShift( const RNumber& num, const RNumber& shift );
-         friend  const RNumber rightShift( const RNumber& num, unsigned int shift );
-         friend  const RNumber rightShift( unsigned int num, const RNumber& shift );
+         friend  const RNumber rightShift( const RNumber& num, uint32_t shift );
+         friend  const RNumber rightShift( uint32_t num, const RNumber& shift );
 
          friend  bool notEqual( const RNumber& n1, const RNumber& n2 );
-         friend  bool notEqual( const RNumber& n1, unsigned int n2 );
+         friend  bool notEqual( const RNumber& n1, uint32_t n2 );
          friend  bool equal( const RNumber& n1, const RNumber& n2 );
-         friend  bool equal( const RNumber& n1, unsigned int n2 );
+         friend  bool equal( const RNumber& n1, uint32_t n2 );
          friend  bool lessThan( const RNumber& n1, const RNumber& n2, bool orEqual );
-         friend  bool lessThan( const RNumber& n1, unsigned int n2, bool orEqual );
-         friend  bool lessThan( unsigned int n1, const RNumber& n2, bool orEqual );
+         friend  bool lessThan( const RNumber& n1, uint32_t n2, bool orEqual );
+         friend  bool lessThan( uint32_t n1, const RNumber& n2, bool orEqual );
          friend  bool greaterThan( const RNumber& n1, const RNumber& n2, bool orEqual );
-         friend  bool greaterThan( const RNumber& n1, unsigned int n2, bool orEqual );
-         friend  bool greaterThan( unsigned int n1, const RNumber& n2, bool orEqual );
+         friend  bool greaterThan( const RNumber& n1, uint32_t n2, bool orEqual );
+         friend  bool greaterThan( uint32_t n1, const RNumber& n2, bool orEqual );
    };
 
    // Non-member functions that allow for mixed arithmetic expressions between
-   // RNumbers and unsigned integers.
+   // RNumbers and uint32_tegers.
    const RNumber operator+( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator+( const RNumber& n1, unsigned int n2 );
-   const RNumber operator+( unsigned int n1, const RNumber& n2 );
+   const RNumber operator+( const RNumber& n1, uint32_t n2 );
+   const RNumber operator+( uint32_t n1, const RNumber& n2 );
    const RNumber addExt( const RNumber& n1, const RNumber& n2 );
-   const RNumber addExt( const RNumber& n1, unsigned int n2 );
-   const RNumber addExt( unsigned int n1, const RNumber& n2 );
+   const RNumber addExt( const RNumber& n1, uint32_t n2 );
+   const RNumber addExt( uint32_t n1, const RNumber& n2 );
    const RNumber operator-( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator-( const RNumber& n1, unsigned int n2 );
-   const RNumber operator-( unsigned int n1, const RNumber& n2 );
+   const RNumber operator-( const RNumber& n1, uint32_t n2 );
+   const RNumber operator-( uint32_t n1, const RNumber& n2 );
    const RNumber operator*( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator*( const RNumber& n1, unsigned int n2 );
-   const RNumber operator*( unsigned int n1, const RNumber& n2 );
+   const RNumber operator*( const RNumber& n1, uint32_t n2 );
+   const RNumber operator*( uint32_t n1, const RNumber& n2 );
    const RNumber multiplyExt( const RNumber& n1, const RNumber& n2 );
-   const RNumber multiplyExt( const RNumber& n1, unsigned int n2 );
-   const RNumber multiplyExt( unsigned int n1, const RNumber& n2 );
+   const RNumber multiplyExt( const RNumber& n1, uint32_t n2 );
+   const RNumber multiplyExt( uint32_t n1, const RNumber& n2 );
    const RNumber operator/( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator/( const RNumber& n1, unsigned int n2 );
-   const RNumber operator/( unsigned int n1, const RNumber& n2 );
+   const RNumber operator/( const RNumber& n1, uint32_t n2 );
+   const RNumber operator/( uint32_t n1, const RNumber& n2 );
    const RNumber operator%( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator%( const RNumber& n1, unsigned int n2 );
-   const RNumber operator%( unsigned int n1, const RNumber& n2 );
+   const RNumber operator%( const RNumber& n1, uint32_t n2 );
+   const RNumber operator%( uint32_t n1, const RNumber& n2 );
    const RNumber operator&( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator&( const RNumber& n1, unsigned int n2 );
-   const RNumber operator&( unsigned int n1, const RNumber& n2 );
+   const RNumber operator&( const RNumber& n1, uint32_t n2 );
+   const RNumber operator&( uint32_t n1, const RNumber& n2 );
    const RNumber operator|( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator|( const RNumber& n1, unsigned int n2 );
-   const RNumber operator|( unsigned int n1, const RNumber& n2 );
+   const RNumber operator|( const RNumber& n1, uint32_t n2 );
+   const RNumber operator|( uint32_t n1, const RNumber& n2 );
    const RNumber operator^( const RNumber& n1, const RNumber& n2 );
-   const RNumber operator^( const RNumber& n1, unsigned int n2 );
-   const RNumber operator^( unsigned int n1, const RNumber& n2 );
+   const RNumber operator^( const RNumber& n1, uint32_t n2 );
+   const RNumber operator^( uint32_t n1, const RNumber& n2 );
    const RNumber operator<<( const RNumber& n, const RNumber& shift );
-   const RNumber operator<<( const RNumber& n, unsigned int shift );
-   const RNumber operator<<( unsigned int n, const RNumber& shift );
+   const RNumber operator<<( const RNumber& n, uint32_t shift );
+   const RNumber operator<<( uint32_t n, const RNumber& shift );
    const RNumber leftShiftExt( const RNumber& n1, const RNumber& n2 );
-   const RNumber leftShiftExt( const RNumber& n1, unsigned int n2 );
-   const RNumber leftShiftExt( unsigned int n1, const RNumber& n2 );
+   const RNumber leftShiftExt( const RNumber& n1, uint32_t n2 );
+   const RNumber leftShiftExt( uint32_t n1, const RNumber& n2 );
    const RNumber operator>>( const RNumber& n, const RNumber& shift );
-   const RNumber operator>>( const RNumber& n, unsigned int shift );
-   const RNumber operator>>( unsigned int n, const RNumber& shift );
+   const RNumber operator>>( const RNumber& n, uint32_t shift );
+   const RNumber operator>>( uint32_t n, const RNumber& shift );
 
    // Non-member functions that allow for mixed conditional expressions between
-   // RNumbers and unsigned integers.
+   // RNumbers and uint32_tegers.
    bool operator!=( const RNumber& n1, const RNumber& n2 );
-   bool operator!=( const RNumber& n1, unsigned int n2 );
-   bool operator!=( unsigned int n1, const RNumber& n2 );
+   bool operator!=( const RNumber& n1, uint32_t n2 );
+   bool operator!=( uint32_t n1, const RNumber& n2 );
    bool operator==( const RNumber& n1, const RNumber& n2 );
-   bool operator==( const RNumber& n1, unsigned int n2 );
-   bool operator==( unsigned int n1, const RNumber& n2 );
+   bool operator==( const RNumber& n1, uint32_t n2 );
+   bool operator==( uint32_t n1, const RNumber& n2 );
    bool operator<( const RNumber& n1, const RNumber& n2 );
-   bool operator<( const RNumber& n1, unsigned int n2 );
-   bool operator<( unsigned int n1, const RNumber& n2 );
+   bool operator<( const RNumber& n1, uint32_t n2 );
+   bool operator<( uint32_t n1, const RNumber& n2 );
    bool operator<=( const RNumber& n1, const RNumber& n2 );
-   bool operator<=( const RNumber& n1, unsigned int n2 );
-   bool operator<=( unsigned int n1, const RNumber& n2 );
+   bool operator<=( const RNumber& n1, uint32_t n2 );
+   bool operator<=( uint32_t n1, const RNumber& n2 );
    bool operator>( const RNumber& n1, const RNumber& n2 );
-   bool operator>( const RNumber& n1, unsigned int n2 );
-   bool operator>( unsigned int n1, const RNumber& n2 );
+   bool operator>( const RNumber& n1, uint32_t n2 );
+   bool operator>( uint32_t n1, const RNumber& n2 );
    bool operator>=( const RNumber& n1, const RNumber& n2 );
-   bool operator>=( const RNumber& n1, unsigned int n2 );
-   bool operator>=( unsigned int n1, const RNumber& n2 );
+   bool operator>=( const RNumber& n1, uint32_t n2 );
+   bool operator>=( uint32_t n1, const RNumber& n2 );
 
    // ---------------------------------------------------------------------------
 
@@ -349,12 +349,12 @@ namespace rnumber {
    //
    // Create a new RNumber with the specified value.
    //
-   inline RNumber::RNumber( int number, Sizing sizing ) {
+   inline RNumber::RNumber( int32_t number, Sizing sizing ) {
       initNumber( _defaultSize, sizing );
       _valueBuffer[_wordCount - 1] = number;
    }
 
-   inline RNumber::RNumber( unsigned int number, Sizing sizing ) {
+   inline RNumber::RNumber( uint32_t number, Sizing sizing ) {
       initNumber( _defaultSize, sizing );
       _valueBuffer[_wordCount - 1] = number;
    }
@@ -362,14 +362,14 @@ namespace rnumber {
    //
    // Create a new RNumber with the specified value.
    //
-   inline RNumber::RNumber( unsigned long long number, Sizing sizing ) {
-      initNumber( sizeof (unsigned long long) * 8, sizing );
+   inline RNumber::RNumber( uint64_t number, Sizing sizing ) {
+      initNumber( sizeof (uint64_t) * 8, sizing );
       _valueBuffer[0] = (number>>32)& 0xffffffff;
       _valueBuffer[1] = number & 0xffffffff;
    }
 
-   inline RNumber::RNumber( long long number, Sizing sizing ) {
-      initNumber( sizeof (unsigned long long) * 8, sizing );
+   inline RNumber::RNumber( int64_t number, Sizing sizing ) {
+      initNumber( sizeof (int64_t) * 8, sizing );
       _valueBuffer[0] = (number>>32)& 0xffffffff;
       _valueBuffer[1] = number & 0xffffffff;
    }
@@ -398,15 +398,15 @@ namespace rnumber {
          _valueBuffer = _value.fixedValue + WORD_THRESHOLD - _wordCount;
 
          // This loop will be unrolled by the compiler and thus quite fast.
-         for ( unsigned int i = 0; i < WORD_THRESHOLD; i++ ) {
+         for ( unsigned i = 0; i < WORD_THRESHOLD; i++ ) {
             _value.fixedValue[i] = 0;
          }
       } else {
-         _valueBuffer = _value.varValue = new unsigned int[_wordCount];
+         _valueBuffer = _value.varValue = new uint32_t[_wordCount];
 
          // This loop will be tight but we do not incur the memset() function
          // call penalty.
-         for ( unsigned int i = 0; i < _wordCount; i++ ) {
+         for ( unsigned i = 0; i < _wordCount; i++ ) {
             _valueBuffer[i] = 0;
          }
       }
@@ -425,16 +425,16 @@ namespace rnumber {
          _valueBuffer = _value.fixedValue + WORD_THRESHOLD - _wordCount;
 
          // This loop will be unrolled by the compiler and thus quite fast.
-         for ( unsigned int i = 0; i < WORD_THRESHOLD; i++ ) {
+         for ( unsigned i = 0; i < WORD_THRESHOLD; i++ ) {
             _value.fixedValue[i] = number._value.fixedValue[i];
          }
       } else {
-         unsigned int* nvb = number._valueBuffer;
-         _valueBuffer = _value.varValue = new unsigned int[_wordCount];
+         uint32_t* nvb = number._valueBuffer;
+         _valueBuffer = _value.varValue = new uint32_t[_wordCount];
 
          // This loop will be tight but we do not incur the memcpy() function
          // call penalty.
-         for ( unsigned int i = 0; i < _wordCount; i++ ) {
+         for ( unsigned i = 0; i < _wordCount; i++ ) {
             _valueBuffer[i] = nvb[i];
          }
       }
@@ -445,7 +445,7 @@ namespace rnumber {
    //
    inline bool RNumber::operator!() const
    {
-      for ( unsigned int i = 0; i < _wordCount; i++ ) {
+      for ( unsigned i = 0; i < _wordCount; i++ ) {
          if ( _valueBuffer[i] != 0 ) {
             return false;
          }
@@ -464,7 +464,7 @@ namespace rnumber {
    //
    // Non-member function for boolean inequality of an RNumber and an unsigned.
    //
-   inline bool notEqual( const RNumber& n1, unsigned int n2 ) {
+   inline bool notEqual( const RNumber& n1, uint32_t n2 ) {
       for ( unsigned int i = 0; i < n1._wordCount - 1; i++ ) {
          if ( n1._valueBuffer[i] != 0 ) {
             return true;
@@ -483,14 +483,14 @@ namespace rnumber {
    //
    // Non-member function for boolean inequality of an RNumber and an unsigned.
    //
-   inline bool operator!=( const RNumber& n1, unsigned int n2 ) {
+   inline bool operator!=( const RNumber& n1, uint32_t n2 ) {
       return notEqual( n1, n2 );
    }
 
    //
    // Non-member function for boolean inequality of an unsigned and an RNumber.
    //
-   inline bool operator!=( unsigned int n1, const RNumber& n2 ) {
+   inline bool operator!=( uint32_t n1, const RNumber& n2 ) {
       return notEqual( n2, n1 );
    }
 
@@ -502,8 +502,8 @@ namespace rnumber {
       const unsigned int n2wc = n2._wordCount;
       unsigned int minwc = std::min( n1wc, n2wc );
 
-      const unsigned int* value = n1._valueBuffer;
-      const unsigned int* numValue = n2._valueBuffer;
+      const uint32_t* value = n1._valueBuffer;
+      const uint32_t* numValue = n2._valueBuffer;
 
       int j = n1wc - 1;
       int k = n2wc - 1;
@@ -515,7 +515,7 @@ namespace rnumber {
          }
       }
 
-      const unsigned int* p;
+      const uint32_t* p;
 
       if ( minwc < n1wc ) {
          p = value;
@@ -539,7 +539,7 @@ namespace rnumber {
    //
    // Non-member function for boolean equality of an RNumber and an unsigned.
    //
-   inline bool equal( const RNumber& n1, unsigned int n2 ) {
+   inline bool equal( const RNumber& n1, uint32_t n2 ) {
       for ( unsigned int i = 0; i < n1._wordCount - 1; i++ ) {
          if ( n1._valueBuffer[i] != 0 ) {
             return false;
@@ -559,14 +559,14 @@ namespace rnumber {
    //
    // Non-member function for boolean equality of an RNumber and an unsigned.
    //
-   inline bool operator==( const RNumber& n1, unsigned int n2 ) {
+   inline bool operator==( const RNumber& n1, uint32_t n2 ) {
       return equal(n1,n2);
    }
 
    //
    // Non-member function for boolean equality of an unsigned and an RNumber.
    //
-   inline bool operator==( unsigned int n1, const RNumber& n2 ) {
+   inline bool operator==( uint32_t n1, const RNumber& n2 ) {
       return equal( n2, n1 );
    }
 
@@ -578,8 +578,8 @@ namespace rnumber {
       const unsigned int n2wc = n2._wordCount;
       const unsigned int minwc = std::min( n1wc, n2wc );
 
-      const unsigned int* value = n1._valueBuffer;
-      const unsigned int* numValue = n2._valueBuffer;
+      const uint32_t* value = n1._valueBuffer;
+      const uint32_t* numValue = n2._valueBuffer;
 
       unsigned int i = 0;
       unsigned int j = 0;
@@ -618,9 +618,9 @@ namespace rnumber {
    //
    // Non-member function for boolean less than of an RNumber and an unsigned.
    //
-   inline bool lessThan( const RNumber& n1, unsigned int n2, bool orEqual ) {
+   inline bool lessThan( const RNumber& n1, uint32_t n2, bool orEqual ) {
       const unsigned int n1wc = n1._wordCount;
-      const unsigned int* value = n1._valueBuffer;
+      const uint32_t* value = n1._valueBuffer;
       unsigned int i = 0;
 
       if ( n1wc > 1 ) {
@@ -644,9 +644,9 @@ namespace rnumber {
    //
    // Non-member function for boolean less than of an unsigned and an RNumber.
    //
-   inline bool lessThan( unsigned int n1, const RNumber& n2, bool orEqual ) {
+   inline bool lessThan( uint32_t n1, const RNumber& n2, bool orEqual ) {
       const unsigned int n2wc = n2._wordCount;
-      const unsigned int* numValue = n2._valueBuffer;
+      const uint32_t* numValue = n2._valueBuffer;
       unsigned int i = 0;
 
       if ( n2wc > 1 ) {
@@ -677,14 +677,14 @@ namespace rnumber {
    //
    // Non-member function for boolean less than of an RNumber and an unsigned.
    //
-   inline bool operator<( const RNumber& n1, unsigned int n2 ) {
+   inline bool operator<( const RNumber& n1, uint32_t n2 ) {
       return lessThan( n1, n2, false );
    }
 
    //
    // Non-member function for boolean less than of an unsigned and an RNumber.
    //
-   inline bool operator<( unsigned int n1, const RNumber& n2 ) {
+   inline bool operator<( uint32_t n1, const RNumber& n2 ) {
       return lessThan( n1, n2, false );
    }
 
@@ -698,14 +698,14 @@ namespace rnumber {
    //
    // Non-member function for boolean less than or equal of an RNumber and an unsigned.
    //
-   inline bool operator<=( const RNumber& n1, unsigned int n2 ) {
+   inline bool operator<=( const RNumber& n1, uint32_t n2 ) {
       return lessThan( n1, n2, true );
    }
 
    //
    // Non-member function for boolean less than or equal of an unsigned and an RNumber.
    //
-   inline bool operator<=( unsigned int n1, const RNumber& n2 ) {
+   inline bool operator<=( uint32_t n1, const RNumber& n2 ) {
       return lessThan( n1, n2, true );
    }
 
@@ -717,8 +717,8 @@ namespace rnumber {
       const unsigned int n2wc = n2._wordCount;
       const unsigned int minwc = std::min( n1wc, n2wc );
 
-      const unsigned int* value = n1._valueBuffer;
-      const unsigned int* numValue = n2._valueBuffer;
+      const uint32_t* value = n1._valueBuffer;
+      const uint32_t* numValue = n2._valueBuffer;
 
       unsigned int i = 0;
       unsigned int j = 0;
@@ -756,9 +756,9 @@ namespace rnumber {
    //
    // Non-member function for boolean greater than of an RNumber and an unsigned.
    //
-   inline bool greaterThan( const RNumber& n1, unsigned int n2, bool orEqual ) {
+   inline bool greaterThan( const RNumber& n1, uint32_t n2, bool orEqual ) {
       const unsigned int n1wc = n1._wordCount;
-      const unsigned int* value = n1._valueBuffer;
+      const uint32_t* value = n1._valueBuffer;
       unsigned int i = 0;
 
       if ( n1wc > 1 ) {
@@ -782,9 +782,9 @@ namespace rnumber {
    //
    // Non-member function for boolean greater than of an unsigned and an RNumber.
    //
-   inline bool greaterThan( unsigned int n1, const RNumber& n2, bool orEqual ) {
+   inline bool greaterThan( uint32_t n1, const RNumber& n2, bool orEqual ) {
       const unsigned int n2wc = n2._wordCount;
-      const unsigned int* numValue = n2._valueBuffer;
+      const uint32_t* numValue = n2._valueBuffer;
       unsigned int i = 0;
 
       if ( n2wc > 1 ) {
@@ -813,7 +813,7 @@ namespace rnumber {
    //
    // Non-member function for boolean greater than of an RNumber and an unsigned.
    //
-   inline bool operator>( const RNumber& n1, unsigned int n2 ) {
+   inline bool operator>( const RNumber& n1, uint32_t n2 ) {
       return greaterThan( n1, n2, false );
    }
 
@@ -821,7 +821,7 @@ namespace rnumber {
    //
    // Non-member function for boolean greater than of an unsigned and an RNumber.
    //
-   inline bool operator>( unsigned int n1, const RNumber& n2 ) {
+   inline bool operator>( uint32_t n1, const RNumber& n2 ) {
       return greaterThan( n1, n2, false );
    }
 
@@ -836,14 +836,14 @@ namespace rnumber {
    //
    // Non-member function for boolean greater than or equal of an RNumber and an unsigned.
    //
-   inline bool operator>=( const RNumber& n1, unsigned int n2 ) {
+   inline bool operator>=( const RNumber& n1, uint32_t n2 ) {
       return greaterThan( n1, n2, true );
    }
 
    //
    // Non-member function for boolean greater than or equal of an unsigned and an RNumber.
    //
-   inline bool operator>=( unsigned int n1, const RNumber& n2 ) {
+   inline bool operator>=( uint32_t n1, const RNumber& n2 ) {
       return greaterThan( n1, n2, true );
    }
 
@@ -925,7 +925,7 @@ namespace rnumber {
    // Return the numeric data in an unsigned integer. Loss of data will occur if
    // the size of the number is greater than the size of an unsigned int.
    //
-   inline unsigned int RNumber::uint32() const {
+   inline uint32_t RNumber::uint32() const {
       return _valueBuffer[_wordCount - 1];
    }
 
@@ -933,8 +933,8 @@ namespace rnumber {
    // Return the numberic data in an unsigned long long (64-bit integer).
    // Loss of data will occur if number is greater than 64-bits in size.
    //
-   inline rnumber_t::uint64 RNumber::uint64() const {
-      return (((rnumber_t::uint64)_valueBuffer[_wordCount-2]) << 32) | (_valueBuffer[_wordCount-1]);
+   inline uint64_t RNumber::uint64() const {
+      return (((uint64_t)_valueBuffer[_wordCount-2]) << 32) | (_valueBuffer[_wordCount-1]);
    }
 
    //

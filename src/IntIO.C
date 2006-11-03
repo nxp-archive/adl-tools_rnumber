@@ -18,27 +18,26 @@
 #include "IntIO.h"
 
 using namespace std;
-using namespace rnumber_t;
 
 namespace rnumber {
 
-  uint64 readInt64(istream &is)
+  uint64_t readInt64(istream &is)
   {
-    unsigned char t[sizeof(uint64)];
-    is.read((char*)t,sizeof(uint64));
-    return ( ((uint64)t[0] << 56) | 
-             ((uint64)t[1] << 48) | 
-             ((uint64)t[2] << 40) | 
-             ((uint64)t[3] << 32) | 
-             ((uint64)t[4] << 24) | 
-             ((uint64)t[5] << 16) | 
-             ((uint64)t[6] << 8 ) | 
+    unsigned char t[sizeof(uint64_t)];
+    is.read((char*)t,sizeof(uint64_t));
+    return ( ((uint64_t)t[0] << 56) | 
+             ((uint64_t)t[1] << 48) | 
+             ((uint64_t)t[2] << 40) | 
+             ((uint64_t)t[3] << 32) | 
+             ((uint64_t)t[4] << 24) | 
+             ((uint64_t)t[5] << 16) | 
+             ((uint64_t)t[6] << 8 ) | 
              (t[7]) );
   }
 
-  void writeInt64(ostream &os,uint64 d)
+  void writeInt64(ostream &os,uint64_t d)
   {
-    unsigned char t[sizeof(uint64)] = { ((d >> 56)&0xff),
+    unsigned char t[sizeof(uint64_t)] = { ((d >> 56)&0xff),
                                         ((d >> 48)&0xff),
                                         ((d >> 40)&0xff),
                                         ((d >> 32)&0xff),
@@ -46,49 +45,49 @@ namespace rnumber {
                                         ((d >> 16)&0xff),
                                         ((d >> 8 )&0xff),
                                         ((d)         &0xff) };
-    os.write((char*)t,sizeof(uint64));
+    os.write((char*)t,sizeof(uint64_t));
   }
 
-  unsigned readInt(istream &is)
+  uint32_t readInt(istream &is)
   {
-    unsigned char t[sizeof(unsigned)];
-    is.read((char*)t,sizeof(unsigned));
+    unsigned char t[sizeof(uint32_t)];
+    is.read((char*)t,sizeof(uint32_t));
     return ( (t[0] << 24) | (t[1] << 16) | (t[2] << 8) | (t[3]));
   }
 
-  void writeInt(ostream &os,unsigned d)
+  void writeInt(ostream &os,uint32_t d)
   {
-    unsigned char t[sizeof(unsigned)] = { ((d >> 24)&0xff),
+    unsigned char t[sizeof(uint32_t)] = { ((d >> 24)&0xff),
                                           ((d >> 16)&0xff),
                                           ((d >> 8)&0xff),
                                           (d & 0xff) };
-    os.write((char*)t,sizeof(unsigned));
+    os.write((char*)t,sizeof(uint32_t));
   }
 
-  unsigned short readShort(istream &is)
+  uint16_t readShort(istream &is)
   {
-    unsigned char t[sizeof(unsigned short)];
-    is.read((char*)t,sizeof(unsigned short));
+    unsigned char t[sizeof(uint16_t)];
+    is.read((char*)t,sizeof(uint16_t));
     return ( (t[0] << 8) | (t[1]));
   }
 
-  void writeShort(ostream &os,unsigned short d)
+  void writeShort(ostream &os,uint16_t d)
   {
-    unsigned char t[sizeof(unsigned short)] = { ((d >> 8)&0xff),
+    unsigned char t[sizeof(uint16_t)] = { ((d >> 8)&0xff),
                                                 (d & 0xff) };
-    os.write((char*)t,sizeof(unsigned short));
+    os.write((char*)t,sizeof(uint16_t));
   }
 
-  unsigned char readByte(istream &is)
+  uint8_t readByte(istream &is)
   {
     unsigned char c;
-    is.read((char *)&c,sizeof(unsigned char));
+    is.read((char *)&c,sizeof(uint8_t));
     return c;
   }
 
-  void writeByte(ostream &os,unsigned char d)
+  void writeByte(ostream &os,uint8_t d)
   {
-    os.write((char*)&d,sizeof(unsigned char));
+    os.write((char*)&d,sizeof(uint8_t));
   }
 
 }

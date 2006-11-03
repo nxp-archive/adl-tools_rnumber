@@ -17,6 +17,8 @@
 #ifndef TYPES_H
 #define TYPES_H "$Id$"
 
+#include <stdint.h>
+
 namespace rnumber_t {
 
   // Attributes of a nibble.
@@ -53,16 +55,6 @@ namespace rnumber_t {
   const unsigned HalfDigitBits  = DigitBits / 2;
   const unsigned HalfDigitRadix = ( (unsigned) 0x1 ) << HalfDigitBits;
   const unsigned HalfDigitMask  = HalfDigitRadix - 1;
-
-  // Various integer types.
-  typedef unsigned long long int	uint64;
-  typedef signed long long int	   int64;
-
-  typedef unsigned short int	      uint16;
-  typedef signed short int	      int16;
-
-  typedef unsigned char		      uint8;
-  typedef signed char		         int8;
 
 }
 

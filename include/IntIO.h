@@ -22,17 +22,17 @@
 
 namespace rnumber {
 
-  rnumber_t::uint64 readInt64(std::istream &is);
-  void writeInt64(std::ostream &os,rnumber_t::uint64 d);
+  uint64_t readInt64(std::istream &is);
+  void writeInt64(std::ostream &os,uint64_t d);
 
-  unsigned readInt(std::istream &is);
-  void writeInt(std::ostream &os,unsigned d);
+  uint32_t readInt(std::istream &is);
+  void writeInt(std::ostream &os,uint32_t d);
 
-  unsigned short readShort(std::istream &is);
-  void writeShort(std::ostream &os,unsigned short d);
+  uint16_t readShort(std::istream &is);
+  void writeShort(std::ostream &os,uint16_t d);
 
-  unsigned char readByte(std::istream &is);
-  void writeByte(std::ostream &os,unsigned char d);
+  uint8_t readByte(std::istream &is);
+  void writeByte(std::ostream &os,uint8_t d);
 
 }
 

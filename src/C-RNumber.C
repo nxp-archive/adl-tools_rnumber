@@ -30,22 +30,22 @@ RNumber * rnumber_create () {
   return new RNumber();
 }
 
-RNumber * rnumber_create_from_unsigned( unsigned int number )
+RNumber * rnumber_create_from_unsigned( uint32_t number )
 {
   return new RNumber (number);
 }
 
-RNumber * rnumber_create_from_unsigned_variable_sizing( unsigned int number )
+RNumber * rnumber_create_from_unsigned_variable_sizing( uint32_t number )
 {
   return new RNumber(number, RNumber::dynamic);
 }
 
-RNumber * rnumber_create_from_unsigned_of_size( unsigned int number, unsigned int size )
+RNumber * rnumber_create_from_unsigned_of_size( uint32_t number, unsigned int size )
 {
   return new RNumber(number, size);
 }
 
-RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( unsigned int number, unsigned int size )
+RNumber * rnumber_create_from_unsigned_of_size_variable_sizing( uint32_t number, unsigned int size )
 {
   return new RNumber(number, size, RNumber::dynamic);
 }
@@ -110,12 +110,12 @@ RNumber * rnumber_create_from_string_of_size_of_radix_variable_sizing( const cha
   return new RNumber( string(number), size, get_radix(radix), RNumber::dynamic);
 }
 
-RNumber * rnumber_create_from_numVector( unsigned int* numVector, unsigned int wordCount, unsigned int size )
+RNumber * rnumber_create_from_numVector( uint32_t* numVector, unsigned int wordCount, unsigned int size )
 {
   return new RNumber( numVector, wordCount, size );
 }
 
-RNumber * rnumber_create_from_numVector_variable_sizing(unsigned int* numVector, unsigned int wordCount, unsigned int size )
+RNumber * rnumber_create_from_numVector_variable_sizing(uint32_t* numVector, unsigned int wordCount, unsigned int size )
 {
   return new RNumber( numVector, wordCount, size, RNumber::dynamic);
 }
@@ -143,7 +143,7 @@ void rnumber_destroy( RNumber * rnumber )
 // Assignment methods. operator=() assigns the value constrained by sizing;
 // assign() assigns the value with dynamic sizing; clone() assigns all
 // attributes; resize() truncates/expands the value and sets fixed sizing.
-RNumber * rnumber_assign_from_uint ( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_assign_from_uint ( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber) = number);
 }
@@ -185,7 +185,7 @@ RNumber * rnumber_plus_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)+=(*number));
 }
 
-RNumber * rnumber_plus_assign_from_unsigned ( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_plus_assign_from_unsigned ( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)+=number);
 }
@@ -195,7 +195,7 @@ RNumber * rnumber_minus_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)-=(*number));
 }
 
-RNumber * rnumber_minus_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_minus_assign_from_unsigned( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)-=number);
 }
@@ -205,7 +205,7 @@ RNumber * rnumber_multiply_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)*=(*number));
 }
 
-RNumber * rnumber_multiply_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_multiply_assign_from_unsigned( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)*=number);
 }
@@ -215,7 +215,7 @@ RNumber * rnumber_divide_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)/=(*number));
 }
 
-RNumber * rnumber_divide_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_divide_assign_from_unsigned( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)/=number);
 }
@@ -225,7 +225,7 @@ RNumber * rnumber_mod_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)%=(*number));
 }
 
-RNumber * rnumber_mod_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_mod_assign_from_unsigned( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)%=number);
 }
@@ -235,7 +235,7 @@ RNumber * rnumber_bitand_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)&=(*number));
 }
 
-RNumber * rnumber_bitand_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_bitand_assign_from_unsigned( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)&=number);
 }
@@ -245,7 +245,7 @@ RNumber * rnumber_bitor_assign( RNumber * rnumber,  RNumber * number )
   return &((*rnumber)|=(*number));
 }
 
-RNumber * rnumber_bitor_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_bitor_assign_from_unsigned( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)|=number);
 }
@@ -255,7 +255,7 @@ RNumber * rnumber_bitxor_assign( RNumber * rnumber, RNumber * number )
   return &((*rnumber)^=(*number));
 }
 
-RNumber * rnumber_bitxor_assign_from_unsigned( RNumber * rnumber, unsigned int number )
+RNumber * rnumber_bitxor_assign_from_unsigned( RNumber * rnumber, uint32_t number )
 {
   return &((*rnumber)^=number);
 }
@@ -353,28 +353,28 @@ unsigned int rnumber_getbit_lsb( RNumber * rnumber, unsigned int pos )
   return rnumber->getBitLSB(pos);
 }
 
-void rnumber_setbit( RNumber * rnumber, unsigned int pos, unsigned int value )
+void rnumber_setbit( RNumber * rnumber, unsigned int pos, uint32_t value )
 {
   return rnumber->setBit(pos,value);
 }
 
-void rnumber_setbit_lsb( RNumber * rnumber, unsigned int pos, unsigned int value )
+void rnumber_setbit_lsb( RNumber * rnumber, unsigned int pos, uint32_t value )
 {
   return rnumber->setBitLSB(pos, value);
 }
 
-void rnumber_assignbit( RNumber * rnumber, unsigned int pos, unsigned int value )
+void rnumber_assignbit( RNumber * rnumber, unsigned int pos, uint32_t value )
 {
   return rnumber->setBit(pos, value);
 }
 
-void rnumber_assignbit_lsb( RNumber * rnumber, unsigned int pos, unsigned int value )
+void rnumber_assignbit_lsb( RNumber * rnumber, unsigned int pos, uint32_t value )
 {
   return rnumber->setBitLSB(pos, value);
 }
 
   // Value accessors.
-unsigned int rnumber_get_uint( RNumber * rnumber)
+uint32_t rnumber_get_uint( RNumber * rnumber)
 {
   return rnumber->uint32();
 }
@@ -506,91 +506,91 @@ void rnumber_write_to_os( RNumber * rnumber, void * os )
 struct RNumber * rnumber_rn_plus_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber(*n1 + *n2);
 }
- struct RNumber * rnumber_rn_plus_ui( const struct RNumber * n1, unsigned int n2 ){
+ struct RNumber * rnumber_rn_plus_ui( const struct RNumber * n1, uint32_t n2 ){
   return new RNumber(*n1 + n2);
 }
- struct RNumber * rnumber_ui_plus_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_plus_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(n1 + *n2);
 }
  struct RNumber * rnumber_rn_add_ext_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber(addExt(*n1,*n2));
 }
- struct RNumber * rnumber_rn_add_ext_ui( const struct RNumber * n1, unsigned int n2 ) {
+ struct RNumber * rnumber_rn_add_ext_ui( const struct RNumber * n1, uint32_t n2 ) {
   return new RNumber(addExt(*n1,n2));
 }
- struct RNumber * rnumber_ui_add_ext_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_add_ext_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(addExt(n1,*n2));
 }
  struct RNumber * rnumber_rn_minus_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber((*n1)-(*n2));
 }
-struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, unsigned int n2 ){
+struct RNumber * rnumber_rn_minus_ui( const struct RNumber * n1, uint32_t n2 ){
    return new RNumber(*n1-n2);
 }
- struct RNumber * rnumber_ui_minus_rn( unsigned int n1, const struct RNumber * n2 ) {
+ struct RNumber * rnumber_ui_minus_rn( uint32_t n1, const struct RNumber * n2 ) {
   return new RNumber(n1-(*n2));
 }
  struct RNumber * rnumber_rn_multiply_rn( const struct RNumber * n1, const struct RNumber * n2 ) {
   return new RNumber((*n1)*(*n2));
 }
- struct RNumber * rnumber_rn_multiply_ui( const struct RNumber * n1, unsigned int n2 ) {
+ struct RNumber * rnumber_rn_multiply_ui( const struct RNumber * n1, uint32_t n2 ) {
   return new RNumber((*n1)*n2);
 }
- struct RNumber * rnumber_ui_multiply_rn( unsigned int n1, const struct RNumber * n2 ) {
+ struct RNumber * rnumber_ui_multiply_rn( uint32_t n1, const struct RNumber * n2 ) {
   return new RNumber(n1*(*n2));
 }
  struct RNumber * rnumber_rn_multiply_ext_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber(multiplyExt(*n1,*n2));
 }
- struct RNumber * rnumber_rn_multiply_ext_ui( const struct RNumber * n1, unsigned int n2 ){
+ struct RNumber * rnumber_rn_multiply_ext_ui( const struct RNumber * n1, uint32_t n2 ){
   return new RNumber(multiplyExt(*n1,n2));
 }
- struct RNumber * rnumber_ui_multiply_ext_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_multiply_ext_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(multiplyExt(n1,*n2));
 }
  struct RNumber * rnumber_rn_divide_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber((*n1)/(*n2));
 }
- struct RNumber * rnumber_rn_divide_ui( const struct RNumber * n1, unsigned int n2 ) {
+ struct RNumber * rnumber_rn_divide_ui( const struct RNumber * n1, uint32_t n2 ) {
   return new RNumber((*n1)/n2);
 }
- struct RNumber * rnumber_ui_divide_rn( unsigned int n1, const struct RNumber * n2 ) {
+ struct RNumber * rnumber_ui_divide_rn( uint32_t n1, const struct RNumber * n2 ) {
   return new RNumber(n1/(*n2));
 }
  struct RNumber * rnumber_rn_mod_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber((*n1)%(*n2));
 }
- struct RNumber * rnumber_rn_mod_ui( const struct RNumber * n1, unsigned int n2 ){
+ struct RNumber * rnumber_rn_mod_ui( const struct RNumber * n1, uint32_t n2 ){
   return new RNumber((*n1)%n2);
 }
- struct RNumber * rnumber_ui_mod_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_mod_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(n1%(*n2));
 }
  struct RNumber * rnumber_rn_bitand_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber((*n1)&(*n2));
 }
- struct RNumber * rnumber_rn_bitand_ui( const struct RNumber * n1, unsigned int n2 ){
+ struct RNumber * rnumber_rn_bitand_ui( const struct RNumber * n1, uint32_t n2 ){
   return new RNumber((*n1)&n2);
 }
- struct RNumber * rnumber_ui_bitand_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_bitand_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(n1&(*n2));
 }
  struct RNumber * rnumber_rn_bitor_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber((*n1)|(*n2));
 }
- struct RNumber * rnumber_rn_bitor_ui( const struct RNumber * n1, unsigned int n2 ){
+ struct RNumber * rnumber_rn_bitor_ui( const struct RNumber * n1, uint32_t n2 ){
   return new RNumber((*n1)|n2);
 }
- struct RNumber * rnumber_ui_bitor_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_bitor_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(n1|(*n2));
 }
  struct RNumber * rnumber_rn_bitxor_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber((*n1)^(*n2));
 }
- struct RNumber * rnumber_rn_bitxor_ui( const struct RNumber * n1, unsigned int n2 ){
+ struct RNumber * rnumber_rn_bitxor_ui( const struct RNumber * n1, uint32_t n2 ){
   return new RNumber((*n1)^n2);
 }
- struct RNumber * rnumber_ui_bitxor_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_bitxor_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(n1^(*n2));
 }
 struct RNumber * rnumber_bitnot( const struct RNumber * n1 ){
@@ -602,16 +602,16 @@ struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct
  struct RNumber * rnumber_rn_leftshift_ui( const struct RNumber * n, unsigned int shift ){
    return new RNumber((*n)<<shift);
 }
- struct RNumber * rnumber_ui_leftshift_rn( unsigned int n, const struct RNumber * shift ){
+ struct RNumber * rnumber_ui_leftshift_rn( uint32_t n, const struct RNumber * shift ){
   return new RNumber(n<<(*shift));
 }
  struct RNumber * rnumber_rn_leftshift_ext_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return new RNumber(leftShiftExt(*n1,*n2));
 }
- struct RNumber * rnumber_rn_leftshift_ext_ui( const struct RNumber * n1, unsigned int n2 ){
+ struct RNumber * rnumber_rn_leftshift_ext_ui( const struct RNumber * n1, uint32_t n2 ){
   return new RNumber(leftShiftExt(*n1,n2));
 }
- struct RNumber * rnumber_ui_leftshift_ext_rn( unsigned int n1, const struct RNumber * n2 ){
+ struct RNumber * rnumber_ui_leftshift_ext_rn( uint32_t n1, const struct RNumber * n2 ){
   return new RNumber(leftShiftExt(n1,*n2));
 }
  struct RNumber * rnumber_rn_rightshift_rn( const struct RNumber * n, const struct RNumber * shift ){
@@ -620,7 +620,7 @@ struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct
  struct RNumber * rnumber_rn_rightshift_ui( const struct RNumber * n, unsigned int shift ){
   return new RNumber((*n)>>shift);
 }
- struct RNumber * rnumber_ui_rightshift_rn( unsigned int n, const struct RNumber * shift ){
+ struct RNumber * rnumber_ui_rightshift_rn( uint32_t n, const struct RNumber * shift ){
   return new RNumber(n>>(*shift));
 }
 
@@ -629,55 +629,55 @@ struct RNumber * rnumber_rn_leftshift_rn( const struct RNumber * n, const struct
 int rnumber_rn_notequal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return (*n1)!=(*n2);
 }
-int rnumber_rn_notequal_ui( const struct RNumber * n1, unsigned int n2 ) {
+int rnumber_rn_notequal_ui( const struct RNumber * n1, uint32_t n2 ) {
   return (*n1)!=n2;
 }
-int rnumber_ui_notequal_rn( unsigned int n1, const struct RNumber * n2 ){
+int rnumber_ui_notequal_rn( uint32_t n1, const struct RNumber * n2 ){
   return n1!=(*n2);
 }
 int rnumber_rn_equal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return (*n1)==(*n2);
 }
-int rnumber_rn_equal_ui( const struct RNumber * n1, unsigned int n2 ){
+int rnumber_rn_equal_ui( const struct RNumber * n1, uint32_t n2 ){
   return (*n1)==n2;
 }
-int rnumber_ui_equal_rn( unsigned int n1, const struct RNumber * n2 ){
+int rnumber_ui_equal_rn( uint32_t n1, const struct RNumber * n2 ){
   return n1==(*n2);
 }
 int rnumber_rn_lessthan_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return (*n1)<(*n2);
 }
-int rnumber_rn_lessthan_ui( const struct RNumber * n1, unsigned int n2 ){
+int rnumber_rn_lessthan_ui( const struct RNumber * n1, uint32_t n2 ){
   return (*n1)<n2;
 }
-int rnumber_ui_lessthan_rn( unsigned int n1, const struct RNumber * n2 ){
+int rnumber_ui_lessthan_rn( uint32_t n1, const struct RNumber * n2 ){
   return n1<(*n2);
 }
 int rnumber_rn_lessequal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return (*n1)<=(*n2);
 }
-int rnumber_rn_lessequal_ui( const struct RNumber * n1, unsigned int n2 ){
+int rnumber_rn_lessequal_ui( const struct RNumber * n1, uint32_t n2 ){
   return (*n1)<=n2;
 }
-int rnumber_ui_lessequal_rn( unsigned int n1, const struct RNumber * n2 ){
+int rnumber_ui_lessequal_rn( uint32_t n1, const struct RNumber * n2 ){
   return n1<=(*n2);
 }
 int rnumber_rn_greaterthan_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return (*n1)>(*n2);
 }
-int rnumber_rn_greaterthan_ui( const struct RNumber * n1, unsigned int n2 ){
+int rnumber_rn_greaterthan_ui( const struct RNumber * n1, uint32_t n2 ){
   return (*n1)>n2;
 }
-int rnumber_ui_greaterthan_rn( unsigned int n1, const struct RNumber * n2 ){
+int rnumber_ui_greaterthan_rn( uint32_t n1, const struct RNumber * n2 ){
   return n1>(*n2);
 }
 int rnumber_rn_greaterequal_rn( const struct RNumber * n1, const struct RNumber * n2 ){
   return (*n1)>=(*n2);
 }
-int rnumber_rn_greaterequal_ui( const struct RNumber * n1, unsigned int n2 ){
+int rnumber_rn_greaterequal_ui( const struct RNumber * n1, uint32_t n2 ){
   return (*n1)>=n2;
 }
-int rnumber_ui_greaterequal_rn( unsigned int n1, const struct RNumber * n2 ){
+int rnumber_ui_greaterequal_rn( uint32_t n1, const struct RNumber * n2 ){
   return n1>=(*n2);
 }
 
