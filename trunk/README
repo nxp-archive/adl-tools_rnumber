@@ -1,0 +1,3 @@
+To install rutil you need:
+ - egcs 1.1.2 or better
+ - zlib ( 1.1.2 was used, but I am not sure we depend on that version)

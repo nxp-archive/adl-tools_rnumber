@@ -1,0 +1,267 @@
+#!/bin/sh
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+
+libdir=@libdir@
+
+bindir=${exec_prefix}/bin
+datadir=${exec_prefix}/share/
+
+pkglibdir=${libdir}/@PACKAGE@
+pkgdatadir=${datadir}/@PACKAGE@
+transform=@program_transform_name@
+
+CFLAGS="@PROFILE@ -I@includedir@ "
+RFLAG="-Wl,-R${pkglibdir}"
+LIBDIRS="-L${pkglibdir} $RFLAG"
+LIBS="-lRNumber"
+HELPER_PATH="${pkgdatadir}"
+
+rnumber_ltlibs="${pkglibdir}/libRNumber.la"
+rnumber_libs="$LIBDIRS $LIBS "
+rnumber_bl_libs="-lstdc++ -lbl-rnumber_s-@BIGLOO_REVISION@ "
+rnumber_bl_lib_path="-L ${pkglibdir} "
+rnumber_cflags="$CFLAGS"
+rnumber_perl_libs="${pkglibdir}"
+
+STATIC_LIBS_DEPEND="${pkglibdir}/libRNumber.a "
+STATIC_LIBS="${pkglibdir}/libRNumber.a "
+
+usage()
+{
+    cat <<EOF
+Usage: rnumber-config [OPTION]... [LIBRARY]...
+
+Generic options
+  --version         output library version information
+  --help            display this help and exit
+  --prefix          display installation root directory
+
+Compilation support options
+  --cflags          print pre-processor and compiler flags
+  --depend          give list of libraries that target could depend on.
+  --helper-path     print path to installed scripts and binaries
+                    that support RNUMBER.
+  --libs            print library linking information
+  --ltlibs          print Libtool library information
+  --libs-only-L     only print the -L/-R part of --libs
+  --libs-only-l     only print the -l part of --libs
+  --perl-libs       print library path for perl. Cannot be combined with any other flags.
+  --static-libs     print path to .a file.
+  --bl-libs         library path and library flag for bigloo.
+  --bl-libs-only-l  library for bigloo.
+  --bl-libs-only-L  library path for bigloo.
+EOF
+
+    exit $1
+}
+
+if test $# -eq 0; then
+    usage 1
+fi
+
+cflags=false
+depend=false
+libs_L=false
+bl_libs_l=false
+bl_libs_L=false
+libs_l=false
+perl_libs=false
+helper_path=false
+static_libs=false
+ltlibs=false
+
+any=no
+
+while test $# -gt 0; do
+    case "$1" in
+    -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+    *) optarg= ;;
+    esac
+
+    case $1 in
+    --version)
+        echo @VERSION@
+        exit 0
+        ;;
+    --help)
+        usage 0
+        ;;
+    --prefix)
+        echo $prefix
+		  exit 0
+		  ;;
+    --helper-path)
+        helper_path=true
+        ;;
+	--ltlibs)
+	    ltlibs=true
+		;;
+    --static-libs)
+        libs_L=true
+        static_libs=true
+        ;;
+    --depend)
+        depend=true
+        ;;
+    --cflags)
+       	cflags=true
+       	;;
+    --perl-libs)
+        printf "$rnumber_perl_libs"
+	exit 0;
+	;;
+    --libs)
+        libs_L=true
+        libs_l=true
+        ;;
+    --libs-only-L)
+        libs_L=true
+        ;;
+    --libs-only-l)
+        libs_l=true
+        ;;
+    --bl-libs)
+        bl_libs_l=true
+        bl_libs_L=true
+        ;;
+    --bl-libs-only-l)
+        bl_libs_l=true
+        ;;
+    --bl-libs-only-L)
+        bl_libs_L=true
+        ;;
+    rnumber)
+        # defined above to avoid double definiton with default values below
+        the_libs="$the_libs $rnumber_libs"
+        the_flags="$the_flags $rnumber_cflags"
+        any=yes
+        ;;
+    *)
+	usage 1
+	;;
+    esac
+    shift
+done
+
+# default to rnumber
+if test "x$any" = xno; then
+   the_libs="$the_libs $rnumber_libs"
+   the_flags="$the_flags $rnumber_cflags"
+fi
+
+if $cflags; then
+    all_flags="$the_flags"
+fi
+
+if $depend; then
+    all_flags=$STATIC_LIBS_DEPEND
+fi
+
+if $ltlibs; then
+	all_flags="$all_flags $rnumber_ltlibs"
+fi
+
+if $libs_l; then
+    all_flags="$LIBS"
+fi
+
+if $libs_L; then
+    all_flags="$all_flags $LIBDIRS"
+fi
+
+if $perl_libs; then
+    all_flags="$all_flags $rnumber_perl_libs"
+fi
+
+if $bl_libs_L; then
+    all_flags="$rnumber_bl_lib_path "
+fi
+
+if $bl_libs_l; then
+    all_flags="$all_flags $rnumber_bl_libs"
+fi
+
+if $helper_path; then
+   all_flags="$HELPER_PATH"
+fi
+
+if $static_libs; then
+    all_flags="$STATIC_LIBS"
+fi
+
+if test -z "$all_flags" || test "x$all_flags" = "x "; then
+    exit 1
+fi
+
+# Straight out any possible duplicates, but be careful to
+# get `-lfoo -lbar -lbaz' for `-lfoo -lbaz -lbar -lbaz'
+other_flags=
+lib_L_flags=
+rev_libs=
+if $bl_libs_l || $bl_libs_L; then
+   lib_L_flags=$all_flags
+else 
+for i in $all_flags; do
+    case "$i" in
+    # a library, save it for later, in reverse order
+    -l*) rev_libs="$i $rev_libs" ;;
+    -L*)
+	if $libs_L; then
+	    case " $lib_L_flags " in
+	    *\ $i\ *) ;;			# already there
+	    *) lib_L_flags="$lib_L_flags $i" ;;	# add it to output
+	    esac 
+	elif
+	    $bl_libs_L; then
+	    case " $lib_L_flags " in
+	    *\ $i\ *) ;;			# already there
+	    *) lib_L_flags="$lib_L_flags $i" ;;	# add it to output
+	    esac 
+	fi;;
+    -R*)
+	if $libs_L; then
+	    case " $lib_L_flags " in
+	    *\ $i\ *) ;;			# already there
+	    *) lib_L_flags="$lib_L_flags $i" ;;	# add it to output
+	    esac 
+	fi;;
+    *)
+	case " $other_flags " in
+	*\ $i\ *) ;;				# already there
+	*) other_flags="$other_flags $i" ;;	# add it to output
+        esac ;;
+    esac
+done
+
+ord_libs=
+if [ $libs_l -o $static_libs ]; then
+    for i in $rev_libs; do
+	case " $ord_libs " in
+	*\ $i\ *) ;;			# already there
+	*) ord_libs="$i $ord_libs" ;;	# add it to output in reverse order
+	esac
+    done
+fi
+fi
+
+#printf "other_flags |$other_flags|\n"
+#printf "lib_L_flags |$lib_L_flags|\n"
+#printf "ord_libs    |$ord_libs|\n"
+
+if test "x$other_flags" != "x"; then
+    printf "$other_flags"
+fi
+
+if test "x$lib_L_flags" != "x"; then
+    printf " $lib_L_flags"
+fi
+
+if test "x$ord_libs" != "x"; then
+    printf " $ord_libs"
+fi
+
+#printf "$other_flags $lib_L_flags $ord_libs";
+
+exit 0

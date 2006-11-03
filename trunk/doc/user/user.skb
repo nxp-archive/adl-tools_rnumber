@@ -1,0 +1,106 @@
+(define (lbracket)
+   (char "["))
+
+(define (rbracket)
+   (char "]"))
+
+(define (scolon)
+   (char ";"))
+
+(define (tdl . x)
+   (apply td (list :valign 'top :align 'left x)))
+   
+(define (tdr . x)
+   (apply td (list :valign 'top :align 'right x)))
+   
+(define (insert-rmf-file filename)
+   (frame (prog (source :language C :file filename)))   )
+
+(define (insert-uvp-file filename)
+   (frame (prog (source :language C :file filename)))   )
+
+
+(define *prgm-color* "#ffffcc")
+(define *output-color* "#ccbbcc")
+
+(define *concept-index* (make-index "concept-index"))
+(define *variable-index* (make-index "variable-index"))
+
+(bibliography "bib.scr")
+(skribe-load "web-book.skr")
+(skribe-load "s.skr")
+
+(document
+ :title "RNumber User Manual"
+ :author (author :name "Todd Dukes" 
+		 :affiliation "Freescale Design Technology"
+		 :email (mailto "tdukes@freescale.com"
+			   :text "tdukes@freescale.com")
+		 :phone "512-996-4865")
+
+ (linebreak 1)
+ (p [This is preliminary user documentation for RNumber.])
+ (p [This document desribes version ] *project-version* [ of RNumber.])
+ (p [The rnumber library provides two different areas of
+functionality. There are large integers, referred to as rnumber's, and
+there are the random sequences.])
+
+   (chapter :title [Introduction]
+      (section :title [Large Integers]
+
+	 (p [RNumber was initially developed to provide support for large integers in C++ for
+developing an application to generate random stimulus for microprocessor validation (Raptor). This
+application domain has some unique requirements that were not present in number libraries available
+at the time. These main requirement not available was to be able to control whether the number would
+expand the number of bits that represent it on overflow or to wrap around to zero on overflow. Since
+expansion of number on overflow is not typically used in the problem domain RNumber was developed
+for, it is not as convenient to use as wrapping on overflow.])
+
+	 (p [Be advised. RNumber has had extensive use in applications using ,(code [fixed])
+numbers. ,(code [dynamic]) RNumber code has had very little use.])
+
+	 (p [Since signed integers were not required for the original application they are not
+supported. In other ways RNumber are as convenient as built in types for C++])
+      
+	 (p [Some time after the original use of RNumber in Raptor, bindings were created to use
+them with Bigloo for an application to analyze Raptor output (figleaf). In order to deal with the
+name mangling and overloaded operators, a C interface was created. To my knowledge, the C interface
+has never been used directly. Only the portions of the RNumber interface necessary to write figleaf
+were written.  However, this is most of the useful portions and the rest could be fairly easily
+added.])
+
+	 (p [Shortly after using RNumber with bigloo, a request was made to provide perl bindings as
+well. The C interface was used to create a simple swig interface.]))
+      
+      (section :title [Random Sequences]
+	 
+	 )
+      
+      (section :title [Build Utility and Examples] 
+	 (p [RNumber includes a build utility called ,(code [rnumber-config]) that may be used to
+aid in constructing command lines for building. Running ,(code [rnumber-config]) with no options will
+show the supported command line flags. Look at the comments at the top of the examples in ,(code
+[rnumber/examples]) to see how to make good use of this command.])
+	 (p [There is a simple example for each of C++, C, perl, and Bigloo scheme in the ,(code
+[rnumber/examples]) directory. There are comments at the top of each that explains how to compile or
+run the example.])))
+   
+   (include "cpp-classes.skb")
+   (include "c-functions.skb")   
+   (include "bigloo-bindings.skb")
+   (include "perl-bindings.skb")
+
+(chapter :title "Bibliography"
+   :number #f 
+   (font :size -1 (the-bibliography :all #t)))
+   
+   (chapter
+      :title "Variable Index"
+      :number #f
+      (paragraph
+	 [The Variable index contains entries for variables and functions.])
+      (the-index *variable-index*))
+   (chapter
+      :title "Concept Index"
+      :number #f
+      (the-index *concept-index*)))

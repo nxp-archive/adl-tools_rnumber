@@ -1,0 +1,96 @@
+(chapter :title "Perl Bindings"
+   (p [All of the c functions can be called from perl by using the
+rnumber module (see ,(ref :url *project-example-ftp-site* :text
+[examples])). Several of the functions are exported for
+convenience. Also, some of the functions have be made polymorphic.
+They can accept rnumbers or integers as any of their parameters. They
+are also listed here.])
+
+   (section :title "Memory Management"
+      (p [Do not call rnumber_destroy, Perl will call it for you.]))
+   
+   (section :title "Operators"
+      (p [The following operators are overloaded.])
+      (description
+	 (item :key [+] [\&overload_add])
+	 (item :key [-] [\&overload_minus])
+	 (item :key [%] [\&overload_mod])
+	 (item :key [*] [\&overload_mult])
+	 (item :key [/] [\&overload_div])
+	 (item :key [&] [\&overload_bitand])
+	 (item :key [|] [\&overload_bitor])
+	 (item :key [==] [\&overload_equal])
+	 (item :key [!=] [\&overload_not_equal])
+	 (item :key [<] [\&overload_lessthan])
+	 (item :key [<=] [\&overload_lessequal])
+	 (item :key [>] [\&overload_greaterthan])
+	 (item :key [>=] [\&overload_greaterequal])
+	 (item :key [<<] [\&overload_leftshift])
+	 (item :key [>>] [\&overload_rightshift])
+	 (item :key [""] [\&overload_to_string. This allows you to
+just use print to print RNumbers.])))
+
+   (section :title "Functions"
+      (table
+	 (tr :bg "#cccccc" (th :align 'center :colspan 3 "Exported Functions"))
+	 (tr :bg "#cccccc" (th "Function name")(th "Parameters")(th "Description"))
+	 (tr (tdl [stringp])(tdl [(scalar)])(tdl [string predicate, is argument a string]))
+	 (tr (tdl [integerp])(tdl [(scalar)])(tdl [integer predicate, is
+argument an integer. Note: this seems to return false for integers
+where the msb is set.]))
+	 (tr (tdl [numericp])(tdl [(scalar)])(tdl [numeric predicate, is
+argument an integer or double.]))
+	 (tr (tdl [rnumberp])(tdl [(scalar)])(tdl [rnumber predicate, is
+argument an rnumber]))
+	 (tr (tdl [rn_version])(tdl [none])(tdl [return library version
+number]))
+	 (tr (tdl [rn_ctor])(tdl [(<integer, rnumber or string>)])(td
+[rnumber constructor]))
+	 (tr (tdl [rn_cstr])(tdl [(rnumber, optional-radix,
+optional-prefix)])(tdl [convert rnumber to a string]))
+	 (tr (tdl [rn_int])(tdl [(rnumber)])(tdl [convert rnumber to
+integer (may cause truncation)]))
+	 (tr (tdl [rn_eq])(tdl [(scalar, scalar)])(tdl [are integers or
+rnumbers equal.]))
+	 (tr (tdl [rn_neq])(tdl [(scalar, scalar)])(tdl [are integers or
+rnumbers not equal.]))
+	 (tr (tdl [rn_lt])(tdl [(scalar, scalar)])(tdl [is first variable
+less than second (integers or rnumbers)]))
+	 (tr (tdl [rn_le])(tdl [(scalar, scalar)])(tdl [is first variable
+less than or equal to second (integers or rnumbers)]))
+	 (tr (tdl [rn_gt])(tdl [(scalar, scalar)])(tdl [is first variable
+greater than second (integers or rnumbers)]))
+	 (tr (tdl [rn_ge])(tdl [(scalar, scalar)])(tdl [is first variable
+greater than or equal to second (integers or rnumbers)]))
+	 (tr (tdl [rn_ls])(tdl [(scalar, scalar)])(tdl [left shift first
+variable by second number of bits.  (integers or rnumbers)]))
+	 (tr (tdl [rn_rs])(tdl [(scalar, scalar)])(tdl [right shift first
+variable by second number of bits. (integers or rnumbers)]))
+	 (tr (tdl [rn_plus])
+	    (tdl [(scalar, scalar)])(tdl [add first and second variables
+together and return an rnumber. Arguments may be either rnumbers or
+integers]))
+	 (tr (tdl [rn_minus])
+	    (tdl [(scalar, scalar)])(tdl [subtrace second variable from first and return an
+rnumber. Arguments may be either rnumbers or integers]))
+	 (tr (tdl [rn_div])
+	    (tdl [(scalar, scalar)])(tdl [divide first variable by
+second and return an rnumber. Arguments may be either rnumbers or
+integers]))
+	 (tr (tdl [rn_mult])
+	    (tdl [(scalar, scalar)])(tdl [multiply first and second
+variables together and return an rnumber. Arguments may be either
+rnumbers or integers]))
+	 (tr (tdl [rn_bitor])
+	    (tdl [(scalar, scalar)])(tdl [bitwise or first and second
+variables together and return an rnumber. Arguments may be either
+rnumbers or integers]))
+	 (tr (tdl [rn_bitand])
+	    (tdl [(scalar, scalar)])(tdl [bitwise and first and second
+variables together and return an rnumber. Arguments may be either
+rnumbers or integers]))
+	 (tr (tdl [rn_mod])
+	    (tdl [(scalar, scalar)])(tdl [mod first variable by second
+and return an rnumber. Arguments may be either rnumbers or integers]))
+	 (tr (tdl [rn_size])(tdl [(rnumber)])(tdl [Return the number of
+bits in the RNumber passed as an argument.])))))

@@ -1,0 +1,66 @@
+create from int
+a 0xa b 0xf
+<pretty print>
+0xa
+</pretty print>
+a=0xa b=0xf
+a=10 b=15
+a=10 b=15 rn=?  #f
+a=10 b=15 rn!=? #t
+a=10 b=15 rn<?  #t
+a=10 b=15 rn<=? #t
+a=10 b=15 rn>?  #f
+a=10 b=15 rn>=? #f
+create from string
+a 0xa b 0xf
+<pretty print>
+0xa
+</pretty print>
+a=0xa b=0xf
+a=10 b=15
+a=10 b=15 rn=?  #f
+a=10 b=15 rn!=? #t
+a=10 b=15 rn<?  #t
+a=10 b=15 rn<=? #t
+a=10 b=15 rn>?  #f
+a=10 b=15 rn>=? #f
+equal numbers
+a 0xa b 0xa
+<pretty print>
+0xa
+</pretty print>
+a=0xa b=0xa
+a=10 b=10
+a=10 b=10 rn=?  #t
+a=10 b=10 rn!=? #f
+a=10 b=10 rn<?  #f
+a=10 b=10 rn<=? #t
+a=10 b=10 rn>?  #f
+a=10 b=10 rn>=? #t
+default print: a 0xa
+rnumber->cstr: a 10
+rnumber->cstr radix: a 0xa
+radix with prefix: a 0xa
+radix w/out prefix: a a
+b 255
+c 255
+a = b #f
+b = c #t
+a = 10 #f
+10 = a #f
+parse from string qtv -> #f
+parse from string "10" -> 0xa
+5 - 3 -> 0x2
+(rn-sign-extend! 0x8000 16 0xffff8000)
+(rn-get-bit 0x8000 16 1)
+(rn-get-bit 0x8000 15 0)
+(rn-get-bit-lsb 0x8000 16 0)
+(rn-get-bit-lsb 0x8000 15 1)
+(a after set-bit! 1 1 0x40000000)
+(a after set-bit! 1 0 0x0)
+(a after set-bit-lsb! 1 1 0x2)
+(a after set-bit-lsb! 1 1 0x0)
+(size a 32)
+(size a after resize 128 128)(word-count 4)
+(a after set-lsb 5 1 0x00000000000000000000000000000020)
+(a after big sign extend 0xffffffffffffffffffffffffffffffe0)

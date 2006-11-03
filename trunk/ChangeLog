@@ -1,0 +1,711 @@
+         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
+
+         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
+
+         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
+
+         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
+
+         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
+
+         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
+
+2006-11-03  Brian Kahne  <bkahne@freescale.com>
+
+        * Testing svn cadinstall ChangeLog modifications.
+
+	* Got rid of the fixed-width integers in the rnumber_t namespace
+	and replaced them with the standard declarations in <stdint.h>.
+	RNumber now compiles on 64-bit Linux, except for the Perl
+	bindings, which have a link error.
+
+2006-10-10  Todd Dukes  <tdukes@austin.rr.com>
+
+	* added -lstdc++ to link command inside bl-rnumber.init.in
+
+        ==== rnumber release 2.0.3  ====
+
+2006-09-26  Todd Dukes  <tdukes@freescale.com>
+
+	* reintroduced documentation to configure.ac and Makefiles.
+	  Removed references to scribe. They have been changed to skribe.
+	  skribe 1.2e is being used to create documentation.
+
+        ==== rnumber release 2.0.2  ====
+
+2006-09-14  Todd Dukes  <tdukes@freescale.com>
+
+	* added missing rnumber_bitnot. to C-RNumber.h
+	* added simple self checking test for bigloo bindings. Its not
+	  very good, but should catch gross errors.
+
+2006-09-14  Todd Dukes  <tdukes@freescale.com> (Manuel Serrano)
+
+	* fixed Makefile.am problem with libbl-rnumber_* targets.
+
+        ==== rnumber release 2.0.1  ====
+
+2006-08-28  Todd Dukes  <tdukes@freescale.com>
+
+	* Added make-lib.scm to distribution (Makefile.am in bigloo/src)
+	* Added 'AUTOMAKE_OPTIONS = foreign' to Makefile.am to keep
+	  automake from wiping out COPYING and replacing it with GPL.
+
+2006-08-28  Brian Kahne  <bkahne@freescale.com>
+
+	* Added copyright information, updated the COPYING file to contain
+	the Artistic License, and updated the AUTHORS file.
+
+        ==== rnumber release 1.26.2 (v1_26_2) on Linux (cde-tx32-ldt217) on 6/5/2006 ====
+
+        ==== rnumber release 1.26.2 (v1_26_2) on Linux (cde-tx32-ldt217) on 6/5/2006 ====
+
+        ==== rnumber release 1.26.2 (v1_26_2) on Linux (cde-tx32-ldt217) on 6/5/2006 ====
+
+        ==== rnumber release 1.26.2 (v1_26_2) on Linux (cde-tx32-ldt217) on 6/5/2006 ====
+
+2006-06-05  Todd Dukes  <tdukes@freescale.com>
+
+	* Build with bigloo 2.8a
+
+        ==== rnumber release 1.26.1 (v1_26_1) on Linux (cde-tx32-ldt189) on 5/22/2006 ====
+
+2006-05-22  Brian Kahne  <bkahne@freescale.com>
+
+	* Fixed rnumber-config so that the --libs and --libs-only-L option
+	will print a -R line as well as a -L line.  Also, the
+	--libs-only-L option now only prints the path information (as it
+	was supposed to) and not the library, too.
+
+	* RNumber::printHex() turns off the showbase flag for printing
+	interrior words so that 0x isn't replicated internally.
+
+        ==== rnumber release 1.26.0 (v1_26_0) on Linux (cde-tx32-ldt189) on 5/9/2006 ====
+
+        ==== rnumber release 1.26.0 (v1_26_0) on Linux (cde-tx32-ldt189) on 5/9/2006 ====
+
+        ==== rnumber release 1.26.0 (v1_26_0) on Linux (cde-tx32-ldt189) on 5/9/2006 ====
+
+2006-05-08  Brian Kahne  <bkahne@freescale.com>
+
+	* Cleaned up configure.ac and the overall build environment so
+	that it builds cleanly using the newest versions of the GNU Build
+	System and passes "make distcheck".
+
+	* RNumber now uses libtool.  You can call "rnumber-config
+	--ltlibs" to fetch the libtool link line.  The rnumber.m4 macro
+	has been modified so that it exports RNUMBER_LTLIBS, which
+	contains this information.
+
+        ===== rnumber release 1.25.2 (v1_25_2) on Linux (cde-tx32-ldt217) =====
+
+        ========== rnumber release 1.25.2 (v1_25_2) on SunOS (sc0048) ==========
+
+2006-01-27  Todd Dukes  <tdukes@freescale.com>
+
+	* Random.C getInteger (unsigned n) and getUint64 (uint 64)
+         - when n == 0 these functions returned  from [0:-1] instead
+           of 0. These functions have been changed so that calling with
+	   value of 0 will return 0.
+
+        ========== rnumber release 1.25.1 (v1_25_1) on SunOS (sc0048) ==========
+
+        ========== rnumber release 1.25.1 (v1_25_1) on SunOS (sc0048) ==========
+
+        ===== rnumber release 1.25.1 (v1_25_1) on Linux (cde-tx32-ldt217) =====
+
+2005-12-02  Todd Dukes  <tdukes@freescale.com>
+
+	* builds and tests ok with gcc 3.4.3
+
+        ========== rnumber release 1.24.3 (v1_24_3) on SunOS (sc0048) ==========
+
+        ===== rnumber release 1.24.3 (v1_24_3) on Linux (cde-tx32-ldt217) =====
+
+        ===== rnumber release 1.24.2 (v1_24_2) on Linux (cde-tx32-ldt217) =====
+
+2005-11-21  Todd Dukes  <tdukes@freescale.com>
+
+	* bigloo 2.7a released. Merged changes from
+	  split-for-bigloo-2_7a-beta branch back into the main
+	  tree.
+
+2005-11-18  Todd Dukes  <tdukes@freescale.com>
+
+	* Changes for the 17Nov05 bigloo beta.
+
+2005-10-11  Todd Dukes  <tdukes@freescale.com>
+
+        - All 1.24.x versions will be for bigloo 2.7a
+        
+        * rnumber_to_string. Try to print the number instead of just "<rnumber>"
+        * changed bigloo heap options for requirements of bigloo 2.7a 05Oct05 beta
+
+
+        ===== rnumber release 1.23.4 (v1_23_4) on SunOS (cde-tx32-gb0002) =====
+
+         rnumber release 1.23.4 (v1_23_4) on SunOS (tomato.somerset.sps.mot.com) 
+
+        ===== rnumber release 1.23.4 (v1_23_4) on Linux (cde-tx32-ldt217) =====
+
+        ====== rnumber release 1.23.3 (v1_23_3) on Linux (cde-tx32-lc210) ======
+
+        ===== rnumber release 1.23.3 (v1_23_3) on SunOS (cde-tx32-gb0002) =====
+
+        ===== rnumber release 1.23.3 (v1_23_3) on Linux (cde-tx32-ldt217) =====
+
+        ===== rnumber release 1.23.3 (v1_23_3) on SunOS (cde-tx32-gb0002) =====
+
+        ===== rnumber release 1.23.3 (v1_23_3) on Linux (cde-tx32-ldt217) =====
+
+        ====== rnumber release 1.23.3 (v1_23_3) on Linux (cde-tx32-lc209) ======
+
+2004-09-23  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  Fixed bug in bigloo rn-bitnot function.
+
+         rnumber release 1.23.2 (v1_23_2) on SunOS (tomato.somerset.sps.mot.com) 
+
+        ====== rnumber release 1.23.2 (v1_23_2) on Linux (cde-tx32-lc209) ======
+
+        ===== rnumber release 1.23.2 (v1_23_2) on SunOS (cde-tx32-gb0002) =====
+
+        ====== rnumber release 1.23.0 (v1_23_0) on Linux (cde-tx32-lc209) ======
+
+        ===== rnumber release 1.23.0 (v1_23_0) on SunOS (cde-tx32-gb0001) =====
+
+        ====== rnumber release 1.23.0 (v1_23_0) on Linux (cde-tx32-lc184) ======
+
+        ====== rnumber release 1.23.0 (v1_23_0) on Linux (cde-tx32-lc207) ======
+
+        ========= rnumber release 1.23.0 (v1_23_0) on Linux (petra20) =========
+
+        ===== rnumber release 1.23.0 (v1_23_0) on SunOS (cde-tx32-gb0002) =====
+
+         rnumber release 1.23.0 (v1_23_0) on SunOS (wynken.somerset.sps.mot.com) 
+
+        ========= rnumber release 1.23.0 (v1_23_0) on Linux (petra20) =========
+
+2004-03-02  Brian Kahne  <bkahne@ibmoto.com>
+
+        * src/RNumber.C: Added IntIO.h.  This contains routines for
+        reading and writing integers to a stream in an endian-neutral
+        format.  RNumber now uses that for its reading and writing.
+
+         rnumber release 1.22.7 (v1_22_7) on SunOS (wynken.somerset.sps.mot.com) 
+
+         rnumber release 1.22.7 (v1_22_7) on SunOS (wynken.somerset.sps.mot.com) 
+
+         rnumber release 1.22.7 (v1_22_7) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.22.7 (v1_22_7) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.22.7 (v1_22_7) on SunOS (ellis.somerset.sps.mot.com) 
+
+        ========= rnumber release 1.22.7 (v1_22_7) on Linux (petra20) =========
+
+         rnumber release 1.22.7 (v1_22_7) on SunOS (wynken.somerset.sps.mot.com) 
+
+        ====== rnumber release 1.22.7 (v1_22_7) on Linux (cde-tx32-lc207) ======
+
+        ===== rnumber release 1.22.7 (v1_22_7) on SunOS (cde-tx32-gb0001) =====
+
+        ====== rnumber release 1.21.7 (v1_21_7) on Linux (cde-tx32-lc004) ======
+
+        ========= rnumber release 1.21.7 (v1_21_7) on Linux (petra20) =========
+
+        ===== rnumber release 1.21.7 (v1_21_7) on SunOS (cde-tx32-gb0001) =====
+
+        ====== rnumber release 1.21.7 (v1_21_7) on Linux (cde-tx32-lc004) ======
+
+         rnumber release 1.21.7 (v1_21_7) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.21.7 (v1_21_7) on SunOS (tomato.somerset.sps.mot.com) 
+
+        ========= rnumber release 1.21.6 (v1_21_6) on Linux (petra20) =========
+
+         rnumber release 1.21.6 (v1_21_6) on SunOS (wynken.somerset.sps.mot.com) 
+
+        ====== rnumber release 1.21.6 (v1_21_6) on Linux (cde-tx32-lc004) ======
+
+        ===== rnumber release 1.21.6 (v1_21_6) on SunOS (cde-tx32-gb0025) =====
+
+         rnumber release 1.21.5 (v1_21_5) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.21.5 (v1_21_5) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.21.5 (v1_21_5) on SunOS (ellis.somerset.sps.mot.com) 
+
+        ========= rnumber release 1.21.5 (v1_21_5) on Linux (petra20) =========
+
+        ====== rnumber release 1.21.5 (v1_21_5) on Linux (cde-tx32-lc004) ======
+
+         rnumber release 1.21.5 (v1_21_5) on SunOS (ellis.somerset.sps.mot.com) 
+
+        ===== rnumber release 1.21.5 (v1_21_5) on SunOS (cde-tx32-gb0025) =====
+
+        ========= rnumber release 1.21.4 (v1_21_4) on Linux (petra20) =========
+
+         rnumber release 1.21.4 (v1_21_4) on SunOS (wynken.somerset.sps.mot.com) 
+
+        ====== rnumber release 1.21.4 (v1_21_4) on Linux (cde-tx32-lc002) ======
+
+        ====== rnumber release 1.21.4 (v1_21_4) on Linux (cde-tx32-lc002) ======
+
+        ====== rnumber release 1.21.4 (v1_21_4) on Linux (cde-tx32-lc004) ======
+
+        ===== rnumber release 1.21.4 (v1_21_4) on SunOS (cde-tx32-gb0025) =====
+
+2003-10-27  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Added methods to Random to get uint64 values.
+
+        ====== rnumber release 1.20.4 (v1_20_4) on Linux (cde-tx32-lc004) ======
+
+        ========= rnumber release 1.20.4 (v1_20_4) on Linux (petra20) =========
+
+        ===== rnumber release 1.20.4 (v1_20_4) on SunOS (cde-tx32-gb0025) =====
+
+         rnumber release 1.20.4 (v1_20_4) on SunOS (wynken.somerset.sps.mot.com) 
+
+2003-10-20  Brian Kahne  <bkahne@ibmoto.com>
+
+        * configure.in: I've consolidated a lot of configure functionality
+        into a macro called AM_CPP_SETUP.  Use this to get the usual
+        behavior or checking for --enable-opt, --enable-profile, whether
+        you need -fPIC, etc.
+
+        ====== rnumber release 1.20.3 (v1_20_3) on Linux (cde-tx32-lc002) ======
+
+        ====== rnumber release 1.20.3 (v1_20_3) on Linux (cde-tx32-lc002) ======
+
+        ========= rnumber release 1.20.3 (v1_20_3) on Linux (petra20) =========
+
+        ========= rnumber release 1.20.3 (v1_20_3) on Linux (petra20) =========
+
+         rnumber release 1.20.3 (v1_20_3) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.20.3 (v1_20_3) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.20.3 (v1_20_3) on SunOS (ellis.somerset.sps.mot.com) 
+
+        ===== rnumber release 1.20.3 (v1_20_3) on SunOS (cde-tx32-gb0025) =====
+
+        ===== rnumber release 1.20.3 (v1_20_3) on SunOS (cde-tx32-gb0025) =====
+
+        ===== rnumber release 1.20.3 (v1_20_3) on SunOS (cde-tx32-gb0025) =====
+
+         rnumber release 1.20.3 (v1_20_3) on SunOS (ellis.somerset.sps.mot.com) 
+
+         rnumber release 1.20.3 (v1_20_3) on SunOS (ellis.somerset.sps.mot.com) 
+
+        ===== rnumber release 1.20.3 (v1_20_3) on SunOS (cde-tx32-gb0004) =====
+
+        ===== rnumber release 1.20.3 (v1_20_3) on SunOS (cde-tx32-gb0004) =====
+
+        ===== rnumber release 1.20.3 (v1_20_3) on SunOS (cde-tx32-gb0004) =====
+
+        ===== rnumber release 1.20.3 (v1_20_3) on SunOS (cde-tx32-gb0004) =====
+
+2003-10-13  Brian Kahne  <bkahne@ibmoto.com>
+
+        * configure.in: Debug info is now included with optimized builds
+        so that installed libraries can be debugged.
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on Linux ==============
+
+2003-10-07  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * added bigEndianArrayOfBytes().
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============== rnumber release 1.20.2 (v1_20_2) on SunOS ==============
+
+        ============= rnumber release 1.20.2 (v1_20_2) =====================
+
+2003-09-19  from_import  <Todd.Dukes@motorola.com>
+
+        * removed trailing spaces from rnumber-config --perl-libs output.
+
+        ============= rnumber release 1.20.1 (v1_20_1) =====================
+        
+2003-09-18  from_import  <Todd.Dukes@motorola.com>
+
+        *  Fix problems with Perl 5.8 and overloading. The class name
+           used by swig changed from RNumber to _p_RNumber, I have to 
+           change the package name accordingly.
+
+        *  fixed infinite recursion problem  when bad parameters are given
+           to rn_plus.
+        
+        *  added simple regression with checking for perl.
+        
+        ============= rnumber release 1.19.1 (r_1_19_1) =====================
+        
+2003-08-29  from_import  <Todd.Dukes@motorola.com>
+
+        * fPIC is not used on i686 platforms.
+        * added new ctor to construct RNumbers from long longs.
+
+        ============= rnumber release 1.18.3 (v1_18_3) on SunOS =============
+
+2003-08-12  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  changes to makefiles for bigloo bindings.
+
+2003-08-05  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  added #include <cassert> to files that  use the assert macro to 
+           compile with gcc 3.3
+        
+        ============= rnumber release 1.18.1 (v1_18_1) on SunOS =============
+2003-08-05  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * minor changes to build in SUE environment.
+
+2003-08-01  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  changes for bigloo 2.6a and swig. bigloo 2.6a is
+           now required for scheme bindings.
+
+2003-04-21  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  Made some radix and prefix related changes.
+
+2003-07-14  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Added a new method, RNumber::uint64(), which allows the user to
+        get a 64-bit number directly and efficiently from an RNumber.
+
+        ============= rnumber release 1.17.12 (v1_17_12) on SunOS =============
+
+        ============= rnumber release 1.17.12 (v1_17_12) on Linux =============
+
+        ============= rnumber release 1.17.10 (v1_17_10) on Linux =============
+
+        ============== rnumber release 1.17.9 (v1_17_9) on SunOS ==============
+
+        ============== rnumber release 1.17.9 (v1_17_9) on SunOS ==============
+
+        ============== rnumber release 1.17.9 (v1_17_9) on SunOS ==============
+
+        ============== rnumber release 1.17.9 (v1_17_9) on SunOS ==============
+
+        ============== rnumber release 1.17.9 (v1_17_9) on SunOS ==============
+
+2003-05-19  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * bigloo/tests/driver.scm: fixed bug in argument parsing.
+
+2003-04-21  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  Made some radix and prefix related changes.
+
+2003-05-13  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Moved the basic types to a new namespace, rnumber_t, so as not
+        to cause namespace pollution.
+
+        ============== rnumber release 1.16.9 (v1_16_9) on SunOS ==============
+
+2003-03-30  Todd Dukes  <tdukes@austin.rr.com>
+
+        *  Fixed GCC_VERSION macro
+        *  added commented out perl include path for Redhat 8.0 (swig still doesn't
+           work for this version of Perl, on Redhat 8.0 you have to build with
+           --disable-perl-bindings
+
+2003-03-24  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Modified headers so that they should compile w/o the
+        backward-compatibility warning under gcc 3.2.2.
+
+2003-03-18  Brian Kahne  <bkahne@ibmoto.com>
+
+        * The tests of the C bindings have been moved to rnumber/tests so
+        that they'll be run even if Bigloo or Perl bindings are not being
+        created.
+
+        * Modified RNumber::getSizeWithRadix() so that it will never return
+        a size of 0 (which can cause other problems).  Instead, it will return
+        a size of _defaultSize;
+
+2003-03-17  Brian Kahne  <bkahne@ibmoto.com>
+
+        * I removed strradix and moved that functionality into str().  The
+        format parameter stored bit flags which represents both the radix
+        and other stuff, such as whether to print a prefix or not.
+
+2003-03-07  Brian Kahne  <bkahne@ibmoto.com>
+
+        * rnumber is now compatible with gcc 3.2.2.
+
+        ============== rnumber release 1.16.7 (v1_16_7) on SunOS ==============
+
+        ============== rnumber release 1.16.7 (v1_16_7) on SunOS ==============
+
+        ============== rnumber release 1.16.7 (v1_16_7) on SunOS ==============
+
+        ============== rnumber release 1.16.7 (v1_16_7) on Linux ==============
+
+2003-02-05  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Moved the Merseinne Twist class into rnumber, from rutil.
+
+2003-01-29  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Ported rnumber to the newest automake/autoconf.
+
+        * New option:  --enable-static allows for building a non-position-indepedent
+        module.  On Solaris, --enable-profile implies --enable-static.
+
+2003-01-23  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Re-did how profiling is setup so that on Linux, we build with
+        position-independent code.
+
+        ============== rnumber release 1.13.7 (v1_13_7) on SunOS ==============
+
+2003-01-21  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * added documentation for bigloo bindings.
+
+2003-01-06  Todd Dukes  <Todd.Dukes@motorola.com>
+        
+        * removed dist-hook to remove rvparser.yy from ./Makefile.am this
+          file was never part of rnumber.
+        * changes so that 'make dist' makes a buildable distribution.
+
+        ============== rnumber release 1.13.5 (v1_13_5) on SunOS ==============
+
+        ============== rnumber release 1.13.4 (v1_13_4) on SunOS ==============
+
+2003-01-06  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  made documentation installation optional. Small modifications to
+           documentation.
+
+        ============== rnumber release 1.12.1 (v1_12_1) on SunOS ==============
+
+        ============== rnumber release 1.12.1 (v1_12_1) on SunOS ==============
+
+2002-12-13  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  CDCpp33115 - fixed core dump on left and right shifts of integers
+           where the shift is an rnumber bigger than word size.
+
+        * add perl operator overloading. There is some problem with shifting
+          integers by rnumbers that needs to be worked out.
+
+2002-12-12  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * perl added memory reclamation.
+        
+
+        ============== rnumber release 1.11.3 (v1_11_3) on SunOS ==============
+
+        ============== rnumber release 1.11.3 (v1_11_3) on Linux ==============
+
+        ============== rnumber release 1.11.3 (v1_11_3) on SunOS ==============
+
+2002-12-09  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Got conditional install (cinstall) working.
+
+        ============== rnumber release 1.11.2 (v1_11_2) on SunOS ==============
+
+2002-12-05  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  perl: changed numericp to include both SvIOK and SvNOK.
+
+        ============== rnumber release 1.11.1 (v1_11_1) on SunOS ==============
+
+2002-12-05  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  perl: There is a problem with large integers (msb being set) not 
+           being considered to be integers by perl's SvIOK function. This is
+           what integerp uses to detect whether a variable is an integer or
+           not. I have resolved this by adding a new predicate numericp and
+           using that to determine whether a variable is numeric or not.
+
+        ============== rnumber release 1.10.4 (v1_10_4) on SunOS ==============
+
+        ============== rnumber release 1.10.3 (v1_10_3) on SunOS ==============
+
+2002-11-22  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * bug fixes and more simplification of Perl functions.
+
+        ============== rnumber release 1.10.2 (v1_10_2) on SunOS ==============
+
+2002-11-22  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * Minor function name changes for perl
+        * exported perl functions.
+
+        ============== rnumber release 1.10.1 (v1_10_1) on SunOS ==============
+
+2002-11-22  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * simplified perl bindings.
+        * fixed bug with bigloo version number.
+
+        =============== rnumber release 1.9.1 (v1_9_1) on SunOS ===============
+
+        =============== rnumber release 1.9.1 (v1_9_1) on SunOS ===============
+
+2002-11-21  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * added perl bindings
+
+        =============== rnumber release 1.8.6 (v1_8_6) on SunOS ===============
+
+        =============== rnumber release 1.8.5 (v1_8_5) on SunOS ===============
+
+        =============== rnumber release 1.8.5 (v1_8_5) on SunOS ===============
+
+        =============== rnumber release 1.8.5 (v1_8_5) on Linux ===============
+
+        ================ rnumber release 1.8.5 (v1_8_5) on Linux================
+
+        ================ rnumber release 1.8.5 (v1_8_5) on Linux================
+
+        ================ rnumber release 1.8.5 (v1_8_5) on Linux================
+
+        ================ rnumber release 1.8.5 (v1_8_5) on Linux================
+
+2002-11-04  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  moved directories around so that 
+
+                 make distclean
+                 ./autogen.sh 
+                 make check
+
+           will work for those that can't be troubled with 
+        
+                 make distclean
+                 ./autogen.sh 
+                 make && make check
+
+        ==================== rnumber release 1.8.4 (v1_8_4) ====================
+
+2002-11-04  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  now correctly runs bigloo regression if bigloo support is compiled in.
+
+        ==================== rnumber release 1.8.3 (v1_8_3) ====================
+
+        ==================== rnumber release 1.8.3 (v1_8_3) ====================
+
+
+        ==================== rnumber release 1.8.3 (v1_8_3) ====================
+
+2002-11-01  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Moved includes in Trace.C outside of ifdef so that an optimized
+        build would work.
+
+2002-11-01 Brian changed the version but didn't leave a note. I think all that
+        was changed was the version number in configure.in
+        
+2002-10-31  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  added missing RNumber features to C++ version.
+
+2002-10-30  Brian Kahne  <bkahne@ibmoto.com>
+
+        * Made the compilation of Bigloo bindings optional.  However, the
+        regression test doesn't yet work correctly- it doesn't run the Bigloo
+        tests.  I'll let Todd handle that. :)
+
+        ================== release-1-8-1 ======================================
+        
+2002-10-29  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  moved C++ RNumber  and Random into rnumber namespace.
+
+        ================== version 1.7.1 ======================================
+        
+2002-10-18  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  added (rnumber->int rnumber) to convert small rnumbers to integers.
+
+2002-10-17  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  added rnumber to the SUBDIRS of bigloo/Makefile.am
+
+        ================== version 1.7.0 ======================================
+        
+2002-10-09  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * exposed rn* to bigloo.
+        * rnumber_ui_multiply_rn was misnamed as rnumber_ui_multiply_ui. This was fixed.
+
+2002-09-30  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * removed print from rnumber_finalize.
+        * cleaned up makefiles a bit.
+        * added def for bgl_rnumber_proxy_t? so rnumber will build without unsafe
+          option.
+
+        ================== version 1.6.2 ======================================
+
+2002-09-24  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * rnumber.scm: return #t or #f instead of 0 and non-zero.
+
+        * rnumber.scm: added support for comparison operators so they will handle two
+                integers as well as a mix of integers and rnumbers.
+
+2002-09-04  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        *  rnumber.scm: added rn<< rn>> rn- rn+ rn-bitand rn-bitor
+
+        *  changed default minimum size of RNumbers constructed from strings to 
+           be 32 bits. Previously only enough bits to hold the original value was
+           used as the minimum.
+
+2002-09-03  Todd Dukes  <Todd.Dukes@motorola.com>
+
+        * removed number-test.scm test.
+
+        * bigloo/rnumber.scm: added following functions
+        (rn<< a b)        (rn>> a b)      (rn- a b)       (rn+ a b)
+
+
