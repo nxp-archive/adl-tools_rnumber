@@ -1,5 +1,7 @@
 2006-11-03  Brian Kahne  <bkahne@freescale.com>
 
+        * Testing svn cadinstall ChangeLog modifications.
+
 	* Got rid of the fixed-width integers in the rnumber_t namespace
 	and replaced them with the standard declarations in <stdint.h>.
 	RNumber now compiles on 64-bit Linux, except for the Perl
