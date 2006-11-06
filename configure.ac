@@ -165,7 +165,12 @@ AC_ARG_ENABLE(perl-bindings,
 	AC_HELP_STRING([--disable-perl-bindings],[Enable the building of Perl bindings.  Default is true.]),
 	PERLBINDINGS=$enableval,
 )
-if test "x$PERLBINDINGS" != xno ; then
+# For right now, if we're on 64-bit Linux, disable Perl bindings.  We're currently getting a link error,
+# so this feature isn't supported on that platform right now.
+if test "x$build_cpu" = xx86_64 ; then
+    echo "The building of Perl bindings has been disabled b/c we do not support them on x86_64."
+else
+	if test "x$PERLBINDINGS" != xno ; then
         AC_PATH_PROG(SWIGPROG,swig)
         if test "x$SWIGPROG" = x ; then
         AC_WARN("Could not find swig. Check your path to make sure it is present.")
@@ -180,9 +185,11 @@ if test "x$PERLBINDINGS" != xno ; then
            AC_MSG_RESULT([SWIG: $PERL_ARCH_INCL])
            AC_MSG_RESULT([SWIG: $PERL_CC_FLAGS])
         fi
-else
+	else
         echo "The building of Perl bindings has been disabled."
+	fi
 fi
+
 AC_SUBST(PERL_ARCH_INCL)
 AC_SUBST(PERL_CC_FLAGS)
 AC_SUBST([PERL])
