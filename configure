@@ -21055,7 +21055,12 @@ if test "${enable_perl_bindings+set}" = set; then
   enableval=$enable_perl_bindings; PERLBINDINGS=$enableval
 fi
 
-if test "x$PERLBINDINGS" != xno ; then
+# For right now, if we're on 64-bit Linux, disable Perl bindings.  We're currently getting a link error,
+# so this feature isn't supported on that platform right now.
+if test "x$build_cpu" = xx86_64 ; then
+    echo "The building of Perl bindings has been disabled b/c we do not support them on x86_64."
+else
+	if test "x$PERLBINDINGS" != xno ; then
         # Extract the first word of "swig", so it can be a program name with args.
 set dummy swig; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -21115,9 +21120,11 @@ echo "${ECHO_T}SWIG: $PERL_ARCH_INCL" >&6; }
            { echo "$as_me:$LINENO: result: SWIG: $PERL_CC_FLAGS" >&5
 echo "${ECHO_T}SWIG: $PERL_CC_FLAGS" >&6; }
         fi
-else
+	else
         echo "The building of Perl bindings has been disabled."
+	fi
 fi
+
 
 
 

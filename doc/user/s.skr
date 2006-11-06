@@ -1,2 +1,2 @@
-(define *project-version* "2.0.3")
+(define *project-version* "2.1.0")
 (define *project-example-ftp-site* "./web-home/examples")

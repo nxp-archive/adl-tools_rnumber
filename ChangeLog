@@ -1,21 +1,9 @@
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/6/2006 
 
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/6/2006 
+2006-11-06  Brian Kahne  <bkahne@freescale.com>
 
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/6/2006 
-
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
-
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
-
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
-
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
-
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
-
-         file:///proj/ppctools/svn/rnumber release 2.1.0 (v2_1_0) on Linux (lb0169) on 11/3/2006 
-
+	* Perl bindings are now disabled on x86_64 b/c of a link error.
+	We should fix this at some point, but it's not required right now.
+	
 2006-11-03  Brian Kahne  <bkahne@freescale.com>
 
         * Testing svn cadinstall ChangeLog modifications.
