@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-rm -f .etags ;for i in $(list-sourcefiles.scm);do btags -a -o .etags $i;done
