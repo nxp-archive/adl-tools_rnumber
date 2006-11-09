@@ -63,7 +63,7 @@
 	 There are bindings for other languages in:
 	 <ul>
 	    <li>perl - contains bindings for perl </li>
-	    <lib>bigloo - contains bindings for bigloo, an implementation of scheme.</li>
+	    <lib>bigloo - contains bindings for bigloo, an implementation of scheme.</lib>
 	 </ul>
       </structure>
       <revisioncontrol>
