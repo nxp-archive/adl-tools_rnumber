@@ -9,7 +9,7 @@
 # example1.C      - C++ example.
 #
 
-EXTRA_DIST = b-compiled.scm b-example.scm perl-example.pl c-example.c example1.C
+EXTRA_DIST = b-compiled.scm b-example.scm perl-example.pl c-example1.c example1.C
 
 
 

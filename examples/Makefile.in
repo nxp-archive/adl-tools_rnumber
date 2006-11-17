@@ -201,7 +201,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-EXTRA_DIST = b-compiled.scm b-example.scm perl-example.pl c-example.c example1.C
+EXTRA_DIST = b-compiled.scm b-example.scm perl-example.pl c-example1.c example1.C
 all: all-am
 
 .SUFFIXES:
@@ -214,9 +214,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  examples/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  examples/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  examples/Makefile
+	  $(AUTOMAKE) --foreign  examples/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
