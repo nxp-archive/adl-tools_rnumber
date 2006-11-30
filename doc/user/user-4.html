@@ -1,0 +1,201 @@
+<!-- 95% W3C COMPLIANT, 95% CSS FREE, RAW HTML -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+<title>RNumber User Manual</title>
+ <style type="text/css">
+  <!--
+  pre { font-family: monospace }
+  tt { font-family: monospace }
+  code { font-family: monospace }
+  p.flushright { text-align: right }
+  p.flushleft { text-align: left }
+  span.sc { font-variant: small-caps }
+  span.sf { font-family: sans-serif }
+  span.skribetitle { font-family: sans-serif; font-weight: bolder; font-size: x-large; }
+  -->
+ </style>
+</head>
+
+<body class="chapter" bgcolor="#ffffff">
+<table width="100%" class="skribetitle" cellspacing="0" cellpadding="0"><tbody>
+<tr><td align="center" bgcolor="#8381de"><div class="skribetitle"><strong><big><big><big>4. RNumber User Manual -- Bigloo (scheme) Bindings</big></big></big></strong></div><center>
+</center>
+</td></tr></tbody></table>
+<table cellpadding="3" cellspacing="0" width="100%" class="skribe-margins"><tr>
+<td align="left" valign="top" class="skribe-left-margin" width="20%" bgcolor="#dedeff"><div class="skribe-left-margin">
+<br/><center><table width="97%" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;" frame="box" rules="none"><tbody>
+<tr bgcolor="#8381de"><th align="center" colspan="1"><font color="#ffffff"><strong>main page</strong></font></th></tr>
+<tr bgcolor="#ffffff"><td align="center" colspan="1"><table width="100%" border="0" style="border-collapse: collapse;" frame="void" rules="none"><tbody>
+<tr><td align="left" valign="top" colspan="1"><strong>top:</strong></td><td align="right" valign="top" colspan="1"><a href="user.html#RNumber-User-Manual" class="inbound">RNumber User Manual</a></td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+</center>
+<br/><br/><center><table width="97%" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;" frame="box" rules="none"><tbody>
+<tr bgcolor="#8381de"><th align="center" colspan="1"><font color="#ffffff"><strong>Bigloo (scheme) Bindings</strong></font></th></tr>
+<tr bgcolor="#ffffff"><td align="center" colspan="1"><table cellspacing="1" cellpadding="1" width="100%" class="toc">
+<tbody>
+ <tr><td valign="top" align="left">4.1</td><td colspan="4" width="100%"><a href="user-4.html#Variables">Variables</a></td></tr>
+ <tr><td valign="top" align="left">4.2</td><td colspan="4" width="100%"><a href="user-4.html#Memory-Management">Memory Management</a></td></tr>
+ <tr><td valign="top" align="left">4.3</td><td colspan="4" width="100%"><a href="user-4.html#Functions">Functions</a></td></tr>
+</tbody>
+</table>
+</td></tr>
+</tbody></table>
+</center>
+<br/><br/><center><table width="97%" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;" frame="box" rules="none"><tbody>
+<tr bgcolor="#8381de"><th align="center" colspan="1"><font color="#ffffff"><strong>Chapters</strong></font></th></tr>
+<tr bgcolor="#ffffff"><td align="center" colspan="1"><table cellspacing="1" cellpadding="1" width="100%" class="toc">
+<tbody>
+ <tr><td valign="top" align="left">1</td><td colspan="4" width="100%"><a href="user-1.html#Introduction">Introduction</a></td></tr>
+ <tr><td valign="top" align="left">2</td><td colspan="4" width="100%"><a href="user-2.html#C++-classes">C++ classes</a></td></tr>
+ <tr><td valign="top" align="left">3</td><td colspan="4" width="100%"><a href="user-3.html#C-functions">C functions</a></td></tr>
+ <tr><td valign="top" align="left">4</td><td colspan="4" width="100%"><a href="user-4.html#Bigloo-(scheme)-Bindings">Bigloo (scheme) Bindings</a></td></tr>
+ <tr><td valign="top" align="left">5</td><td colspan="4" width="100%"><a href="user-5.html#Perl-Bindings">Perl Bindings</a></td></tr>
+ <tr><td valign="top" align="left"></td><td colspan="4" width="100%"><a href="user-6.html#Bibliography">Bibliography</a></td></tr>
+ <tr><td valign="top" align="left"></td><td colspan="4" width="100%"><a href="user-7.html#Variable-Index">Variable Index</a></td></tr>
+ <tr><td valign="top" align="left"></td><td colspan="4" width="100%"><a href="user-8.html#Concept-Index">Concept Index</a></td></tr>
+</tbody>
+</table>
+</td></tr>
+</tbody></table>
+</center>
+</div></td>
+<td align="left" valign="top" class="skribe-body"><div class="skribe-body">
+<p>Only the exported functions can be called by bigloo. Currently
+none of the random number generation functions are exported.</p><!-- Variables -->
+<a name="Variables"></a>
+<div class="skribesectiontitle"><table width="100%"><tr><td bgcolor="#dedeff"><h3><font color="black">4.1 Variables</font>
+</h3></td></tr></table>
+</div><div class="section">
+<p>There is only one rnumber variable, <code>*rnumber-version*</code>. This is the version of the library.</p></div><br>
+<!-- Memory Management -->
+<a name="Memory-Management"></a>
+<div class="skribesectiontitle"><table width="100%"><tr><td bgcolor="#dedeff"><h3><font color="black">4.2 Memory Management</font>
+</h3></td></tr></table>
+</div><div class="section">
+<p>If Bigloo was built with finalization enabled, Bigloo will
+destroy rnumbers that were created by calling the bigloo rnumber
+construction function <code>(rnumber-ctor <em>arg</em>)</code>.</p></div><br>
+<!-- Functions -->
+<a name="Functions"></a>
+<div class="skribesectiontitle"><table width="100%"><tr><td bgcolor="#dedeff"><h3><font color="black">4.3 Functions</font>
+</h3></td></tr></table>
+</div><div class="section">
+<table style="border-collapse: collapse;" frame="void" rules="none"><tbody>
+<tr bgcolor="#cccccc"><th align="center" colspan="3">Exported Functions</th></tr>
+<tr bgcolor="#cccccc"><th align="center" colspan="1">Function</th><th align="center" colspan="1">Description</th></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rnumber? <em>a</em>)</code></td><td align="left" valign="top" colspan="1">Returns true
+if <code>a</code> is an rnumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn? <em>a</em>)</code></td><td align="left" valign="top" colspan="1">Alias for <code>rnumber?</code>.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rnumber-ctor <em>arg</em>)</code></td><td align="left" valign="top" colspan="1">Constructs a new rnumber based on the argument. The argument can be
+null, an integer, a string, or an rnumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn-ctor <em>arg</em>)</code></td><td align="left" valign="top" colspan="1">Alias for
+<code>rnumber-ctor</code></td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rnumber-&gt;cstr <em>rnumber
+. radix-prefix</em>)</code></td><td align="left" valign="top" colspan="1">This converts an rnumber into its string
+representation. The <code>radix-prefix</code> are optional arguments. The
+first optional argument is the radix to use, the second optional
+argument is whether to include a radix prefix at the begining of the
+string. For example &quot;0x&quot; for a hex number.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn-&gt;string <em>rnumber
+. radix-prefix</em>)</code></td><td align="left" valign="top" colspan="1">Alias for <code>rnumber-&gt;cstr</code></td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rnumber-parse-string <em>str</em>)</code></td><td align="left" valign="top" colspan="1">This parses a string representing a legal number in decimal, hex, or
+binary into an rnumber. If the string does not represent an rnumber,
+<code>rnumber-parse-string</code> returns #f</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rnumber-&gt;int <em>rnumber</em>)</code></td><td align="left" valign="top" colspan="1">Convert an rnumber to a regular integer. No warning, error, or return
+code will indicate loss of data.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn-&gt;integer <em>rnumber</em>)</code></td><td align="left" valign="top" colspan="1">Alias
+for <code>rnumber-&gt;int</code></td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn=? <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Compares two
+variables that represent either rnumbers or integers to see if they
+hold the same integer value.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn!=? <em>a b</em>)</code><td align="left" valign="top" colspan="1">Returns <code>(not (rn=? a b))</code></td></td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn&lt;? <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Compares two
+variables that represent either rnumbers or integers to see if the one
+represented by <code>a</code> is less than the one represented by <code>b</code>.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn&lt;=? <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Compares two
+variables that represent either rnumbers or integers to see if the one
+represented by <code>a</code> is less than or equal to the one
+represented by <code>b</code>.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn&gt;? <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Compares two
+variables that represent either rnumbers or integers to see if the one
+represented by <code>a</code> is greater than the one represented by
+<code>b</code>.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn&gt;=? <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Compares two
+variables that represent either rnumbers or integers to see if the one
+represented by <code>a</code> is greater than or equal to the one
+represented by <code>b</code>.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn&lt;&lt; <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Left shift
+<code>a</code> by <code>b</code> bits. <code>a</code> should be an
+rnumber. <code>b</code> can be either an integer or an rnumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn&gt;&gt; <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Right shift
+<code>a</code> by <code>b</code> bits. <code>a</code> should be an
+rnumber. <code>b</code> can be either an integer or an rnumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn- <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Subtract <code>b</code> from <code>a</code>. <code>b</code> and <code>a</code> can be either
+integers or rnumbers. The return value is an rnumber unless both
+<code>a</code> and <code>b</code> are integers.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn+ <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Add <code>a</code>
+to <code>b</code>. <code>b</code> and <code>a</code> can be either integers or
+rnumbers. The return value is an rnumber unless both <code>a</code> and
+<code>b</code> are integers.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn* <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Mutliply <code>a</code> by <code>b</code>. <code>b</code> and <code>a</code> can be either
+integers or rnumbers. The return value is an rnumber unless both
+<code>a</code> and <code>b</code> are integers.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn-bitand <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Return
+logical bit and of <code>a</code> and <code>b</code>. Either <code>a</code> or
+<code>a</code> may be an integer or an rnumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn-bitxor <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Return
+logical bit xor of <code>a</code> and <code>b</code>. Either <code>a</code> or
+<code>a</code> may be an integer or an rnumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn-bitnot <em>a</em>)</code></td><td align="left" valign="top" colspan="1">Return
+logical bit not of <code>a</code>.  <code>a</code> may be an integer or an
+rnumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>(rn-bitor <em>a b</em>)</code></td><td align="left" valign="top" colspan="1">Return
+logical bit or of <code>a</code> and <code>b</code>. Either <code>a</code> or
+<code>b</code> must be an rnumber. Both can not be integers.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-sign-extend! <em>rn bit</em></code></td><td align="left" valign="top" colspan="1">Sign extends the rnumber <code>rn</code> from the bit
+given by <code>bit</code>. <code>rn</code> must be an RNumber and <code>bit</code> must be an integer. <code>bit</code> is the big-endian bit from
+which to sign-extend. This function returns #t if there are no
+errors.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-get-bit <em>rn bit</em></code></td><td align="left" valign="top" colspan="1">Returns an integer of the bit-value in the rnumber
+at bit <em>bit</em>. <code>rn</code> must be an RNumber, <code>bit</code>
+must be an integer. This function indexes into the RNumber with
+big-endian notation (ie. bit 0 is most significant)</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-get-bit-lsb <em>rn bit</em></code></td><td align="left" valign="top" colspan="1">Returns an integer of the bit-value in the rnumber
+at bit <em>bit</em>. <code>rn</code> must be an RNumber, <code>bit</code>
+must be an integer. This function indexes into the RNumber with
+little-endian notation (ie. bit 0 is least significant)</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-set-bit! <em>rn bit value</em></code></td><td align="left" valign="top" colspan="1">Sets the bit in the rnumber at <code>bit</code> to the
+value of <code>value</code>. <code>rn</code> must be an RNumber, <code>bit</code> and <code>value</code> must be integers. <code>bit</code> indexes
+into the RNumber with bit-endian notation (ie. bit 0 is most
+significant). This function returns <code>#t</code> if there are no
+errors.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-set-bit-lsb! <em>rn bit value</em></code></td><td align="left" valign="top" colspan="1">Sets the bit in the rnumber at <code>bit</code> to the
+value of <code>value</code>. <code>rn</code> must be an RNumber, <code>bit</code> and <code>value</code> must be integers. <code>bit</code> indexes
+into the RNumber with little-endian notation (ie. bit 0 is least
+significant). This function returns <code>#t</code> if there are no
+errors.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-resize! <em>rn new-size</em></code></td><td align="left" valign="top" colspan="1">Resizes the number to be <code>new-size</code>
+bits. <code>rn</code> must be an RNumber and <code>new-size</code> must be
+an integer. The function returns <code>new-size</code> if there are no
+errors.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-size <em>rn</em></code></td><td align="left" valign="top" colspan="1">Returns an integer representation of the bit-width
+of the RNumber. <code>rn</code> must be an RNumber.</td></tr>
+<tr><td align="left" valign="top" colspan="1"><code>rn-word-count <em>rn</em></code></td><td align="left" valign="top" colspan="1">Returns an integer representation of the number of
+words of memory with RNumber uses to store its number. <code>rn</code>
+must be an RNumber.</td></tr>
+</tbody></table>
+</div><br>
+</div></td>
+</tr></table><div class="skribe-ending">
+<hr> 
+<p class="ending"><font size="-1">
+This <span class="sc">Html</span> page has been produced by 
+<a href="http://www.inria.fr/mimosa/fp/Skribe" class="http">Skribe</a>.
+<br/>
+Last update <em>Thu Nov 30 15:55:36 2006</em>.</font></p></div>
+</body>
+</html>

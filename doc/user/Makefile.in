@@ -208,7 +208,8 @@ userwebdata_DATA = user.html \
 		user-4.html \
 		user-5.html \
 		user-6.html \
-		user-7.html
+		user-7.html \
+		user-8.html
 
 USER_SOURCE = user.skb bib.scr user-margin.scr bigloo-bindings.skb  c-functions.skb  cpp-classes.skb  perl-bindings.skb \
 	ctors.h \
@@ -245,9 +246,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  doc/user/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  doc/user/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  doc/user/Makefile
+	  $(AUTOMAKE) --foreign  doc/user/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

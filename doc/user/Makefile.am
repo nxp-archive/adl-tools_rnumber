@@ -7,7 +7,8 @@ userwebdata_DATA = user.html \
 		user-4.html \
 		user-5.html \
 		user-6.html \
-		user-7.html
+		user-7.html \
+		user-8.html
 
 USER_SOURCE = user.skb bib.scr user-margin.scr bigloo-bindings.skb  c-functions.skb  cpp-classes.skb  perl-bindings.skb \
 	ctors.h \

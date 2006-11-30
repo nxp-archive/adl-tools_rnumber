@@ -10,7 +10,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[1])
-m4_define([rnumber_micro_version],[0])
+m4_define([rnumber_micro_version],[1])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
