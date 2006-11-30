@@ -5,6 +5,7 @@
 # the COPYING file.
 #
 
+
 dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
