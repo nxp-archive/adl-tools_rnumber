@@ -68,20 +68,17 @@
       </structure>
       <revisioncontrol>
         <p>
-          RNumber uses CVS for revision control.
+          RNumber uses Subversion for revision control.
         </p>
         <p>
-          CVSROOT:  /proj/ppctools/CVS_ROOT
-        </p>
-        <p>
-          Project name:  tlv/rnumber
+          The repository location is:  <b>file:///proj/.ppc_43/vc_noec/svn/rnumber</b>
         </p>
       </revisioncontrol>
       <buildenv>
          RNumber requires:
          <ul>
          <li>gcc 3.4.3</li>
-         <li>automake and autoconf (if building from CVS).</li>
+         <li>automake and autoconf (if building from a checkout).</li>
          <li>swig (if building the Perl bindings).</li>
          <li>Perl 5.8.8 or higher for perl bindings.</li>
 	 <li>Bigloo 2.8a or higher for bigloo bindings </li>
@@ -89,7 +86,7 @@
          </ul>
          <p>To build:</p>
          <ul>
-            <li>Check the project out from cvs:  <b>cvs checkout tlv/rnumber</b></li>
+            <li>Check the project out:  <b>svn co file:///proj/.ppc_43/vc_noec/svn/rnumber rnumber</b></li>
             <li>Run autoconf/automake:  <b>./autogen.sh --prefix=[install prefix] [other options]</b></li>
             <li>Build it:  <b>make</b></li>
             <li>Run the regression:  <b>make check</b></li>
