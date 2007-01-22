@@ -17,7 +17,7 @@
 #ifndef TYPES_H
 #define TYPES_H "$Id$"
 
-#include <stdint.h>
+#include <inttypes.h>
 
 namespace rnumber_t {
 

@@ -1,4 +1,7 @@
-         file:///proj/.ppc_43/vc_noec/svn/rnumber release 2.1.1 (v2_1_1) on SunOS (sb0183) on 1/22/2007 
+2007-01-22  Brian Kahne  <bkahne@freescale.com>
+
+	* Changed all instances of <stdint.h> to <inttypes.h>, as this
+	header is supported on both Linux and Solaris.
 
          file:///proj/.ppc_43/vc_noec/svn/rnumber release 2.1.1 (v2_1_1) on Linux (lb0169) on 12/8/2006 
 

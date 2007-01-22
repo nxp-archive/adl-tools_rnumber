@@ -18,7 +18,7 @@
 #ifndef C_RNumber_h
 #define C_RNumber_h "$Id$"
 
-#include <stdint.h>
+#include <inttypes.h>
 
 #ifdef __cplusplus
 
