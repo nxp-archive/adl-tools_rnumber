@@ -7,19 +7,23 @@
 
 #define VERBOSE
 
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include "trace.h"
 
 #include <fstream>
-#if defined (linux)
+#ifndef _MSC_VER
+# if defined (linux)
 #  include <sys/procfs.h>
-#else
+# else
 #  include <procfs.h>
+# endif
 #endif
 
 #include "gccversion.h"
-#ifdef STD_CPP
+#if defined(STD_CPP) || defined(_MSC_VER)
 # include <sstream>
 #else
 # include <strstream.h>

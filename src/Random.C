@@ -13,7 +13,11 @@
 ** $Author$
 ** ===========================================================================
 */
-#include <sys/time.h>
+#ifdef _MSC_VER
+# include <time.h>
+#else
+# include <sys/time.h>
+#endif
 #include <stdexcept>
 #include <cassert>
 
@@ -58,9 +62,15 @@ unsigned RandomObj::init( unsigned seed )
 {
   _gated = false;
   if (!seed) {
+#   ifdef _MSC_VER
+	  time_t ltime;
+	  time( &ltime );
+	  seed = ltime + ++_count;
+#   else
     struct timeval t;
     gettimeofday( &t, NULL );
     seed =  t . tv_sec + ++_count;
+#   endif
   }
   _rand.sgenrand(seed);
   V1("Seed = " << seed << ", Count = " << _count);

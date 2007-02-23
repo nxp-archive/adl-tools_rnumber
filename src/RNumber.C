@@ -26,7 +26,7 @@
 #include <cassert>
 
 #include "gccversion.h"
-#ifdef STD_CPP
+#if defined(STD_CPP) || defined(_MSC_VER)
 # include <sstream>
 #else
 # include <strstream.h>
@@ -3729,7 +3729,7 @@ void RNumber::setBitLSB( unsigned int pos, unsigned int val )
 //
 string RNumber::str(int format) const
 {
-# ifdef STD_CPP
+# if defined(STD_CPP) || defined(_MSC_VER)
   ostringstream ss;
   printToOS(ss,format);
   return ss.str();

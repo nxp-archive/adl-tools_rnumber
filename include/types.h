@@ -17,7 +17,27 @@
 #ifndef TYPES_H
 #define TYPES_H "$Id$"
 
-#include <inttypes.h>
+#ifdef _MSC_VER
+
+// Another example of how broken Windows is:  They don't include inttypes.h!
+// I guess this is because they don't support C99.  After all, it's only been
+// eight years and Microsoft is at least a decade behind on everything they do.
+
+typedef __int64  int64_t;
+typedef unsigned __int64 uint64_t;
+
+typedef __int32  int32_t;
+typedef unsigned __int32 uint32_t;
+
+typedef __int16 int16_t;
+typedef unsigned __int16 uint16_t;
+
+typedef __int8  int8_t;
+typedef unsigned __int8 uint8_t;
+
+#else
+# include <inttypes.h>
+#endif
 
 namespace rnumber_t {
 

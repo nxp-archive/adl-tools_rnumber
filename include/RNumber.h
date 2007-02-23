@@ -25,7 +25,7 @@
 
 #include "gccversion.h"
 
-#ifdef STD_CPP
+#if defined(STD_CPP) || defined(_MSC_VER)
 # include <algorithm>
 #else
 # include <algo.h>
