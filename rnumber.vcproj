@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)..\$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
@@ -76,12 +76,12 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="&#x0D;&#x0A;if not exist &quot;$(SolutionDir)include\rnumber&quot; (  md &quot;$(SolutionDir)include\rnumber&quot; ) &#x0D;&#x0A;copy &quot;$(ProjectDir)include\*.h&quot; &quot;$(SolutionDir)include\rnumber&quot;&#x0D;&#x0A;"
+				CommandLine="&#x0D;&#x0A;set target=&quot;$(ProjectDir)..\include\rnumber&quot;&#x0D;&#x0A;if not exist %target% (  md %target% )&#x0D;&#x0A;copy &quot;$(ProjectDir)include\*.h&quot; %target%&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)..\$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
@@ -104,6 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="$(ProjectDir)/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -137,6 +138,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="&#x0D;&#x0A;set target=&quot;$(ProjectDir)..\include\rnumber&quot;&#x0D;&#x0A;if not exist %target% (  md %target% )&#x0D;&#x0A;copy &quot;$(ProjectDir)include\*.h&quot; %target%&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -160,6 +162,14 @@
 						CompileAs="2"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\KissRand.C"
@@ -170,6 +180,14 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
+						CompileAs="2"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"
 					/>
 				</FileConfiguration>
@@ -186,6 +204,14 @@
 						CompileAs="2"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\MtRand.C"
@@ -196,6 +222,14 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
+						CompileAs="2"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"
 					/>
 				</FileConfiguration>
@@ -212,6 +246,14 @@
 						CompileAs="2"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\RNumber.C"
@@ -222,6 +264,14 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
+						CompileAs="2"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"
 					/>
 				</FileConfiguration>
@@ -238,6 +288,14 @@
 						CompileAs="2"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\Trace.C"
@@ -248,6 +306,14 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
+						CompileAs="2"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"
 					/>
 				</FileConfiguration>
