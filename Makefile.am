@@ -1,5 +1,5 @@
 
-EXTRA_DIST = $(MACROS) $(m4data_DATA)
+EXTRA_DIST = $(MACROS) $(m4data_DATA) rnumber.vcproj
 
 AUTOMAKE_OPTIONS = foreign
 

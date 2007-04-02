@@ -10,7 +10,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[1])
-m4_define([rnumber_micro_version],[3])
+m4_define([rnumber_micro_version],[4])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
@@ -86,64 +86,70 @@ AC_ARG_ENABLE(bigloo-bindings,
 	AC_HELP_STRING([--enable-bigloo-bindings],[Enable the building of Bigloo bindings.  Default is true.]),
 	BIGLOOBINDINGS=$enableval,
 )
-if test "x$BIGLOOBINDINGS" != xno ; then
-	dnl <find bigloo>
-	AC_PATH_PROG(BIGLOOPROG,bigloo)
-	if test "x$BIGLOOPROG" = x ; then
-		AC_MSG_RESULT([no.  Could not find bigloo. Check your path to make sure it is present. Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/.])
-	else
-	   	BIGLOO=bigloo
-		AC_MSG_CHECKING([that Bigloo is new enough])
-	   	BIGLOO_REVISION=`bigloo -revision`
-	   	BIGLOO_MAJOR=`echo $BIGLOO_REVISION | \
-	   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\1/'`
-	   	BIGLOO_MINOR=`echo $BIGLOO_REVISION | \
-	   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\2/'`
-	   	BIGLOO_MICRO=`echo $BIGLOO_REVISION | \
-	   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\3/'`
-	   	if test $BIGLOO_MAJOR -ge 2 ;then 
-	   	  if test $BIGLOO_MINOR -ge 8; then
-	   	        BIGLOO_NEW_ENOUGH=yes;
-                        AC_MSG_CHECKING([bigloo sysputc level])
-			if test $BIGLOO_MICRO = a; then
-                           AC_MSG_RESULT([1])
-			   BIGLOO_SYSPUTC=1; 
-			else
-                           if test $BIGLOO_MICRO = b; then
-                             AC_MSG_RESULT([1])
-                             BIGLOO_SYSPUTC=1; 
-                           else
-                             AC_MSG_RESULT([2])
-			     BIGLOO_SYSPUTC=2;
-			   fi
-                        fi
-	   	  else
-	   	        BIGLOO=
-	   	        BIGLOO_NEW_ENOUGH=no;
-	   	  fi
-	   	else
-	   	        BIGLOO=;
-	   	        BIGLOO_NEW_ENOUGH=no; 
-	   	fi
-		if [[ ${BIGLOO_NEW_ENOUGH} = yes ]] ; then
-	   		AC_MSG_RESULT([yes.  Bigloo is new enough (need 2.8a or newer)])
-			AC_MSG_CHECKING([for Bigloo installation directory])
-			LIBBASE=$(bigloo -eval "(begin (display *ld-library-dir*) (quit))")
-		   	BIGLOO_LIBDIR="${LIBBASE}/bigloo/${BIGLOO_REVISION}"
-			if [[ -d ${BIGLOO_LIBDIR} ]] ; then
-				AC_MSG_RESULT([yes:  ${BIGLOO_LIBDIR}])
-			   	AC_SUBST(BIGLOO_LIBDIR)
-			   	if test $GCC_MAJOR -ge 3; then
-			   	   BIGLOO_GCC3X="-lgcc_s"
-		   		else
-			   	   BIGLOO_GCC3X=""
-			   	fi
-			   	AC_SUBST(BIGLOO_GCC3X)
-			else
-				AC_MSG_RESULT([no.  Library directory ${BIGLOO_LIBDIR} does not exist.])
+
+# We don't have a 64-bit Bigloo, so disable on x86_64 for now.
+if test "x$build_cpu" = xx86_64 ; then
+    echo "The building of Perl bindings has been disabled b/c we do not support them on x86_64."
+else
+	if test "x$BIGLOOBINDINGS" != xno ; then
+		dnl <find bigloo>
+		AC_PATH_PROG(BIGLOOPROG,bigloo)
+		if test "x$BIGLOOPROG" = x ; then
+			AC_MSG_RESULT([no.  Could not find bigloo. Check your path to make sure it is present. Bigloo is available from http://www-sop.inria.fr/mimosa/fp/Bigloo/.])
+		else
+		   	BIGLOO=bigloo
+			AC_MSG_CHECKING([that Bigloo is new enough])
+		   	BIGLOO_REVISION=`bigloo -revision`
+		   	BIGLOO_MAJOR=`echo $BIGLOO_REVISION | \
+		   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\1/'`
+	   		BIGLOO_MINOR=`echo $BIGLOO_REVISION | \
+	   	    	       sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\2/'`
+		   	BIGLOO_MICRO=`echo $BIGLOO_REVISION | \
+		   	           sed 's/\([[0-9]]*\).\([[0-9]]*\)\([[a-zA-Z]]*\)/\3/'`
+	   		if test $BIGLOO_MAJOR -ge 2 ;then 
+		   	  if test $BIGLOO_MINOR -ge 8; then
+		   	        BIGLOO_NEW_ENOUGH=yes;
+        	                AC_MSG_CHECKING([bigloo sysputc level])
+				if test $BIGLOO_MICRO = a; then
+    	                       AC_MSG_RESULT([1])
+				   BIGLOO_SYSPUTC=1; 
+				else
+    	                       if test $BIGLOO_MICRO = b; then
+        	                     AC_MSG_RESULT([1])
+            	                 BIGLOO_SYSPUTC=1; 
+                	           else
+                    	         AC_MSG_RESULT([2])
+				     BIGLOO_SYSPUTC=2;
+				   fi
+        	                fi
+		   	  else
+		   	        BIGLOO=
+	   		        BIGLOO_NEW_ENOUGH=no;
+		   	  fi
+		   	else
+	   		        BIGLOO=;
+	   	    	    BIGLOO_NEW_ENOUGH=no; 
+		   	fi
+			if [[ ${BIGLOO_NEW_ENOUGH} = yes ]] ; then
+	   			AC_MSG_RESULT([yes.  Bigloo is new enough (need 2.8a or newer)])
+				AC_MSG_CHECKING([for Bigloo installation directory])
+				LIBBASE=$(bigloo -eval "(begin (display *ld-library-dir*) (quit))")
+			   	BIGLOO_LIBDIR="${LIBBASE}/bigloo/${BIGLOO_REVISION}"
+				if [[ -d ${BIGLOO_LIBDIR} ]] ; then
+					AC_MSG_RESULT([yes:  ${BIGLOO_LIBDIR}])
+			   		AC_SUBST(BIGLOO_LIBDIR)
+				   	if test $GCC_MAJOR -ge 3; then
+				   	   BIGLOO_GCC3X="-lgcc_s"
+			   		else
+				   	   BIGLOO_GCC3X=""
+			   		fi
+				   	AC_SUBST(BIGLOO_GCC3X)
+				else
+					AC_MSG_RESULT([no.  Library directory ${BIGLOO_LIBDIR} does not exist.])
+				fi
+		   	else
+				AC_MSG_RESULT([no.  Bigloo not current enough:  2.8a required, found ${BIGLOO_REVISION}])
 			fi
-	   	else
-			AC_MSG_RESULT([no.  Bigloo not current enough:  2.8a required, found ${BIGLOO_REVISION}])
 		fi
 	fi
 fi
