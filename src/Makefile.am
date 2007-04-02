@@ -12,6 +12,9 @@ libRNumber_la_SOURCES = \
 	rnumber_version.C \
 	C-Random.C
 
+noinst_HEADERS = \
+	rnumber_feature.h
+
 INCLUDES = -I$(top_srcdir)/include
 
 cinstall:
