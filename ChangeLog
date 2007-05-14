@@ -1,3 +1,9 @@
+2007-05-14  Todd Dukes-TDUKES  <tdukes@freescale.com>
+
+	* Tested 64 bit build with bigloo 3.0a-beta14May07. Made a few
+	  changes to the configure.ac so that the new major version is
+	  recognized.
+
 2007-04-02  Brian Kahne  <bkahne@freescale.com>
 
 	* rnumber_features.h was not being distributed, so the Windows
