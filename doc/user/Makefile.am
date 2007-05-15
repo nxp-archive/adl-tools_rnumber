@@ -21,7 +21,7 @@ USER_SOURCE = user.skb bib.scr user-margin.scr bigloo-bindings.skb  c-functions.
 
 EXTRA_DIST = $(USER_SOURCE)
 
-CLEANFILES = $(userwebdata_DATA)
+CLEANFILES = $(userwebdata_DATA) s.skr
 PROJECT = rnumber
 PROJECT_VERSION = $(RNUMBER_VERSION)
 USER_TITLE = RNumber
@@ -29,7 +29,7 @@ PROJECT_URL = $(WEB_HOME)
 PROJECT_EXAMPLE_FTP_SITE = $(WEB_HOME)/examples
 USER_URL = $(PROJECT_URL)/user
 
-SKRIBEFLAGS =
+SKRIBEFLAGS = -I $(srcdir) -B $(srcdir) -S $(srcdir) -P $(srcdir)
 
 SUSER_URL = --eval "\(define *user-dir* \"$(USER_URL)\"\)"
 SPROJ_NAME = --eval "\(define *project-name* \"$(PROJECT)\"\)"

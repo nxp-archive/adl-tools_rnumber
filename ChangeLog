@@ -1,3 +1,11 @@
+2007-05-15  Brian Kahne  <bkahne@freescale.com>
+
+	* Perl bindings work on x86_64 now:  -fPIC is added in explicitly
+	if we're not building shared libraries.
+
+	* make distcheck now works.  Various paths and stuff were modified
+	in order to get this to work.
+
 2007-05-14  Todd Dukes-TDUKES  <tdukes@freescale.com>
 
 	* Tested 64 bit build with bigloo 3.0a-beta14May07. Made a few

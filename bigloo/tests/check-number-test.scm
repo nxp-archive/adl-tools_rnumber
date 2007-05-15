@@ -8,6 +8,8 @@
 (module check-number-test
    (main check-number-test))
 
+(define srcdir (getenv "srcdir"))
+
 (define (check-number-test args)
    (let* ((process (run-process "./simple-number-test" output: "simple-number-test.out" wait: #t))
 	  (pes (process-exit-status process)))
@@ -17,7 +19,7 @@
 	 (print "FAIL -- failed to run ./simple-number-test")
 	 (exit 1)))
    (let ((pes (process-exit-status
-	       (run-process "diff" "simple-number-test.out" "simple-number-test.golden"
+	       (run-process "diff" "simple-number-test.out" (string-append srcdir "/simple-number-test.golden")
 			    output: "diff.out" wait: #t))))
       (print "diff status " pes)
       (unless (= pes 0)

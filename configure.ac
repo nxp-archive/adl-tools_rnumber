@@ -10,7 +10,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[1])
-m4_define([rnumber_micro_version],[6])
+m4_define([rnumber_micro_version],[7])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
@@ -108,28 +108,34 @@ if test "x$BIGLOOBINDINGS" != xno ; then
          BIGLOO_NEW_ENOUGH=yes;
          AC_MSG_CHECKING([bigloo sysputc level])
          AC_MSG_RESULT([2])
-         BIGLOO_SYSPUTC=2;
+         BIGLOO_SYSPUTC=2
       else
          if test $BIGLOO_MAJOR -ge 2 ;then 
             AC_MSG_RESULT([Bigloo major version 2])
-            if test $BIGLOO_MINOR -ge 8; then
-               BIGLOO_NEW_ENOUGH=yes;
-               AC_MSG_CHECKING([bigloo sysputc level])
-               if test $BIGLOO_MICRO = a; then
-                  AC_MSG_RESULT([1])
-                  BIGLOO_SYSPUTC=1; 
-               else
-                  if test $BIGLOO_MICRO = b; then
-                     AC_MSG_RESULT([1])
-                     BIGLOO_SYSPUTC=1; 
-                  else
-                     AC_MSG_RESULT([2])
-                     BIGLOO_SYSPUTC=2;
-                  fi
-               fi
-            else
-               BIGLOO=;
-               BIGLOO_NEW_ENOUGH=no; 
+			if test $BIGLOO_MINOR -ge 9; then
+            	AC_MSG_RESULT([2])
+                BIGLOO_SYSPUTC=2
+				BIGLOO_NEW_ENOUGH=yes
+			else
+            	if test $BIGLOO_MINOR -ge 8; then
+	               BIGLOO_NEW_ENOUGH=yes
+	               AC_MSG_CHECKING([bigloo sysputc level])
+	               if test $BIGLOO_MICRO = a; then
+	                  AC_MSG_RESULT([1])
+	                  BIGLOO_SYSPUTC=1
+	               else
+	                  if test $BIGLOO_MICRO = b; then
+	                     AC_MSG_RESULT([1])
+	                     BIGLOO_SYSPUTC=1
+	                  else
+	                     AC_MSG_RESULT([2])
+    	                 BIGLOO_SYSPUTC=2
+	                  fi
+	               fi
+	            else
+	               BIGLOO=
+	               BIGLOO_NEW_ENOUGH=no
+				fi
             fi
          fi
       fi
@@ -174,30 +180,42 @@ AC_ARG_ENABLE(perl-bindings,
 	AC_HELP_STRING([--disable-perl-bindings],[Enable the building of Perl bindings.  Default is true.]),
 	PERLBINDINGS=$enableval,
 )
-# For right now, if we're on 64-bit Linux, disable Perl bindings.  We're currently getting a link error,
-# so this feature isn't supported on that platform right now.
-if test "x$build_cpu" = xx86_64 ; then
-    echo "The building of Perl bindings has been disabled b/c we do not support them on x86_64."
+
+if test "x$PERLBINDINGS" != xno ; then
+    AC_PATH_PROG(SWIGPROG,swig)
+    if test "x$SWIGPROG" = x ; then
+    AC_WARN("Could not find swig. Check your path to make sure it is present.")
+       AC_WARN("Swig is available from http://www.swig.org/.")
+    AC_WARN("Since swig is needed for the perl bindings\, the perl bindings will *not* be built.")
+       PERL=
+    else
+       PERL=perl
+       PERL_ARCH_INCL="-I `perl -e 'use Config;print $Config{archlib};'`/CORE"
+       PERL_CC_FLAGS="-fPIC `perl -e 'use Config; print $Config{ccflags}'`"
+       AC_MSG_RESULT([SWIG: $SWIGPROG])
+       AC_MSG_RESULT([SWIG: $PERL_ARCH_INCL])
+       AC_MSG_RESULT([SWIG: $PERL_CC_FLAGS])
+    fi
 else
-	if test "x$PERLBINDINGS" != xno ; then
-        AC_PATH_PROG(SWIGPROG,swig)
-        if test "x$SWIGPROG" = x ; then
-        AC_WARN("Could not find swig. Check your path to make sure it is present.")
-           AC_WARN("Swig is available from http://www.swig.org/.")
-        AC_WARN("Since swig is needed for the perl bindings\, the perl bindings will *not* be built.")
-           PERL=
-        else
-           PERL=perl
-           PERL_ARCH_INCL="-I `perl -e 'use Config;print $Config{archlib};'`/CORE"
-           PERL_CC_FLAGS="-fPIC `perl -e 'use Config; print $Config{ccflags}'`"
-           AC_MSG_RESULT([SWIG: $SWIGPROG])
-           AC_MSG_RESULT([SWIG: $PERL_ARCH_INCL])
-           AC_MSG_RESULT([SWIG: $PERL_CC_FLAGS])
-        fi
-	else
-        echo "The building of Perl bindings has been disabled."
-	fi
+    echo "The building of Perl bindings has been disabled."
 fi
+
+# If we're on an AMD64 machine, then we must use the -fPIC flag explicitly,
+# since we want to be able to use static libraries when creating shared-object
+# models.
+EXTRA_CFLAGS=
+AC_MSG_CHECKING([if -fPIC is required])
+case $host_cpu in 
+  x86_64)
+	EXTRA_CFLAGS="${EXTRA_CFLAGS} -fPIC"
+      	AC_MSG_RESULT([yes])
+	;;
+  *)
+	AC_MSG_RESULT([no])
+	;;
+esac
+AC_SUBST(EXTRA_CFLAGS)
+
 
 AC_SUBST(PERL_ARCH_INCL)
 AC_SUBST(PERL_CC_FLAGS)
@@ -264,7 +282,7 @@ dnl C++ compiler feature check start here
 dnl moved the c++ compiler alittle to make the basename check work right..
 AC_LANG_CPLUSPLUS
 
-CXXFLAGS="-Wall -g $CPPSETUP"
+CXXFLAGS="-Wall -g ${CPPSETUP} ${EXTRA_CFLAGS}"
 
 AC_SUBST(ACLOCAL_FLAGS)
 AC_SUBST(BIGLOO_REVISION)
