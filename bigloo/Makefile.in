@@ -54,7 +54,7 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = src tests
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_FLAGS = @ACLOCAL_FLAGS@
@@ -151,8 +151,8 @@ WITHOUT_BIGLOO_FALSE = @WITHOUT_BIGLOO_FALSE@
 WITHOUT_BIGLOO_TRUE = @WITHOUT_BIGLOO_TRUE@
 WITHOUT_DOC_FALSE = @WITHOUT_DOC_FALSE@
 WITHOUT_DOC_TRUE = @WITHOUT_DOC_TRUE@
-WITHOUT_SWIG_FALSE = @WITHOUT_SWIG_FALSE@
-WITHOUT_SWIG_TRUE = @WITHOUT_SWIG_TRUE@
+WITHOUT_PERL_FALSE = @WITHOUT_PERL_FALSE@
+WITHOUT_PERL_TRUE = @WITHOUT_PERL_TRUE@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_F77 = @ac_ct_F77@
@@ -200,7 +200,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = src tests
+@WITHOUT_BIGLOO_FALSE@SUBDIRS = src tests
 all: all-recursive
 
 .SUFFIXES:
@@ -510,8 +510,8 @@ uninstall-info: uninstall-info-recursive
 	uninstall uninstall-am uninstall-info-am
 
 
-cinstall:
-	$(MAKE) install
+@WITHOUT_BIGLOO_FALSE@cinstall:
+@WITHOUT_BIGLOO_FALSE@	$(MAKE) install
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

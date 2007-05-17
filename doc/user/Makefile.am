@@ -1,3 +1,4 @@
+
 userwebdatadir = $(WEB_HOME)/user
 
 userwebdata_DATA = user.html \
@@ -62,4 +63,3 @@ ps : user.ps
 user.html: $(USER_SOURCE)
 
 user.ps:  $(USER_SOURCE)
-

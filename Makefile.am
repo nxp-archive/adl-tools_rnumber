@@ -8,7 +8,7 @@ MACROS = rnumber.m4
 m4datadir = $(datadir)/aclocal
 m4data_DATA = $(MACROS)
 
-SUBDIRS = macros include src tests $(PERL) $(BIGLOO) doc examples
+SUBDIRS = macros include src tests perl bigloo doc examples
 
 bin_SCRIPTS = rnumber-config
 

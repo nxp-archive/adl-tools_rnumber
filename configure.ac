@@ -10,7 +10,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[1])
-m4_define([rnumber_micro_version],[7])
+m4_define([rnumber_micro_version],[8])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
@@ -220,14 +220,14 @@ AC_SUBST(EXTRA_CFLAGS)
 AC_SUBST(PERL_ARCH_INCL)
 AC_SUBST(PERL_CC_FLAGS)
 AC_SUBST([PERL])
-AM_CONDITIONAL(WITHOUT_SWIG,test x$PERL = x)
+AM_CONDITIONAL(WITHOUT_PERL,test x$PERL = x)
 
 dnl find scribe. If scribe is not available, don't build the documentation
 AC_PATH_PROG(SKRIBEPROG,skribe)
 if test "x$SKRIBEPROG" = x ; then
-   AC_WARN("Could not find skribe. Check your path to make sure it is present.")
-   AC_WARN("Scribe is available from http://www-sop.inria.fr/mimosa/Manuel.Serrano/skribe/")
-   AC_WARN("Since skribe is required to build the documentation\, the documentation will *not* be built.")
+   AC_WARN([Could not find skribe. Check your path to make sure it is present.])
+   AC_WARN([Scribe is available from http://www-sop.inria.fr/mimosa/Manuel.Serrano/skribe/])
+   AC_WARN([Since skribe is required to build the documentation\, the documentation will *not* be built.])
    DOC=
 else
     SKRIBE=skribe

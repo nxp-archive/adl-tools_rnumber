@@ -1,3 +1,6 @@
+
+if !WITHOUT_PERL
+
 SUBDIRS = src tests
 
 cinstall:
@@ -6,3 +9,5 @@ cinstall:
 check:
 	$(MAKE)
 	$(MAKE) check-am
+
+endif

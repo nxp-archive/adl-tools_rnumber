@@ -1,3 +1,6 @@
+
+if !WITHOUT_DOC
+
 SUBDIRS = user
 
 webdatadir = $(WEB_HOME)
@@ -12,3 +15,4 @@ CLEANFILES = $(webdata_DATA)
 
 index.html: index.skb
 
+endif
