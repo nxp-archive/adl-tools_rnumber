@@ -1,3 +1,9 @@
+2007-05-21  Todd Dukes-TDUKES  <tdukes@freescale.com>
+
+	* fixed error in bl-rnumber.init.in - I was setting *cc-options*
+	  to a modified version of *cflags*. I should have been modifying
+	  *cc-options*
+	  
 2007-05-17  Brian Kahne  <bkahne@freescale.com>
 
 	* Fixed configure and various Makefiles so that if skribe is not
