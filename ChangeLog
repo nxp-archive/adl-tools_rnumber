@@ -1,3 +1,7 @@
+2007-06-08  Todd Dukes  <tdukes@freescale.com>
+
+	* removed check for gnumake. We start by looking for gmake now.
+
 2007-05-21  Todd Dukes-TDUKES  <tdukes@freescale.com>
 
 	* fixed error in bl-rnumber.init.in - I was setting *cc-options*
