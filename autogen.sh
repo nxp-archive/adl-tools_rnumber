@@ -12,7 +12,8 @@ package_name="rnumber"
 # and disable optimization.
 conf_flags="--enable-maintainer-mode --disable-opt"
 
-MAKE=`which gnumake 2>/dev/null`
+#MAKE=`which gnumake 2>/dev/null`
+MAKE=`which gmake 2>/dev/null`
 if test ! -x "$MAKE" ; then MAKE=`which gmake` ; fi
 if test ! -x "$MAKE" ; then MAKE=`which make` ; fi
 HAVE_GNU_MAKE=`$MAKE --version|grep -c "Free Software Foundation"`
