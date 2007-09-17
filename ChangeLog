@@ -1,6 +1,10 @@
-       == file:///proj/.ppc_43/vc_noec/svn/rnumber release 2.1.9 (v2_1_9) on Linux (lb32001) on 9/17/2007 ==
+2007-09-17  Brian Kahne  <bkahne@freescale.com>
 
-       == file:///proj/.ppc_43/vc_noec/svn/rnumber release 2.1.9 (v2_1_9) on Linux (lb0170) on 9/17/2007 ==
+	* include/RNumber.h: Fixed a bug within uint64().  We were always
+	assuming that _wordCount was >= 2, even if it wasn't, leading to
+	indexing element -1 of valueBuffer.  Fixed this by checking
+	_wordCount and calling uint32() if the RNumber was <= 32 bits in
+	width.
 
 2007-06-08  Todd Dukes  <tdukes@freescale.com>
 

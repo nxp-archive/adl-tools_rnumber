@@ -934,7 +934,11 @@ namespace rnumber {
    // Loss of data will occur if number is greater than 64-bits in size.
    //
    inline uint64_t RNumber::uint64() const {
-      return (((uint64_t)_valueBuffer[_wordCount-2]) << 32) | (_valueBuffer[_wordCount-1]);
+     if (_wordCount >= 2) {
+       return (((uint64_t)_valueBuffer[_wordCount-2]) << 32) | (_valueBuffer[_wordCount-1]);
+     } else {
+       return uint32();
+     }
    }
 
    //
