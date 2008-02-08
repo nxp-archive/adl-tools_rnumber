@@ -90,6 +90,7 @@ DCPROG = @DCPROG@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DOC = @DOC@
+DSYMUTIL = @DSYMUTIL@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -120,6 +121,7 @@ MAINT = @MAINT@
 MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
 MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
+NMEDIT = @NMEDIT@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
@@ -141,6 +143,7 @@ RNUMBER_MAJOR_VERSION = @RNUMBER_MAJOR_VERSION@
 RNUMBER_MICRO_VERSION = @RNUMBER_MICRO_VERSION@
 RNUMBER_MINOR_VERSION = @RNUMBER_MINOR_VERSION@
 RNUMBER_VERSION = @RNUMBER_VERSION@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SKRIBE = @SKRIBE@
@@ -217,9 +220,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  bigloo/src/rnumber/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  bigloo/src/rnumber/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  bigloo/src/rnumber/Makefile
+	  $(AUTOMAKE) --gnu  bigloo/src/rnumber/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
