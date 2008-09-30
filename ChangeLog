@@ -2,6 +2,10 @@
 
 2008-09-30  Brian Kahne  <bkahne@freescale.com>
 
+	* Fixed a swig problem with Perl: Our makefile rules were wrong,
+	resulting in a corrupt RNumber.pm file due to how swig generates
+	files.  Fixed this issue.
+
 	* Added a dependencies file for /pkg.
 
        == file:///proj/.ppc_43/vc_noec/svn/rnumber release 2.1.10 (v2_1_10) on Linux (ld2058) on 9/4/2008 ==
