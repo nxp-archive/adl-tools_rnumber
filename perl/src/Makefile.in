@@ -478,13 +478,17 @@ uninstall-am: uninstall-info-am uninstall-perllibDATA
 %.o:%.c
 	gcc -c $^ $(PERL_ARCH_INCL) $(PERL_CC_FLAGS)
 
-example_wrap.c example.pm : example.i example.c
+example.pm: example_wrap.c
+
+example_wrap.c : example.i example.c
 	swig -perl5 -o $@ $<
 
 example.so : example.o example_wrap.o 
 	g++ -shared $^ -o $@
 
-RNumber_wrap.c RNumber.pm : RNumber.i 
+RNumber.pm: RNumber_wrap.c
+
+RNumber_wrap.c : RNumber.i 
 	swig -perl5 -o $@ -shadow $<
 
 RNumber.so : RNumber_wrap.o RNumber.o $(RNUMBER_LIB)	
