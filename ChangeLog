@@ -1,3 +1,10 @@
+2009-01-30  Brian Kahne  <bkahne@freescale.com>
+
+	* Verified that make distcheck works.
+
+	* Added checking code to configure.ac to modify tar arguments to
+	avoid tarfile corruption due to large UIDs.
+
        == file:///proj/.ppc_43/vc_noec/svn/rnumber release 2.1.11 (v2_1_11) on Linux (ld2058) on 1/15/2009 ==
 
        == file:///proj/.ppc_43/vc_noec/svn/rnumber release 2.1.11 (v2_1_11) on Linux (ld2058) on 1/15/2009 ==

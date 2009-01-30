@@ -10,7 +10,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[1])
-m4_define([rnumber_micro_version],[11])
+m4_define([rnumber_micro_version],[21])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
@@ -277,6 +277,21 @@ fi
 AC_SUBST([DOC])
 AM_CONDITIONAL(WITHOUT_DOC,test x$DOC = x)
 
+# If we're using a newer version of tar, then we have to tweak the options so
+# that tar doesn't use V7 mode, which has a problem with the use of big UIDs.
+# Unfortunately, newer verions of tar automatically switch into v7 mode if they
+# see the -o option being used, which is automake's default.  We have to use the
+# --no-same-user option, instead, which is the same flag, just the long-form.  This
+# doesn't cause the switch.
+AC_MSG_CHECKING([if uid conversion will be done by tar])
+tar_version=$(tar --version | grep tar | awk '{print $[4]}')
+DPP_VERSION_CHECK(${tar_version},1.15,uid_conversion=no,uid_conversion=yes)
+if [[ $uid_conversion = no ]]; then
+	am__tar=$(echo $am__tar | sed -e 's/chof -/ch --no-same-owner -f -/')
+	AC_MSG_RESULT([no.  New tar invocation:  ${am__tar}])
+else
+	AC_MSG_RESULT([yes.  No change required to tar arguments.])
+fi
 
 dnl C++ compiler feature check start here
 dnl moved the c++ compiler alittle to make the basename check work right..
