@@ -107,6 +107,16 @@ void rangetest(unsigned seed)
       }
     }
   }
+  // Directed test for [0xffff00:0]
+  {
+    RNumber min(0xffff00);
+    RNumber max(0);
+    RNumber res = Random::getFromRange(min,max);
+    if ((res != 0) && (res < min)) {
+      cout << hex << "[0xffff00:0] Range Failure:  [" << min << ":" << max << "] and " << res << endl;
+      ++fails;
+    }
+  }
   if (fails) {
     cout << " " << dec << fails << " failures reported." << endl;
     exit (1);

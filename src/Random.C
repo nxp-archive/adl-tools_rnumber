@@ -170,8 +170,14 @@ RNumber RandomObj::getFromRange( const RNumber& min, const RNumber& max )
       return fromRange(min,x);
     }
   } else if (max == 0) {
-    // Spans from a negative number to 0.
-    return fromRange(RNumber(0),min);
+    RNumber x(0,max.size());
+    x.setAll();
+    RNumber length = x - min + 1;
+    if (getInteger(length.uint32())) {
+      return fromRange(min,x);
+    }else{
+      return RNumber(0);
+    }
   } else {
     // Spans from a negative number to a negative number.
     return fromRange(max,min);
