@@ -5,6 +5,8 @@
 // the COPYING file.
 //
 
+#include <stdlib.h>
+#include <string.h>
 
 #include "c-io.h"
 

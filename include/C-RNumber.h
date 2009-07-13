@@ -137,7 +137,7 @@ void rnumber_set_field( struct RNNS RNumber * rnumber, unsigned int start, unsig
 unsigned rnumber_size( const struct RNNS RNumber * rnumber);
 unsigned rnumber_wordcount( const struct RNNS RNumber * rnumber);
 
-const unsigned * rnumber_buffer( struct RNNS RNumber * rnumber);
+const uint32_t * rnumber_buffer( struct RNNS RNumber * rnumber);
 
 unsigned int rnumber_get_default_size();
 void rnumber_set_default_size( unsigned int size );

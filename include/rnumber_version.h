@@ -37,7 +37,7 @@ extern const unsigned rnumber_interface_age;
 void 
 rnumber_get_version(unsigned &major,unsigned &minor, unsigned &micro);
 
-char*
+const char*
 rnumber_check_version (unsigned int required_major,
 		     unsigned int required_minor,
 		     unsigned int required_micro);

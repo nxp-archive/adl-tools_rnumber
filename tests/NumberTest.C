@@ -5,6 +5,7 @@
 // the COPYING file.
 //
 
+#include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdexcept>
@@ -44,11 +45,11 @@ public:
   ~Calculator ();
 
   unsigned checkArith (const RNumber& a, const RNumber& b, 
-                       const RNumber& c, char *op, bool ext = false);
+                       const RNumber& c, const char *op, bool ext = false);
   unsigned checkArith (const RNumber& a, unsigned b, 
-                       const RNumber& c, char *op, bool ext = false);
-  unsigned checkComparator (const RNumber& a, const RNumber& b, int res, char *op);
-  unsigned checkComparator (const RNumber& a, unsigned b, int res, char *op);
+                       const RNumber& c, const char *op, bool ext = false);
+  unsigned checkComparator (const RNumber& a, const RNumber& b, int res, const char *op);
+  unsigned checkComparator (const RNumber& a, unsigned b, int res, const char *op);
 
 private:
   const char *_pgm;
@@ -69,7 +70,7 @@ static void usage (char *pgm)
   exit (1);
 }
 
-static unsigned checkOperator (unsigned size, char *op, Calculator *calc)
+static unsigned checkOperator (unsigned size, const char *op, Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -118,7 +119,7 @@ static unsigned checkOperator (unsigned size, char *op, Calculator *calc)
   return rc;
 }
 
-static unsigned checkIntOperator (unsigned size, char *op, Calculator *calc)
+static unsigned checkIntOperator (unsigned size, const char *op, Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -164,7 +165,7 @@ static unsigned checkIntOperator (unsigned size, char *op, Calculator *calc)
   return rc;
 }
 
-static unsigned checkMutator (unsigned size, char *op, Calculator *calc)
+static unsigned checkMutator (unsigned size, const char *op, Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -198,7 +199,7 @@ static unsigned checkMutator (unsigned size, char *op, Calculator *calc)
   return rc;
 }
 
-static unsigned checkIntMutator (unsigned size, char *op, Calculator *calc)
+static unsigned checkIntMutator (unsigned size, const char *op, Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -373,7 +374,7 @@ static unsigned checkDivideSpecialCases (Calculator *calc)
   return rc;
 }
 
-static unsigned checkComparator (unsigned size, char *op, Calculator *calc)
+static unsigned checkComparator (unsigned size, const char *op, Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -427,7 +428,7 @@ static unsigned checkComparator (unsigned size, char *op, Calculator *calc)
   return rc;
 }
 
-static unsigned checkIntComparator (unsigned size, char *op, Calculator *calc)
+static unsigned checkIntComparator (unsigned size, const char *op, Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -504,7 +505,7 @@ static unsigned checkIntComparator (unsigned size, char *op, Calculator *calc)
   return rc;
 }
 
-static unsigned checkSignedComparator (unsigned size, char *op, Calculator *calc)
+static unsigned checkSignedComparator (unsigned size, const char *op, Calculator *calc)
 {
   unsigned i;
   unsigned rc = 0;
@@ -589,7 +590,7 @@ static unsigned checkSignedComparator (unsigned size, char *op, Calculator *calc
     }
 
     int res1, res2;
-    char *newop;
+    const char *newop;
     if (strcmp (op, "GT") == 0) {
       res1 = a . signedGT (b);
       res2 = a . signedGT (c);
@@ -1290,7 +1291,7 @@ static unsigned checkGetInts (unsigned size)
   return rc;
 }
 
-static unsigned checkLogicalOp (const RNumber& a, const RNumber& b, const RNumber& res1, const RNumber& res2, char *op)
+static unsigned checkLogicalOp (const RNumber& a, const RNumber& b, const RNumber& res1, const RNumber& res2, const char *op)
 {
   unsigned rc = (res1 != res2);
   if (rc) {
@@ -1302,7 +1303,7 @@ static unsigned checkLogicalOp (const RNumber& a, const RNumber& b, const RNumbe
 }
 
 //static unsigned checkLogicalOp (const RNumber& a, unsigned b, const RNumber& res1, const RNumber& res2, char *op)
-static unsigned checkLogicalOp (const RNumber& a, int b, const RNumber& res1, const RNumber& res2, char *op)
+static unsigned checkLogicalOp (const RNumber& a, int b, const RNumber& res1, const RNumber& res2, const char *op)
 {
   unsigned rc = (res1 != res2);
   if (rc) {
@@ -1821,7 +1822,7 @@ static void uppercase (char *str)
 // Verify arithmetic using the external calculator.  This is for all-RNumber tests.
 // If ext is true, we allow for resizing.
 unsigned Calculator::checkArith (const RNumber& a, const RNumber& b, 
-                                 const RNumber& c, char *op, bool ext)
+                                 const RNumber& c, const char *op, bool ext)
 {
   char astr[256];
   char bstr[256];
@@ -1844,7 +1845,7 @@ unsigned Calculator::checkArith (const RNumber& a, const RNumber& b,
 }
 
 unsigned Calculator::checkArith (const RNumber& a, unsigned b, const RNumber& c, 
-                                 char *op, bool ext)
+                                 const char *op, bool ext)
 {
   char astr[256];
   char bstr[256];
@@ -1932,7 +1933,7 @@ unsigned Calculator::arithCalc (const char *astr,unsigned asize,
   return rc;
 }
 
-unsigned Calculator::checkComparator (const RNumber& a, const RNumber& b, int res, char *op)
+unsigned Calculator::checkComparator (const RNumber& a, const RNumber& b, int res, const char *op)
 {
   char astr[256];
   char bstr[256];
@@ -2021,7 +2022,7 @@ unsigned Calculator::checkComparator (const RNumber& a, const RNumber& b, int re
   return rc;
 }
 
-unsigned Calculator::checkComparator (const RNumber& a, unsigned b, int res, char *op)
+unsigned Calculator::checkComparator (const RNumber& a, unsigned b, int res, const char *op)
 {
   char astr[256];
   char bstr[256];
@@ -2103,7 +2104,7 @@ unsigned Calculator::checkComparator (const RNumber& a, unsigned b, int res, cha
 
 void Calculator::init ()
 {
-  char *str = "16 o 16 i\n";
+  const char *str = "16 o 16 i\n";
   int n = strlen (str);
   if (write (_fd1[1], str, strlen (str)) != n) {
     printf ("Write error in init\n");
@@ -2113,7 +2114,7 @@ void Calculator::init ()
 
 void Calculator::terminate ()
 {
-  char *str = "q\n";
+  const char *str = "q\n";
   int n = strlen (str);
   if (write (_fd1[1], str, strlen (str)) != n) {
     printf ("Write error in init\n");

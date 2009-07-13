@@ -16,6 +16,8 @@
 ** ===========================================================================
 */
 
+#include <string.h>
+
 #include "RNumber.h"
 #include "C-RNumber.h"
 #include "trace.h"
@@ -431,7 +433,7 @@ unsigned rnumber_wordcount( const RNumber * rnumber)
   return rnumber->wordCount();
 }
 
-const unsigned * rnumber_buffer( RNumber * rnumber) 
+const uint32_t * rnumber_buffer( RNumber * rnumber) 
 {
   return rnumber->buffer();
 }

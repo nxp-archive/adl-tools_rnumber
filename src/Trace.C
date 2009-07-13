@@ -14,8 +14,10 @@
 #include "trace.h"
 
 #include <fstream>
+#include <sstream>
+
 #ifndef _MSC_VER
-# if defined (linux)
+# if defined (linux) || defined(__CYGWIN__)
 #  include <sys/procfs.h>
 # else
 #  include <procfs.h>
@@ -23,11 +25,6 @@
 #endif
 
 #include "gccversion.h"
-#if defined(STD_CPP) || defined(_MSC_VER)
-# include <sstream>
-#else
-# include <strstream.h>
-#endif
 
 using namespace std;
 

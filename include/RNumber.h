@@ -65,12 +65,18 @@ namespace rnumber {
          explicit RNumber( uint64_t number, Sizing sizing = fixed );
          explicit RNumber( int32_t number, Sizing sizing = fixed );
          RNumber( uint32_t  number, Sizing sizing = fixed );
-        
-        
+                
          explicit RNumber( int32_t number, unsigned int size, Sizing sizing = fixed );
          explicit RNumber( uint32_t number, unsigned int size, Sizing sizing = fixed );
          explicit RNumber( int64_t number, unsigned int size, Sizing sizing = fixed );
          explicit RNumber( uint64_t, unsigned int size, Sizing sizing = fixed );
+
+#        ifdef __CYGWIN__
+       explicit RNumber ( unsigned number, Sizing sizing = fixed);
+       explicit RNumber ( int number, Sizing sizing = fixed);
+       explicit RNumber ( unsigned number, unsigned int size, Sizing sizing = fixed);
+       explicit RNumber ( int number, unsigned int size, Sizing sizing = fixed);
+#        endif
         
          // Create from a string.  Where radix is explicitly set, the input should
          // contain a prefix, e.g. 0x...
@@ -99,25 +105,25 @@ namespace rnumber {
 
          // Arithmetic assignment operators; assignment size depends on sizing state.
          RNumber& operator+=( const RNumber& number );
-         RNumber& operator+=( unsigned int number );
+         RNumber& operator+=( uint32_t number );
          RNumber& operator-=( const RNumber& number );
-         RNumber& operator-=( unsigned int number );
+         RNumber& operator-=( uint32_t number );
          RNumber& operator*=( const RNumber& number );
-         RNumber& operator*=( unsigned int number );
+         RNumber& operator*=( uint32_t number );
          RNumber& operator/=( const RNumber& number );
-         RNumber& operator/=( unsigned int number );
+         RNumber& operator/=( uint32_t number );
          RNumber& operator%=( const RNumber& number );
-         RNumber& operator%=( unsigned int number );
+         RNumber& operator%=( uint32_t number );
          RNumber& operator&=( const RNumber& number );
-         RNumber& operator&=( unsigned int number );
+         RNumber& operator&=( uint32_t number );
          RNumber& operator|=( const RNumber& number );
-         RNumber& operator|=( unsigned int number );
+         RNumber& operator|=( uint32_t number );
          RNumber& operator^=( const RNumber& number );
-         RNumber& operator^=( unsigned int number );
+         RNumber& operator^=( uint32_t number );
          RNumber& operator<<=( const RNumber& shift );
-         RNumber& operator<<=( unsigned int shift );
+         RNumber& operator<<=( uint32_t shift );
          RNumber& operator>>=( const RNumber& shift );
-         RNumber& operator>>=( unsigned int shift );
+         RNumber& operator>>=( uint32_t shift );
 
          // Unary conditional expression operators.
          bool operator!() const;
@@ -155,8 +161,8 @@ namespace rnumber {
          unsigned char * bigEndianArrayOfBytes(unsigned char * buffer = 0) const;
 
          // Value field accessors and manipulators.
-         unsigned int getIntField( unsigned int start, unsigned int end ) const { return getUIntField( start, end ); }
-         unsigned int getUIntField( unsigned int start, unsigned int end ) const;
+         unsigned getIntField( unsigned int start, unsigned int end ) const { return getUIntField( start, end ); }
+         unsigned getUIntField( unsigned int start, unsigned int end ) const;
          // unsigned int getUIntFieldLSB( unsigned int start, unsigned int end ) const;  // implement
          RNumber getField( unsigned int start, unsigned int end ) const;
          // RNumber getFieldLSB( unsigned int start, unsigned int end ) const;      // implement
@@ -167,7 +173,7 @@ namespace rnumber {
          unsigned size() const;
          unsigned wordCount() const;
 
-         const unsigned *buffer() const;
+         const uint32_t *buffer() const;
         
 
          static unsigned int defaultSize()  { return _defaultSize; }
@@ -358,6 +364,18 @@ namespace rnumber {
       initNumber( _defaultSize, sizing );
       _valueBuffer[_wordCount - 1] = number;
    }
+
+#  ifdef __CYGWIN__
+    inline RNumber::RNumber(unsigned number,Sizing sizing) {
+      initNumber( _defaultSize, sizing );
+      _valueBuffer[_wordCount - 1] = (uint32_t)number;	
+    }
+
+    inline RNumber::RNumber(int number,Sizing sizing) {
+      initNumber( _defaultSize, sizing );
+      _valueBuffer[_wordCount - 1] = (uint32_t)number;	
+    }
+#  endif
 
    //
    // Create a new RNumber with the specified value.
@@ -958,7 +976,7 @@ namespace rnumber {
    //
    // Access the word-buffer used to store the integer.
    //
-   inline const unsigned *RNumber::buffer() const {
+   inline const uint32_t *RNumber::buffer() const {
       return _valueBuffer;
    }
 

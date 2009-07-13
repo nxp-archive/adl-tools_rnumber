@@ -24,6 +24,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cassert>
+#include <string.h>
 
 #include "gccversion.h"
 #if defined(STD_CPP) || defined(_MSC_VER)
@@ -50,11 +51,11 @@ static inline uint32_t lowHalf( uint32_t n );
 static inline uint32_t highHalf( uint32_t n );
 static inline uint32_t highLowConcat( uint32_t nh, uint32_t nl );
 
-static inline uint32_t* getTempBuffer( uint32_t wordCount );
-static inline uint32_t countLeadingZeroWords( const uint32_t* n, unsigned int nLen );
-static inline uint32_t skipLeadingZeroWords( const uint32_t* n, unsigned int nLen );
-static inline uint32_t skipLeadingZeroBytes( const unsigned char* n, unsigned int nLen );
-static inline uint32_t skipLeadingZeroBits( const uint32_t* n, unsigned int nLen );
+static inline uint32_t* getTempBuffer( unsigned wordCount );
+static inline unsigned countLeadingZeroWords( const uint32_t* n, unsigned int nLen );
+static inline unsigned skipLeadingZeroWords( const uint32_t* n, unsigned int nLen );
+static inline unsigned skipLeadingZeroBytes( const unsigned char* n, unsigned int nLen );
+static inline unsigned skipLeadingZeroBits( const uint32_t* n, unsigned int nLen );
 static inline void convertToBytes( const uint32_t* wordBuffer, unsigned char* byteBuffer, unsigned int wordCount );
 
 // General read function from strings, with radix specified
@@ -145,7 +146,7 @@ static inline unsigned int countLeadingZeroWords( const uint32_t* n, unsigned in
 //
 // Return the number of words in the number excluding leading zeros.
 //
-static inline uint32_t skipLeadingZeroWords( const uint32_t* n, unsigned int nLen )
+static inline unsigned skipLeadingZeroWords( const uint32_t* n, unsigned int nLen )
 {
   assert( nLen != 0 );
 
@@ -366,6 +367,24 @@ RNumber::RNumber( int32_t number, unsigned int size, Sizing sizing )
   _valueBuffer[_wordCount - 1] = number;
   truncateTop();
 }
+
+#ifdef __CYGWIN__
+
+RNumber::RNumber( unsigned number, unsigned int size, Sizing sizing )
+{
+  initNumber( ( size ) ? size : _defaultSize, sizing );
+  _valueBuffer[_wordCount - 1] = (uint32_t) number;
+  truncateTop();
+}
+
+RNumber::RNumber( int number, unsigned int size, Sizing sizing )
+{
+  initNumber( ( size ) ? size : _defaultSize, sizing );
+  _valueBuffer[_wordCount - 1] = (uint32_t) number;
+  truncateTop();
+}
+
+#endif
 
 RNumber::RNumber( int64_t number, unsigned int size, Sizing sizing ) {
    assert(size <= 64);
@@ -4284,7 +4303,7 @@ void RNumber::write( ostream& os ) const
   if ( os.fail() )
     throw runtime_error ( "io_fail_error - writing" );
 
-  const unsigned *value = _valueBuffer;
+  const uint32_t *value = _valueBuffer;
 
   for (unsigned i = 0; i != _wordCount; ++i) {
     writeInt(os,value[i]);
