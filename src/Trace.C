@@ -7,16 +7,14 @@
 
 #define VERBOSE
 
-#ifndef _MSC_VER
-# include <unistd.h>
-#endif
+#include <stdlib.h>
 
 #include "trace.h"
 
 #include <fstream>
 #include <sstream>
 
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
 # if defined (linux) || defined(__CYGWIN__)
 #  include <sys/procfs.h>
 # else
