@@ -1,3 +1,38 @@
-To install rutil you need:
- - egcs 1.1.2 or better
- - zlib ( 1.1.2 was used, but I am not sure we depend on that version)
+
+RNumber
+=======
+
+RNumber is an arbitrary-length integer class.  While the main
+implementation is in C++, bindings exist for C, Perl, and Bigloo.
+What differentiates RNumber from many other examples of
+arbitrary-sized integers is that a given number object has a fixed
+size.  In other words, it is a bit vector with arithmetic operations.
+This makes it suitable for modeling hardware resources such as
+registers.  However, the size may be modified during run-time, making
+it more flexible than some other implementations, such as SystemC.
+
+
+Platforms:
+----------
+
+Microsoft Visual Studio 2005
+
+	A solution file (rnumber.sln) and project file (rnumber.vcproj) are provided.
+
+
+MinGW32
+
+	Basic support for MinGW is provided, but the regression framework
+	has not been ported.  Simply run "./configure" and "make all
+	install" to build and install the package.
+
+Cygwin
+
+	RNumber works on Cygwin.  Just run "./configure" and "make all check
+	install" to build, run the regression, and install the package.
+
+Linux (32 and 64 bit)
+
+	This is the primary development platform for RNumber.  Just run
+	"./configure" and "make all check install" to build, run the
+	regression, and install the package.
