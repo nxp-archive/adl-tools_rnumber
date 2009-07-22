@@ -1,11 +1,12 @@
 
 if HAVE_WORKING_FORK
 
-CalcTests = NumberTest number_test
+CalcProgs = NumberTest number_test
+CalcTests = number_test
 
 endif
 
-check_PROGRAMS = $(CalcTests) ReadTest RandTest ShiftTest simple_test
+check_PROGRAMS = $(CalcProgs) ReadTest RandTest ShiftTest simple_test
 
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
@@ -19,7 +20,7 @@ noinst_HEADERS = c-io.h
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src -I$(top_srcdir)/tests
 
 TESTSCRIPTS = NumberRegress ReadRegress 
-TESTS = $(TESTSCRIPTS) RandTest ShiftTest simple_test number_test 
+TESTS = $(TESTSCRIPTS) RandTest ShiftTest simple_test $(CalcTests)
 
 EXTRA_DIST = $(TESTSCRIPTS) ReadIn.txt ReadOut.regress
 
