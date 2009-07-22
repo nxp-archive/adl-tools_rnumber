@@ -264,7 +264,7 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 @HAVE_WORKING_FORK_TRUE@CalcProgs = NumberTest number_test
-@HAVE_WORKING_FORK_TRUE@CalcTests = number_test
+@HAVE_WORKING_FORK_TRUE@CalcTests = NumberRegress number_test
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
 ShiftTest_SOURCES = ShiftTest.C
@@ -273,9 +273,8 @@ number_test_SOURCES = c-io.C number_test.c
 simple_test_SOURCES = simple_test.c c-io.C
 noinst_HEADERS = c-io.h
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src -I$(top_srcdir)/tests
-TESTSCRIPTS = NumberRegress ReadRegress 
-TESTS = $(TESTSCRIPTS) RandTest ShiftTest simple_test $(CalcTests)
-EXTRA_DIST = $(TESTSCRIPTS) ReadIn.txt ReadOut.regress
+TESTS = $(CalcTests) ReadRegress RandTest ShiftTest simple_test
+EXTRA_DIST = NumberREgress ReadRegress ReadIn.txt ReadOut.regress
 LDADD = $(top_builddir)/src/libRNumber.la
 all: all-am
 

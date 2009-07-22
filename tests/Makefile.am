@@ -2,7 +2,7 @@
 if HAVE_WORKING_FORK
 
 CalcProgs = NumberTest number_test
-CalcTests = number_test
+CalcTests = NumberRegress number_test
 
 endif
 
@@ -19,10 +19,9 @@ noinst_HEADERS = c-io.h
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src -I$(top_srcdir)/tests
 
-TESTSCRIPTS = NumberRegress ReadRegress 
-TESTS = $(TESTSCRIPTS) RandTest ShiftTest simple_test $(CalcTests)
+TESTS = $(CalcTests) ReadRegress RandTest ShiftTest simple_test
 
-EXTRA_DIST = $(TESTSCRIPTS) ReadIn.txt ReadOut.regress
+EXTRA_DIST = NumberREgress ReadRegress ReadIn.txt ReadOut.regress
 
 LDADD = $(top_builddir)/src/libRNumber.la
 
