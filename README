@@ -23,7 +23,7 @@ Microsoft Visual Studio 2005
 MinGW32
 
 	Basic support for MinGW is provided, but the regression framework
-	has not been ported.  Simply run "./configure" and "make all
+	has not been fully ported.  Simply run "./configure" and "make all check
 	install" to build and install the package.
 
 Cygwin
