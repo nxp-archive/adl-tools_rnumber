@@ -10,7 +10,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 m4_define([rnumber_major_version],[2])
 m4_define([rnumber_minor_version],[1])
-m4_define([rnumber_micro_version],[23])
+m4_define([rnumber_micro_version],[24])
 m4_define([rnumber_interface_age],[0])
 m4_define([rnumber_binary_age],[0])
 AC_INIT([rnumber],[rnumber_major_version.rnumber_minor_version.rnumber_micro_version])
@@ -68,10 +68,16 @@ dnl On FreeBSD 3.0 (and perhaps some other systems) GNU m4 is
 dnl called `gm4' where `m4' is the system's own m4.
 AC_CHECK_PROGS(M4, gm4 m4, m4)
 
-dnl Check for the desktop calculator program.
-AC_PATH_PROG(DCPROG,dc)
-if test "x$DCPROG" = x ; then
+dnl If we have fork, then we can run the regressions. Otherwise, we can't, so we don't need dc.
+AC_FUNC_FORK
+
+if [[ x$ac_cv_func_fork = xyes ]]; then
+	AM_CONDITIONAL([HAVE_WORKING_FORK],[test x$ac_cv_func_fork_works = xyes])
+	dnl Check for the desktop calculator program.
+	AC_PATH_PROG(DCPROG,dc)
+	if test "x$DCPROG" = x ; then
         AC_ERROR("Could not find program DC- this is required for the regression tests.")
+	fi
 fi
 
 dnl Check for the location of Perl

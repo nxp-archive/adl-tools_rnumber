@@ -36,9 +36,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = NumberTest$(EXEEXT) ReadTest$(EXEEXT) \
-	RandTest$(EXEEXT) ShiftTest$(EXEEXT) simple_test$(EXEEXT) \
-	number_test$(EXEEXT)
+check_PROGRAMS = $(am__EXEEXT_1) ReadTest$(EXEEXT) RandTest$(EXEEXT) \
+	ShiftTest$(EXEEXT) simple_test$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
@@ -54,6 +53,8 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES =
+@HAVE_WORKING_FORK_TRUE@am__EXEEXT_1 = NumberTest$(EXEEXT) \
+@HAVE_WORKING_FORK_TRUE@	number_test$(EXEEXT)
 am_NumberTest_OBJECTS = NumberTest.$(OBJEXT)
 NumberTest_OBJECTS = $(am_NumberTest_OBJECTS)
 NumberTest_LDADD = $(LDADD)
@@ -152,6 +153,8 @@ GCC_MAJOR = @GCC_MAJOR@
 GCC_MINOR = @GCC_MINOR@
 GCC_VERSION = @GCC_VERSION@
 GREP = @GREP@
+HAVE_WORKING_FORK_FALSE = @HAVE_WORKING_FORK_FALSE@
+HAVE_WORKING_FORK_TRUE = @HAVE_WORKING_FORK_TRUE@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -260,6 +263,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+@HAVE_WORKING_FORK_TRUE@CalcTests = NumberTest number_test
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
 ShiftTest_SOURCES = ShiftTest.C

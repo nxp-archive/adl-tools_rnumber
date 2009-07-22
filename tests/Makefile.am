@@ -1,4 +1,11 @@
-check_PROGRAMS = NumberTest ReadTest RandTest ShiftTest simple_test number_test 
+
+if HAVE_WORKING_FORK
+
+CalcTests = NumberTest number_test
+
+endif
+
+check_PROGRAMS = $(CalcTests) ReadTest RandTest ShiftTest simple_test
 
 NumberTest_SOURCES = NumberTest.C
 RandTest_SOURCES = RandTest.C
