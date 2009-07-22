@@ -72,13 +72,13 @@ dnl If we have fork, then we can run the regressions. Otherwise, we can't, so we
 AC_FUNC_FORK
 
 if [[ x$ac_cv_func_fork = xyes ]]; then
-	AM_CONDITIONAL([HAVE_WORKING_FORK],[test x$ac_cv_func_fork_works = xyes])
 	dnl Check for the desktop calculator program.
 	AC_PATH_PROG(DCPROG,dc)
 	if test "x$DCPROG" = x ; then
         AC_ERROR("Could not find program DC- this is required for the regression tests.")
 	fi
 fi
+AM_CONDITIONAL([HAVE_WORKING_FORK],[test x$ac_cv_func_fork_works = xyes])
 
 dnl Check for the location of Perl
 AC_PATH_PROG(PERLPROG,perl)

@@ -809,9 +809,9 @@ BIGLOO_GCC3X
 BIGLOO_LIBDIR
 BIGLOOPROG
 PERLPROG
-DCPROG
 HAVE_WORKING_FORK_FALSE
 HAVE_WORKING_FORK_TRUE
+DCPROG
 M4
 WEB_HOME
 WEB_STUFF_FALSE
@@ -16126,16 +16126,6 @@ fi
 
 
 if [ x$ac_cv_func_fork = xyes ]; then
-
-
-if test x$ac_cv_func_fork_works = xyes; then
-  HAVE_WORKING_FORK_TRUE=
-  HAVE_WORKING_FORK_FALSE='#'
-else
-  HAVE_WORKING_FORK_TRUE='#'
-  HAVE_WORKING_FORK_FALSE=
-fi
-
 		# Extract the first word of "dc", so it can be a program name with args.
 set dummy dc; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -16182,6 +16172,16 @@ $as_echo "$as_me: error: \"Could not find program DC- this is required for the r
    { (exit 1); exit 1; }; }
 	fi
 fi
+
+
+if test x$ac_cv_func_fork_works = xyes; then
+  HAVE_WORKING_FORK_TRUE=
+  HAVE_WORKING_FORK_FALSE='#'
+else
+  HAVE_WORKING_FORK_TRUE='#'
+  HAVE_WORKING_FORK_FALSE=
+fi
+
 
 # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
