@@ -21,7 +21,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src -I$(top_srcdir)/tests
 
 TESTS = $(CalcTests) ReadRegress RandTest ShiftTest simple_test
 
-EXTRA_DIST = NumberREgress ReadRegress ReadIn.txt ReadOut.regress
+EXTRA_DIST = NumberRegress ReadRegress ReadIn.txt ReadOut.regress
 
 LDADD = $(top_builddir)/src/libRNumber.la
 
