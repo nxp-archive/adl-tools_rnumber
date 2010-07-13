@@ -46,6 +46,7 @@ dnl
 #include <rnumber/rnumber_version.h>
 #include <rnumber/RNumber.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <strings.h>
 
