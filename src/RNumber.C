@@ -368,24 +368,6 @@ RNumber::RNumber( int32_t number, unsigned int size, Sizing sizing )
   truncateTop();
 }
 
-#ifdef __CYGWIN__
-
-RNumber::RNumber( unsigned number, unsigned int size, Sizing sizing )
-{
-  initNumber( ( size ) ? size : _defaultSize, sizing );
-  _valueBuffer[_wordCount - 1] = (uint32_t) number;
-  truncateTop();
-}
-
-RNumber::RNumber( int number, unsigned int size, Sizing sizing )
-{
-  initNumber( ( size ) ? size : _defaultSize, sizing );
-  _valueBuffer[_wordCount - 1] = (uint32_t) number;
-  truncateTop();
-}
-
-#endif
-
 RNumber::RNumber( int64_t number, unsigned int size, Sizing sizing ) {
    assert(size <= 64);
    initNumber( size, sizing );
