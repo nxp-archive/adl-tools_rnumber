@@ -1,3 +1,14 @@
+2013-02-28  Brian Kahne  <bkahne@bkahne-ec1.am.freescale.net>
+
+	* src/RNumber.C (readNumber): Fixed for gcc 4.6.  Apparently,
+	istream::eof() only returns true until the stream is modified,
+	after which it might never return true again, though
+	istream::fail() will return true.  Therefore, we were getting an
+	infinite loop in ReadTest because we would have an additional read
+	which cleared the bit, and thus we'd just keep looping.  I now
+	have a guard in readNumber which checks the getter to see if it's
+	done- for istream, that's eof or fail.
+
        == file:///proj/.ppc_43/vc_noec/git/rnumber release 2.1.25 (v2_1_25) on Linux (lc2031-tx30) on 12/6/2012 ==
 
        == file:///proj/.ppc_43/vc_noec/git/rnumber release 2.1.25 (v2_1_25) on Linux (lc2015-tx30) on 12/6/2012 ==

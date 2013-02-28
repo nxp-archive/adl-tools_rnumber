@@ -4132,6 +4132,8 @@ void readNumber( RNumber& number, Getter getter )
 
   // Absorb any prior white-space and get the first char.
   char c = getter.eatwhite();
+
+  if (getter.done()) return;
  
   if ( c == '-' ) {
     // A unary minus; thus, we have a decimal, negated number.
@@ -4198,6 +4200,7 @@ public:
   char operator()() { return _is.get(); };
   char eatwhite() { char c; _is >> c; return c; };
   void putback(char c) { _is.putback(c); };
+  bool done() const { return _is.eof() || _is.fail(); }
 private:
   istream &_is;
 };
@@ -4227,6 +4230,7 @@ public:
       --_i; 
     }
   };
+  bool done() const { return false; };
 private:
   const string &_s;
   string::const_iterator _i;

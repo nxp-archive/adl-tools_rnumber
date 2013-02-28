@@ -1,14 +1,14 @@
 /*
 ** ===========================================================================
 ** $RCSfile$
-** $Revision: 42 $
-** $Date: 2002-07-15 20:55:48 -0500 (Mon, 15 Jul 2002) $
-** $Author: tdukes $
+** $Revision$
+** $Date$
+** $Author$
 ** ===========================================================================
 */
 
 #ifndef __RutilFeature_h__
-#define __RutilFeature_h__ "$Id: rnumber_feature.h.in 42 2002-07-16 01:55:48Z tdukes $"
+#define __RutilFeature_h__ "$Id$"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,7 +19,7 @@ extern "C" {
  */
 #define RNUMBER_MAJOR_VERSION				(2)
 #define RNUMBER_MINOR_VERSION				(1)
-#define RNUMBER_MICRO_VERSION				(25)
+#define RNUMBER_MICRO_VERSION				(26)
 #define RNUMBER_BINARY_AGE				(0)
 #define RNUMBER_INTERFACE_AGE				(0)
 #define	RNUMBER_CHECK_VERSION(major,minor,micro)	\
