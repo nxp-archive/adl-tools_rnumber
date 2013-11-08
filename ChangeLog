@@ -1,3 +1,7 @@
+2013-11-08  Brian Kahne  <bkahne@lc2221-tx30>
+
+	* include/types.h: Updates to work with MSVC 2010.
+
        == file:///proj/.ppc_43/vc_noec/git/rnumber release 2.1.26 (v2_1_26) on Linux (lc2496-tx30) on 2/28/2013 ==
 
        == file:///proj/.ppc_43/vc_noec/git/rnumber release 2.1.26 (v2_1_26) on Linux (lc2467-tx30) on 2/28/2013 ==

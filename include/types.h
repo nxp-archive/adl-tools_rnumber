@@ -8,37 +8,42 @@
 /*
 ** ===========================================================================
 ** $RCSfile$
-** $Revision$
-** $Date$
-** $Author$
+** $Revision: 540 $
+** $Date: 2007-02-23 11:58:44 -0600 (Fri, 23 Feb 2007) $
+** $Author: bkahne $
 ** ===========================================================================
 */
 
 #ifndef TYPES_H
-#define TYPES_H "$Id$"
+#define TYPES_H "$Id: types.h 540 2007-02-23 17:58:44Z bkahne $"
 
-#ifdef _MSC_VER
+#if defined (_MSC_VER)
+#if _MSC_VER < 1600
+/* Pre-Visual Studio 10.0 */
+    typedef __int64  int64_t;
+    typedef unsigned __int64 uint64_t;
 
-// Another example of how broken Windows is:  They don't include inttypes.h!
-// I guess this is because they don't support C99.  After all, it's only been
-// eight years and Microsoft is at least a decade behind on everything they do.
+    typedef __int32  int32_t;
+    typedef unsigned __int32 uint32_t;
 
-typedef __int64  int64_t;
-typedef unsigned __int64 uint64_t;
+    typedef __int16 int16_t;
+    typedef unsigned __int16 uint16_t;
 
-typedef __int32  int32_t;
-typedef unsigned __int32 uint32_t;
+    typedef __int8  int8_t;
+    typedef unsigned __int8 uint8_t;
 
-typedef __int16 int16_t;
-typedef unsigned __int16 uint16_t;
+    typedef unsigned int u_int;
 
-typedef __int8  int8_t;
-typedef unsigned __int8 uint8_t;
-
+    typedef unsigned char u_char;
 #else
-# include <inttypes.h>
+/* Visual Studio 10.0 */
+#include <stdint.h>
 #endif
-
+    
+#else
+/* Linux */
+#include <inttypes.h>
+#endif
 namespace rnumber_t {
 
   // Attributes of a nibble.
