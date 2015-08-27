@@ -1,4 +1,6 @@
 
+AUTOMAKE_OPTIONS = serial-tests
+
 perllibdir=$(pkglibdir)
 
 noinst_DATA = example.so 

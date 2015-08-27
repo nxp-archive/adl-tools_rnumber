@@ -15,7 +15,7 @@ libRNumber_la_SOURCES = \
 noinst_HEADERS = \
 	rnumber_feature.h
 
-INCLUDES = -I$(top_srcdir)/include
+AM_CPPFLAGS = -I$(top_srcdir)/include
 
 cinstall:
 	$(MAKE) install

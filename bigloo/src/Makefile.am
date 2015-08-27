@@ -1,3 +1,6 @@
+
+AUTOMAKE_OPTIONS = foreign
+
 pkglib_LIBRARIES = libbl-rnumber_s-@BIGLOO_REVISION@.a libbl-rnumber_u-@BIGLOO_REVISION@.a
 # libbl-rnumber.so
 
@@ -16,7 +19,7 @@ libbl_rnumber_u_@BIGLOO_REVISION@_a_SOURCES =  bl-rnumber.c rnumber.scm rnumber_
 noinst_HEADERS = \
 	bl-rnumber.h 
 
-INCLUDES = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
+AM_CPPFLAGS = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
 
 RNUMBER_STATIC_LIBS = \
 	$(top_builddir)/src/.libs/libRNumber.a

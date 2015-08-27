@@ -1,4 +1,6 @@
 
+AUTOMAKE_OPTIONS = foreign serial-tests
+
 if HAVE_WORKING_FORK
 
 CalcProgs = NumberTest number_test
@@ -17,7 +19,7 @@ simple_test_SOURCES = simple_test.c c-io.C
 
 noinst_HEADERS = c-io.h
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src -I$(top_srcdir)/tests
+AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src -I$(top_srcdir)/tests
 
 TESTS = $(CalcTests) ReadRegress RandTest ShiftTest simple_test
 

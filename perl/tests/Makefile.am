@@ -1,4 +1,6 @@
 
+AUTOMAKE_OPTIONS = serial-tests
+
 TESTS = float-test.pl \
 	jims_test.pl \
 	mem-test.pl \

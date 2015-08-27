@@ -407,6 +407,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+AUTOMAKE_OPTIONS = foreign
 pkglib_LIBRARIES = libbl-rnumber_s-@BIGLOO_REVISION@.a libbl-rnumber_u-@BIGLOO_REVISION@.a
 # libbl-rnumber.so
 SUBDIRS = rnumber
@@ -420,7 +421,7 @@ libbl_rnumber_u_@BIGLOO_REVISION@_a_SOURCES = bl-rnumber.c rnumber.scm rnumber_p
 noinst_HEADERS = \
 	bl-rnumber.h 
 
-INCLUDES = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
+AM_CPPFLAGS = -I$(BIGLOO_LIBDIR) -I$(top_srcdir)/include
 RNUMBER_STATIC_LIBS = \
 	$(top_builddir)/src/.libs/libRNumber.a
 
@@ -447,9 +448,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu bigloo/src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign bigloo/src/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu bigloo/src/Makefile
+	  $(AUTOMAKE) --foreign bigloo/src/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

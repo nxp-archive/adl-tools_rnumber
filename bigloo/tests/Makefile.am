@@ -2,7 +2,7 @@ check_PROGRAMS = driver simple-number-test check-number-test
 
 # Turn off dependency tracking, since Automake doesn't
 # know how to handle Bigloo.
-AUTOMAKE_OPTIONS = no-dependencies
+AUTOMAKE_OPTIONS = no-dependencies serial-tests no-exeext
 
 driver_SOURCES = driver.scm
 simple_number_test_SOURCES = simple-number-test.scm
@@ -11,7 +11,7 @@ check_number_test_SOURCES = check-number-test.scm
 EXTRA_DIST = simple-number-test.golden
 CLEANFILES = driver.c simple-number-test.c check-number-test.c *.out
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/src
+AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
 TESTS = simple-number-test \
 	check-number-test
