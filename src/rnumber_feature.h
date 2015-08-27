@@ -19,7 +19,7 @@ extern "C" {
  */
 #define RNUMBER_MAJOR_VERSION				(2)
 #define RNUMBER_MINOR_VERSION				(1)
-#define RNUMBER_MICRO_VERSION				(27)
+#define RNUMBER_MICRO_VERSION				(28)
 #define RNUMBER_BINARY_AGE				(0)
 #define RNUMBER_INTERFACE_AGE				(0)
 #define	RNUMBER_CHECK_VERSION(major,minor,micro)	\
