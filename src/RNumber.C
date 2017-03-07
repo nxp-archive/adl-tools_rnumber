@@ -3743,9 +3743,10 @@ string RNumber::str(int format) const
 #endif
 }
 
-unsigned char * RNumber::bigEndianArrayOfBytes(unsigned char * buffer) const {
+unsigned char * RNumber::bigEndianArrayOfBytes(unsigned char * buffer) const
+{
    if (buffer == 0) {
-      buffer = new unsigned char [_size >> 3] + 1;
+      buffer = new unsigned char [_size >> 3 + 1];
    }
    int buffer_cursor = 0;
    // _valueBuffer[_wordCount - 1] is least significant word

@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+use strict;
+
+my $out = "shift_test.out";
+my $exp = "shift_test.regress";
+
+system("./ShiftTest > $out") && die "Could not run ShiftTest program.";
+
+system ("diff $out $exp") && die "Differences found in test output.";
+
+unlink $out;
+
+print "Test passed.\n";

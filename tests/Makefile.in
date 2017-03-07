@@ -80,8 +80,8 @@ build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = $(am__EXEEXT_1) ReadTest$(EXEEXT) RandTest$(EXEEXT) \
 	ShiftTest$(EXEEXT) simple_test$(EXEEXT)
-TESTS = $(am__EXEEXT_2) ReadRegress RandTest$(EXEEXT) \
-	ShiftTest$(EXEEXT) simple_test$(EXEEXT)
+TESTS = $(am__EXEEXT_2) ReadRegress RandTest$(EXEEXT) shift_test \
+	simple_test$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/mkinstalldirs $(top_srcdir)/depcomp \

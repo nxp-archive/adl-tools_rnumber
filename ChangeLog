@@ -1,3 +1,10 @@
+2017-03-07  Brian Kahne  <bkahne@lc2321-tx30.am.freescale.net>
+
+	* src/RNumber.C (bigEndianArrayOfBytes): Fixed a bug with memory
+	allocation- we had a +1 outside of the new call, so we were
+	corrupting the pointer that we created.  Fixed this and updated
+	ShiftTest to test.
+
        == file:///proj/.ppc_43/vc_noec/git/rnumber release 2.1.28 (v2_1_28) on Linux (lc2320-tx30) on 8/27/2015 ==
 
        == file:///proj/.ppc_43/vc_noec/git/rnumber release 2.1.28 (v2_1_28) on Linux (lc2320-tx30) on 8/27/2015 ==
