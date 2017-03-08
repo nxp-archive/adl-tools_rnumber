@@ -2,8 +2,20 @@
 
 use strict;
 
+my $srcvar = $ENV{srcdir};
+my $src;
+
+if (!$srcvar) {
+	# No srcdir variable set, so use the current directory (for now).
+	$ENV{srcdir} = $src = ".";
+} else {
+	# It was set, so our src is probably in a different location, e.g. separate
+	# src/build directories.
+	$src = $srcvar;
+}
+
 my $out = "shift_test.out";
-my $exp = "shift_test.regress";
+my $exp = "$src/shift_test.regress";
 
 system("./ShiftTest > $out") && die "Could not run ShiftTest program.";
 
