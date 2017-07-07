@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "C-RNumber.h"
 #include "C-Random.h"
@@ -1889,7 +1890,7 @@ unsigned calculator_check_arith (struct Calculator * calc, const struct RNumber 
   {
     printf ("%s:%d Result size error (1)  occurred in expression:  %s(%d) %s(%d) (%d) %s\n",
             __FILE__, __LINE__, astr, rnumber_size(a), bstr, rnumber_size(b), rnumber_size(c), op);
-    printf ("%s:%d ext %d op[0] %c a size %d b size %d c size %d\n", __FILE__, __LINE__,
+    printf ("%s:%d ext op[0] %c a size %d b size %d c size %d\n", __FILE__, __LINE__,op[0],
             rnumber_size(a), rnumber_size(b), rnumber_size(c));
   }
   return calculator_private_arith_calc(calc,astr,rnumber_size(a),bstr,rnumber_size(b),c,op,ext);
@@ -2154,7 +2155,7 @@ unsigned calculator_check_comparator_unsigned (Calculator * calc, const struct R
     assert (0);
 
   if (! rc) {
-    printf ("%s:%d Error (5) occurred in expression:  %s(%d) %s %s\n", 
+    printf ("%s:%d Error (5) occurred in expression:  %s(%s) %s %s\n", 
             __FILE__, __LINE__, astr, rnumber_cstr(a) , bstr, op);
     printf ("  RNumber res = %d, subtract output = %s", res, buf);
     rc = 1;
