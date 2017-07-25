@@ -37,14 +37,14 @@ namespace rnumber {
 
   void writeInt64(ostream &os,uint64_t d)
   {
-    unsigned char t[sizeof(uint64_t)] = { ((d >> 56)&0xff),
-                                        ((d >> 48)&0xff),
-                                        ((d >> 40)&0xff),
-                                        ((d >> 32)&0xff),
-                                        ((d >> 24)&0xff),
-                                        ((d >> 16)&0xff),
-                                        ((d >> 8 )&0xff),
-                                        ((d)         &0xff) };
+    unsigned char t[sizeof(uint64_t)] = { (unsigned char)((d >> 56)&0xff),
+                                          (unsigned char)((d >> 48)&0xff),
+                                          (unsigned char)((d >> 40)&0xff),
+                                          (unsigned char)((d >> 32)&0xff),
+                                          (unsigned char)((d >> 24)&0xff),
+                                          (unsigned char)((d >> 16)&0xff),
+                                          (unsigned char)((d >> 8 )&0xff),
+                                          (unsigned char)((d)      &0xff) };
     os.write((char*)t,sizeof(uint64_t));
   }
 
@@ -57,10 +57,10 @@ namespace rnumber {
 
   void writeInt(ostream &os,uint32_t d)
   {
-    unsigned char t[sizeof(uint32_t)] = { ((d >> 24)&0xff),
-                                          ((d >> 16)&0xff),
-                                          ((d >> 8)&0xff),
-                                          (d & 0xff) };
+    unsigned char t[sizeof(uint32_t)] = { (unsigned char)((d >> 24)&0xff),
+                                          (unsigned char)((d >> 16)&0xff),
+                                          (unsigned char)((d >> 8) &0xff),
+                                          (unsigned char)       (d &0xff) };
     os.write((char*)t,sizeof(uint32_t));
   }
 
@@ -73,8 +73,8 @@ namespace rnumber {
 
   void writeShort(ostream &os,uint16_t d)
   {
-    unsigned char t[sizeof(uint16_t)] = { ((d >> 8)&0xff),
-                                                (d & 0xff) };
+    unsigned char t[sizeof(uint16_t)] = { (unsigned char)((d >> 8)&0xff),
+                                          (unsigned char)      (d &0xff) };
     os.write((char*)t,sizeof(uint16_t));
   }
 
